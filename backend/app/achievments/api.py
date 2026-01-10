@@ -1,3 +1,11 @@
-from typing import Dict from .models import Character, Quest from .serializers import CharacterSerializer, QuestSerializer
+"""
+API namespace for achievements app (optional, can be used for custom endpoints).
+"""
+from rest_framework.routers import DefaultRouter
+from .views import AchievementViewSet, UserAchievementViewSet
 
-def get_api() -> Dict[str, object]: # пример единоразового экспорта API return { "Character": CharacterSerializer, "Quest": QuestSerializer, }
+router = DefaultRouter()
+router.register(r'achievements', AchievementViewSet, basename='achievement')
+router.register(r'user-achievements', UserAchievementViewSet, basename='user-achievement')
+
+urlpatterns = router.urls
