@@ -1,7 +1,7 @@
-from rest_framework import viewsets from .models import Character, Quest, Achievement from .serializers import CharacterSerializer, QuestSerializer, AchievementSerializer
+from django.apps import AppConfig
 
-class CharacterViewSet(viewsets.ReadOnlyModelViewSet): queryset = Character.objects.all() serializer_class = CharacterSerializer
+class AchivmentsConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'app.achivments'
+    verbose_name = 'Achievements'
 
-class QuestViewSet(viewsets.ReadOnlyModelViewSet): queryset = Quest.objects.all() serializer_class = QuestSerializer
-
-class AchievementViewSet(viewsets.ReadOnlyModelViewSet): queryset = Achievement.objects.all() serializer_class = AchievementSerializer

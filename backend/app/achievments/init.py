@@ -1,5 +1,5 @@
- from .api import get_api # noqa: F401 from .models import Character, Quest, Achievement # noqa: F401
+"""
+A placeholder package initializer for achievements module.
+"""
 
-all = ["Character", "Quest", "Achievement", "get_api"]
 
-users/models.py
