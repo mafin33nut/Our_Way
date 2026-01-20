@@ -8,7 +8,29 @@ interface QuestCardProps {
   quest: Quest;
   onComplete: (id: number) => void;
   onDelete: (id: number) => void;
+  onTimerStop?: () => Promise<void>;
 }
+
+// внутри компонента, в stopTimer:
+const stopTimer = async () => {
+  if (!timerId) return;
+  try {
+    setProcessingTimer(true);
+    const resp = await fetch(`/api/activities/timers/${timerId}/stop/`, { ... });
+    if (!resp.ok) throw new Error('Failed to stop timer');
+    const data = await resp.json();
+    setTimerActive(false);
+    setTimerId(null);
+    // feedback sound...
+    if (onTimerStop) {
+      try { await onTimerStop(); } catch (e) { console.error(e); }
+    }
+  } catch (err) {
+    console.error('Stop timer error', err);
+  } finally {
+    setProcessingTimer(false);
+  }
+};
 
 export function QuestCard({ quest, onComplete, onDelete }: QuestCardProps) {
   const [timerRunning, setTimerRunning] = useState(false);

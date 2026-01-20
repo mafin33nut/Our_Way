@@ -1,5 +1,43 @@
 import { Quest } from '../../types';
 import { QuestCard } from './QuestCard';
+
+
+interface QuestListProps {
+  quests: Quest[];
+  onComplete: (id: number) => void | Promise<void>;
+  onDelete: (id: number) => void | Promise<void>;
+  onTimerStop?: () => Promise<void>;
+}
+
+<QuestList
+  quests={quests}
+  onComplete={handleCompleteQuest}
+  onDelete={handleDeleteQuest}
+  onTimerStop={async () => {
+    // например, обновим данные пользователя или перезагрузим квесты
+    await refreshUser();
+    // можно также перезагрузить список:
+    // await loadData();
+  }}
+/>
+
+export function QuestList({ quests, onComplete, onDelete, onTimerStop }: QuestListProps) {
+  return (
+    <div className="space-y-3">
+      {quests.map((q) => (
+        <QuestCard
+          key={q.id}
+          quest={q}
+          onComplete={onComplete}
+          onDelete={onDelete}
+          onTimerStop={onTimerStop} // <- прокидываем сюда
+        />
+      ))}
+    </div>
+  );
+}
+import { Quest } from '../../types';
+import { QuestCard } from './QuestCard';
 import { Circle, CheckCircle2, Sparkles, Target } from 'lucide-react';
 import { isToday } from '../../utils/time';
 interface QuestListProps {
