@@ -1,17 +1,17 @@
-mport { useState, useEffect } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { useCustomization } from '../hooks/useCustomization';
-import { questsAPI, clanQuestsAPI } from '../api/quests';
-import { socialAPI } from '../api/social';
-import { Quest, Friend, Clan, Activity, ClanQuest, BACKGROUND_OPTIONS } from '../types';
-import { FocusSelector } from '../components/quests/FocusSelector';
-import { QuestList } from '../components/quests/QuestList';
-import { ClanQuestList } from '../components/quests/ClanQuestList';
-import { CharacterProfile } from '../components/profile/CharacterProfile';
-import { FriendsList } from '../components/social/FriendsList';
-import { ActivityFeed } from '../components/social/ActivityFeed';
-import { isToday } from '../utils/time';
-import { Loader } from '../components/ui/Loader';
+import { useState, useEffect } from 'react';
+import { useAuth } from '../../hooks/useAuth';
+import { useCustomization } from '../../hooks/useCustomization';
+import { questsAPI, clanQuestsAPI } from '../../api/quests';
+import { socialAPI } from '../../api/social';
+import { Quest, Friend, Clan, Activity, ClanQuest, BACKGROUND_OPTIONS } from '../../types';
+import { FocusSelector } from '../../components/quests/FocusSelector';
+import { QuestList } from '../../components/quests/QuestList';
+import { ClanQuestList } from '../../components/quests/ClanQuestList';
+import { CharacterProfile } from '../../components/profile/characterProfile';
+import { FriendsList } from '../../components/social/FriendsList';
+import { ActivityFeed } from '../../components/social/ActivityFeed';
+import { isToday } from '../../utils/time';
+import { Loader } from '../../components/ui/Loader';
 import { Crown } from 'lucide-react';
 
 export function HomePage() {

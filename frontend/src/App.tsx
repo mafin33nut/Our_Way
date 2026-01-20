@@ -3,8 +3,8 @@ import { AuthProvider } from './contexts/AuthContext';
 import { CustomizationProvider } from './contexts/Customization';
 import { PrivateRoute } from './components/layout/PrivateRoute';
 import { Header } from './components/layout/Header';
-import { LoginPage } from './pages/LoginPage';
-import { HomePage } from './pages/HomePage';
+import { LoginPage } from './components/pages/LoginPage';
+import { HomePage } from './components/pages/HomePage';
 function App() {
   return (
     <AuthProvider>

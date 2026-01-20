@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { Button } from '../components/ui/Button';
+import { useAuth } from '../../hooks/useAuth';
+import { Button } from '../../components/ui/Button';
 import { LogIn, Shield } from 'lucide-react';
 export function LoginPage() {
   const [username, setUsername] = useState('');
