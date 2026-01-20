@@ -40,3 +40,15 @@ export const clanQuestsAPI = {
     return response.data;
   },
 };
+export const timersAPI = {
+  startTimer: async (activityId?: number) => {
+    const payload = activityId ? { activity: activityId } : {};
+    const response = await apiClient.post('/activities/timers/start/', payload);
+    return response.data; // expected ActivityTimer object
+  },
+
+  stopTimer: async (timerId: number) => {
+    const response = await apiClient.post(`/activities/timers/${timerId}/stop/`);
+    return response.data; // updated ActivityTimer object
+  },
+};

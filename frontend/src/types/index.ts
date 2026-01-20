@@ -131,3 +131,13 @@ export const BACKGROUND_OPTIONS = [
     url: '',
   },
 ];
+
+export interface ActivityTimer {
+  id: number;
+  user: number;
+  activity?: number | null;
+  started_at: string;
+  stopped_at?: string | null;
+  active: boolean;
+  duration_seconds: number;
+}
