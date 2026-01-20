@@ -1,5 +1,13 @@
-import { Activities } from '../../app';
-import { Bell, CheckCircle2, Star, Users, Award } from 'lucide-react';
+import * as React from "react";
+import { Bell, CheckCircle2, Star, Users, Award } from "lucide-react";
+
+interface Activity {
+  id: number;
+  type: 'quest_complete' | 'level_up' | 'friend_achievement' | 'clan_event' | string;
+  message: string;
+  timestamp: string;
+  icon?: string;
+}
 
 interface ActivityFeedProps {
   activities: Activity[];
@@ -43,7 +51,7 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
     const minutes = Math.floor(diff / (1000 * 60));
     const hours = Math.floor(diff / (1000 * 60 * 60));
 
-    if (minutes === 0) return 'только что';
+    if (minutes <= 0) return 'только что';
     if (minutes < 60) return `${minutes} мин назад`;
     if (hours < 24) return `${hours} ч назад`;
     return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
