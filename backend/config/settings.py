@@ -42,16 +42,16 @@ INSTALLED_APPS = [
     "rest_framework",
 
     # Project apps (adjust names to match actual app folders)
-    "core",
-    "api",
-    "activities",
-    "clans",
-    "focus",
-    "user",
-    "achievements",      # was 'achivments' — verify folder name (or restore original)
-    "notifications",
-    "goals",
-    "app",
+    "app.core",            # если у вас app/core
+    "app.api",             # если app/api
+    "app.activities",
+    "app.clans",
+    "app.focus",
+    "app.user",
+    "app.achivements",
+    "app.notifications",
+    "app.goals",
+# ...и т.д.
 ]
 
 MIDDLEWARE = [

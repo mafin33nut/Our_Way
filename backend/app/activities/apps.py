@@ -1,7 +1,10 @@
 from django.apps import AppConfig
-class ActivitiesConfig(AppConfig): default_auto_field = 'django.db.models.BigAutoField' 
-name = 'app.activities' 
-verbose_name = 'Activities (RPG tasks & rewards)'
+
+class ActivitiesConfig(AppConfig): 
+    default_auto_field = 'django.db.models.BigAutoField' 
+    name = 'app.activities' 
+    verbose_name = 'Activities (RPG tasks & rewards)'
+
 def ready(self):
     # import signals/receivers
     try:

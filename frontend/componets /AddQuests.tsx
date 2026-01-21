@@ -1,21 +1,22 @@
-import { useState } from 'react';
-import { Plus, Sparkles, Flame, Skull } from 'lucide-react';
+import React, { useState } from "react";
+import { Plus, Sparkles, Flame, Skull } from "lucide-react";
 
 interface AddQuestProps {
   onAddQuest: (title: string, description: string, difficulty: 'easy' | 'medium' | 'hard') => void;
 }
 
 export function AddQuest({ onAddQuest }: AddQuestProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!title.trim()) return;
+    const trimmedTitle = title.trim();
+    if (!trimmedTitle) return;
 
-    onAddQuest(title, description, difficulty);
+    onAddQuest(trimmedTitle, description.trim(), difficulty);
     setTitle('');
     setDescription('');
     setDifficulty('easy');
@@ -25,6 +26,7 @@ export function AddQuest({ onAddQuest }: AddQuestProps) {
   if (!isExpanded) {
     return (
       <button
+        type="button"
         onClick={() => setIsExpanded(true)}
         className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-900 py-4 px-6 rounded-lg flex items-center justify-center gap-2 transition-all shadow-lg shadow-amber-600/30 hover:shadow-amber-500/40"
       >
@@ -37,15 +39,16 @@ export function AddQuest({ onAddQuest }: AddQuestProps) {
   return (
     <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-amber-600/50 p-6 shadow-xl backdrop-blur-sm">
       <h2 className="text-amber-300 mb-4">Создать новое задание</h2>
-      
+
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Title Input */}
         <div>
-          <label htmlFor="title" className="block text-amber-200/80 text-sm mb-2">
+          <label htmlFor="aq-title" className="block text-amber-200/80 text-sm mb-2">
             Название задания
           </label>
           <input
-            id="title"
+            id="aq-title"
+            name="title"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -57,11 +60,12 @@ export function AddQuest({ onAddQuest }: AddQuestProps) {
 
         {/* Description Input */}
         <div>
-          <label htmlFor="description" className="block text-amber-200/80 text-sm mb-2">
+          <label htmlFor="aq-description" className="block text-amber-200/80 text-sm mb-2">
             Описание задания (опционально)
           </label>
           <textarea
-            id="description"
+            id="aq-description"
+            name="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Дополнительные детали о задании..."
@@ -79,7 +83,7 @@ export function AddQuest({ onAddQuest }: AddQuestProps) {
             <button
               type="button"
               onClick={() => setDifficulty('easy')}
-              className={`p-3 rounded-lg border-2 transition-all ${
+              className={`p-3 rounded-lg border-2 transition-all text-center ${
                 difficulty === 'easy'
                   ? 'bg-green-900/40 border-green-500 text-green-300'
                   : 'bg-slate-950/30 border-green-600/30 text-green-400/60 hover:border-green-500/50'
@@ -93,7 +97,7 @@ export function AddQuest({ onAddQuest }: AddQuestProps) {
             <button
               type="button"
               onClick={() => setDifficulty('medium')}
-              className={`p-3 rounded-lg border-2 transition-all ${
+              className={`p-3 rounded-lg border-2 transition-all text-center ${
                 difficulty === 'medium'
                   ? 'bg-yellow-900/40 border-yellow-500 text-yellow-300'
                   : 'bg-slate-950/30 border-yellow-600/30 text-yellow-400/60 hover:border-yellow-500/50'
@@ -107,7 +111,7 @@ export function AddQuest({ onAddQuest }: AddQuestProps) {
             <button
               type="button"
               onClick={() => setDifficulty('hard')}
-              className={`p-3 rounded-lg border-2 transition-all ${
+              className={`p-3 rounded-lg border-2 transition-all text-center ${
                 difficulty === 'hard'
                   ? 'bg-red-900/40 border-red-500 text-red-300'
                   : 'bg-slate-950/30 border-red-600/30 text-red-400/60 hover:border-red-500/50'
