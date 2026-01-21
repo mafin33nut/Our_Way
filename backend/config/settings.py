@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'app.user',
     'app.achivments',
     'app.notifications',  
-    'app.goals',         
+    'app.goals',
+    'app.core'.        
 ]
 
 MIDDLEWARE = [
