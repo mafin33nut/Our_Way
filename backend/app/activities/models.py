@@ -132,3 +132,39 @@ class Quest(models.Model):
 
     def __str__(self):
         return self.title
+
+from django.db import models 
+from django.utils import timezone 
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class Task(models.Model): 
+    title = models.CharField(max_length=255) 
+    description = models.TextField(blank=True) 
+    points = models.PositiveIntegerField(default=0) 
+    is_active = models.BooleanField(default=True) 
+    created_at = models.DateTimeField(default=timezone.now) 
+    updated_at = models.DateTimeField(auto_now=True) 
+    assigned_to = models.ForeignKey( User, on_delete=models.SET_NULL, null=True, blank=True, related_name='tasks' )
+
+class Meta:
+    ordering = ['-created_at']
+    verbose_name = 'Task'
+    verbose_name_plural = 'Tasks'
+
+def __str__(self):
+    return self.title
+
+class Achievement(models.Model): 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='achievements') 
+    name = models.CharField(max_length=255) description = models.TextField(blank=True) 
+    awarded_at = models.DateTimeField(default=timezone.now)
+
+class Meta:
+    ordering = ['-awarded_at']
+    verbose_name = 'Achievement'
+    verbose_name_plural = 'Achievements'
+
+def __str__(self):
+    return f'{self.user}: {self.name}'
