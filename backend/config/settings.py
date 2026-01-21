@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     "app.clans",
     "app.focus",
     "app.user",
-    "app.achivements",
+    "app.achievements",
     "app.notifications",
     "app.goals",
 # ...и т.д.

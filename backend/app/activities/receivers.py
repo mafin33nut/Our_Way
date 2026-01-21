@@ -1,6 +1,6 @@
 from django.dispatch import receiver
 from .signals import activity_completed, reward_claimed
-from app.achivments.models import UserAchievement
+from app.achievments.models import UserAchievement
 from django.utils import timezone
 
 @receiver(activity_completed)
@@ -18,7 +18,7 @@ def on_activity_completed(sender, activity_log=None, **kwargs):
         # create a simple achievement if exists with slug 'completed-10'
         try:
             ach = None
-            from app.achivments.models import Achievement
+            from app.achievments.models import Achievement
 
             ach = Achievement.objects.filter(name__icontains='Completed 10').first()
             if ach:
