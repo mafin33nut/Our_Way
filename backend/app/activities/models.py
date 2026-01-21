@@ -158,7 +158,8 @@ def __str__(self):
 
 class Achievement(models.Model): 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='achievements') 
-    name = models.CharField(max_length=255) description = models.TextField(blank=True) 
+    name = models.CharField(max_length=255) 
+    description = models.TextField(blank=True) 
     awarded_at = models.DateTimeField(default=timezone.now)
 
 class Meta:
