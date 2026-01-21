@@ -1,8 +1,11 @@
-from django.contrib import admin
-from .models import User, Task, Achievement, Clan, Leaderboard
+from django.contrib import admin 
+from django.contrib.auth import get_user_model 
+from app.core.models import Task, Achievement, Clan, Leaderboard
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+User = get_user_model()
+
+@admin.register(User) 
+class UserAdmin(admin.ModelAdmin): 
     list_display = ("username", "email", "points")
 
 @admin.register(Task)
