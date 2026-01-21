@@ -29,3 +29,45 @@ class ClanQuest(models.Model):
 
     def __str__(self):
         return f'{self.title} (clan {self.clan.name})'
+
+class LeaderboardEntry(models.Model):
+    clan = models.OneToOneField(Clan, on_delete=models.CASCADE, related_name='leaderboard')
+    score = models.BigIntegerField(default=0, db_index=True)
+    rank = models.PositiveIntegerField(null=True, blank=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Leaderboard entry"
+        verbose_name_plural = "Leaderboard entries"
+        ordering = ['-score', 'rank']
+        indexes = [
+            models.Index(fields=['-score']),
+            models.Index(fields=['rank']),
+        ]
+
+    def __str__(self):
+        return f"{self.clan.name}: {self.score} (#{self.rank or '-'})"
+
+    def recalc_score(self):
+        total = self.clan.quests.filter(completed=True).aggregate(
+            total=models.Sum('points')
+        )['total'] or 0
+        self.score = total
+        self.save(update_fields=['score', 'updated_at'])
+
+    @classmethod
+    def recompute_ranks(cls):
+        with transaction.atomic():
+            entries = list(cls.objects.select_for_update().order_by('-score', 'updated_at'))
+            for idx, entry in enumerate(entries, start=1):
+                if entry.rank != idx:
+                    entry.rank = idx
+                    entry.save(update_fields=['rank'])
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+@receiver(post_save, sender=Clan)
+def ensure_leaderboard_entry(sender, instance: Clan, created, **kwargs):
+    if created:
+        LeaderboardEntry.objects.create(clan=instance)
