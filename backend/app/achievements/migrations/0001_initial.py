@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('unlocked_at', models.DateTimeField(auto_now_add=True)),
-                ('achievement', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user_entries', to='achievments.achievement')),
+                ('achievement', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user_entries', to='achievements.achievement')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user_achievements', to=settings.AUTH_USER_MODEL)),
             ],
             options={

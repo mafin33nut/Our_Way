@@ -12,7 +12,7 @@ except Exception:
 from .models import ActivityLog, ActivityReward, ActivityTimer, Quest  # Quest опционально
 # Опциональные связи — импортируем по возможности
 try:
-    from app.achievments.models import Achievement, UserAchievement
+    from app.achievements.models import Achievement, UserAchievement
 except Exception:
     Achievement = None
     UserAchievement = None

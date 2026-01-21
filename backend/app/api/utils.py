@@ -5,6 +5,6 @@ from app.achivments import api as ach_api # existing from app.user import urls a
 
 router = DefaultRouter()
 #Keep router empty here for global viewsets; individual apps expose their own routers/urls
-urlpatterns = [ path('', include(user_urls)), path('achievments/', include(ach_api)), path('focus/', include(focus_urls)), path('clans/', include(clans_urls)), path('activities/', include(activities_urls))]
+urlpatterns = [ path('', include(user_urls)), path('achievements/', include(ach_api)), path('focus/', include(focus_urls)), path('clans/', include(clans_urls)), path('activities/', include(activities_urls))]
 #expose router variable for convenience
 api_router = router
