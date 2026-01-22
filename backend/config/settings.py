@@ -125,7 +125,7 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Custom user model — ensure this matches your app label (app.user -> "app.user.User")
-AUTH_USER_MODEL = "app.user.User"
+AUTH_USER_MODEL = "user.User"
 
 # Django REST framework + Simple JWT
 REST_FRAMEWORK = {
