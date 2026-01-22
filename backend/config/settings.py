@@ -51,14 +51,6 @@ else:
 
 # Application definition
 INSTALLED_APPS = [
-    # Django builtin apps
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-
     # Third-party
     "corsheaders",
     "rest_framework",
@@ -74,6 +66,13 @@ INSTALLED_APPS = [
     "app.achievements",
     "app.notifications",
     "app.goals",
+     # Django builtin apps
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
 ]
 
 MIDDLEWARE = [
