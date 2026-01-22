@@ -79,16 +79,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'rest_framework_simplejwt.token_blacklist',
-    'corsheaders',
-    "rest_framework",
-
     # Third-party
+    "corsheaders",  # один раз
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
-    "corsheaders",
-
-    # Project apps — adjust names to actual apps
+    # Project apps
     "app.core",
     "app.api",
     "app.activities",
@@ -98,7 +93,6 @@ INSTALLED_APPS = [
     "app.achievements",
     "app.notifications",
     "app.goals",
-    # add others...
 ]
 
 MIDDLEWARE = [
