@@ -11,45 +11,26 @@ interface QuestCardProps {
   onTimerStop?: () => Promise<void>;
 }
 
-// внутри компонента, в stopTimer:
-const stopTimer = async () => {
-  if (!timerId) return;
-  try {
-    setProcessingTimer(true);
-    const resp = await fetch(`/api/activities/timers/${timerId}/stop/`, { ... });
-    if (!resp.ok) throw new Error('Failed to stop timer');
-    const data = await resp.json();
-    setTimerActive(false);
-    setTimerId(null);
-    // feedback sound...
-    if (onTimerStop) {
-      try { await onTimerStop(); } catch (e) { console.error(e); }
-    }
-  } catch (err) {
-    console.error('Stop timer error', err);
-  } finally {
-    setProcessingTimer(false);
-  }
-};
-
-export function QuestCard({ quest, onComplete, onDelete }: QuestCardProps) {
+export function QuestCard({ quest, onComplete, onDelete, onTimerStop }: QuestCardProps) {
   const [timerRunning, setTimerRunning] = useState(false);
-  const [elapsed, setElapsed] = useState(0); // seconds
+  const [elapsed, setElapsed] = useState(0);
   const timerIntervalRef = useRef<number | null>(null);
   const [serverTimerId, setServerTimerId] = useState<number | null>(null);
+  const [processingTimer, setProcessingTimer] = useState(false);
 
   useEffect(() => {
     return () => {
-      if (timerIntervalRef.current) {
+      if (timerIntervalRef.current !== null) {
         window.clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
       }
     };
   }, []);
 
   const startTimer = async () => {
     try {
+      setProcessingTimer(true);
       const timer = await timersAPI.startTimer(quest.id);
-      // timer.started_at is ISO string; server may return duration_seconds=0 initially
       setServerTimerId(timer.id);
       setTimerRunning(true);
       setElapsed(0);
@@ -58,48 +39,62 @@ export function QuestCard({ quest, onComplete, onDelete }: QuestCardProps) {
       }, 1000);
     } catch (err) {
       console.error('Failed to start timer', err);
+    } finally {
+      setProcessingTimer(false);
     }
   };
 
   const stopTimer = async () => {
-    try {
-      if (!serverTimerId) {
-        // if server id missing, try to call stop without id (not expected)
-        setTimerRunning(false);
-        if (timerIntervalRef.current) {
-          window.clearInterval(timerIntervalRef.current);
-          timerIntervalRef.current = null;
-        }
-        return;
-      }
-      const updated = await timersAPI.stopTimer(serverTimerId);
-      // updated.duration_seconds available from server; sync elapsed
-      setElapsed(updated.duration_seconds || elapsed);
+    if (!serverTimerId) {
       setTimerRunning(false);
-      if (timerIntervalRef.current) {
+      if (timerIntervalRef.current !== null) {
         window.clearInterval(timerIntervalRef.current);
         timerIntervalRef.current = null;
       }
-      // Optionally refresh quests/user via passed callbacks or global refresh
-      // e.g., call onComplete or emit event if needed
+      return;
+    }
+    try {
+      setProcessingTimer(true);
+      const updated = await timersAPI.stopTimer(serverTimerId);
+      setElapsed(updated.duration_seconds ?? elapsed);
+      setTimerRunning(false);
+      if (timerIntervalRef.current !== null) {
+        window.clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
+      }
+      if (onTimerStop) {
+        try {
+          await onTimerStop();
+        } catch (e) {
+          console.error(e);
+        }
+      }
     } catch (err) {
       console.error('Failed to stop timer', err);
+    } finally {
+      setProcessingTimer(false);
     }
   };
 
   return (
     <div className="group relative ...">
-      {/* existing content */}
       <div className="flex items-center gap-2 mt-3">
         {!timerRunning ? (
-          <Button onClick={startTimer} size="sm" variant="secondary">Start</Button>
+          <Button onClick={startTimer} size="sm" variant="secondary" disabled={processingTimer}>
+            Start
+          </Button>
         ) : (
-          <Button onClick={stopTimer} size="sm" variant="primary">Stop ({Math.floor(elapsed/60)}:{(elapsed%60).toString().padStart(2,'0')})</Button>
+          <Button onClick={stopTimer} size="sm" variant="primary" disabled={processingTimer}>
+            Stop ({Math.floor(elapsed / 60)}:{(elapsed % 60).toString().padStart(2, '0')})
+          </Button>
         )}
-        {/* keep existing complete/delete buttons */}
-        <Button onClick={() => !quest.completed && onComplete(quest.id)} disabled={quest.completed} size="sm">Complete</Button>
+        <Button onClick={() => !quest.completed && onComplete(quest.id)} disabled={quest.completed} size="sm">
+          Complete
+        </Button>
         {quest.completed && (
-          <button onClick={() => onDelete(quest.id)} className="...">Remove</button>
+          <button onClick={() => onDelete(quest.id)} className="...">
+            Remove
+          </button>
         )}
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { Quest } from '../../types';
 import { QuestCard } from './QuestCard';
-
+import { Circle, CheckCircle2, Sparkles, Target } from 'lucide-react';
+import { isToday } from '../../utils/time';
 
 interface QuestListProps {
   quests: Quest[];
@@ -9,50 +10,14 @@ interface QuestListProps {
   onTimerStop?: () => Promise<void>;
 }
 
-<QuestList
-  quests={quests}
-  onComplete={handleCompleteQuest}
-  onDelete={handleDeleteQuest}
-  onTimerStop={async () => {
-    // например, обновим данные пользователя или перезагрузим квесты
-    await refreshUser();
-    // можно также перезагрузить список:
-    // await loadData();
-  }}
-/>
-
 export function QuestList({ quests, onComplete, onDelete, onTimerStop }: QuestListProps) {
-  return (
-    <div className="space-y-3">
-      {quests.map((q) => (
-        <QuestCard
-          key={q.id}
-          quest={q}
-          onComplete={onComplete}
-          onDelete={onDelete}
-          onTimerStop={onTimerStop} // <- прокидываем сюда
-        />
-      ))}
-    </div>
-  );
-}
-import { Quest } from '../../types';
-import { QuestCard } from './QuestCard';
-import { Circle, CheckCircle2, Sparkles, Target } from 'lucide-react';
-import { isToday } from '../../utils/time';
-interface QuestListProps {
-  quests: Quest[];
-  onComplete: (id: number) => void;
-  onDelete: (id: number) => void;
-}
-export function QuestList({ quests, onComplete, onDelete }: QuestListProps) {
   const activeQuests = quests.filter(q => !q.completed);
-  const completedQuests = quests.filter(q => 
+  const completedQuests = quests.filter(q =>
     q.completed && q.completed_at && isToday(q.completed_at)
   );
+
   return (
     <div className="space-y-6">
-      {/* Active Quests */}
       {activeQuests.length > 0 && (
         <div className="bg-slate-800/50 rounded-lg border-2 border-amber-600/30 p-6 backdrop-blur-sm">
           <h2 className="text-amber-300 mb-4 flex items-center gap-2">
@@ -66,12 +31,13 @@ export function QuestList({ quests, onComplete, onDelete }: QuestListProps) {
                 quest={quest}
                 onComplete={onComplete}
                 onDelete={onDelete}
+                onTimerStop={onTimerStop}
               />
             ))}
           </div>
         </div>
       )}
-      {/* Completed Quests */}
+
       {completedQuests.length > 0 && (
         <div className="bg-slate-800/30 rounded-lg border-2 border-emerald-600/20 p-6 backdrop-blur-sm">
           <h2 className="text-emerald-300 mb-4 flex items-center gap-2">
@@ -85,12 +51,13 @@ export function QuestList({ quests, onComplete, onDelete }: QuestListProps) {
                 quest={quest}
                 onComplete={onComplete}
                 onDelete={onDelete}
+                onTimerStop={onTimerStop}
               />
             ))}
           </div>
         </div>
       )}
-      {/* Empty State */}
+
       {quests.length === 0 && (
         <div className="bg-slate-800/30 rounded-lg border-2 border-amber-600/20 p-12 text-center backdrop-blur-sm">
           <Sparkles className="w-12 h-12 text-amber-400/40 mx-auto mb-4" />
