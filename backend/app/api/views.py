@@ -1,10 +1,9 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
-from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
-from app.user.serializers import UserSerializer  # создать ниже
+from app.user.serializers import UserSerializer
 
 User = get_user_model()
 
@@ -13,7 +12,7 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
-        data = request.data
+        data = request.data.copy()
         password = data.pop('password', None)
         password2 = data.pop('password2', None)
         if password != password2:
@@ -28,14 +27,15 @@ class RegisterView(generics.CreateAPIView):
 
 class UserView(APIView):
     permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request):
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
 
 class LogoutView(APIView):
     permission_classes = [permissions.IsAuthenticated]
+
     def post(self, request):
-        # blacklist refresh token if provided
         try:
             refresh_token = request.data.get('refresh')
             if refresh_token:
