@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
-class UserConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'app.user'
-    verbose_name = 'User'
+class UserConfig(AppConfig): 
+    default_auto_field = 'django.db.models.BigAutoField' 
+    name = 'app.user' # Python path к пакету 
+    verbose_name = 'User' 

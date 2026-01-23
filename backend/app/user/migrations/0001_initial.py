@@ -1,8 +1,9 @@
-from django.db import migrations, models import django.contrib.auth.validators import django.utils.timezone
+from django.db import migrations, models 
+import django.contrib.auth.validators 
+import django.utils.timezone
 
 class Migration(migrations.Migration):
-
-initial = True
+    initial = True
 
 dependencies = [
     ('auth', '0012_alter_user_first_name_max_length'),

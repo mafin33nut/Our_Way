@@ -38,7 +38,6 @@ else:
         DB_PORT = os.getenv("DB_PORT", "5432")
 
         if DB_NAME and DB_USER:
-            # avoid accidental spaces
             db_url = f"postgres://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
             DATABASES = {"default": dj_database_url.parse(db_url, conn_max_age=600)}
         else:
@@ -66,13 +65,15 @@ INSTALLED_APPS = [
     "app.achievements",
     "app.notifications",
     "app.goals",
-     # Django builtin apps
+
+    # Django builtin apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
@@ -120,11 +121,16 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files
-STATIC_URL = "static/"
+STATIC_URL = '/static/'
+STATIC_ROOT = str(BASE_DIR / "static")  # абсолютный путь
+MEDIA_URL = '/media/'
+MEDIA_ROOT = str(BASE_DIR / "media")    # абсолютный путь
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Custom user model — ensure this matches your app label (app.user -> "app.user.User")
+# Custom user model — проверьте, соответствует ли вашему AppConfig label
+# Если приложение называется app.user и AppConfig.label == 'user', тогда "user.User" OK.
+# Обычно безопаснее указывать "app.user.User" если label == 'app'
 AUTH_USER_MODEL = "user.User"
 
 # Django REST framework + Simple JWT

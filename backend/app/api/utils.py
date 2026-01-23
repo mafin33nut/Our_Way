@@ -1,21 +1,22 @@
-from rest_framework.routers import DefaultRouter
-from django.urls import include, path
-
-# Import app submodules' url patterns or routers
-from app.achievements import api as ach_api
-from app.user import urls as user_urls
-from app.focus import urls as focus_urls
-from app.clans import urls as clans_urls
+from django.urls import include, path 
+from app.achievements import api as achievements_api 
+from app.user import urls as user_urls 
+from app.focus import urls as focus_urls 
+from app.clans import urls as clans_urls 
 from app.activities import urls as activities_urls
-
-router = DefaultRouter()
-
 urlpatterns = [
-    path('', include(user_urls)),
-    path('achievements/', include(ach_api)),
-    path('focus/', include(focus_urls)),
-    path('clans/', include(clans_urls)),
-    path('activities/', include(activities_urls)),
-]
+    # Users (e.g. /api/users/)
+    path('', include('app.user.urls')),
 
-api_router = router
+    # Achievements (e.g. /api/achievements/)
+    path('achievements/', include('app.achievements.api')),
+
+    # Focus (e.g. /api/focus/)
+    path('focus/', include('app.focus.urls')),
+
+    # Clans (e.g. /api/clans/)
+    path('clans/', include('app.clans.urls')),
+
+    # Activities (e.g. /api/activities/)
+    path('activities/', include('app.activities.urls')),
+]

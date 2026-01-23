@@ -11,3 +11,6 @@ urlpatterns = [ path('', include(router.urls)), ]
 from .views import QuestViewSet
 router.register(r'quests', QuestViewSet, basename='quest')
 # если хотите expose clan quests из app.clans, можно зарегистрировать их здесь или в app/clans.urls
+urlpatterns = [
+    path('', include(router.urls)),
+]
