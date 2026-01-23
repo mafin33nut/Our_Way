@@ -11,14 +11,3 @@ urlpatterns = [
 
 
 
-urlpatterns = [ 
-    path('focus/', include('app.focus.urls')),
-    path('clans/', include('app.clans.urls')), 
-    path('achievements/', include('app.achievements.api.py' if False else 'app.achievements.api')), ]
-
-
-
-urlpatterns = [
-    path('api/auth/', include('app.api.auth_urls')),
-    path('api/', include('app.api.utils')),  # подключит под-рутрс через utils.urlpatterns
-]
