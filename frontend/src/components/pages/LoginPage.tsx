@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../../components/ui/Button';
@@ -8,17 +8,30 @@ export function LoginPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
       await login({ username, password });
-      navigate('/');
+      // Navigation will happen via useEffect when user state is set
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Ошибка входа. Проверьте данные.');
+      console.error('Login error:', err);
+      const errorMessage = err.response?.data?.detail 
+        || err.response?.data?.message 
+        || err.message 
+        || 'Ошибка входа. Проверьте данные.';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

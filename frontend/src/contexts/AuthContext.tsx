@@ -43,16 +43,46 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   const login = async (credentials: LoginCredentials) => {
-    const tokens = await authAPI.login(credentials);
-    if (tokens?.access) {
-      localStorage.setItem('access_token', tokens.access);
-      if ((tokens as any).refresh) {
-        localStorage.setItem('refresh_token', (tokens as any).refresh);
+    try {
+      const tokens = await authAPI.login(credentials);
+      console.log('Login tokens received:', tokens ? 'Yes' : 'No');
+      
+      if (tokens?.access) {
+        localStorage.setItem('access_token', tokens.access);
+        if ((tokens as any).refresh) {
+          localStorage.setItem('refresh_token', (tokens as any).refresh);
+        }
+        
+        // Small delay to ensure token is saved
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        try {
+          console.log('Fetching user data...');
+          const userData = await authAPI.getCurrentUser();
+          console.log('User data received:', userData);
+          setUser(userData);
+        } catch (userErr: any) {
+          console.error('Failed to get user data after login:', userErr);
+          console.error('Error response:', userErr.response);
+          // If getting user fails, clear tokens and rethrow
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('refresh_token');
+          const errorMsg = userErr.response?.data?.detail 
+            || userErr.response?.data?.message
+            || userErr.message 
+            || 'Failed to get user information. Please try again.';
+          throw new Error(errorMsg);
+        }
+      } else {
+        throw new Error('No tokens received from server');
       }
-      const userData = await authAPI.getCurrentUser();
-      setUser(userData);
-    } else {
-      throw new Error('No tokens received');
+    } catch (err: any) {
+      console.error('Login error:', err);
+      // Re-throw with better error message
+      if (err.message) {
+        throw err;
+      }
+      throw new Error(err.response?.data?.detail || 'Login failed. Please check your credentials.');
     }
   };
 
