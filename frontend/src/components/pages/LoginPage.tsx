@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../../components/ui/Button';
 import { LogIn, Shield } from 'lucide-react';
+
 export function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -27,10 +28,45 @@ export function LoginPage() {
       // Navigation will happen via useEffect when user state is set
     } catch (err: any) {
       console.error('Login error:', err);
-      const errorMessage = err.response?.data?.detail 
-        || err.response?.data?.message 
-        || err.message 
-        || 'Ошибка входа. Проверьте данные.';
+      console.error('Full error object:', JSON.stringify(err, null, 2));
+      console.error('Error response data:', err.response?.data);
+      console.error('Error status:', err.response?.status);
+      
+      // Try to extract a meaningful error message
+      let errorMessage = 'Ошибка входа. Проверьте данные.';
+      
+      if (err.response?.data) {
+        const data = err.response.data;
+        // Handle different error formats
+        if (data.detail) {
+          errorMessage = data.detail;
+        } else if (data.message) {
+          errorMessage = data.message;
+        } else if (data.non_field_errors) {
+          errorMessage = Array.isArray(data.non_field_errors) 
+            ? data.non_field_errors.join(', ') 
+            : data.non_field_errors;
+        } else if (data.username) {
+          const usernameError = Array.isArray(data.username) 
+            ? data.username.join(', ') 
+            : data.username;
+          errorMessage = 'Имя пользователя: ' + usernameError;
+        } else if (data.password) {
+          const passwordError = Array.isArray(data.password) 
+            ? data.password.join(', ') 
+            : data.password;
+          errorMessage = 'Пароль: ' + passwordError;
+        } else if (typeof data === 'string') {
+          errorMessage = data;
+        } else {
+          // Show the full error object for debugging
+          const statusCode = err.response?.status || '';
+          errorMessage = 'Ошибка ' + statusCode + ': ' + JSON.stringify(data);
+        }
+      } else if (err.message) {
+        errorMessage = err.message;
+      }
+      
       setError(errorMessage);
     } finally {
       setLoading(false);
