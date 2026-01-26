@@ -37,7 +37,13 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
       onClanCreated();
     } catch (err: any) {
       console.error('Create clan error:', err);
-      setError(err.response?.data?.detail || err.response?.data?.name?.[0] || 'Не удалось создать клан');
+      console.error('Error response:', err.response?.data);
+      const errorDetail = err.response?.data?.detail || 
+                         err.response?.data?.name?.[0] || 
+                         err.response?.data?.name || 
+                         err.message || 
+                         'Не удалось создать клан';
+      setError(errorDetail);
     } finally {
       setCreating(false);
     }

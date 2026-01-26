@@ -28,8 +28,9 @@ class ClanViewSet(viewsets.ModelViewSet):
             defaults={'role': 'leader'}
         )
         
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=201, headers=headers)
+        response_serializer = self.get_serializer(clan)
+        headers = self.get_success_headers(response_serializer.data)
+        return Response(response_serializer.data, status=201, headers=headers)
 
 class ClanMemberViewSet(viewsets.ModelViewSet): 
     queryset = ClanMember.objects.all() 

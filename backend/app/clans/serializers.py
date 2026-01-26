@@ -23,6 +23,9 @@ class ClanSerializer(serializers.ModelSerializer):
         model = Clan 
         fields = ['id', 'name', 'description', 'level', 'total_xp', 'members']
         read_only_fields = ['id', 'level', 'total_xp', 'members']
+        extra_kwargs = {
+            'description': {'required': False, 'allow_blank': True}
+        }
     
     def get_level(self, obj):
         return 1

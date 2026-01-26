@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
 import { questsAPI, clanQuestsAPI } from '../../api/quests';
 import { socialAPI } from '../../api/social';
-import { Quest, Friend, Clan, Activity, ClanQuest, BACKGROUND_OPTIONS } from '../../types';
+import { Quest, Friend, Clan, Activity, ClanQuest } from '../../types';
 import { FocusSelector } from '../../components/quests/FocusSelector';
 import { QuestList } from '../../components/quests/QuestList';
 import { ClanQuestList } from '../../components/quests/ClanQuestList';
@@ -28,8 +28,6 @@ export function HomePage() {
   const [generatingQuests, setGeneratingQuests] = useState(false);
 
   const isLight = settings.theme === 'light';
-  const backgroundOption = BACKGROUND_OPTIONS.find((bg) => bg.id === settings.background);
-  const backgroundUrl = backgroundOption?.url || '';
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -115,22 +113,8 @@ export function HomePage() {
   }
 
   return (
-    <div className="min-h-screen relative">
-      {backgroundUrl && (
-        <div
-          className="fixed inset-0 z-0"
-          style={{
-            backgroundImage: `url(${backgroundUrl})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundAttachment: 'fixed',
-          }}
-        >
-          <div className={`absolute inset-0 ${isLight ? 'bg-white/70 backdrop-blur-sm' : 'bg-slate-900/80 backdrop-blur-sm'}`} />
-        </div>
-      )}
-
-      <div className={`relative z-10 ${!backgroundUrl && (isLight ? 'bg-gradient-to-b from-amber-50 via-white to-amber-50' : 'bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900')}`}>
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 relative">
+      <div className="relative z-10">
         <div className="max-w-[1920px] mx-auto px-6 py-8">
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
             <div className="xl:col-span-3 space-y-6">
