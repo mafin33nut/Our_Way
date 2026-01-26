@@ -146,8 +146,8 @@ export function HomePage() {
       )}
       <div className="relative z-10">
         <div className="max-w-[1920px] mx-auto px-6 py-8">
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
-            <div className="xl:col-span-3 space-y-8">
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-10">
+            <div className="xl:col-span-3 space-y-10">
               <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
 
               {settings.showClan && clan && (
@@ -177,12 +177,12 @@ export function HomePage() {
               )}
             </div>
 
-            <div className="xl:col-span-6 space-y-8">
+            <div className="xl:col-span-6 space-y-10">
               <FocusSelector currentFocus={user.current_focus || undefined} onSelectFocus={handleSelectFocus} loading={generatingQuests} />
               <QuestList quests={quests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} onTimerStop={handleTimerStop} />
             </div>
 
-            <div className="xl:col-span-3 space-y-8">
+            <div className="xl:col-span-3 space-y-10">
               {settings.showFriends && (
                 friends.length > 0 ? (
                   <FriendsList friends={friends} />
@@ -195,7 +195,7 @@ export function HomePage() {
           </div>
 
           {clanQuests.length > 0 && (
-            <div className="mt-8">
+            <div className="mt-10">
               <ClanQuestList quests={clanQuests} onContribute={handleClanQuestContribute} currentUsername={user.username} />
             </div>
           )}

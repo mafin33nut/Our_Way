@@ -35,6 +35,31 @@ class ClanViewSet(viewsets.ModelViewSet):
             return Response(response_serializer.data, status=201, headers=headers)
         except Exception as e:
             import traceback
+            from django.core.management import call_command
+            error_msg = str(e).lower()
+            
+            if 'no such table' in error_msg or 'does not exist' in error_msg or 'relation' in error_msg:
+                try:
+                    call_command('migrate', 'clans', verbosity=0, interactive=False)
+                    serializer = self.get_serializer(data=request.data)
+                    serializer.is_valid(raise_exception=True)
+                    clan = serializer.save(created_by=request.user)
+                    ClanMember.objects.get_or_create(
+                        clan=clan,
+                        user=request.user,
+                        defaults={'role': 'leader'}
+                    )
+                    clan.refresh_from_db()
+                    response_serializer = self.get_serializer(clan)
+                    headers = self.get_success_headers(response_serializer.data)
+                    return Response(response_serializer.data, status=201, headers=headers)
+                except Exception as retry_error:
+                    traceback.print_exc()
+                    return Response({
+                        'detail': 'Database migration required. Please run: python manage.py migrate clans',
+                        'error': str(retry_error)
+                    }, status=500)
+            
             traceback.print_exc()
             return Response({'detail': str(e)}, status=500)
 
