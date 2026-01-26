@@ -2,6 +2,44 @@ from django.db import migrations, models
 import django.db.models.deletion
 
 
+def migrate_clanquest_fields(apps, schema_editor):
+    ClanQuest = apps.get_model('clans', 'ClanQuest')
+    db_table = ClanQuest._meta.db_table
+    connection = schema_editor.connection
+    
+    with connection.cursor() as cursor:
+        if connection.vendor == 'sqlite':
+            cursor.execute(f"PRAGMA table_info({db_table})")
+            columns = {row[1]: row for row in cursor.fetchall()}
+            
+            if 'points' in columns and 'xp_reward' not in columns:
+                cursor.execute(f"ALTER TABLE {db_table} RENAME COLUMN points TO xp_reward")
+            elif 'xp_reward' not in columns:
+                cursor.execute(f"ALTER TABLE {db_table} ADD COLUMN xp_reward INTEGER DEFAULT 20 NOT NULL")
+            
+            if 'due_date' in columns and 'expires_at' not in columns:
+                cursor.execute(f"ALTER TABLE {db_table} RENAME COLUMN due_date TO expires_at")
+            elif 'expires_at' not in columns:
+                cursor.execute(f"ALTER TABLE {db_table} ADD COLUMN expires_at DATETIME NULL")
+        else:
+            cursor.execute("""
+                SELECT column_name 
+                FROM information_schema.columns 
+                WHERE table_name = %s AND column_name IN ('points', 'xp_reward', 'due_date', 'expires_at')
+            """, [db_table])
+            existing_columns = {row[0] for row in cursor.fetchall()}
+            
+            if 'points' in existing_columns and 'xp_reward' not in existing_columns:
+                cursor.execute(f'ALTER TABLE {db_table} RENAME COLUMN points TO xp_reward')
+            elif 'xp_reward' not in existing_columns:
+                cursor.execute(f'ALTER TABLE {db_table} ADD COLUMN xp_reward INTEGER DEFAULT 20 NOT NULL')
+            
+            if 'due_date' in existing_columns and 'expires_at' not in existing_columns:
+                cursor.execute(f'ALTER TABLE {db_table} RENAME COLUMN due_date TO expires_at')
+            elif 'expires_at' not in existing_columns:
+                cursor.execute(f'ALTER TABLE {db_table} ADD COLUMN expires_at TIMESTAMP NULL')
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -9,16 +47,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameField(
-            model_name='clanquest',
-            old_name='points',
-            new_name='xp_reward',
-        ),
-        migrations.RenameField(
-            model_name='clanquest',
-            old_name='due_date',
-            new_name='expires_at',
-        ),
+        migrations.RunPython(migrate_clanquest_fields, migrations.RunPython.noop),
         migrations.AddField(
             model_name='clanquest',
             name='difficulty',
