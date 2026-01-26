@@ -5,9 +5,10 @@ import axios, {
 } from 'axios';
 
 // Берём базовый URL из Vite-окружения, с дефолтом на localhost
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api';
+const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://127.0.0.1:8000';
+
 export const apiClient = axios.create({
-  baseURL: BASE_URL,
+  baseURL: BASE_URL, // БЕЗ /api здесь
   headers: {
     'Content-Type': 'application/json',
   },

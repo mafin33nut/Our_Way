@@ -4,11 +4,14 @@ import { User, AuthTokens, LoginCredentials, RegisterData } from '../types';
 export const authAPI = {
   login: async (credentials: LoginCredentials): Promise<AuthTokens> => {
     try {
-      console.log('Sending login request with:', { username: credentials.username, password: '***' });
-      
-      // Ensure we're sending proper JSON
+      console.log('Sending login request with:', {
+        username: credentials.username,
+        password: '***',
+      });
+
+      // отправляем JSON на правильный URL /api/auth/token/
       const response = await apiClient.post<AuthTokens>(
-        '/auth/token/',
+        '/api/auth/token/',
         {
           username: credentials.username.trim(),
           password: credentials.password,
@@ -19,37 +22,49 @@ export const authAPI = {
           },
         }
       );
+
       console.log('Login response received:', response.data);
       return response.data;
     } catch (error: any) {
-      console.error('Login API error:', error);
-      console.error('Error response:', error.response?.data);
-      console.error('Error status:', error.response?.status);
-      console.error('Error headers:', error.response?.headers);
-      console.error('Request config:', error.config);
-      
-      // If we get HTML back, it's likely a Django error page
-      if (error.response?.data && typeof error.response.data === 'string' && error.response.data.includes('<!doctype html>')) {
-        const errorMsg = new Error('Backend returned an error page. Check server logs.');
-        (errorMsg as any).response = error.response;
-        throw errorMsg;
+      // axios-ошибка?
+      if (error.response) {
+        const { status, data } = error.response;
+        console.error('Login API error:', status, data);
+
+        // если backend вернул HTML‑страницу с 400
+        if (typeof data === 'string' && data.includes('<!doctype html')) {
+          throw new Error('Сервер вернул ошибку 400 (Bad Request). Проверьте лог сервера.');
+        }
+
+        // если DRF / SimpleJWT вернули JSON, пробуем достать сообщение
+        if (typeof data === 'object') {
+          // SimpleJWT при неверном пароле часто шлёт:
+          // { "detail": "No active account found with the given credentials" }
+          if (data.detail) {
+            throw new Error(String(data.detail));
+          }
+        }
+
+        // общее сообщение
+        throw new Error(`Ошибка авторизации (${status}).`);
       }
-      
-      throw error;
+
+      console.error('Login unknown error:', error);
+      throw new Error('Не удалось выполнить запрос авторизации.');
     }
   },
 
   register: async (data: RegisterData): Promise<User> => {
-    const response = await apiClient.post<User>('/auth/register/', data);
+    const response = await apiClient.post<User>('/api/auth/register/', data);
     return response.data;
   },
 
   getCurrentUser: async (): Promise<User> => {
-    const response = await apiClient.get<User>('/auth/user/');
+    const response = await apiClient.get<User>('/api/auth/user/');
     return response.data;
   },
 
   logout: async (): Promise<void> => {
-    await apiClient.post('/auth/logout/');
+    await apiClient.post('/api/auth/logout/');
   },
 };

@@ -123,7 +123,7 @@ export const BACKGROUND_OPTIONS = [
   {
     id: 'adventure',
     name: 'Приключение',
-    url: 'https://images.unsplash.com/photo-1767709879762-c7a6ce819aeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYW50YXN5JTIwYWR2ZW50dXJlJTIwbGFuZHNjYXBlfGVufDF8fHx8MTc2ODM2MDc5NXww&ixlib=rb-4.1.0&q=80&w=1080',
+    url: 'https://yandex.ru/images/search?text=приключение+картинка+фэнтези&img_url=https%3A%2F%2Fimg.freepik.com%2Fpremium-photo%2Fmajestic-stone-castle-nestled-amidst-fiery-autumn-forest-cascading-waterfall-mountainous-landscape_681147-32383.jpg%3Fsemt%3Dais_hybrid&pos=1&rpt=simage&stype=image&lr=213&parent-reqid=1769368913129590-1768100861777395609-balancer-l7leveler-kubr-yp-sas-178-BAL&source=serp',
   },
   {
     id: 'none',
