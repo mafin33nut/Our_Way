@@ -10,6 +10,8 @@ import { ClanQuestList } from '../../components/quests/ClanQuestList';
 import { CharacterProfile } from '../../components/profile/characterProfile';
 import { FriendsList } from '../../components/social/FriendsList';
 import { ActivityFeed } from '../../components/social/ActivityFeed';
+import { FriendSearchPanel } from '../../components/social/FriendSearchPanel';
+import { ClanCreationPanel } from '../../components/social/ClanCreationPanel';
 import { isToday } from '../../utils/time';
 import { Loader } from '../../components/ui/Loader';
 import { Crown } from 'lucide-react';
@@ -101,7 +103,6 @@ export function HomePage() {
     }
   };
 
-  // Called after a timer stops to refresh quests & user
   const handleTimerStop = async () => {
     await loadData();
     await refreshUser();
@@ -157,6 +158,9 @@ export function HomePage() {
                   </div>
                 </div>
               )}
+              {settings.showClan && !clan && (
+                <ClanCreationPanel onClanCreated={loadData} />
+              )}
             </div>
 
             <div className="xl:col-span-6 space-y-6">
@@ -165,12 +169,20 @@ export function HomePage() {
             </div>
 
             <div className="xl:col-span-3 space-y-6">
-              {settings.showFriends && friends.length > 0 && <FriendsList friends={friends} />}
+              {settings.showFriends && (
+                friends.length > 0 ? (
+                  <FriendsList friends={friends} />
+                ) : (
+                  <FriendSearchPanel onFriendAdded={loadData} />
+                )
+              )}
+              {settings.showClan && !clan && (
+                <ClanCreationPanel onClanCreated={loadData} />
+              )}
               {settings.showActivities && activities.length > 0 && <ActivityFeed activities={activities} />}
             </div>
           </div>
 
-          {/* Clan Quests Section - Full Width */}
           {clanQuests.length > 0 && (
             <div className="mt-6">
               <ClanQuestList quests={clanQuests} onContribute={handleClanQuestContribute} currentUsername={user.username} />

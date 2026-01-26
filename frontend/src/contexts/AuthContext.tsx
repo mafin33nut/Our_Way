@@ -1,11 +1,12 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { authAPI } from '../api/auth';
-import { User, LoginCredentials } from '../types';
+import { User, LoginCredentials, RegisterData } from '../types';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (credentials: LoginCredentials) => Promise<void>;
+  register: (data: RegisterData) => Promise<void>;
   logout: () => void;
   refreshUser: () => Promise<void>;
 }
@@ -43,16 +44,53 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   const login = async (credentials: LoginCredentials) => {
-    const tokens = await authAPI.login(credentials);
-    if (tokens?.access) {
-      localStorage.setItem('access_token', tokens.access);
-      if ((tokens as any).refresh) {
-        localStorage.setItem('refresh_token', (tokens as any).refresh);
+    try {
+      const tokens = await authAPI.login(credentials);
+      console.log('Login tokens received:', tokens ? 'Yes' : 'No');
+      
+      if (tokens?.access) {
+        localStorage.setItem('access_token', tokens.access);
+        if ((tokens as any).refresh) {
+          localStorage.setItem('refresh_token', (tokens as any).refresh);
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        try {
+          console.log('Fetching user data...');
+          const userData = await authAPI.getCurrentUser();
+          console.log('User data received:', userData);
+          setUser(userData);
+        } catch (userErr: any) {
+          console.error('Failed to get user data after login:', userErr);
+          console.error('Error response:', userErr.response);
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('refresh_token');
+          const errorMsg = userErr.response?.data?.detail 
+            || userErr.response?.data?.message
+            || userErr.message 
+            || 'Failed to get user information. Please try again.';
+          throw new Error(errorMsg);
+        }
+      } else {
+        throw new Error('No tokens received from server');
       }
-      const userData = await authAPI.getCurrentUser();
-      setUser(userData);
-    } else {
-      throw new Error('No tokens received');
+    } catch (err: any) {
+      console.error('Login error:', err);
+      if (err.message) {
+        throw err;
+      }
+      throw new Error(err.response?.data?.detail || 'Login failed. Please check your credentials.');
+    }
+  };
+
+  const register = async (data: RegisterData) => {
+    try {
+      const userData = await authAPI.register(data);
+      await login({ username: data.username, password: data.password });
+    } catch (err: any) {
+      console.error('Registration error:', err);
+      throw err;
     }
   };
 
@@ -74,7 +112,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, refreshUser }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
