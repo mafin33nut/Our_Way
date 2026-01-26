@@ -18,19 +18,25 @@ class ClanViewSet(viewsets.ModelViewSet):
         return queryset
     
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        clan = serializer.save(created_by=request.user)
-        
-        ClanMember.objects.get_or_create(
-            clan=clan,
-            user=request.user,
-            defaults={'role': 'leader'}
-        )
-        
-        response_serializer = self.get_serializer(clan)
-        headers = self.get_success_headers(response_serializer.data)
-        return Response(response_serializer.data, status=201, headers=headers)
+        try:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            clan = serializer.save(created_by=request.user)
+            
+            ClanMember.objects.get_or_create(
+                clan=clan,
+                user=request.user,
+                defaults={'role': 'leader'}
+            )
+            
+            clan.refresh_from_db()
+            response_serializer = self.get_serializer(clan)
+            headers = self.get_success_headers(response_serializer.data)
+            return Response(response_serializer.data, status=201, headers=headers)
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return Response({'detail': str(e)}, status=500)
 
 class ClanMemberViewSet(viewsets.ModelViewSet): 
     queryset = ClanMember.objects.all() 

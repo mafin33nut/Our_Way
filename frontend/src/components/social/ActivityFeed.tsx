@@ -19,7 +19,7 @@ const ACTIVITY_COLORS = {
 export function ActivityFeed({ activities }: ActivityFeedProps) {
   const recentActivities = activities.slice(0, 8);
   return (
-    <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-purple-400/30">
+    <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-indigo-400/50 ring-offset-2 ring-offset-slate-900">
       <div className="flex items-center gap-2 mb-4">
         <Bell className="w-5 h-5 text-purple-400" />
         <h2 className="text-purple-300">Последняя активность</h2>

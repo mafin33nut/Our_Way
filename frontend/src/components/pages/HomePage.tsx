@@ -117,7 +117,7 @@ export function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 relative">
-      {backgroundUrl && (
+      {backgroundUrl && settings.background !== 'none' && (
         <div
           className="fixed inset-0 z-0"
           style={{
@@ -127,7 +127,7 @@ export function HomePage() {
             backgroundAttachment: 'fixed',
           }}
         >
-          <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-sm" />
         </div>
       )}
       <div className="relative z-10">
@@ -137,7 +137,7 @@ export function HomePage() {
               <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
 
               {settings.showClan && clan && (
-                <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-purple-400/30">
+                <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-yellow-400/50 ring-offset-2 ring-offset-slate-900">
                   <div className="flex items-center gap-2 mb-3">
                     <Crown className="w-5 h-5 text-purple-400" />
                     <h2 className="text-purple-300">{clan.name}</h2>

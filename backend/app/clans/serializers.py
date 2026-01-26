@@ -12,7 +12,12 @@ class ClanMemberSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'level', 'contribution']
     
     def get_level(self, obj):
-        return getattr(obj.user, 'level', 1)
+        try:
+            from app.user.serializers import UserSerializer
+            user_data = UserSerializer(obj.user).data
+            return user_data.get('level', 1)
+        except:
+            return 1
 
 class ClanSerializer(serializers.ModelSerializer):
     level = serializers.SerializerMethodField()
@@ -31,11 +36,14 @@ class ClanSerializer(serializers.ModelSerializer):
         return 1
     
     def get_total_xp(self, obj):
-        from app.activities.models import Quest
-        return Quest.objects.filter(
-            user__clan_memberships__clan=obj,
-            completed=True
-        ).aggregate(total=Sum('xp_reward'))['total'] or 0
+        try:
+            from app.activities.models import Quest
+            return Quest.objects.filter(
+                user__clan_memberships__clan=obj,
+                completed=True
+            ).aggregate(total=Sum('xp_reward'))['total'] or 0
+        except Exception as e:
+            return 0
 
 class ClanQuestParticipantSerializer(serializers.Serializer):
     id = serializers.IntegerField()
