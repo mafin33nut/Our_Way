@@ -118,12 +118,17 @@ export const BACKGROUND_OPTIONS = [
   {
     id: 'kingdom',
     name: 'Королевство',
-    url: 'https://images.unsplash.com/photo-1683660108375-ea3ee43e3c8c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYW50YXN5JTIwbWVkaWV2YWwlMjBraW5nZG9tfGVufDF8fHx8MTc2ODM5NzQ5MHww&ixlib=rb-4.1.0&q=80&w=1080',
+    url: 'https://wallpaper.forfun.com/fetch/08/08fa3e53a5ab6d9fdc5edf4871130811.jpeg',
+  },
+  {
+    id: 'kingdom',
+    name: 'Королевство',
+    url: 'https://wallpaper.forfun.com/fetch/08/08fa3e53a5ab6d9fdc5edf4871130811.jpeg',
   },
   {
     id: 'adventure',
     name: 'Приключение',
-    url: 'https://yandex.ru/images/search?text=приключение+картинка+фэнтези&img_url=https%3A%2F%2Fimg.freepik.com%2Fpremium-photo%2Fmajestic-stone-castle-nestled-amidst-fiery-autumn-forest-cascading-waterfall-mountainous-landscape_681147-32383.jpg%3Fsemt%3Dais_hybrid&pos=1&rpt=simage&stype=image&lr=213&parent-reqid=1769368913129590-1768100861777395609-balancer-l7leveler-kubr-yp-sas-178-BAL&source=serp',
+    url: 'https://t3.ftcdn.net/jpg/07/90/05/02/360_F_790050252_Rh1xxWcg7DxQp8uyrwyDf6VtQVaPMO9u.jpg',
   },
   {
     id: 'none',

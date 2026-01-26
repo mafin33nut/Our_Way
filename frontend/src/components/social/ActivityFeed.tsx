@@ -19,24 +19,24 @@ const ACTIVITY_COLORS = {
 export function ActivityFeed({ activities }: ActivityFeedProps) {
   const recentActivities = activities.slice(0, 8);
   return (
-    <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-blue-600/50 p-6 shadow-2xl backdrop-blur-sm">
+    <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-purple-400/30">
       <div className="flex items-center gap-2 mb-4">
-        <Bell className="w-5 h-5 text-blue-400" />
-        <h2 className="text-blue-300">Последняя активность</h2>
+        <Bell className="w-5 h-5 text-purple-400" />
+        <h2 className="text-purple-300">Последняя активность</h2>
       </div>
       <div className="space-y-3">
         {recentActivities.map((activity) => {
           const IconComponent = ACTIVITY_ICONS[activity.type] || TrendingUp;
-          const color = ACTIVITY_COLORS[activity.type] || 'text-amber-400';
+          const color = ACTIVITY_COLORS[activity.type] || 'text-purple-400';
           return (
             <div
               key={activity.id}
-              className="flex items-start gap-3 p-3 bg-slate-950/40 rounded-lg border border-blue-600/20 hover:border-blue-600/40 transition-colors"
+              className="flex items-start gap-3 p-3 bg-slate-950/40 rounded-lg border border-purple-600/20 hover:border-purple-500/50 transition-colors"
             >
               <IconComponent className={`w-4 h-4 ${color} flex-shrink-0 mt-0.5`} />
               <div className="flex-1 min-w-0">
-                <p className="text-blue-200 text-sm">{activity.message}</p>
-                <p className="text-blue-200/40 text-xs mt-1">{formatTime(activity.timestamp)}</p>
+                <p className="text-purple-200 text-sm">{activity.message}</p>
+                <p className="text-purple-200/40 text-xs mt-1">{formatTime(activity.timestamp)}</p>
               </div>
             </div>
           );
@@ -44,7 +44,7 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
       </div>
       {activities.length === 0 && (
         <div className="text-center py-8">
-          <p className="text-blue-200/40 text-sm">Пока нет активности</p>
+          <p className="text-purple-200/40 text-sm">Пока нет активности</p>
         </div>
       )}
     </div>

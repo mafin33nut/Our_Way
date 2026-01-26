@@ -3,7 +3,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
 import { questsAPI, clanQuestsAPI } from '../../api/quests';
 import { socialAPI } from '../../api/social';
-import { Quest, Friend, Clan, Activity, ClanQuest } from '../../types';
+import { Quest, Friend, Clan, Activity, ClanQuest, BACKGROUND_OPTIONS } from '../../types';
 import { FocusSelector } from '../../components/quests/FocusSelector';
 import { QuestList } from '../../components/quests/QuestList';
 import { ClanQuestList } from '../../components/quests/ClanQuestList';
@@ -112,8 +112,24 @@ export function HomePage() {
     return <Loader />;
   }
 
+  const backgroundOption = BACKGROUND_OPTIONS.find((bg) => bg.id === settings.background);
+  const backgroundUrl = backgroundOption?.url || '';
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 relative">
+      {backgroundUrl && (
+        <div
+          className="fixed inset-0 z-0"
+          style={{
+            backgroundImage: `url(${backgroundUrl})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+          }}
+        >
+          <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" />
+        </div>
+      )}
       <div className="relative z-10">
         <div className="max-w-[1920px] mx-auto px-6 py-8">
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
@@ -121,23 +137,23 @@ export function HomePage() {
               <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
 
               {settings.showClan && clan && (
-                <div className={`rounded-lg border-2 p-6 shadow-2xl backdrop-blur-sm ${isLight ? 'bg-white/90 border-amber-300' : 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 border-amber-600/50'}`}>
+                <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-purple-400/30">
                   <div className="flex items-center gap-2 mb-3">
-                    <Crown className={`w-5 h-5 ${isLight ? 'text-amber-600' : 'text-amber-400'}`} />
-                    <h2 className={isLight ? 'text-amber-800' : 'text-amber-300'}>{clan.name}</h2>
+                    <Crown className="w-5 h-5 text-purple-400" />
+                    <h2 className="text-purple-300">{clan.name}</h2>
                   </div>
                   <div className="space-y-2 text-sm">
-                    <div className={`flex justify-between ${isLight ? 'text-amber-700' : 'text-amber-200/80'}`}>
+                    <div className="flex justify-between text-purple-200/80">
                       <span>Уровень клана</span>
-                      <span className={isLight ? 'text-amber-800' : 'text-amber-300'}>{clan.level}</span>
+                      <span className="text-purple-300">{clan.level}</span>
                     </div>
-                    <div className={`flex justify-between ${isLight ? 'text-amber-700' : 'text-amber-200/80'}`}>
+                    <div className="flex justify-between text-purple-200/80">
                       <span>Участники</span>
-                      <span className={isLight ? 'text-amber-800' : 'text-amber-300'}>{clan.members.length}</span>
+                      <span className="text-purple-300">{clan.members.length}</span>
                     </div>
-                    <div className={`flex justify-between ${isLight ? 'text-amber-700' : 'text-amber-200/80'}`}>
+                    <div className="flex justify-between text-purple-200/80">
                       <span>Общий опыт</span>
-                      <span className={isLight ? 'text-amber-800' : 'text-amber-300'}>{clan.total_xp.toLocaleString()}</span>
+                      <span className="text-purple-300">{clan.total_xp.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>

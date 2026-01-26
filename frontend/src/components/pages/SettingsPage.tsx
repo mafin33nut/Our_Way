@@ -1,0 +1,196 @@
+import { Settings, Volume2, VolumeX, Sun, Moon, Eye, EyeOff, Image, ArrowLeft } from 'lucide-react';
+import { Button } from '../ui/Button';
+import { useCustomization } from '../../hooks/useCustomization';
+import { BACKGROUND_OPTIONS } from '../../types';
+import { Link } from 'react-router-dom';
+
+function isTheme(value: unknown): value is 'light' | 'dark' {
+  return value === 'light' || value === 'dark';
+}
+
+export function SettingsPage() {
+  const { settings, updateSettings, playVictorySound } = useCustomization();
+  const isLight = isTheme(settings.theme) && settings.theme === 'light';
+  const isDark = isTheme(settings.theme) && settings.theme === 'dark';
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 relative">
+      <div className="relative z-10">
+        <div className="max-w-4xl mx-auto px-6 py-8">
+          <div className="bg-gradient-to-br from-slate-800/95 to-slate-900/95 rounded-lg border-2 border-purple-500/50 shadow-2xl backdrop-blur-sm">
+            <div className="p-6 border-b border-purple-600/30">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Link to="/">
+                    <Button variant="ghost" size="sm">
+                      <ArrowLeft className="w-4 h-4 mr-2" />
+                      Назад
+                    </Button>
+                  </Link>
+                  <div className="flex items-center gap-2">
+                    <Settings className="w-6 h-6 text-purple-400" />
+                    <h1 className="text-2xl text-purple-300">Настройки</h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-8">
+              <div>
+                <h2 className="mb-4 text-xl text-purple-200">Тема оформления</h2>
+                <div className="grid grid-cols-2 gap-4">
+                  <button
+                    onClick={() => updateSettings({ theme: 'light' })}
+                    className={`p-6 rounded-lg border-2 transition-all ${
+                      isLight
+                        ? 'border-purple-500 bg-purple-900/40 shadow-lg ring-2 ring-purple-400/50'
+                        : 'border-purple-600/30 bg-slate-800/50 hover:border-purple-500/50'
+                    }`}
+                  >
+                    <Sun className={`w-8 h-8 mx-auto mb-3 ${
+                      isLight ? 'text-purple-300' : 'text-purple-400/60'
+                    }`} />
+                    <p className={`text-sm ${
+                      isLight ? 'text-purple-200' : 'text-purple-200/60'
+                    }`}>
+                      Светлая тема
+                    </p>
+                  </button>
+
+                  <button
+                    onClick={() => updateSettings({ theme: 'dark' })}
+                    className={`p-6 rounded-lg border-2 transition-all ${
+                      isDark
+                        ? 'border-purple-500 bg-purple-900/40 shadow-lg ring-2 ring-purple-400/50'
+                        : 'border-purple-600/30 bg-slate-800/50 hover:border-purple-500/50'
+                    }`}
+                  >
+                    <Moon className={`w-8 h-8 mx-auto mb-3 ${
+                      isDark ? 'text-purple-300' : 'text-purple-400/60'
+                    }`} />
+                    <p className={`text-sm ${
+                      isDark ? 'text-purple-200' : 'text-purple-200/60'
+                    }`}>
+                      Темная тема
+                    </p>
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <h2 className="mb-4 text-xl text-purple-200">Фоновое изображение</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {BACKGROUND_OPTIONS.map((bg) => (
+                    <button
+                      key={bg.id}
+                      onClick={() => updateSettings({ background: bg.id })}
+                      className={`relative aspect-video rounded-lg border-2 overflow-hidden transition-all ${
+                        settings.background === bg.id
+                          ? 'border-purple-500 ring-2 ring-purple-400/50 shadow-lg'
+                          : 'border-purple-600/30 hover:border-purple-500/50'
+                      }`}
+                    >
+                      {bg.url ? (
+                        <img
+                          src={bg.url}
+                          alt={bg.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-slate-800">
+                          <Image className="w-8 h-8 text-purple-400/40" />
+                        </div>
+                      )}
+                      <div className="absolute bottom-0 left-0 right-0 p-2 text-xs text-center bg-black/70 text-white">
+                        {bg.name}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h2 className="mb-4 text-xl text-purple-200">Звуковые эффекты</h2>
+                <button
+                  onClick={() => {
+                    updateSettings({ soundEnabled: !settings.soundEnabled });
+                    if (!settings.soundEnabled) {
+                      playVictorySound();
+                    }
+                  }}
+                  className={`w-full p-4 rounded-lg border-2 transition-all flex items-center justify-between ${
+                    settings.soundEnabled
+                      ? 'border-purple-500 bg-purple-900/40 ring-2 ring-purple-400/50'
+                      : 'border-purple-600/30 bg-slate-800/50'
+                  }`}
+                >
+                  <span className="text-purple-200">
+                    {settings.soundEnabled ? 'Звук включен' : 'Звук выключен'}
+                  </span>
+                  {settings.soundEnabled ? (
+                    <Volume2 className="text-purple-400" />
+                  ) : (
+                    <VolumeX className="text-purple-400/60" />
+                  )}
+                </button>
+              </div>
+
+              <div>
+                <h2 className="mb-4 text-xl text-purple-200">Отображение панелей</h2>
+                <div className="space-y-3">
+                  <button
+                    onClick={() => updateSettings({ showFriends: !settings.showFriends })}
+                    className={`w-full p-4 rounded-lg border-2 transition-all flex items-center justify-between ${
+                      settings.showFriends
+                        ? 'border-purple-500 bg-purple-900/40 ring-2 ring-purple-400/50'
+                        : 'border-purple-600/30 bg-slate-800/50'
+                    }`}
+                  >
+                    <span className="text-purple-200">Панель друзей</span>
+                    {settings.showFriends ? (
+                      <Eye className="text-purple-400" />
+                    ) : (
+                      <EyeOff className="text-purple-400/60" />
+                    )}
+                  </button>
+
+                  <button
+                    onClick={() => updateSettings({ showActivities: !settings.showActivities })}
+                    className={`w-full p-4 rounded-lg border-2 transition-all flex items-center justify-between ${
+                      settings.showActivities
+                        ? 'border-purple-500 bg-purple-900/40 ring-2 ring-purple-400/50'
+                        : 'border-purple-600/30 bg-slate-800/50'
+                    }`}
+                  >
+                    <span className="text-purple-200">Лента активности</span>
+                    {settings.showActivities ? (
+                      <Eye className="text-purple-400" />
+                    ) : (
+                      <EyeOff className="text-purple-400/60" />
+                    )}
+                  </button>
+
+                  <button
+                    onClick={() => updateSettings({ showClan: !settings.showClan })}
+                    className={`w-full p-4 rounded-lg border-2 transition-all flex items-center justify-between ${
+                      settings.showClan
+                        ? 'border-purple-500 bg-purple-900/40 ring-2 ring-purple-400/50'
+                        : 'border-purple-600/30 bg-slate-800/50'
+                    }`}
+                  >
+                    <span className="text-purple-200">Информация о клане</span>
+                    {settings.showClan ? (
+                      <Eye className="text-purple-400" />
+                    ) : (
+                      <EyeOff className="text-purple-400/60" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

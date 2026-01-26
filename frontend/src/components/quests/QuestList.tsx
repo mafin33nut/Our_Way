@@ -19,8 +19,8 @@ export function QuestList({ quests, onComplete, onDelete, onTimerStop }: QuestLi
   return (
     <div className="space-y-6">
       {activeQuests.length > 0 && (
-        <div className="bg-slate-800/50 rounded-lg border-2 border-amber-600/30 p-6 backdrop-blur-sm">
-          <h2 className="text-amber-300 mb-4 flex items-center gap-2">
+        <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 backdrop-blur-sm ring-2 ring-purple-400/30">
+          <h2 className="text-purple-300 mb-4 flex items-center gap-2">
             <Target className="w-5 h-5" />
             Ваши задания ({activeQuests.length})
           </h2>
@@ -39,8 +39,8 @@ export function QuestList({ quests, onComplete, onDelete, onTimerStop }: QuestLi
       )}
 
       {completedQuests.length > 0 && (
-        <div className="bg-slate-800/30 rounded-lg border-2 border-emerald-600/20 p-6 backdrop-blur-sm">
-          <h2 className="text-emerald-300 mb-4 flex items-center gap-2">
+        <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 backdrop-blur-sm ring-2 ring-purple-400/30">
+          <h2 className="text-purple-300 mb-4 flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5" />
             Выполнено сегодня ({completedQuests.length})
           </h2>
@@ -59,10 +59,10 @@ export function QuestList({ quests, onComplete, onDelete, onTimerStop }: QuestLi
       )}
 
       {quests.length === 0 && (
-        <div className="bg-slate-800/30 rounded-lg border-2 border-amber-600/20 p-12 text-center backdrop-blur-sm">
-          <Sparkles className="w-12 h-12 text-amber-400/40 mx-auto mb-4" />
-          <p className="text-amber-200/60 mb-2">Пока нет заданий</p>
-          <p className="text-amber-200/40 text-sm">Выберите направление развития выше, чтобы получить персональные задания</p>
+        <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-12 text-center backdrop-blur-sm ring-2 ring-purple-400/30">
+          <Sparkles className="w-12 h-12 text-purple-400/40 mx-auto mb-4" />
+          <p className="text-purple-200/60 mb-2">Пока нет заданий</p>
+          <p className="text-purple-200/40 text-sm">Выберите направление развития выше, чтобы получить персональные задания</p>
         </div>
       )}
     </div>

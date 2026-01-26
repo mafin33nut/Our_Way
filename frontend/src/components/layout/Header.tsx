@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
-import { LogOut, User } from 'lucide-react';
+import { LogOut, User, Settings } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
 import { Button } from '../ui/Button';
-import { CustomizationPanel } from '../customization/CustomizationPanel';
 export function Header() {
   const { user, logout } = useAuth();
   const { settings } = useCustomization();
@@ -40,7 +39,11 @@ export function Header() {
                   </p>
                 </div>
               </div>
-              <CustomizationPanel />
+              <Link to="/settings">
+                <Button variant="ghost" size="sm">
+                  <Settings className="w-4 h-4" />
+                </Button>
+              </Link>
               
               <Button variant="ghost" size="sm" onClick={logout}>
                 <LogOut className="w-4 h-4 mr-2" />

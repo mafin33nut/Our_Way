@@ -5,6 +5,7 @@ import { PrivateRoute } from './components/layout/PrivateRoute';
 import { Header } from './components/layout/Header';
 import { LoginPage } from './components/pages/LoginPage';
 import { HomePage } from './components/pages/HomePage';
+import { SettingsPage } from './components/pages/SettingsPage';
 function App() {
   return (
     <AuthProvider>
@@ -19,6 +20,17 @@ function App() {
                   <>
                     <Header />
                     <HomePage />
+                  </>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <PrivateRoute>
+                  <>
+                    <Header />
+                    <SettingsPage />
                   </>
                 </PrivateRoute>
               }

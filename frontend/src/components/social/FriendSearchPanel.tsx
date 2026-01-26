@@ -53,31 +53,23 @@ export function FriendSearchPanel({ onFriendAdded }: FriendSearchPanelProps) {
   };
 
   return (
-    <div className={`rounded-lg border-2 p-6 shadow-2xl backdrop-blur-sm ${
-      isLight ? 'bg-white/90 border-emerald-300' : 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 border-emerald-600/50'
-    }`}>
+    <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-purple-400/30">
       <div className="flex items-center gap-2 mb-4">
-        <Users className={`w-5 h-5 ${isLight ? 'text-emerald-600' : 'text-emerald-400'}`} />
-        <h2 className={isLight ? 'text-emerald-800' : 'text-emerald-300'}>Найти друзей</h2>
+        <Users className="w-5 h-5 text-purple-400" />
+        <h2 className="text-purple-300">Найти друзей</h2>
       </div>
 
       <div className="space-y-4">
         <div className="flex gap-2">
           <div className="flex-1 relative">
-            <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${
-              isLight ? 'text-emerald-600' : 'text-emerald-400'
-            }`} />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-purple-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
               placeholder="Введите имя пользователя"
-              className={`w-full pl-10 pr-4 py-2 rounded-lg border ${
-                isLight
-                  ? 'bg-white border-emerald-300 text-emerald-900 placeholder-emerald-400'
-                  : 'bg-slate-950/50 border-emerald-600/30 text-emerald-100 placeholder-emerald-200/30'
-              } focus:outline-none focus:border-emerald-500 transition-colors`}
+              className="w-full pl-10 pr-4 py-2 rounded-lg border bg-slate-950/50 border-purple-600/30 text-purple-100 placeholder-purple-200/30 focus:outline-none focus:border-purple-500 transition-colors"
             />
           </div>
           <Button
@@ -90,10 +82,8 @@ export function FriendSearchPanel({ onFriendAdded }: FriendSearchPanelProps) {
         </div>
 
         {error && (
-          <div className={`p-3 rounded-lg border ${
-            isLight ? 'bg-red-50 border-red-300' : 'bg-red-900/30 border-red-600/50'
-          }`}>
-            <p className={`text-sm ${isLight ? 'text-red-700' : 'text-red-200'}`}>{error}</p>
+          <div className="p-3 rounded-lg border bg-red-900/30 border-red-600/50">
+            <p className="text-sm text-red-200">{error}</p>
           </div>
         )}
 
@@ -102,15 +92,11 @@ export function FriendSearchPanel({ onFriendAdded }: FriendSearchPanelProps) {
             {searchResults.map((user) => (
               <div
                 key={user.id}
-                className={`flex items-center justify-between p-3 rounded-lg border ${
-                  isLight
-                    ? 'bg-emerald-50 border-emerald-200'
-                    : 'bg-slate-950/40 border-emerald-600/20'
-                }`}
+                className="flex items-center justify-between p-3 rounded-lg border bg-slate-950/40 border-purple-600/20 hover:border-purple-500/50 transition-colors"
               >
                 <div>
-                  <p className={isLight ? 'text-emerald-900' : 'text-emerald-200'}>{user.username}</p>
-                  <p className={`text-xs ${isLight ? 'text-emerald-600' : 'text-emerald-200/60'}`}>
+                  <p className="text-purple-200">{user.username}</p>
+                  <p className="text-xs text-purple-200/60">
                     Уровень {user.level}
                   </p>
                 </div>
@@ -134,7 +120,7 @@ export function FriendSearchPanel({ onFriendAdded }: FriendSearchPanelProps) {
         )}
 
         {searchQuery && searchResults.length === 0 && !searching && (
-          <div className={`text-center py-4 ${isLight ? 'text-emerald-600' : 'text-emerald-200/60'}`}>
+          <div className="text-center py-4 text-purple-200/60">
             <p className="text-sm">Пользователи не найдены</p>
           </div>
         )}
