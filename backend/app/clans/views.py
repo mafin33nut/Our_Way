@@ -17,8 +17,19 @@ class ClanViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(name__icontains=search)
         return queryset
     
-    def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        clan = serializer.save(created_by=request.user)
+        
+        ClanMember.objects.get_or_create(
+            clan=clan,
+            user=request.user,
+            defaults={'role': 'leader'}
+        )
+        
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=201, headers=headers)
 
 class ClanMemberViewSet(viewsets.ModelViewSet): 
     queryset = ClanMember.objects.all() 

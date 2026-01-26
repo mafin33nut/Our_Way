@@ -21,7 +21,8 @@ class ClanSerializer(serializers.ModelSerializer):
     
     class Meta: 
         model = Clan 
-        fields = ['id', 'name', 'level', 'total_xp', 'members']
+        fields = ['id', 'name', 'description', 'level', 'total_xp', 'members']
+        read_only_fields = ['id', 'level', 'total_xp', 'members']
     
     def get_level(self, obj):
         return 1

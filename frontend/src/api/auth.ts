@@ -50,6 +50,13 @@ export const authAPI = {
   },
 
   logout: async (): Promise<void> => {
-    await apiClient.post('/api/auth/logout/');
+    const refreshToken = localStorage.getItem('refresh_token');
+    if (refreshToken) {
+      try {
+        await apiClient.post('/api/auth/logout/', { refresh: refreshToken });
+      } catch (err) {
+        console.error('Logout API error:', err);
+      }
+    }
   },
 };

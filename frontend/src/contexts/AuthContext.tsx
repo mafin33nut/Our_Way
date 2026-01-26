@@ -94,11 +94,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const logout = () => {
-    authAPI.logout().finally(() => {
+  const logout = async () => {
+    try {
+      await authAPI.logout();
+    } catch (err) {
+      console.error('Logout error:', err);
+    } finally {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
       setUser(null);
       window.location.href = '/login';
-    });
+    }
   };
 
   const refreshUser = async () => {

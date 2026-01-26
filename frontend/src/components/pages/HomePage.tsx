@@ -176,9 +176,6 @@ export function HomePage() {
                   <FriendSearchPanel onFriendAdded={loadData} />
                 )
               )}
-              {settings.showClan && !clan && (
-                <ClanCreationPanel onClanCreated={loadData} />
-              )}
               {settings.showActivities && activities.length > 0 && <ActivityFeed activities={activities} />}
             </div>
           </div>
