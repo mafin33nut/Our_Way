@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { Crown, Shield, Search, Plus, Loader2 } from 'lucide-react';
-import { socialAPI, Clan } from '../../api/social';
+import { socialAPI } from '../../api/social';
+import { Clan } from '../../types';
 import { Button } from '../ui/Button';
-import { useCustomization } from '../../hooks/useCustomization';
 
 interface ClanCreationPanelProps {
   onClanCreated: () => void;
 }
 
 export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
-  const { settings } = useCustomization();
   const [mode, setMode] = useState<'create' | 'join'>('create');
   const [clanName, setClanName] = useState('');
   const [clanDescription, setClanDescription] = useState('');

@@ -2,15 +2,12 @@ import { useState } from 'react';
 import { Users, Search, UserPlus, Loader2 } from 'lucide-react';
 import { socialAPI, User } from '../../api/social';
 import { Button } from '../ui/Button';
-import { useCustomization } from '../../hooks/useCustomization';
 
 interface FriendSearchPanelProps {
   onFriendAdded: () => void;
 }
 
 export function FriendSearchPanel({ onFriendAdded }: FriendSearchPanelProps) {
-  const { settings } = useCustomization();
-  const isLight = settings.theme === 'light';
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [searching, setSearching] = useState(false);
