@@ -114,10 +114,11 @@ export function HomePage() {
 
   const backgroundOption = BACKGROUND_OPTIONS.find((bg) => bg.id === settings.background);
   const backgroundUrl = backgroundOption?.url || '';
+  const hasBackground = settings.background && settings.background !== 'none' && backgroundUrl;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 relative">
-      {backgroundUrl && settings.background !== 'none' && (
+    <div className={`min-h-screen relative ${hasBackground ? '' : 'bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900'}`}>
+      {hasBackground && (
         <div
           className="fixed inset-0 z-0"
           style={{
@@ -137,7 +138,7 @@ export function HomePage() {
               <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
 
               {settings.showClan && clan && (
-                <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-yellow-400/50 ring-offset-2 ring-offset-slate-900">
+                <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-yellow-500/60 ring-offset-2 ring-offset-slate-900">
                   <div className="flex items-center gap-2 mb-3">
                     <Crown className="w-5 h-5 text-purple-400" />
                     <h2 className="text-purple-300">{clan.name}</h2>

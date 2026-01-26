@@ -7,7 +7,7 @@ export function FriendsList({ friends }: FriendsListProps) {
   const onlineFriends = friends.filter(f => f.is_online);
   const topFriends = [...friends].sort((a, b) => b.quests_completed_today - a.quests_completed_today).slice(0, 5);
   return (
-    <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-pink-400/50 ring-offset-2 ring-offset-slate-900">
+    <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-rose-500/60 ring-offset-2 ring-offset-slate-900">
       <div className="flex items-center gap-2 mb-4">
         <Users className="w-5 h-5 text-purple-400" />
         <h2 className="text-purple-300">Друзья</h2>

@@ -22,7 +22,7 @@ class ClanMemberSerializer(serializers.ModelSerializer):
 class ClanSerializer(serializers.ModelSerializer):
     level = serializers.SerializerMethodField()
     total_xp = serializers.SerializerMethodField()
-    members = ClanMemberSerializer(source='members', many=True, read_only=True)
+    members = ClanMemberSerializer(many=True, read_only=True)
     
     class Meta: 
         model = Clan 

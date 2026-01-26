@@ -10,7 +10,7 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
   const isLight = settings.theme === 'light';
   const xpPercentage = (user.xp / user.xp_to_next_level) * 100;
   return (
-    <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-cyan-400/50 ring-offset-2 ring-offset-slate-900">
+    <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-teal-400/60 ring-offset-2 ring-offset-slate-900">
       <div className="text-center mb-6">
         <h2 className="text-purple-300">
           {user.username}

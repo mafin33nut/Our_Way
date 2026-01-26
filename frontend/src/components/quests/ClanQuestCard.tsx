@@ -30,7 +30,7 @@ export function ClanQuestCard({ quest, onContribute, currentUsername }: ClanQues
       className={`bg-slate-950/40 rounded-lg border-2 p-6 transition-all ${
         quest.completed
           ? 'border-purple-600/30 opacity-75'
-          : 'border-purple-500/50 shadow-lg shadow-purple-500/20 ring-2 ring-fuchsia-400/50 ring-offset-2 ring-offset-slate-900'
+          : 'border-purple-500/50 shadow-lg shadow-purple-500/20 ring-2 ring-purple-500/60 ring-offset-2 ring-offset-slate-900'
       }`}
     >
       {/* Header */}

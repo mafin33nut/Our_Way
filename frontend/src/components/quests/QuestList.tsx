@@ -19,7 +19,7 @@ export function QuestList({ quests, onComplete, onDelete, onTimerStop }: QuestLi
   return (
     <div className="space-y-6">
       {activeQuests.length > 0 && (
-        <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 backdrop-blur-sm ring-2 ring-blue-400/50 ring-offset-2 ring-offset-slate-900">
+        <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 backdrop-blur-sm ring-2 ring-sky-400/60 ring-offset-2 ring-offset-slate-900">
           <h2 className="text-purple-300 mb-4 flex items-center gap-2">
             <Target className="w-5 h-5" />
             Ваши задания ({activeQuests.length})
@@ -39,7 +39,7 @@ export function QuestList({ quests, onComplete, onDelete, onTimerStop }: QuestLi
       )}
 
       {completedQuests.length > 0 && (
-        <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 backdrop-blur-sm ring-2 ring-blue-400/50 ring-offset-2 ring-offset-slate-900">
+        <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 backdrop-blur-sm ring-2 ring-sky-400/60 ring-offset-2 ring-offset-slate-900">
           <h2 className="text-purple-300 mb-4 flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5" />
             Выполнено сегодня ({completedQuests.length})
