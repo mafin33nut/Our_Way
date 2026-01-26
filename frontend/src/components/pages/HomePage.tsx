@@ -26,6 +26,7 @@ export function HomePage() {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatingQuests, setGeneratingQuests] = useState(false);
+  const [bgImageLoaded, setBgImageLoaded] = useState(false);
 
   const isLight = settings.theme === 'light';
 
@@ -57,6 +58,21 @@ export function HomePage() {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  const backgroundOption = BACKGROUND_OPTIONS.find((bg) => bg.id === settings.background);
+  const backgroundUrl = backgroundOption?.url || '';
+  const hasBackground = settings.background && settings.background !== 'none' && backgroundUrl && backgroundUrl.trim() !== '';
+
+  useEffect(() => {
+    if (hasBackground && backgroundUrl) {
+      const img = new Image();
+      img.onload = () => setBgImageLoaded(true);
+      img.onerror = () => setBgImageLoaded(false);
+      img.src = backgroundUrl;
+    } else {
+      setBgImageLoaded(false);
+    }
+  }, [hasBackground, backgroundUrl]);
 
   const handleSelectFocus = async (focus: string) => {
     setGeneratingQuests(true);
@@ -111,22 +127,6 @@ export function HomePage() {
   if (loading || !user) {
     return <Loader />;
   }
-
-  const backgroundOption = BACKGROUND_OPTIONS.find((bg) => bg.id === settings.background);
-  const backgroundUrl = backgroundOption?.url || '';
-  const hasBackground = settings.background && settings.background !== 'none' && backgroundUrl && backgroundUrl.trim() !== '';
-  const [bgImageLoaded, setBgImageLoaded] = useState(false);
-
-  useEffect(() => {
-    if (hasBackground && backgroundUrl) {
-      const img = new Image();
-      img.onload = () => setBgImageLoaded(true);
-      img.onerror = () => setBgImageLoaded(false);
-      img.src = backgroundUrl;
-    } else {
-      setBgImageLoaded(false);
-    }
-  }, [hasBackground, backgroundUrl]);
 
   return (
     <div className={`min-h-screen relative ${hasBackground ? '' : 'bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900'}`}>
