@@ -2,6 +2,53 @@ from django.db import migrations, models
 import django.db.models.deletion
 
 
+def create_leaderboard_entry_if_not_exists(apps, schema_editor):
+    connection = schema_editor.connection
+    
+    with connection.cursor() as cursor:
+        if connection.vendor == 'sqlite':
+            cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='clans_leaderboardentry'")
+            table_exists = cursor.fetchone() is not None
+        else:
+            cursor.execute("""
+                SELECT EXISTS (
+                    SELECT FROM information_schema.tables 
+                    WHERE table_schema = 'public' 
+                    AND table_name = 'clans_leaderboardentry'
+                );
+            """)
+            table_exists = cursor.fetchone()[0]
+        
+        if not table_exists:
+            if connection.vendor == 'sqlite':
+                cursor.execute("""
+                    CREATE TABLE clans_leaderboardentry (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        score BIGINT NOT NULL DEFAULT 0,
+                        rank INTEGER NULL,
+                        updated_at DATETIME NOT NULL,
+                        clan_id INTEGER NOT NULL UNIQUE,
+                        FOREIGN KEY (clan_id) REFERENCES clans_clan(id) ON DELETE CASCADE
+                    )
+                """)
+                cursor.execute("CREATE INDEX IF NOT EXISTS clans_lead_score_idx ON clans_leaderboardentry(score DESC)")
+                cursor.execute("CREATE INDEX IF NOT EXISTS clans_lead_rank_idx ON clans_leaderboardentry(rank)")
+            else:
+                cursor.execute("""
+                    CREATE TABLE clans_leaderboardentry (
+                        id BIGSERIAL PRIMARY KEY,
+                        score BIGINT NOT NULL DEFAULT 0,
+                        rank INTEGER NULL,
+                        updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        clan_id INTEGER NOT NULL UNIQUE,
+                        CONSTRAINT clans_leaderboardentry_clan_id_fkey 
+                            FOREIGN KEY (clan_id) REFERENCES clans_clan(id) ON DELETE CASCADE
+                    )
+                """)
+                cursor.execute("CREATE INDEX IF NOT EXISTS clans_lead_score_idx ON clans_leaderboardentry(score DESC)")
+                cursor.execute("CREATE INDEX IF NOT EXISTS clans_lead_rank_idx ON clans_leaderboardentry(rank)")
+
+
 def migrate_clanquest_fields(apps, schema_editor):
     ClanQuest = apps.get_model('clans', 'ClanQuest')
     db_table = ClanQuest._meta.db_table
@@ -58,27 +105,8 @@ class Migration(migrations.Migration):
             name='created_at',
             field=models.DateTimeField(auto_now_add=True, null=True, blank=True),
         ),
-        migrations.CreateModel(
-            name='LeaderboardEntry',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('score', models.BigIntegerField(db_index=True, default=0)),
-                ('rank', models.PositiveIntegerField(blank=True, db_index=True, null=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('clan', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='leaderboard', to='clans.clan')),
-            ],
-            options={
-                'verbose_name': 'Leaderboard entry',
-                'verbose_name_plural': 'Leaderboard entries',
-                'ordering': ['-score', 'rank'],
-            },
-        ),
-        migrations.AddIndex(
-            model_name='leaderboardentry',
-            index=models.Index(fields=['-score'], name='clans_lead_score_idx'),
-        ),
-        migrations.AddIndex(
-            model_name='leaderboardentry',
-            index=models.Index(fields=['rank'], name='clans_lead_rank_idx'),
+        migrations.RunPython(
+            lambda apps, schema_editor: create_leaderboard_entry_if_not_exists(apps, schema_editor),
+            migrations.RunPython.noop
         ),
     ]
