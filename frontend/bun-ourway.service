@@ -1,0 +1,21 @@
+[Unit]
+Description=Bun static server for Our_Way frontend
+After=network.target
+
+[Service]
+User=root
+Group=root
+
+WorkingDirectory=/root/Our_Way/frontend
+
+Environment=NODE_ENV=production
+
+# Убедись, что путь к bun такой, как выдаёт `which bun`
+ExecStart=/usr/local/bin/bun server.js
+
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

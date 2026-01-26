@@ -1,52 +1,65 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, {
+  AxiosError,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from 'axios';
 
-const BASE_URL = '/api';
+// Берём базовый URL из Vite-окружения, с дефолтом на localhost
+const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://127.0.0.1:8000';
 
 export const apiClient = axios.create({
-  baseURL: BASE_URL,
+  baseURL: BASE_URL, // БЕЗ /api здесь
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
+// Расширяем тип конфигурации, чтобы добавить флаг _retry
+interface RetryableRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+}
+
 // Request interceptor — добавляет access token, если есть
 apiClient.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem('access_token');
-    if (token && config.headers) {
-      (config.headers as any).Authorization = `Bearer ${token}`;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error: AxiosError) => Promise.reject(error)
 );
 
 // Response interceptor — пытается обновить токен при 401 (если есть refresh)
 apiClient.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-    const responseStatus = error?.response?.status;
+  (response: AxiosResponse) => response,
+  async (error: AxiosError) => {
+    const responseStatus = error.response?.status;
+    const originalRequest = error.config as RetryableRequestConfig | undefined;
 
-    if (responseStatus === 401 && !originalRequest?._retry) {
+    if (responseStatus === 401 && originalRequest && !originalRequest._retry) {
       originalRequest._retry = true;
+
       try {
         const refreshToken = localStorage.getItem('refresh_token');
         if (!refreshToken) {
-          // no refresh token -> force logout
           localStorage.removeItem('access_token');
           window.location.href = '/login';
           return Promise.reject(error);
         }
+
         const resp = await axios.post(`${BASE_URL}/auth/token/refresh/`, {
           refresh: refreshToken,
         });
-        const access = resp?.data?.access;
+
+        const access = (resp.data as any)?.access;
         if (access) {
           localStorage.setItem('access_token', access);
-          if (originalRequest.headers) {
-            originalRequest.headers.Authorization = `Bearer ${access}`;
-          }
+
+          originalRequest.headers = originalRequest.headers || {};
+          originalRequest.headers.Authorization = `Bearer ${access}`;
+
           return apiClient(originalRequest);
         }
       } catch (refreshErr) {
