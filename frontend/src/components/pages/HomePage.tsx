@@ -114,12 +114,25 @@ export function HomePage() {
 
   const backgroundOption = BACKGROUND_OPTIONS.find((bg) => bg.id === settings.background);
   const backgroundUrl = backgroundOption?.url || '';
-  const hasBackground = settings.background && settings.background !== 'none' && backgroundUrl;
+  const hasBackground = settings.background && settings.background !== 'none' && backgroundUrl && backgroundUrl.trim() !== '';
+  const [bgImageLoaded, setBgImageLoaded] = useState(false);
+
+  useEffect(() => {
+    if (hasBackground && backgroundUrl) {
+      const img = new Image();
+      img.onload = () => setBgImageLoaded(true);
+      img.onerror = () => setBgImageLoaded(false);
+      img.src = backgroundUrl;
+    } else {
+      setBgImageLoaded(false);
+    }
+  }, [hasBackground, backgroundUrl]);
 
   return (
     <div className={`min-h-screen relative ${hasBackground ? '' : 'bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900'}`}>
-      {hasBackground && (
+      {hasBackground && bgImageLoaded && (
         <div
+          key={`bg-${settings.background}-${backgroundUrl}`}
           className="fixed inset-0 z-0"
           style={{
             backgroundImage: `url(${backgroundUrl})`,
@@ -128,13 +141,13 @@ export function HomePage() {
             backgroundAttachment: 'fixed',
           }}
         >
-          <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" />
         </div>
       )}
       <div className="relative z-10">
         <div className="max-w-[1920px] mx-auto px-6 py-8">
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-            <div className="xl:col-span-3 space-y-6">
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
+            <div className="xl:col-span-3 space-y-8">
               <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
 
               {settings.showClan && clan && (
@@ -164,12 +177,12 @@ export function HomePage() {
               )}
             </div>
 
-            <div className="xl:col-span-6 space-y-6">
+            <div className="xl:col-span-6 space-y-8">
               <FocusSelector currentFocus={user.current_focus || undefined} onSelectFocus={handleSelectFocus} loading={generatingQuests} />
               <QuestList quests={quests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} onTimerStop={handleTimerStop} />
             </div>
 
-            <div className="xl:col-span-3 space-y-6">
+            <div className="xl:col-span-3 space-y-8">
               {settings.showFriends && (
                 friends.length > 0 ? (
                   <FriendsList friends={friends} />
@@ -182,7 +195,7 @@ export function HomePage() {
           </div>
 
           {clanQuests.length > 0 && (
-            <div className="mt-6">
+            <div className="mt-8">
               <ClanQuestList quests={clanQuests} onContribute={handleClanQuestContribute} currentUsername={user.username} />
             </div>
           )}

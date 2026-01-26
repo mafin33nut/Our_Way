@@ -58,7 +58,7 @@ class LeaderboardEntry(models.Model):
 
     def recalc_score(self):
         total = self.clan.quests.filter(completed=True).aggregate(
-            total=models.Sum('points')
+            total=models.Sum('xp_reward')
         )['total'] or 0
         self.score = total
         self.save(update_fields=['score', 'updated_at'])
@@ -72,10 +72,11 @@ class LeaderboardEntry(models.Model):
                     entry.rank = idx
                     entry.save(update_fields=['rank'])
 
+from django.db import transaction
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 @receiver(post_save, sender=Clan)
 def ensure_leaderboard_entry(sender, instance: Clan, created, **kwargs):
     if created:
-        LeaderboardEntry.objects.create(clan=instance)
+        LeaderboardEntry.objects.get_or_create(clan=instance)
