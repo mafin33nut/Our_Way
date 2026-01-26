@@ -49,7 +49,7 @@ apiClient.interceptors.response.use(
           return Promise.reject(error);
         }
 
-        const resp = await axios.post(`${BASE_URL}/auth/token/refresh/`, {
+        const resp = await axios.post(`${BASE_URL}/api/auth/token/refresh/`, {
           refresh: refreshToken,
         });
 

@@ -8,7 +8,7 @@ export const authAPI = {
       
       // Ensure we're sending proper JSON
       const response = await apiClient.post<AuthTokens>(
-        '/auth/token/',
+        '/api/auth/token/',
         {
           username: credentials.username.trim(),
           password: credentials.password,
@@ -40,16 +40,16 @@ export const authAPI = {
   },
 
   register: async (data: RegisterData): Promise<User> => {
-    const response = await apiClient.post<User>('/auth/register/', data);
+    const response = await apiClient.post<User>('/api/auth/register/', data);
     return response.data;
   },
 
   getCurrentUser: async (): Promise<User> => {
-    const response = await apiClient.get<User>('/auth/user/');
+    const response = await apiClient.get<User>('/api/auth/user/');
     return response.data;
   },
 
   logout: async (): Promise<void> => {
-    await apiClient.post('/auth/logout/');
+    await apiClient.post('/api/auth/logout/');
   },
 };

@@ -15,22 +15,22 @@ export interface ClanCreateData {
 
 export const socialAPI = {
   getFriends: async (): Promise<Friend[]> => {
-    const response = await apiClient.get<Friend[]>('/friends/');
+    const response = await apiClient.get<Friend[]>('/api/friends/');
     return response.data;
   },
 
   searchUsers: async (query: string): Promise<User[]> => {
-    const response = await apiClient.get<User[]>(`/users/?search=${encodeURIComponent(query)}`);
+    const response = await apiClient.get<User[]>(`/api/users/?search=${encodeURIComponent(query)}`);
     return response.data;
   },
 
   addFriend: async (userId: number): Promise<void> => {
-    await apiClient.post(`/friends/`, { user_id: userId });
+    await apiClient.post(`/api/friends/`, { user_id: userId });
   },
 
   getClan: async (): Promise<Clan | null> => {
     try {
-      const response = await apiClient.get<Clan>('/clan/');
+      const response = await apiClient.get<Clan>('/api/clan/');
       return response.data;
     } catch (error) {
       return null;
@@ -38,26 +38,26 @@ export const socialAPI = {
   },
 
   createClan: async (data: ClanCreateData): Promise<Clan> => {
-    const response = await apiClient.post<Clan>('/clans/clans/', data);
+    const response = await apiClient.post<Clan>('/api/clans/clans/', data);
     return response.data;
   },
 
   joinClan: async (clanId: number): Promise<void> => {
-    await apiClient.post('/clans/members/', { clan: clanId });
+    await apiClient.post('/api/clans/members/', { clan: clanId });
   },
 
   searchClans: async (query: string): Promise<Clan[]> => {
-    const response = await apiClient.get<Clan[]>(`/clans/clans/?search=${encodeURIComponent(query)}`);
+    const response = await apiClient.get<Clan[]>(`/api/clans/clans/?search=${encodeURIComponent(query)}`);
     return response.data;
   },
 
   getActivities: async (): Promise<Activity[]> => {
-    const response = await apiClient.get<Activity[]>('/activities/');
+    const response = await apiClient.get<Activity[]>('/api/activities/');
     return response.data;
   },
 
   getLeaderboard: async (): Promise<any[]> => {
-    const response = await apiClient.get<any[]>('/leaderboard/');
+    const response = await apiClient.get<any[]>('/api/leaderboard/');
     return response.data;
   },
 };

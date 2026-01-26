@@ -20,12 +20,20 @@ class ClanMember(models.Model):
         unique_together = ('clan', 'user')
 
 class ClanQuest(models.Model):
+    DIFFICULTY_CHOICES = [
+        ('epic', 'Epic'),
+        ('legendary', 'Legendary'),
+    ]
     clan = models.ForeignKey(Clan, on_delete=models.CASCADE, related_name='quests')
     title = models.CharField(max_length=150)
     description = models.TextField(blank=True)
-    points = models.PositiveIntegerField(default=20)
-    due_date = models.DateTimeField(null=True, blank=True)
+    difficulty = models.CharField(max_length=20, choices=DIFFICULTY_CHOICES, default='epic')
+    xp_reward = models.PositiveIntegerField(default=20)
+    required_progress = models.PositiveIntegerField(default=100)
+    total_progress = models.PositiveIntegerField(default=0)
     completed = models.BooleanField(default=False)
+    expires_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.title} (clan {self.clan.name})'

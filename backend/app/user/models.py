@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.conf import settings
 
 class User(AbstractUser):
     bio = models.TextField(blank=True)
@@ -7,10 +8,15 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-from django.db import models
 
-class SampleModel(models.Model):
-    name = models.CharField(max_length=100)
+class Friendship(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='friendships')
+    friend = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='friend_of')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'friend')
+        ordering = ['-created_at']
 
     def __str__(self):
-        return self.name
+        return f'{self.user.username} -> {self.friend.username}'
