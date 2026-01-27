@@ -50,6 +50,11 @@ export function HomePage() {
       if (activitiesRes.status === 'fulfilled') setActivities(activitiesRes.value || []);
     } catch (err) {
       console.error('Failed to load data:', err);
+      setQuests([]);
+      setClanQuests([]);
+      setFriends([]);
+      setClan(null);
+      setActivities([]);
     } finally {
       setLoading(false);
     }
