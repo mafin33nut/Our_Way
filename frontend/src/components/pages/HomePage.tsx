@@ -6,15 +6,14 @@ import { socialAPI } from '../../api/social';
 import { Quest, Friend, Clan, Activity, ClanQuest, BACKGROUND_OPTIONS } from '../../types';
 import { FocusSelector } from '../../components/quests/FocusSelector';
 import { QuestList } from '../../components/quests/QuestList';
-import { ClanQuestList } from '../../components/quests/ClanQuestList';
 import { CharacterProfile } from '../../components/profile/characterProfile';
 import { FriendsList } from '../../components/social/FriendsList';
 import { ActivityFeed } from '../../components/social/ActivityFeed';
 import { FriendSearchPanel } from '../../components/social/FriendSearchPanel';
 import { ClanCreationPanel } from '../../components/social/ClanCreationPanel';
+import { ClanPanel } from '../../components/social/ClanPanel';
 import { isToday } from '../../utils/time';
 import { Loader } from '../../components/ui/Loader';
-import { Crown } from 'lucide-react';
 
 export function HomePage() {
   const { user, refreshUser } = useAuth();
@@ -167,26 +166,12 @@ export function HomePage() {
               <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
 
               {settings.showClan && clan && (
-                <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-yellow-500/60 ring-offset-2 ring-offset-slate-900">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Crown className="w-5 h-5 text-purple-400" />
-                    <h2 className="text-purple-300">{clan.name}</h2>
-                  </div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between text-purple-200/80">
-                      <span>Уровень клана</span>
-                      <span className="text-purple-300">{clan.level || 1}</span>
-                    </div>
-                    <div className="flex justify-between text-purple-200/80">
-                      <span>Участники</span>
-                      <span className="text-purple-300">{clan.members?.length || 0}</span>
-                    </div>
-                    <div className="flex justify-between text-purple-200/80">
-                      <span>Общий опыт</span>
-                      <span className="text-purple-300">{(clan.total_xp || 0).toLocaleString()}</span>
-                    </div>
-                  </div>
-                </div>
+                <ClanPanel
+                  clan={clan}
+                  clanQuests={clanQuests}
+                  onContribute={handleClanQuestContribute}
+                  onClanUpdated={loadData}
+                />
               )}
               {settings.showClan && !clan && (
                 <ClanCreationPanel onClanCreated={loadData} />
@@ -210,11 +195,6 @@ export function HomePage() {
             </div>
           </div>
 
-          {clanQuests.length > 0 && (
-            <div className="mt-12">
-              <ClanQuestList quests={clanQuests} onContribute={handleClanQuestContribute} currentUsername={user.username} />
-            </div>
-          )}
         </div>
 
         <div className={`mt-12 pb-6 text-center ${isLight ? 'text-amber-600/60' : 'text-amber-200/40'}`}>
