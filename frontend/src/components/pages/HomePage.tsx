@@ -34,20 +34,20 @@ export function HomePage() {
     setLoading(true);
     try {
       const results = await Promise.allSettled([
-        questsAPI.getAll(),
-        clanQuestsAPI.getAll(),
-        socialAPI.getFriends(),
-        socialAPI.getClan(),
-        socialAPI.getActivities(),
+        questsAPI.getAll().catch(() => []),
+        clanQuestsAPI.getAll().catch(() => []),
+        socialAPI.getFriends().catch(() => []),
+        socialAPI.getClan().catch(() => null),
+        socialAPI.getActivities().catch(() => []),
       ]);
 
       const [questsRes, clanQuestsRes, friendsRes, clanRes, activitiesRes] = results;
 
-      if (questsRes.status === 'fulfilled') setQuests(questsRes.value);
-      if (clanQuestsRes.status === 'fulfilled') setClanQuests(clanQuestsRes.value);
-      if (friendsRes.status === 'fulfilled') setFriends(friendsRes.value);
-      if (clanRes.status === 'fulfilled') setClan(clanRes.value);
-      if (activitiesRes.status === 'fulfilled') setActivities(activitiesRes.value);
+      if (questsRes.status === 'fulfilled') setQuests(questsRes.value || []);
+      if (clanQuestsRes.status === 'fulfilled') setClanQuests(clanQuestsRes.value || []);
+      if (friendsRes.status === 'fulfilled') setFriends(friendsRes.value || []);
+      if (clanRes.status === 'fulfilled') setClan(clanRes.value || null);
+      if (activitiesRes.status === 'fulfilled') setActivities(activitiesRes.value || []);
     } catch (err) {
       console.error('Failed to load data:', err);
     } finally {
@@ -58,6 +58,13 @@ export function HomePage() {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 10000);
+    return () => clearTimeout(timeout);
+  }, []);
 
   const backgroundOption = BACKGROUND_OPTIONS.find((bg) => bg.id === settings.background);
   const backgroundUrl = backgroundOption?.url || '';
@@ -124,7 +131,11 @@ export function HomePage() {
 
   const questsCompletedToday = quests.filter((q) => q.completed && q.completed_at && isToday(q.completed_at)).length;
 
-  if (loading || !user) {
+  if (!user) {
+    return <Loader />;
+  }
+
+  if (loading) {
     return <Loader />;
   }
 
@@ -159,15 +170,15 @@ export function HomePage() {
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between text-purple-200/80">
                       <span>Уровень клана</span>
-                      <span className="text-purple-300">{clan.level}</span>
+                      <span className="text-purple-300">{clan.level || 1}</span>
                     </div>
                     <div className="flex justify-between text-purple-200/80">
                       <span>Участники</span>
-                      <span className="text-purple-300">{clan.members.length}</span>
+                      <span className="text-purple-300">{clan.members?.length || 0}</span>
                     </div>
                     <div className="flex justify-between text-purple-200/80">
                       <span>Общий опыт</span>
-                      <span className="text-purple-300">{clan.total_xp.toLocaleString()}</span>
+                      <span className="text-purple-300">{(clan.total_xp || 0).toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
