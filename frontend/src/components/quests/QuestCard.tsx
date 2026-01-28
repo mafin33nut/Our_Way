@@ -19,6 +19,7 @@ export function QuestCard({ quest, onComplete, onDelete, onTimerStop }: QuestCar
   const [processingTimer, setProcessingTimer] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const taskDurationSeconds = 30 * 60;
+  const minCompleteSeconds = 3 * 60;
 
   useEffect(() => {
     return () => {
@@ -95,6 +96,8 @@ export function QuestCard({ quest, onComplete, onDelete, onTimerStop }: QuestCar
     await startTimer();
   };
 
+  const canComplete = accepted && elapsed >= minCompleteSeconds && !quest.completed;
+
   return (
     <div className="group relative ...">
       <div className="flex items-center gap-2 mt-3">
@@ -112,8 +115,8 @@ export function QuestCard({ quest, onComplete, onDelete, onTimerStop }: QuestCar
           </>
         )}
         <Button
-          onClick={() => !quest.completed && onComplete(quest.id)}
-          disabled={quest.completed || !accepted}
+          onClick={() => canComplete && onComplete(quest.id)}
+          disabled={!canComplete}
           size="sm"
         >
           Complete

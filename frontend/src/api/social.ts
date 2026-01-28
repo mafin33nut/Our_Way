@@ -16,6 +16,7 @@ export interface ClanCreateData {
 interface ActivityLog {
   id: number;
   activity: number;
+  activity_title?: string;
   notes?: string;
   status: 'pending' | 'completed' | 'failed';
   created_at: string;
@@ -70,7 +71,10 @@ export const socialAPI = {
     return logs.map((log) => ({
       id: log.id,
       type: log.status === 'completed' ? 'quest_complete' : 'friend_achievement',
-      message: log.notes?.trim() || `Задача #${log.activity} ${log.status === 'completed' ? 'выполнена' : 'создана'}`,
+      message:
+        log.activity_title?.trim() ||
+        log.notes?.trim() ||
+        `Задача #${log.activity} ${log.status === 'completed' ? 'выполнена' : 'создана'}`,
       timestamp: log.completed_at || log.created_at,
       icon: log.status,
     }));

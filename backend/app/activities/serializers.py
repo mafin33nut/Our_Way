@@ -44,12 +44,14 @@ class ActivitySerializer(serializers.ModelSerializer):
 class ActivityLogSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     activity = serializers.PrimaryKeyRelatedField(queryset=Activity.objects.all())
+    activity_title = serializers.CharField(source='activity.title', read_only=True)
 
     class Meta:
         model = ActivityLog
         fields = [
             'id',
             'activity',
+            'activity_title',
             'user',
             'notes',
             'points_awarded',
