@@ -1,0 +1,64 @@
+[2026-01-23 01:55:13 +0300] [473107] [INFO] Starting gunicorn 23.0.0
+[2026-01-23 01:55:13 +0300] [473107] [INFO] Listening at: http://127.0.0.1:8000 (473107)
+[2026-01-23 01:55:13 +0300] [473107] [INFO] Using worker: sync
+[2026-01-23 01:55:13 +0300] [473108] [INFO] Booting worker with pid: 473108
+[2026-01-23 01:55:13 +0300] [473109] [INFO] Booting worker with pid: 473109
+[2026-01-23 01:55:13 +0300] [473110] [INFO] Booting worker with pid: 473110
+[2026-01-23 01:56:10 +0300] [473107] [INFO] Handling signal: int
+[2026-01-22 22:56:10 +0000] [473110] [INFO] Worker exiting (pid: 473110)
+[2026-01-22 22:56:10 +0000] [473108] [INFO] Worker exiting (pid: 473108)
+[2026-01-22 22:56:10 +0000] [473109] [INFO] Worker exiting (pid: 473109)
+[2026-01-23 01:56:10 +0300] [473107] [INFO] Shutting down: Master
+[2026-01-23 02:03:35 +0300] [477540] [INFO] Starting gunicorn 23.0.0
+[2026-01-23 02:03:35 +0300] [477540] [INFO] Listening at: http://127.0.0.1:8000 (477540)
+[2026-01-23 02:03:35 +0300] [477540] [INFO] Using worker: sync
+[2026-01-23 02:03:35 +0300] [477541] [INFO] Booting worker with pid: 477541
+[2026-01-23 02:03:35 +0300] [477542] [INFO] Booting worker with pid: 477542
+[2026-01-23 02:03:35 +0300] [477543] [INFO] Booting worker with pid: 477543
+[2026-01-23 02:04:03 +0300] [477540] [INFO] Handling signal: int
+[2026-01-22 23:04:04 +0000] [477543] [INFO] Worker exiting (pid: 477543)
+[2026-01-22 23:04:04 +0000] [477541] [INFO] Worker exiting (pid: 477541)
+[2026-01-22 23:04:04 +0000] [477542] [INFO] Worker exiting (pid: 477542)
+[2026-01-23 02:04:04 +0300] [477540] [INFO] Shutting down: Master
+Watching for file changes with StatReloader
+[2026-01-23 09:17:04 +0300] [20147] [INFO] Starting gunicorn 23.0.0
+[2026-01-23 09:17:04 +0300] [20147] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2026-01-23 09:17:04 +0300] [20147] [ERROR] connection to ('127.0.0.1', 8000) failed: [Errno 98] Address already in use
+[2026-01-23 09:17:05 +0300] [20147] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2026-01-23 09:17:05 +0300] [20147] [ERROR] connection to ('127.0.0.1', 8000) failed: [Errno 98] Address already in use
+[2026-01-23 09:17:06 +0300] [20147] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2026-01-23 09:17:06 +0300] [20147] [ERROR] connection to ('127.0.0.1', 8000) failed: [Errno 98] Address already in use
+[2026-01-23 09:17:07 +0300] [20147] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2026-01-23 09:17:07 +0300] [20147] [ERROR] connection to ('127.0.0.1', 8000) failed: [Errno 98] Address already in use
+[2026-01-23 09:17:08 +0300] [20147] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2026-01-23 09:17:08 +0300] [20147] [ERROR] connection to ('127.0.0.1', 8000) failed: [Errno 98] Address already in use
+[2026-01-23 09:17:09 +0300] [20147] [ERROR] Can't connect to ('127.0.0.1', 8000)
+
+Error: No application module specified.
+[23/Jan/2026 06:50:11] "GET /api/health/ HTTP/1.1" 200 12
+[23/Jan/2026 06:55:00] "GET /api/health/ HTTP/1.0" 200 12
+Unauthorized: /api/users/
+[23/Jan/2026 06:55:42] "HEAD /api/users/ HTTP/1.0" 401 0
+Unauthorized: /api/achievements/
+[23/Jan/2026 06:55:59] "HEAD /api/achievements/ HTTP/1.0" 401 0
+Unauthorized: /api/activities/
+[23/Jan/2026 06:56:21] "HEAD /api/activities/ HTTP/1.0" 401 0
+Not Found: /
+[23/Jan/2026 07:40:16] "HEAD / HTTP/1.1" 404 0
+Not Found: /favicon.ico
+[23/Jan/2026 07:57:53] "GET /favicon.ico HTTP/1.1" 404 2512
+Not Found: /admin
+[23/Jan/2026 07:58:03] "GET /admin HTTP/1.1" 404 2494
+Not Found: /admin
+[23/Jan/2026 12:31:22] "GET /admin HTTP/1.1" 404 2494
+[23/Jan/2026 13:52:14] "GET /api/health/ HTTP/1.1" 200 12
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 23, 2026 - 06:16:16
+Django version 6.0.1, using settings 'config.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/6.0/howto/deployment/

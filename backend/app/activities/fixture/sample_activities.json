@@ -1,0 +1,1 @@
+[ { "model": "activities.activitycategory", "pk": 1, "fields": { "name": "Health", "slug": "health", "description": "Physical and mental health tasks" } }, { "model": "activities.activity", "pk": 1, "fields": { "title": "Morning Jog", "description": "Run 30 minutes", "owner": 1, "category": 1, "points": 20, "difficulty": 1, "active": true } } ]
