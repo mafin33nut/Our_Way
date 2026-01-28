@@ -87,7 +87,8 @@ export interface Clan {
 export interface Activity {
   id: number;
   type: 'quest_complete' | 'level_up' | 'friend_achievement' | 'clan_event';
-  message: string;
+  title?: string;
+  message?: string;
   timestamp: string;
   icon: string;
 }

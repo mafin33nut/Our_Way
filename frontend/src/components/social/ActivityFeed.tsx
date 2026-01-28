@@ -35,7 +35,12 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
             >
               <IconComponent className={`w-4 h-4 ${color} flex-shrink-0 mt-0.5`} />
               <div className="flex-1 min-w-0">
-                <p className="text-purple-200 text-sm">{activity.message}</p>
+                <p className="text-purple-200 text-sm">
+                  {activity.title || activity.message}
+                </p>
+                {activity.message && activity.message !== activity.title && (
+                  <p className="text-purple-200/60 text-xs mt-1">{activity.message}</p>
+                )}
                 <p className="text-purple-200/40 text-xs mt-1">{formatTime(activity.timestamp)}</p>
               </div>
             </div>

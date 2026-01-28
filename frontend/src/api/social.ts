@@ -71,10 +71,8 @@ export const socialAPI = {
     return logs.map((log) => ({
       id: log.id,
       type: log.status === 'completed' ? 'quest_complete' : 'friend_achievement',
-      message:
-        log.activity_title?.trim() ||
-        log.notes?.trim() ||
-        `Задача #${log.activity} ${log.status === 'completed' ? 'выполнена' : 'создана'}`,
+      title: log.activity_title?.trim() || `Задача #${log.activity}`,
+      message: log.notes?.trim(),
       timestamp: log.completed_at || log.created_at,
       icon: log.status,
     }));
