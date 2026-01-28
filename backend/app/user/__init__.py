@@ -1,4 +1,0 @@
-"""
-User module package.
-"""
-
