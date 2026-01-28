@@ -6,6 +6,9 @@ import { Header } from './components/layout/Header';
 import { LoginPage } from './components/pages/LoginPage';
 import { HomePage } from './components/pages/HomePage';
 import { SettingsPage } from './components/pages/SettingsPage';
+import { ClansPage } from './components/pages/ClansPage';
+import { LeadersPage } from './components/pages/LeadersPage';
+import { AchievementsPage } from './components/pages/AchievementsPage';
 function App() {
   return (
     <AuthProvider>
@@ -31,6 +34,39 @@ function App() {
                   <>
                     <Header />
                     <SettingsPage />
+                  </>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/clans"
+              element={
+                <PrivateRoute>
+                  <>
+                    <Header />
+                    <ClansPage />
+                  </>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/leaders"
+              element={
+                <PrivateRoute>
+                  <>
+                    <Header />
+                    <LeadersPage />
+                  </>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/achievements"
+              element={
+                <PrivateRoute>
+                  <>
+                    <Header />
+                    <AchievementsPage />
                   </>
                 </PrivateRoute>
               }

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { LogOut, User, Settings } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
@@ -52,6 +52,32 @@ export function Header() {
             </div>
           )}
         </div>
+        {user && (
+          <div className="mt-4 rounded-lg border border-purple-900/60 bg-purple-950/80 px-3 py-2">
+            <div className="flex flex-wrap gap-2">
+              {[
+                { to: '/', label: 'Главная' },
+                { to: '/clans', label: 'Кланы' },
+                { to: '/leaders', label: 'Лидеры' },
+                { to: '/achievements', label: 'Достижения' },
+              ].map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  className={({ isActive }) =>
+                    `px-4 py-2 rounded-md text-sm transition-colors ${
+                      isActive
+                        ? 'bg-purple-700/70 text-white'
+                        : 'text-purple-200 hover:bg-purple-800/60 hover:text-white'
+                    }`
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
