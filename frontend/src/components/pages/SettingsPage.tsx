@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Settings, Volume2, VolumeX, Sun, Moon, Eye, EyeOff, Image, ArrowLeft } from 'lucide-react';
+import { Settings, Volume2, VolumeX, Sun, Moon, Eye, EyeOff, Image as ImageIcon, ArrowLeft } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useCustomization } from '../../hooks/useCustomization';
 import { BACKGROUND_OPTIONS } from '../../types';
@@ -25,7 +25,7 @@ export function SettingsPage() {
 
   useEffect(() => {
     if (hasBackground && backgroundUrl) {
-      const img = new Image();
+      const img = new window.Image();
       img.onload = () => setBgImageLoaded(true);
       img.onerror = () => setBgImageLoaded(false);
       img.src = backgroundUrl;
@@ -133,7 +133,7 @@ export function SettingsPage() {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-slate-800">
-                          <Image className="w-8 h-8 text-purple-400/40" />
+                          <ImageIcon className="w-8 h-8 text-purple-400/40" />
                         </div>
                       )}
                       <div className="absolute bottom-0 left-0 right-0 p-2 text-xs text-center bg-black/70 text-white">
