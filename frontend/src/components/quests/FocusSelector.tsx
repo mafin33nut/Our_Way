@@ -65,7 +65,7 @@ export function FocusSelector({ currentFocus, onSelectFocus, loading }: FocusSel
     }
   };
   return (
-    <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-xl backdrop-blur-sm ring-2 ring-orange-400/60 ring-offset-2 ring-offset-slate-900">
+    <div className="panel-base panel-orange p-6">
       <div className="flex items-center gap-2 mb-4">
         <Sparkles className="w-5 h-5 text-purple-400" />
         <h2 className="text-purple-300">

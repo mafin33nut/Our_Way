@@ -30,3 +30,37 @@ h3 {
   font-weight: 600;
   line-height: 1.75rem;
 }
+
+@layer components {
+  .panel-base {
+    @apply rounded-xl border-2 bg-slate-900/80 shadow-xl backdrop-blur-sm;
+  }
+
+  .panel-purple {
+    @apply border-purple-600/60;
+  }
+
+  .panel-orange {
+    @apply border-orange-500/60;
+  }
+
+  .panel-teal {
+    @apply border-teal-500/60;
+  }
+
+  .panel-rose {
+    @apply border-rose-500/60;
+  }
+
+  .panel-sky {
+    @apply border-sky-500/60;
+  }
+
+  .panel-lime {
+    @apply border-lime-500/60;
+  }
+
+  .panel-red {
+    @apply border-red-500/60;
+  }
+}

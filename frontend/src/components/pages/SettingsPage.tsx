@@ -52,7 +52,7 @@ export function SettingsPage() {
       )}
       <div className="relative z-10">
         <div className="max-w-4xl mx-auto px-6 py-8">
-          <div className="bg-gradient-to-br from-slate-800/95 to-slate-900/95 rounded-lg border-2 border-purple-500/50 shadow-2xl backdrop-blur-sm">
+          <div className="panel-base panel-purple">
             <div className="p-6 border-b border-purple-600/30">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
