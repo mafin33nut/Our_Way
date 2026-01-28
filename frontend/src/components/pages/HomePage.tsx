@@ -7,6 +7,7 @@ import { Quest, Friend, Activity, BACKGROUND_OPTIONS } from '../../types';
 import { FocusSelector } from '../../components/quests/FocusSelector';
 import { QuestList } from '../../components/quests/QuestList';
 import { TaskHistoryPanel } from '../../components/quests/TaskHistoryPanel';
+import { TaskSchedulePanel } from '../../components/quests/TaskSchedulePanel';
 import { CharacterProfile } from '../../components/profile/characterProfile';
 import { FriendsList } from '../../components/social/FriendsList';
 import { ActivityFeed } from '../../components/social/ActivityFeed';
@@ -160,8 +161,18 @@ export function HomePage() {
                   <FriendSearchPanel onFriendAdded={loadData} />
                 )
               )}
-              {settings.showActivities && activities.length > 0 && <ActivityFeed activities={activities} />}
+            </div>
+          </div>
+
+          <div className="mt-16 grid grid-cols-1 xl:grid-cols-12 gap-16">
+            <div className="xl:col-span-4">
+              {settings.showActivities && <ActivityFeed activities={activities} />}
+            </div>
+            <div className="xl:col-span-4">
               <TaskHistoryPanel quests={quests} />
+            </div>
+            <div className="xl:col-span-4">
+              <TaskSchedulePanel quests={quests} />
             </div>
           </div>
 
