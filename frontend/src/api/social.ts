@@ -72,7 +72,7 @@ export const socialAPI = {
       id: log.id,
       type: log.status === 'completed' ? 'quest_complete' : 'friend_achievement',
       title: log.activity_title?.trim() || `Задача #${log.activity}`,
-      message: log.notes?.trim(),
+      message: log.notes?.trim() || '',
       timestamp: log.completed_at || log.created_at,
       icon: log.status,
     }));
