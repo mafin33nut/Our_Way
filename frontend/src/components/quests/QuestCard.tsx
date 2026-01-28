@@ -17,6 +17,8 @@ export function QuestCard({ quest, onComplete, onDelete, onTimerStop }: QuestCar
   const timerIntervalRef = useRef<number | null>(null);
   const [serverTimerId, setServerTimerId] = useState<number | null>(null);
   const [processingTimer, setProcessingTimer] = useState(false);
+  const [accepted, setAccepted] = useState(false);
+  const taskDurationSeconds = 30 * 60;
 
   useEffect(() => {
     return () => {
@@ -30,7 +32,7 @@ export function QuestCard({ quest, onComplete, onDelete, onTimerStop }: QuestCar
   const startTimer = async () => {
     try {
       setProcessingTimer(true);
-      const timer = await timersAPI.startTimer(quest.id);
+      const timer = await timersAPI.startTimer();
       setServerTimerId(timer.id);
       setTimerRunning(true);
       setElapsed(0);
@@ -76,19 +78,44 @@ export function QuestCard({ quest, onComplete, onDelete, onTimerStop }: QuestCar
     }
   };
 
+  useEffect(() => {
+    if (!timerRunning) {
+      return;
+    }
+    if (elapsed >= taskDurationSeconds) {
+      stopTimer();
+    }
+  }, [elapsed, taskDurationSeconds, timerRunning]);
+
+  const handleAcceptTask = async () => {
+    if (accepted) {
+      return;
+    }
+    setAccepted(true);
+    await startTimer();
+  };
+
   return (
     <div className="group relative ...">
       <div className="flex items-center gap-2 mt-3">
-        {!timerRunning ? (
-          <Button onClick={startTimer} size="sm" variant="secondary" disabled={processingTimer}>
-            Start
+        {!accepted ? (
+          <Button onClick={handleAcceptTask} size="sm" variant="secondary" disabled={processingTimer}>
+            Accept task
           </Button>
         ) : (
-          <Button onClick={stopTimer} size="sm" variant="primary" disabled={processingTimer}>
-            Stop ({Math.floor(elapsed / 60)}:{(elapsed % 60).toString().padStart(2, '0')})
-          </Button>
+          <>
+            <Button onClick={stopTimer} size="sm" variant="primary" disabled={processingTimer || !timerRunning}>
+              Timer ({Math.max(taskDurationSeconds - elapsed, 0) >= 60
+                ? `${Math.floor(Math.max(taskDurationSeconds - elapsed, 0) / 60)}:${(Math.max(taskDurationSeconds - elapsed, 0) % 60).toString().padStart(2, '0')}`
+                : `0:${Math.max(taskDurationSeconds - elapsed, 0).toString().padStart(2, '0')}`})
+            </Button>
+          </>
         )}
-        <Button onClick={() => !quest.completed && onComplete(quest.id)} disabled={quest.completed} size="sm">
+        <Button
+          onClick={() => !quest.completed && onComplete(quest.id)}
+          disabled={quest.completed || !accepted}
+          size="sm"
+        >
           Complete
         </Button>
         {quest.completed && (
