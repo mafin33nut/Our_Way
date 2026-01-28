@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Settings, Volume2, VolumeX, Sun, Moon, Eye, EyeOff, Image, ArrowLeft } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useCustomization } from '../../hooks/useCustomization';
@@ -12,9 +13,43 @@ export function SettingsPage() {
   const { settings, updateSettings, playVictorySound } = useCustomization();
   const isLight = isTheme(settings.theme) && settings.theme === 'light';
   const isDark = isTheme(settings.theme) && settings.theme === 'dark';
+  const [bgImageLoaded, setBgImageLoaded] = useState(false);
+
+  const backgroundOption = BACKGROUND_OPTIONS.find((bg) => bg.id === settings.background);
+  const backgroundUrl = backgroundOption?.url || '';
+  const hasBackground =
+    settings.background &&
+    settings.background !== 'none' &&
+    backgroundUrl &&
+    backgroundUrl.trim() !== '';
+
+  useEffect(() => {
+    if (hasBackground && backgroundUrl) {
+      const img = new Image();
+      img.onload = () => setBgImageLoaded(true);
+      img.onerror = () => setBgImageLoaded(false);
+      img.src = backgroundUrl;
+    } else {
+      setBgImageLoaded(false);
+    }
+  }, [hasBackground, backgroundUrl]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 relative">
+    <div className={`min-h-screen relative ${hasBackground ? '' : 'bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900'}`}>
+      {hasBackground && bgImageLoaded && (
+        <div
+          key={`bg-${settings.background}-${backgroundUrl}`}
+          className="fixed inset-0 z-0"
+          style={{
+            backgroundImage: `url(${backgroundUrl})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+          }}
+        >
+          <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" />
+        </div>
+      )}
       <div className="relative z-10">
         <div className="max-w-4xl mx-auto px-6 py-8">
           <div className="bg-gradient-to-br from-slate-800/95 to-slate-900/95 rounded-lg border-2 border-purple-500/50 shadow-2xl backdrop-blur-sm">
