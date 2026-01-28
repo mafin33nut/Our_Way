@@ -1,28 +1,23 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
-import { questsAPI, clanQuestsAPI } from '../../api/quests';
+import { questsAPI } from '../../api/quests';
 import { socialAPI } from '../../api/social';
-import { Quest, Friend, Clan, Activity, ClanQuest, BACKGROUND_OPTIONS } from '../../types';
+import { Quest, Friend, Activity, BACKGROUND_OPTIONS } from '../../types';
 import { FocusSelector } from '../../components/quests/FocusSelector';
 import { QuestList } from '../../components/quests/QuestList';
-import { ClanQuestList } from '../../components/quests/ClanQuestList';
 import { CharacterProfile } from '../../components/profile/characterProfile';
 import { FriendsList } from '../../components/social/FriendsList';
 import { ActivityFeed } from '../../components/social/ActivityFeed';
 import { FriendSearchPanel } from '../../components/social/FriendSearchPanel';
-import { ClanCreationPanel } from '../../components/social/ClanCreationPanel';
 import { isToday } from '../../utils/time';
 import { Loader } from '../../components/ui/Loader';
-import { Crown } from 'lucide-react';
 
 export function HomePage() {
   const { user, refreshUser } = useAuth();
   const { settings, playVictorySound } = useCustomization();
   const [quests, setQuests] = useState<Quest[]>([]);
-  const [clanQuests, setClanQuests] = useState<ClanQuest[]>([]);
   const [friends, setFriends] = useState<Friend[]>([]);
-  const [clan, setClan] = useState<Clan | null>(null);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatingQuests, setGeneratingQuests] = useState(false);
@@ -35,25 +30,19 @@ export function HomePage() {
     try {
       const results = await Promise.allSettled([
         questsAPI.getAll().catch(() => []),
-        clanQuestsAPI.getAll().catch(() => []),
         socialAPI.getFriends().catch(() => []),
-        socialAPI.getClan().catch(() => null),
         socialAPI.getActivities().catch(() => []),
       ]);
 
-      const [questsRes, clanQuestsRes, friendsRes, clanRes, activitiesRes] = results;
+      const [questsRes, friendsRes, activitiesRes] = results;
 
       if (questsRes.status === 'fulfilled') setQuests(questsRes.value || []);
-      if (clanQuestsRes.status === 'fulfilled') setClanQuests(clanQuestsRes.value || []);
       if (friendsRes.status === 'fulfilled') setFriends(friendsRes.value || []);
-      if (clanRes.status === 'fulfilled') setClan(clanRes.value || null);
       if (activitiesRes.status === 'fulfilled') setActivities(activitiesRes.value || []);
     } catch (err) {
       console.error('Failed to load data:', err);
       setQuests([]);
-      setClanQuests([]);
       setFriends([]);
-      setClan(null);
       setActivities([]);
     } finally {
       setLoading(false);
@@ -119,16 +108,6 @@ export function HomePage() {
     }
   };
 
-  const handleClanQuestContribute = async (id: number, contribution: number) => {
-    try {
-      const updatedClanQuest = await clanQuestsAPI.contribute(id, contribution);
-      setClanQuests((prev) => prev.map((cq) => (cq.id === id ? updatedClanQuest : cq)));
-      await refreshUser();
-    } catch (error) {
-      console.error('Failed to contribute to clan quest:', error);
-    }
-  };
-
   const handleTimerStop = async () => {
     await loadData();
     await refreshUser();
@@ -165,32 +144,6 @@ export function HomePage() {
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-12">
             <div className="xl:col-span-3 space-y-12">
               <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
-
-              {settings.showClan && clan && (
-                <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-yellow-500/60 ring-offset-2 ring-offset-slate-900">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Crown className="w-5 h-5 text-purple-400" />
-                    <h2 className="text-purple-300">{clan.name}</h2>
-                  </div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between text-purple-200/80">
-                      <span>Уровень клана</span>
-                      <span className="text-purple-300">{clan.level || 1}</span>
-                    </div>
-                    <div className="flex justify-between text-purple-200/80">
-                      <span>Участники</span>
-                      <span className="text-purple-300">{clan.members?.length || 0}</span>
-                    </div>
-                    <div className="flex justify-between text-purple-200/80">
-                      <span>Общий опыт</span>
-                      <span className="text-purple-300">{(clan.total_xp || 0).toLocaleString()}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {settings.showClan && !clan && (
-                <ClanCreationPanel onClanCreated={loadData} />
-              )}
             </div>
 
             <div className="xl:col-span-6 space-y-12">
@@ -210,11 +163,6 @@ export function HomePage() {
             </div>
           </div>
 
-          {clanQuests.length > 0 && (
-            <div className="mt-12">
-              <ClanQuestList quests={clanQuests} onContribute={handleClanQuestContribute} currentUsername={user.username} />
-            </div>
-          )}
         </div>
 
         <div className={`mt-12 pb-6 text-center ${isLight ? 'text-amber-600/60' : 'text-amber-200/40'}`}>
