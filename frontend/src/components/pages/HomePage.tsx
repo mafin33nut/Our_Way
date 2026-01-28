@@ -141,7 +141,7 @@ export function HomePage() {
       )}
       <div className="relative z-10">
         <div className="max-w-[1920px] mx-auto px-6 py-8">
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-12">
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-16">
             <div className="xl:col-span-3 space-y-12">
               <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
             </div>
