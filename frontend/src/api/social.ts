@@ -1,4 +1,4 @@
-import { apiClient } from './client';
+import { apiClient, unwrapListResponse } from './client';
 import { Friend, Clan, Activity } from '../types';
 
 export interface User {
@@ -24,13 +24,15 @@ interface ActivityLog {
 
 export const socialAPI = {
   getFriends: async (): Promise<Friend[]> => {
-    const response = await apiClient.get<Friend[]>('/api/friends/');
-    return response.data;
+    const response = await apiClient.get<Friend[] | { results: Friend[] }>('/api/friends/');
+    return unwrapListResponse(response.data);
   },
 
   searchUsers: async (query: string): Promise<User[]> => {
-    const response = await apiClient.get<User[]>(`/api/users/?search=${encodeURIComponent(query)}`);
-    return response.data;
+    const response = await apiClient.get<User[] | { results: User[] }>(
+      `/api/users/?search=${encodeURIComponent(query)}`
+    );
+    return unwrapListResponse(response.data);
   },
 
   addFriend: async (userId: number): Promise<void> => {
@@ -56,13 +58,15 @@ export const socialAPI = {
   },
 
   searchClans: async (query: string): Promise<Clan[]> => {
-    const response = await apiClient.get<Clan[]>(`/api/clans/clans/?search=${encodeURIComponent(query)}`);
-    return response.data;
+    const response = await apiClient.get<Clan[] | { results: Clan[] }>(
+      `/api/clans/clans/?search=${encodeURIComponent(query)}`
+    );
+    return unwrapListResponse(response.data);
   },
 
   getActivities: async (): Promise<Activity[]> => {
     const response = await apiClient.get<ActivityLog[]>('/api/activities/logs/');
-    const logs = Array.isArray(response.data) ? response.data : [];
+    const logs = unwrapListResponse(response.data);
     return logs.map((log) => ({
       id: log.id,
       type: log.status === 'completed' ? 'quest_complete' : 'friend_achievement',
