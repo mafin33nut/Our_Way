@@ -1,3 +1,4 @@
+import random
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -250,9 +251,11 @@ class QuestViewSet(viewsets.ModelViewSet):
         }
 
         items = mapping.get(focus, [('Задание по фокусу', 'Описание', 'easy', 10)])
+        selection_size = min(4, len(items))
+        items_to_create = random.sample(items, k=selection_size) if items else []
         created = []
 
-        for title, desc, diff, xp in items:
+        for title, desc, diff, xp in items_to_create:
             q = Quest.objects.create(
                 title=title,
                 description=desc,
