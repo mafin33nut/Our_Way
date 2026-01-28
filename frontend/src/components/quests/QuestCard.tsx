@@ -108,9 +108,9 @@ export function QuestCard({ quest, onComplete, onDelete, onTimerStop }: QuestCar
         ) : (
           <>
             <Button onClick={stopTimer} size="sm" variant="primary" disabled={processingTimer || !timerRunning}>
-              Timer ({Math.max(taskDurationSeconds - elapsed, 0) >= 60
+              {quest.title} · {Math.max(taskDurationSeconds - elapsed, 0) >= 60
                 ? `${Math.floor(Math.max(taskDurationSeconds - elapsed, 0) / 60)}:${(Math.max(taskDurationSeconds - elapsed, 0) % 60).toString().padStart(2, '0')}`
-                : `0:${Math.max(taskDurationSeconds - elapsed, 0).toString().padStart(2, '0')}`})
+                : `0:${Math.max(taskDurationSeconds - elapsed, 0).toString().padStart(2, '0')}`}
             </Button>
           </>
         )}
