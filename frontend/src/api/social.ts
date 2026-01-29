@@ -1,12 +1,5 @@
 import { apiClient, unwrapListResponse } from './client';
-import { Friend, Clan, Activity } from '../types';
-
-export interface User {
-  id: number;
-  username: string;
-  level: number;
-  email?: string;
-}
+import { Friend, Clan, Activity, User } from '../types';
 
 export interface ClanCreateData {
   name: string;
@@ -79,7 +72,8 @@ export const socialAPI = {
   },
 
   getLeaderboard: async (): Promise<any[]> => {
-    const response = await apiClient.get<any[]>('/api/leaderboard/');
-    return response.data;
+    const response = await apiClient.get<User[] | { results: User[] }>('/api/users/?page_size=1000');
+    const users = unwrapListResponse(response.data);
+    return users.sort((a, b) => (b.level ?? 0) - (a.level ?? 0)).slice(0, 10);
   },
 };

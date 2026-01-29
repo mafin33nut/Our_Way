@@ -142,18 +142,18 @@ export function HomePage() {
         </div>
       )}
       <div className="relative z-10">
-        <div className="max-w-[1920px] mx-auto px-6 py-8">
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-16">
-            <div className="xl:col-span-3 space-y-12">
+        <div className="max-w-[1920px] mx-auto px-6 py-10 pb-20">
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-20">
+            <div className="xl:col-span-4 space-y-16">
               <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
             </div>
 
-            <div className="xl:col-span-6 space-y-12">
+            <div className="xl:col-span-4 space-y-16">
               <FocusSelector currentFocus={user.current_focus || undefined} onSelectFocus={handleSelectFocus} loading={generatingQuests} />
               <QuestList quests={quests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} onTimerStop={handleTimerStop} />
             </div>
 
-            <div className="xl:col-span-3 space-y-12">
+            <div className="xl:col-span-4 space-y-16">
               {settings.showFriends && (
                 friends.length > 0 ? (
                   <FriendsList friends={friends} />
@@ -164,7 +164,7 @@ export function HomePage() {
             </div>
           </div>
 
-          <div className="mt-16 grid grid-cols-1 xl:grid-cols-12 gap-16">
+          <div className="mt-20 grid grid-cols-1 xl:grid-cols-12 gap-20">
             <div className="xl:col-span-4">
               {settings.showActivities && <ActivityFeed activities={activities} />}
             </div>

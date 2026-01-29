@@ -102,7 +102,7 @@ export function QuestCard({ quest, onComplete, onDelete, onTimerStop }: QuestCar
     <div className="group relative ...">
       <div className="flex items-center gap-2 mt-3">
         {!accepted ? (
-          <Button onClick={handleAcceptTask} size="sm" variant="secondary" disabled={processingTimer}>
+          <Button onClick={handleAcceptTask} size="sm" variant="orange" disabled={processingTimer}>
             Accept task
           </Button>
         ) : (
