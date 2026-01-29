@@ -4,6 +4,7 @@ export interface User {
   email: string;
   avatar?: string | null;
   bio?: string;
+  has_seen_welcome?: boolean;
   level: number;
   xp: number;
   xp_to_next_level: number;

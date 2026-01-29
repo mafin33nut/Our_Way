@@ -17,7 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id', 'username', 'email', 'first_name', 'last_name',
-            'bio', 'avatar', 'level', 'xp', 'xp_to_next_level',
+            'bio', 'avatar', 'has_seen_welcome', 'level', 'xp', 'xp_to_next_level',
             'total_quests_completed', 'current_focus',
             'password', 'password2',
         ]
