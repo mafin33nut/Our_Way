@@ -106,12 +106,12 @@ export const BACKGROUND_OPTIONS = [
   {
     id: 'kingdom',
     name: 'Королевство',
-    url: 'https://wallpaper.forfun.com/fetch/08/08fa3e53a5ab6d9fdc5edf4871130811.jpeg',
+    url: '/kingdom.jpg',
   },
   {
     id: 'adventure',
     name: 'Приключение',
-    url: 'https://t3.ftcdn.net/jpg/07/90/05/02/360_F_790050252_Rh1xxWcg7DxQp8uyrwyDf6VtQVaPMO9u.jpg',
+    url: '/adventure.jpg',
   },
   {
     id: 'none',
