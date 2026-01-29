@@ -13,7 +13,7 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
   const isLight = settings.theme === 'light';
   const xpPercentage = (user.xp / user.xp_to_next_level) * 100;
   return (
-    <div className="panel-base panel-teal p-6 h-full min-h-[520px] flex flex-col">
+    <div className="panel-base panel-teal p-6 min-h-[260px] flex flex-col">
       <div className="flex items-center gap-3 mb-6">
         {resolveMediaUrl(user.avatar) ? (
           <img
