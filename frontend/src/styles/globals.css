@@ -36,7 +36,7 @@ h3 {
 
 @layer components {
   .panel-caption {
-    @apply text-white/90 text-2xl tracking-wide mb-6;
+    @apply text-white/90 text-2xl tracking-wide mb-10;
     font-family: "Cinzel", "Segoe UI", serif;
     text-shadow: 0 2px 8px rgba(15, 23, 42, 0.9);
   }
