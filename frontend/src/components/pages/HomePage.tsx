@@ -126,19 +126,24 @@ export function HomePage() {
   }
 
   return (
-    <div className={`min-h-screen relative ${hasBackground ? '' : 'bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900'}`}>
+    <div
+      className={`min-h-screen relative bg-slate-950 ${
+        hasBackground ? '' : 'bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900'
+      }`}
+    >
       {hasBackground && (
         <div
           key={`bg-${settings.background}-${backgroundUrl}`}
           className="fixed inset-0 z-0"
           style={{
-            backgroundImage: `url(${backgroundUrl})`,
+            backgroundColor: 'rgb(2 6 23)',
+            backgroundImage: backgroundUrl ? `url(${backgroundUrl})` : undefined,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed',
           }}
         >
-          <div className={`absolute inset-0 ${bgImageLoaded ? 'bg-slate-900/15' : 'bg-slate-900/40'} backdrop-blur-sm`} />
+          <div className={`absolute inset-0 ${bgImageLoaded ? 'bg-slate-900/30' : 'bg-slate-900/70'} backdrop-blur-sm`} />
         </div>
       )}
       <div className="relative z-10">
