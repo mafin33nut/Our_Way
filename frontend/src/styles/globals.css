@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&display=swap');
 * {
   margin: 0;
   padding: 0;
@@ -100,5 +101,10 @@ h3 {
   .panel-red {
     @apply border-red-500/60;
     --panel-accent: rgba(248, 113, 113, 0.65);
+  }
+
+  .panel-caption {
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.08em;
   }
 }
