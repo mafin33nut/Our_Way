@@ -14,11 +14,11 @@ export function Button({
   const baseStyles = 'rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium';
   
   const variantStyles = {
-    primary: 'bg-gradient-to-r from-amber-600 to-amber-500 text-white hover:from-amber-700 hover:to-amber-600 shadow-lg hover:shadow-xl',
-    secondary: 'bg-slate-700 text-amber-100 hover:bg-slate-600 border-2 border-amber-600/30',
-    ghost: 'text-amber-300 hover:bg-slate-800/50',
-    orange: 'bg-orange-500 text-white hover:bg-orange-600 shadow-lg hover:shadow-xl',
-    darkOrange: 'bg-orange-700/80 text-amber-100 hover:bg-orange-700 shadow-md hover:shadow-lg',
+    primary: 'bg-amber-300 text-slate-900 hover:bg-amber-400 shadow-sm',
+    secondary: 'bg-slate-300 text-slate-900 hover:bg-slate-400 border border-slate-400/60',
+    ghost: 'text-slate-700 hover:bg-slate-200/60',
+    orange: 'bg-orange-300 text-slate-900 hover:bg-orange-400 shadow-sm',
+    darkOrange: 'bg-orange-300/80 text-slate-900 hover:bg-orange-400/80 shadow-sm',
   };
   const sizeStyles = {
     sm: 'px-3 py-1.5 text-sm',
