@@ -12,7 +12,7 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
   const isLight = settings.theme === 'light';
   const xpPercentage = (user.xp / user.xp_to_next_level) * 100;
   return (
-    <div className="panel-base panel-teal p-6">
+    <div className="panel-base panel-teal p-6 h-full min-h-[520px] flex flex-col">
       <div className="flex items-center gap-3 mb-6">
         {user.avatar ? (
           <img
@@ -56,7 +56,7 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
           />
         </div>
       </div>
-      <div className="space-y-3">
+      <div className="space-y-3 mt-auto">
         <div className="flex items-center justify-between p-3 rounded-lg border bg-purple-900/20 border-purple-600/30">
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-purple-400" />

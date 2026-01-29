@@ -12,6 +12,7 @@ import { CharacterProfile } from '../../components/profile/characterProfile';
 import { FriendsList } from '../../components/social/FriendsList';
 import { ActivityFeed } from '../../components/social/ActivityFeed';
 import { FriendSearchPanel } from '../../components/social/FriendSearchPanel';
+import { AllFriendsPanel } from '../../components/social/AllFriendsPanel';
 import { isToday } from '../../utils/time';
 import { Loader } from '../../components/ui/Loader';
 
@@ -148,19 +149,19 @@ export function HomePage() {
       )}
       <div className="relative z-10">
         <div className="max-w-[1920px] mx-auto px-6 py-10 pb-20">
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-20">
-            <div className="xl:col-span-4 space-y-16">
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-10">
+            <div className="xl:col-span-4 space-y-8">
               <div className="mt-6">
                 <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
               </div>
             </div>
 
-            <div className="xl:col-span-4 space-y-16">
+            <div className="xl:col-span-4 space-y-8">
               <FocusSelector currentFocus={user.current_focus || undefined} onSelectFocus={handleSelectFocus} loading={generatingQuests} />
               <QuestList quests={quests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} onTimerStop={handleTimerStop} />
             </div>
 
-            <div className="xl:col-span-4 space-y-16">
+            <div className="xl:col-span-4 space-y-8">
               {settings.showFriends && (
                 friends.length > 0 ? (
                   <FriendsList friends={friends} />
@@ -168,10 +169,15 @@ export function HomePage() {
                   <FriendSearchPanel onFriendAdded={loadData} />
                 )
               )}
+              {friends.length > 0 && (
+                <div className="mt-4">
+                  <AllFriendsPanel friends={friends} />
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="mt-20 grid grid-cols-1 xl:grid-cols-12 gap-20">
+          <div className="mt-12 grid grid-cols-1 xl:grid-cols-12 gap-10">
             <div className="xl:col-span-4">
               {settings.showActivities && <ActivityFeed activities={activities} />}
             </div>
