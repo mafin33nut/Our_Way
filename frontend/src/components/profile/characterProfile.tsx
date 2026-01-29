@@ -1,5 +1,7 @@
 import { User } from '../../types';
 import { Sparkles, Trophy, User as UserIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Button } from '../ui/Button';
 import { useCustomization } from '../../hooks/useCustomization';
 interface CharacterProfileProps {
   user: User;
@@ -34,6 +36,13 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
             {user.bio || 'Добавьте описание в профиле'}
           </p>
         </div>
+      </div>
+      <div className="mb-6">
+        <Link to="/achievements">
+          <Button variant="ghost" size="sm" className="w-full">
+            Мои достижения
+          </Button>
+        </Link>
       </div>
       <div className="mb-6">
         <div className="flex justify-between text-sm mb-2 text-purple-200/80">
