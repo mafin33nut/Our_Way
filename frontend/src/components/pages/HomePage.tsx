@@ -148,26 +148,26 @@ export function HomePage() {
         </div>
       )}
       <div className="relative z-10">
-        <div className="max-w-[1200px] mx-auto px-6 py-10 pb-20">
-          <div className="space-y-6">
-            <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
-
-            <FocusSelector currentFocus={user.current_focus || undefined} onSelectFocus={handleSelectFocus} loading={generatingQuests} />
-            <QuestList quests={quests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} onTimerStop={handleTimerStop} />
-
-            {settings.showFriends && (
-              friends.length > 0 ? (
-                <FriendsList friends={friends} />
-              ) : (
-                <FriendSearchPanel onFriendAdded={loadData} />
-              )
-            )}
-
-            {friends.length > 0 && <AllFriendsPanel friends={friends} />}
-
-            {settings.showActivities && <ActivityFeed activities={activities} />}
-            <TaskHistoryPanel quests={quests} />
-            <TaskSchedulePanel quests={quests} />
+        <div className="max-w-[1200px] ml-auto mr-24 px-6 py-12 pb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-8 space-y-6">
+              <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
+              <FocusSelector currentFocus={user.current_focus || undefined} onSelectFocus={handleSelectFocus} loading={generatingQuests} />
+              <QuestList quests={quests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} onTimerStop={handleTimerStop} />
+              {settings.showActivities && <ActivityFeed activities={activities} />}
+              <TaskHistoryPanel quests={quests} />
+              <TaskSchedulePanel quests={quests} />
+            </div>
+            <div className="lg:col-span-4 space-y-6">
+              {settings.showFriends && (
+                friends.length > 0 ? (
+                  <FriendsList friends={friends} />
+                ) : (
+                  <FriendSearchPanel onFriendAdded={loadData} />
+                )
+              )}
+              {friends.length > 0 && <AllFriendsPanel friends={friends} />}
+            </div>
           </div>
 
         </div>

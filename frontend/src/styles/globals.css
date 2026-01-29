@@ -39,6 +39,7 @@ h3 {
       inset 0 1px 0 rgba(255, 255, 255, 0.06),
       inset 0 0 30px rgba(15, 23, 42, 0.45);
     position: relative;
+    --panel-accent: rgba(148, 163, 184, 0.65);
   }
 
   .panel-base::before {
@@ -47,6 +48,11 @@ h3 {
     inset: 6px;
     border-radius: 0.75rem;
     border: 1px solid rgba(168, 85, 247, 0.15);
+    background:
+      linear-gradient(90deg, rgba(148, 163, 184, 0.6), rgba(71, 85, 105, 0.35)) top left/100% 8px no-repeat,
+      linear-gradient(90deg, rgba(148, 163, 184, 0.6), rgba(71, 85, 105, 0.35)) bottom left/100% 8px no-repeat,
+      radial-gradient(circle, rgba(226, 232, 240, 0.8) 0 2px, transparent 3px) 12px 12px/28px 28px repeat;
+    mix-blend-mode: screen;
     pointer-events: none;
   }
 
@@ -56,39 +62,46 @@ h3 {
     inset: -6px;
     border-radius: 1rem;
     background:
-      linear-gradient(135deg, rgba(148, 163, 184, 0.65), rgba(71, 85, 105, 0.4)) top left/18px 18px no-repeat,
-      linear-gradient(225deg, rgba(148, 163, 184, 0.65), rgba(71, 85, 105, 0.4)) top right/18px 18px no-repeat,
-      linear-gradient(45deg, rgba(148, 163, 184, 0.65), rgba(71, 85, 105, 0.4)) bottom left/18px 18px no-repeat,
-      linear-gradient(315deg, rgba(148, 163, 184, 0.65), rgba(71, 85, 105, 0.4)) bottom right/18px 18px no-repeat;
+      linear-gradient(135deg, rgba(148, 163, 184, 0.85), rgba(71, 85, 105, 0.45)) top left/18px 18px no-repeat,
+      linear-gradient(225deg, rgba(148, 163, 184, 0.85), rgba(71, 85, 105, 0.45)) top right/18px 18px no-repeat,
+      linear-gradient(45deg, rgba(148, 163, 184, 0.85), rgba(71, 85, 105, 0.45)) bottom left/18px 18px no-repeat,
+      linear-gradient(315deg, rgba(148, 163, 184, 0.85), rgba(71, 85, 105, 0.45)) bottom right/18px 18px no-repeat;
     opacity: 0.65;
     pointer-events: none;
   }
 
   .panel-purple {
     @apply border-purple-600/60;
+    --panel-accent: rgba(192, 132, 252, 0.65);
   }
 
   .panel-orange {
     @apply border-orange-500/60;
+    --panel-accent: rgba(251, 146, 60, 0.65);
   }
 
   .panel-teal {
     @apply border-teal-500/60;
+    --panel-accent: rgba(45, 212, 191, 0.65);
   }
 
   .panel-rose {
     @apply border-rose-500/60;
+    --panel-accent: rgba(251, 113, 133, 0.65);
   }
 
   .panel-sky {
     @apply border-sky-500/60;
+    --panel-accent: rgba(56, 189, 248, 0.65);
   }
 
   .panel-lime {
     @apply border-lime-500/60;
+    --panel-accent: rgba(163, 230, 53, 0.65);
   }
 
   .panel-red {
     @apply border-red-500/60;
+    --panel-accent: rgba(248, 113, 113, 0.65);
   }
 }
