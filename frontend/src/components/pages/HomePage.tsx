@@ -173,7 +173,13 @@ export function HomePage() {
                 <div className="text-white/60 text-sm text-center mb-32">
                   Список активных заданий, таймеры и выполнение.
                 </div>
-                <QuestList quests={quests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} onTimerStop={handleTimerStop} />
+                <QuestList
+                  quests={quests}
+                  onComplete={handleCompleteQuest}
+                  onDelete={handleDeleteQuest}
+                  onExpire={(id) => setQuests((prev) => prev.filter((q) => q.id !== id))}
+                  onTimerStop={handleTimerStop}
+                />
               </div>
 
               {settings.showActivities && (

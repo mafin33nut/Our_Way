@@ -24,7 +24,7 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
         <Bell className="w-5 h-5 text-purple-400" />
         <h2 className="text-purple-300">Последняя активность</h2>
       </div>
-      <div className="space-y-3">
+      <div className="space-y-6">
         {recentActivities.map((activity) => {
           const IconComponent = ACTIVITY_ICONS[activity.type] || TrendingUp;
           const color = ACTIVITY_COLORS[activity.type] || 'text-purple-400';

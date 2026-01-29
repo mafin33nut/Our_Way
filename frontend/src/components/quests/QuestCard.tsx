@@ -2,24 +2,32 @@ import { useState, useEffect, useRef } from 'react';
 import { Quest } from '../../types';
 import { CheckCircle2, Circle, X } from 'lucide-react';
 import { Button } from '../ui/Button';
-import { timersAPI } from '../../api/quests';
+import { questsAPI, timersAPI } from '../../api/quests';
 
 interface QuestCardProps {
   quest: Quest;
   onComplete: (id: number) => void;
   onDelete: (id: number) => void;
+  onExpire: (id: number) => void;
   onTimerStop?: () => Promise<void>;
 }
 
-export function QuestCard({ quest, onComplete, onDelete, onTimerStop }: QuestCardProps) {
+export function QuestCard({ quest, onComplete, onDelete, onExpire, onTimerStop }: QuestCardProps) {
   const [timerRunning, setTimerRunning] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const timerIntervalRef = useRef<number | null>(null);
   const [serverTimerId, setServerTimerId] = useState<number | null>(null);
   const [processingTimer, setProcessingTimer] = useState(false);
   const [accepted, setAccepted] = useState(false);
-  const taskDurationSeconds = 30 * 60;
+  const [expired, setExpired] = useState(false);
+  const taskDurationSeconds = (quest.duration_minutes ?? 60) * 60;
   const minCompleteSeconds = 3 * 60;
+
+  useEffect(() => {
+    if (quest.accepted_at) {
+      setAccepted(true);
+    }
+  }, [quest.accepted_at]);
 
   useEffect(() => {
     return () => {
@@ -85,21 +93,38 @@ export function QuestCard({ quest, onComplete, onDelete, onTimerStop }: QuestCar
     }
     if (elapsed >= taskDurationSeconds) {
       stopTimer();
+      if (!quest.completed && !expired) {
+        setExpired(true);
+        onExpire(quest.id);
+      }
     }
-  }, [elapsed, taskDurationSeconds, timerRunning]);
+  }, [elapsed, taskDurationSeconds, timerRunning, quest.completed, expired, onExpire, quest.id, stopTimer]);
 
   const handleAcceptTask = async () => {
     if (accepted) {
       return;
     }
-    setAccepted(true);
-    await startTimer();
+    try {
+      const updated = await questsAPI.accept(quest.id);
+      if (updated.accepted_at) {
+        setAccepted(true);
+      }
+      await startTimer();
+    } catch (err) {
+      console.error('Failed to accept quest', err);
+    }
   };
 
   const canComplete = accepted && elapsed >= minCompleteSeconds && !quest.completed;
 
   return (
     <div className="group relative ...">
+      <div className="flex items-start gap-2">
+        <div className="min-w-0">
+          <h3 className="text-white/90 text-sm font-semibold truncate">{quest.title}</h3>
+          {quest.description && <p className="text-xs text-white/50 mt-1">{quest.description}</p>}
+        </div>
+      </div>
       <div className="flex items-center gap-2 mt-3">
         {!accepted ? (
           <Button onClick={handleAcceptTask} size="sm" variant="softAmber" disabled={processingTimer}>

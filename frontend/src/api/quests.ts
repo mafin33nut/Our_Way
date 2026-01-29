@@ -24,6 +24,11 @@ export const questsAPI = {
     return response.data;
   },
 
+  accept: async (id: number): Promise<Quest> => {
+    const response = await apiClient.post<Quest>(`/api/activities/quests/${id}/accept/`);
+    return response.data;
+  },
+
   delete: async (id: number): Promise<void> => {
     await apiClient.delete(`/api/activities/quests/${id}/`);
   },

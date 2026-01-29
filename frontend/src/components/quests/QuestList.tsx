@@ -7,10 +7,11 @@ interface QuestListProps {
   quests: Quest[];
   onComplete: (id: number) => void | Promise<void>;
   onDelete: (id: number) => void | Promise<void>;
+  onExpire: (id: number) => void | Promise<void>;
   onTimerStop?: () => Promise<void>;
 }
 
-export function QuestList({ quests, onComplete, onDelete, onTimerStop }: QuestListProps) {
+export function QuestList({ quests, onComplete, onDelete, onExpire, onTimerStop }: QuestListProps) {
   const activeQuests = quests.filter(q => !q.completed);
   const completedQuests = quests.filter(q =>
     q.completed && q.completed_at && isToday(q.completed_at)
@@ -31,6 +32,7 @@ export function QuestList({ quests, onComplete, onDelete, onTimerStop }: QuestLi
                 quest={quest}
                 onComplete={onComplete}
                 onDelete={onDelete}
+                onExpire={onExpire}
                 onTimerStop={onTimerStop}
               />
             ))}
@@ -51,6 +53,7 @@ export function QuestList({ quests, onComplete, onDelete, onTimerStop }: QuestLi
                 quest={quest}
                 onComplete={onComplete}
                 onDelete={onDelete}
+                onExpire={onExpire}
                 onTimerStop={onTimerStop}
               />
             ))}

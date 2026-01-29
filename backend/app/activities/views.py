@@ -1,5 +1,7 @@
 import random
 from rest_framework import viewsets, permissions, status
+from django.db import models
+from datetime import timedelta
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -161,7 +163,9 @@ class QuestViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         # пользователи видят только свои задания
-        qs = Quest.objects.filter(user=self.request.user)
+        now = timezone.now()
+        qs = Quest.objects.filter(user=self.request.user, deleted_at__isnull=True)
+        qs = qs.filter(models.Q(expires_at__isnull=True) | models.Q(completed=True) | models.Q(expires_at__gt=now))
         return qs.order_by('-created_at')
 
     def perform_create(self, serializer):
@@ -175,104 +179,87 @@ class QuestViewSet(viewsets.ModelViewSet):
         """
         focus = request.data.get('focus')
         today = timezone.now().date()
-        today_count = Quest.objects.filter(
-            user=request.user,
-            created_at__date=today,
-        ).count()
-        remaining = max(8 - today_count, 0)
-
-        if remaining <= 0:
+        if Quest.objects.filter(user=request.user, created_at__date=today).exists():
             return Response(
-                {'detail': 'Дневной лимит генерации заданий достигнут (8).'},
+                {'detail': 'Новые задания можно генерировать только один раз в день.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
         mapping = {
             'social': [
-                ('Call a friend and arrange a meeting.', 'Reach out and agree on a time/place.', 'easy', 20),
-                ('Send 3 warm messages to acquaintances.', 'Write short supportive messages to 3 people.', 'easy', 20),
-                ('Go for a 30-minute walk with short conversations with 3 people.', 'Walk and have brief chats with 3 people.', 'medium', 30),
-                ('Write an introductory post to an online community and reply to 2 comments.', 'Post and engage in the thread.', 'medium', 25),
-                ('Plan a mini-meeting and invite participants.', 'Pick a topic and invite people.', 'medium', 25),
-                ('Organize a virtual game/quiz for 2-4 people.', 'Set rules and invite participants.', 'hard', 30),
-                ('Write a thank-you note to a colleague or mentor.', 'Be specific about what you appreciate.', 'easy', 15),
-                ('Attend a local event (meetup) and meet 2 people.', 'Introduce yourself to at least 2 people.', 'hard', 30),
-                ('Offer to help a neighbor or acquaintance with a small task.', 'Offer help and complete it.', 'easy', 20),
-                ('Make a list of people you have not spoken to in a while and message the first 3.', 'Send short catch-up messages.', 'medium', 25),
+                ('Видеозвонок с близким', 'Обсудите планы и эмоции (60 мин).', 'medium', 100, 60),
+                ('Мини-встреча для группы', 'Провести сессию для 4–6 человек (60 мин).', 'hard', 100, 60),
+                ('Персональные сообщения', '8 персональных сообщений с поддержкой (60 мин).', 'medium', 100, 60),
+                ('Офлайн-мероприятие', 'Посетить событие и установить 3 контакта (60 мин).', 'hard', 100, 60),
+                ('Совместный коворкинг', 'Организовать 1 час работы с чек-инами (60 мин).', 'medium', 100, 60),
+                ('Глубокая встреча', 'Развитие и план действий с ментором (90 мин).', 'hard', 150, 90),
+                ('Мини-воркшоп', 'Провести воркшоп по хобби (90 мин).', 'hard', 150, 90),
+                ('Нетворкинг-сессия', 'Собрать контакты и написать follow-up (90 мин).', 'hard', 150, 90),
             ],
             'work': [
-                ('Break down a project into steps and identify the first 3 tasks.', 'Write the first three steps clearly.', 'easy', 20),
-                ('30 minutes of deep work on one complex task.', 'Set a timer and focus without distractions.', 'medium', 30),
-                ('Update your resume/LinkedIn profile (add your latest achievement).', 'Add one clear accomplishment.', 'easy', 20),
-                ('Prepare a proposal for process improvement (problem-solution).', 'Describe the issue and your fix.', 'hard', 30),
-                ('Clear your inbox and create three email templates.', 'Archive and draft reusable responses.', 'medium', 25),
-                ('Conduct a quick productivity analysis: identify distractions and make three adjustments.', 'List distractions and adjustments.', 'medium', 25),
-                ('Prepare a brief weekly report: achievements and plans.', 'Summarize wins and next steps.', 'medium', 25),
-                ('Make a list of skills to develop and choose an online course for one of them.', 'Pick one course and note why.', 'easy', 20),
-                ('Conduct a 15-minute sync with a colleague on current tasks.', 'Agree on next actions.', 'easy', 20),
-                ('Set up automation for a routine task (macro, template, rule).', 'Create and test the automation.', 'hard', 30),
+                ('Крупный шаг в проекте', 'Реализовать и протестировать часть (60 мин).', 'hard', 100, 60),
+                ('Сессия продуктивности', 'Pomodoro 50/10, закрыть 3 задачи (60 мин).', 'medium', 100, 60),
+                ('Отчёт для руководства', 'Подготовить 1 страницу с метриками (60 мин).', 'medium', 100, 60),
+                ('Анализ процессов', 'Собрать узкие места и 3 улучшения (60 мин).', 'hard', 100, 60),
+                ('Обновить портфолио', 'Подготовить и задеплоить демо (60 мин).', 'medium', 100, 60),
+                ('Мелкий фичер + тесты', 'Разработка + рефакторинг + тесты (90 мин).', 'hard', 150, 90),
+                ('Встреча с протоколом', '45 мин встреча + 45 мин документ (90 мин).', 'hard', 150, 90),
+                ('Глубокое ревью', '3–5 PR с подробными комментариями (90 мин).', 'hard', 150, 90),
             ],
             'learning': [
-                ('Read an article/chapter and write down 10 key ideas.', 'Summarize the main points.', 'medium', 25),
-                ('Complete 10 exercises on the skill being studied.', 'Finish 10 practice items.', 'medium', 30),
-                ('Take a short summary with three quizzes.', 'Summarize and answer 3 questions.', 'medium', 25),
-                ('Watch a 25-30 minute lecture and write down five conclusions.', 'Note 5 conclusions.', 'medium', 25),
-                ('Prepare a 5-minute mini-presentation on the topic.', 'Create a short outline.', 'hard', 30),
-                ('Make a list of 10 words/concepts to memorize and review them.', 'Write and review the list.', 'easy', 20),
-                ('Conduct a mini-experiment or practical exercise on the topic.', 'Document the result.', 'hard', 30),
-                ('Find and read a review article on the topic and write down 5 references for further reading.', 'List 5 sources.', 'hard', 30),
-                ('Create flashcards for key concepts (10-15 cards).', 'Make at least 10 cards.', 'medium', 25),
-                ('Write a short essay (200-300 words) on the topic.', 'Draft a short essay.', 'hard', 30),
+                ('Конспект материала', 'Глава/статья с 15 идеями (60 мин).', 'medium', 100, 60),
+                ('Серия упражнений', '20–30 задач по теме (60 мин).', 'hard', 100, 60),
+                ('Практический семинар', 'Теория + мини‑проект (60 мин).', 'medium', 100, 60),
+                ('Флеш‑карты', '30–50 терминов (60 мин).', 'medium', 100, 60),
+                ('Пилотная презентация', 'Подготовить 10 мин выступление (60 мин).', 'medium', 100, 60),
+                ('Новая тема', '60 мин лекции + 30 мин практики (90 мин).', 'hard', 150, 90),
+                ('Развёрнутое эссе', '500–800 слов с источниками (90 мин).', 'hard', 150, 90),
+                ('Мини‑исследование', '5 источников и 10 выводов (90 мин).', 'hard', 150, 90),
             ],
             'health': [
-                ('30-minute interval cardio workout.', 'Do interval cardio for 30 minutes.', 'hard', 30),
-                ('Analyze your diet and replace 3 unhealthy foods.', 'Swap 3 items for healthier options.', 'medium', 25),
-                ('15 minutes of meditation + 15 minutes of stretching.', 'Do both back-to-back.', 'medium', 25),
-                ('30-minute walk outdoors with a cool-down.', 'Walk and cool down afterward.', 'easy', 20),
-                ('Make a list of doctors/tests and schedule one appointment.', 'Book one appointment.', 'medium', 25),
-                ('Do a 30-minute strength training session with basic exercises.', 'Full-body basics.', 'hard', 30),
-                ('Monitor your sleep: record your sleep schedule for a week and note any improvements.', 'Start a simple log.', 'easy', 20),
-                ('Prepare a healthy lunch using a new recipe and evaluate how you feel after eating.', 'Try a new recipe.', 'medium', 25),
-                ('Check your posture and do 10 minutes of back exercises.', 'Focus on posture and back.', 'easy', 20),
-                ('Hydration check: create a daily water drinking plan and stick to it.', 'Plan and follow your intake.', 'easy', 20),
+                ('Комплексная тренировка', 'Разминка, силовая, растяжка (60 мин).', 'hard', 100, 60),
+                ('Питание + план', 'Готовка и план на 3 дня (60 мин).', 'medium', 100, 60),
+                ('Йога/пилатес', 'Сессия с фокусом на спину (60 мин).', 'medium', 100, 60),
+                ('Контроль здоровья', 'Замеры и 3 цели на месяц (60 мин).', 'medium', 100, 60),
+                ('План восстановления', 'Самомассаж + дыхание + прогулка (60 мин).', 'medium', 100, 60),
+                ('Длинная кардио‑сессия', '60 мин кардио + 30 мин растяжки (90 мин).', 'hard', 150, 90),
+                ('Полный чек‑ап', 'Подготовка к врачу и анализам (90 мин).', 'hard', 150, 90),
+                ('3 здоровых рецепта', 'Тест и оценка для недели (90 мин).', 'hard', 150, 90),
             ],
             'personal': [
-                ('Read a motivational article and write down 5 takeaways.', 'List 5 takeaways.', 'easy', 20),
-                ('Prepare and deliver a 5-minute mini-speech on a chosen topic, focusing on structure and content.', 'Write and speak it.', 'hard', 30),
-                ('Review 3-12 month goals and break one down into steps.', 'Write the steps.', 'medium', 25),
-                ('Write a short 30-day plan for developing one skill (specific daily actions).', 'Daily actions list.', 'medium', 25),
-                ('Solve logic puzzles or play chess for 30 minutes.', 'Focus for 30 minutes.', 'medium', 25),
-                ('Complete a self-assessment exercise: list 5 strengths and 5 weaknesses and come up with steps to address each weakness.', 'Write the list and steps.', 'hard', 30),
-                ('Conduct a 20-minute deep reading session on a self-improvement topic and write down 3 ideas to implement.', 'List 3 ideas.', 'medium', 25),
-                ('Find a mentor or someone to share feedback with and write them a proposal for mutual coaching.', 'Draft a short proposal.', 'hard', 30),
-                ('Create a morning or evening routine (5-7 items) and test it out.', 'Write and try it.', 'medium', 25),
-                ('Do a mini-project (write a plan, a short creative activity) and complete the first step.', 'Finish step one.', 'medium', 25),
+                ('SWOT‑самооценка', 'Сильные/слабые + 3 цели (60 мин).', 'medium', 100, 60),
+                ('Утренняя рутина', '5–7 пунктов, выполнить и записать (60 мин).', 'medium', 100, 60),
+                ('Книга по развитию', '10 практических шагов (60 мин).', 'medium', 100, 60),
+                ('Сессия навыка', 'Фокус‑практика с обратной связью (60 мин).', 'medium', 100, 60),
+                ('Старт 30‑дневного плана', 'Первые 7 дней и день 1 (60 мин).', 'medium', 100, 60),
+                ('Тренировочное выступление', 'Подготовка + выступление (90 мин).', 'hard', 150, 90),
+                ('Годовой план целей', 'Разбивка по кварталам (90 мин).', 'hard', 150, 90),
+                ('Коучинг‑сессия', 'План действий и чек‑ины (90 мин).', 'hard', 150, 90),
             ],
             'home': [
-                ('Clean and organize one area (shelf/table) in 30 minutes.', 'Pick one area and finish it.', 'medium', 25),
-                ('Create a weekly menu and shopping list.', 'Plan meals and list items.', 'easy', 20),
-                ('Make 3 minor repairs/repairs.', 'Complete three small fixes.', 'hard', 30),
-                ('Sort items in one closet – keep/donate/throw away.', 'Sort and decide.', 'medium', 25),
-                ('Create a checklist of routine chores and assign them to days.', 'Assign a schedule.', 'easy', 20),
-                ('Do a quick bathroom clean: 30 minutes – cleaning, replacing consumables.', 'Clean and restock.', 'medium', 25),
-                ('Organize electronic documents: folders, delete duplicates, make a backup.', 'Clean up and backup.', 'medium', 25),
-                ('Prepare a weekly/monthly household budget and make adjustments.', 'Review and adjust.', 'medium', 25),
-                ('Clean and organize appliances (refrigerator, microwave, etc.) according to the checklist.', 'Follow a checklist.', 'hard', 30),
-                ('Plant/replant a houseplant and create a care plan.', 'Plan care steps.', 'easy', 20),
+                ('Организация комнаты', 'Уборка и список покупок (60 мин).', 'hard', 100, 60),
+                ('План питания', 'Список и закупка продуктов (60 мин).', 'medium', 100, 60),
+                ('Мелкий ремонт', 'Починить 3 мелочи (60 мин).', 'hard', 100, 60),
+                ('Уборка техники', 'Холодильник/плита/микроволновка (60 мин).', 'medium', 100, 60),
+                ('Система хранения', 'Организовать 4 категории вещей (60 мин).', 'medium', 100, 60),
+                ('Генеральная уборка', '90 минут порядка и хранения (90 мин).', 'hard', 150, 90),
+                ('Ревизия гардероба', 'Сортировка и список покупок (90 мин).', 'hard', 150, 90),
+                ('Организация документов', 'Скан, папки, бэкап (90 мин).', 'hard', 150, 90),
             ],
         }
 
         items = mapping.get(focus, [('Задание по фокусу', 'Описание', 'easy', 10)])
-        selection_size = min(4, len(items), remaining)
+        selection_size = min(4, len(items))
         items_to_create = random.sample(items, k=selection_size) if items else []
         created = []
 
-        for title, desc, diff, xp in items_to_create:
+        for title, desc, diff, xp, duration in items_to_create:
             q = Quest.objects.create(
                 title=title,
                 description=desc,
                 difficulty=diff,
                 xp_reward=xp,
+                duration_minutes=duration,
                 user=request.user,
                 focus_area=focus,
             )
@@ -309,3 +296,30 @@ class QuestViewSet(viewsets.ModelViewSet):
             pass
 
         return Response(self.get_serializer(quest).data)
+
+    @action(detail=True, methods=['post'])
+    def accept(self, request, pk=None):
+        quest = self.get_object()
+        if quest.accepted_at:
+            return Response(self.get_serializer(quest).data)
+        now = timezone.now()
+        quest.accepted_at = now
+        quest.expires_at = now + timedelta(minutes=quest.duration_minutes or 60)
+        quest.save(update_fields=['accepted_at', 'expires_at'])
+        return Response(self.get_serializer(quest).data)
+
+    def destroy(self, request, *args, **kwargs):
+        quest = self.get_object()
+        today = timezone.now().date()
+        deleted_today = Quest.objects.filter(
+            user=request.user,
+            deleted_at__date=today,
+        ).count()
+        if deleted_today >= 3:
+            return Response(
+                {'detail': 'Лимит удаления заданий на сегодня достигнут (3).'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        quest.deleted_at = timezone.now()
+        quest.save(update_fields=['deleted_at'])
+        return Response(status=status.HTTP_204_NO_CONTENT)

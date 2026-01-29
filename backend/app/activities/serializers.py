@@ -112,10 +112,14 @@ class QuestSerializer(serializers.ModelSerializer):
             'description',
             'difficulty',
             'xp_reward',
+            'duration_minutes',
             'completed',
             'completed_at',
+            'accepted_at',
+            'expires_at',
+            'deleted_at',
             'created_at',
             'user',
             'focus_area',
         ]
-        read_only_fields = ['id', 'created_at', 'completed_at', 'user']
+        read_only_fields = ['id', 'created_at', 'completed_at', 'user', 'accepted_at', 'expires_at', 'deleted_at']

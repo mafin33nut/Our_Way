@@ -17,8 +17,12 @@ export interface Quest {
   description: string;
   difficulty: 'easy' | 'medium' | 'hard';
   xp_reward: number;
+  duration_minutes?: number;
   completed: boolean;
   completed_at?: string;
+  accepted_at?: string | null;
+  expires_at?: string | null;
+  deleted_at?: string | null;
   created_at: string;
   user: number;
   focus_area?: string;
