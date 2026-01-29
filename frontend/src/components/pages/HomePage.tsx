@@ -150,7 +150,9 @@ export function HomePage() {
         <div className="max-w-[1920px] mx-auto px-6 py-10 pb-20">
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-20">
             <div className="xl:col-span-4 space-y-16">
-              <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
+              <div className="mt-6">
+                <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
+              </div>
             </div>
 
             <div className="xl:col-span-4 space-y-16">
