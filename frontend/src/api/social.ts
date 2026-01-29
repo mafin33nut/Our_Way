@@ -1,5 +1,6 @@
 import { apiClient, unwrapListResponse } from './client';
 import { Friend, Clan, Activity, User } from '../types';
+export type { User } from '../types';
 
 export interface ClanCreateData {
   name: string;
