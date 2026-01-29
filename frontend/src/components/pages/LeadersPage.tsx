@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Trophy } from 'lucide-react';
 import { socialAPI } from '../../api/social';
 import { User } from '../../types';
+import { FooterArt } from '../layout/FooterArt';
 
 export function LeadersPage() {
   const [leaders, setLeaders] = useState<User[]>([]);
@@ -33,13 +34,13 @@ export function LeadersPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900">
-      <div className="max-w-[1200px] mx-auto px-6 py-10">
+      <div className="max-w-[1600px] mx-auto px-6 py-10">
         <div className="panel-base panel-orange p-6">
           <div className="flex items-center gap-2 mb-3">
             <Trophy className="w-5 h-5 text-purple-400" />
             <h2 className="text-purple-300">Лидеры</h2>
           </div>
-          <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 overflow-hidden">
+          <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 overflow-hidden min-h-[70vh]">
             <table className="w-full text-sm">
               <thead className="bg-slate-950/60 text-purple-200/70">
                 <tr>
@@ -74,6 +75,7 @@ export function LeadersPage() {
             </table>
           </div>
         </div>
+        <FooterArt />
       </div>
     </div>
   );

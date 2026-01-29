@@ -7,6 +7,7 @@ import { ClanQuestList } from '../quests/ClanQuestList';
 import { ClanCreationPanel } from '../social/ClanCreationPanel';
 import { useAuth } from '../../hooks/useAuth';
 import { Loader } from '../ui/Loader';
+import { FooterArt } from '../layout/FooterArt';
 
 export function ClansPage() {
   const { user, refreshUser } = useAuth();
@@ -143,6 +144,7 @@ export function ClansPage() {
             />
           </div>
         )}
+        <FooterArt />
       </div>
     </div>
   );
