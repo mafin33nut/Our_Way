@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap');
 @import 'tailwindcss';
 * {
   margin: 0;
@@ -35,8 +36,8 @@ h3 {
 
 @layer components {
   .panel-caption {
-    @apply text-white/90 text-sm tracking-wide;
-    font-family: "Trebuchet MS", "Segoe UI", Tahoma, sans-serif;
+    @apply text-white/90 text-2xl tracking-wide mb-6;
+    font-family: "Cinzel", "Segoe UI", serif;
     text-shadow: 0 2px 8px rgba(15, 23, 42, 0.9);
   }
 

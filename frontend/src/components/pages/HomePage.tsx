@@ -150,7 +150,7 @@ export function HomePage() {
       <div className="relative z-10">
         <div className="max-w-[1280px] ml-auto mr-10 px-6 py-12 pb-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            <div className="lg:col-span-8 space-y-10">
+            <div className="lg:col-span-8 space-y-24">
               <div className="panel-caption">Профиль героя</div>
               <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
 
@@ -173,7 +173,7 @@ export function HomePage() {
               <div className="panel-caption">Расписание выполнения</div>
               <TaskSchedulePanel quests={quests} />
             </div>
-            <div className="lg:col-span-4 space-y-10 lg:justify-self-end">
+            <div className="lg:col-span-4 space-y-24 lg:justify-self-end">
               <div className="panel-caption">Поиск друзей</div>
               {settings.showFriends && (
                 friends.length > 0 ? (
