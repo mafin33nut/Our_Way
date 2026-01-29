@@ -36,7 +36,7 @@ export function SettingsPage() {
 
   return (
     <div className={`min-h-screen relative ${hasBackground ? '' : 'bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900'}`}>
-      {hasBackground && bgImageLoaded && (
+      {hasBackground && (
         <div
           key={`bg-${settings.background}-${backgroundUrl}`}
           className="fixed inset-0 z-0"
@@ -47,7 +47,7 @@ export function SettingsPage() {
             backgroundAttachment: 'fixed',
           }}
         >
-          <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" />
+          <div className={`absolute inset-0 ${bgImageLoaded ? 'bg-slate-900/40' : 'bg-slate-900/60'} backdrop-blur-sm`} />
         </div>
       )}
       <div className="relative z-10 min-h-screen flex items-center justify-center px-6 py-8">

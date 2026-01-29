@@ -174,6 +174,18 @@ class QuestViewSet(viewsets.ModelViewSet):
         Простая примерная реализация — можно заменить более умной логикой.
         """
         focus = request.data.get('focus')
+        today = timezone.now().date()
+        today_count = Quest.objects.filter(
+            user=request.user,
+            created_at__date=today,
+        ).count()
+        remaining = max(8 - today_count, 0)
+
+        if remaining <= 0:
+            return Response(
+                {'detail': 'Дневной лимит генерации заданий достигнут (8).'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         mapping = {
             'social': [
@@ -251,7 +263,7 @@ class QuestViewSet(viewsets.ModelViewSet):
         }
 
         items = mapping.get(focus, [('Задание по фокусу', 'Описание', 'easy', 10)])
-        selection_size = min(4, len(items))
+        selection_size = min(4, len(items), remaining)
         items_to_create = random.sample(items, k=selection_size) if items else []
         created = []
 

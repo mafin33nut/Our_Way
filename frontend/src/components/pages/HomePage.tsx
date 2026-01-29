@@ -132,13 +132,13 @@ export function HomePage() {
           key={`bg-${settings.background}-${backgroundUrl}`}
           className="fixed inset-0 z-0"
           style={{
-            backgroundImage: bgImageLoaded ? `url(${backgroundUrl})` : undefined,
+            backgroundImage: `url(${backgroundUrl})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed',
           }}
         >
-          <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" />
+          <div className={`absolute inset-0 ${bgImageLoaded ? 'bg-slate-900/40' : 'bg-slate-900/60'} backdrop-blur-sm`} />
         </div>
       )}
       <div className="relative z-10">
