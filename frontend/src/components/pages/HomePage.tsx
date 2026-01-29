@@ -153,7 +153,7 @@ export function HomePage() {
             <div className="flex flex-col items-center space-y-[128px]">
               <div className="w-full max-w-[780px]">
                 <div className="panel-caption text-center">Профиль героя</div>
-                <div className="text-white/60 text-sm text-center mb-4">
+                <div className="text-white/60 text-sm text-center mb-16">
                   Основные характеристики персонажа, уровень и прогресс в заданиях.
                 </div>
                 <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
@@ -161,7 +161,7 @@ export function HomePage() {
 
               <div className="w-full max-w-[780px]">
                 <div className="panel-caption text-center">Выбор направления</div>
-                <div className="text-white/60 text-sm text-center mb-4">
+                <div className="text-white/60 text-sm text-center mb-16">
                   Выберите фокус развития, чтобы получить подходящие задания.
                 </div>
                 <FocusSelector currentFocus={user.current_focus || undefined} onSelectFocus={handleSelectFocus} loading={generatingQuests} />
@@ -169,7 +169,7 @@ export function HomePage() {
 
               <div className="w-full max-w-[780px]">
                 <div className="panel-caption text-center">Текущие задания</div>
-                <div className="text-white/60 text-sm text-center mb-4">
+                <div className="text-white/60 text-sm text-center mb-16">
                   Список активных заданий, таймеры и выполнение.
                 </div>
                 <QuestList quests={quests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} onTimerStop={handleTimerStop} />
@@ -178,7 +178,7 @@ export function HomePage() {
               {settings.showActivities && (
                 <div className="w-full max-w-[780px]">
                   <div className="panel-caption text-center">Активность гильдии</div>
-                  <div className="text-white/60 text-sm text-center mb-4">
+                  <div className="text-white/60 text-sm text-center mb-16">
                     Хронология событий и изменений по заданиям и уровню.
                   </div>
                   <ActivityFeed activities={activities} />
@@ -187,7 +187,7 @@ export function HomePage() {
 
               <div className="w-full max-w-[780px]">
                 <div className="panel-caption text-center">История выполнения</div>
-                <div className="text-white/60 text-sm text-center mb-4">
+                <div className="text-white/60 text-sm text-center mb-16">
                   Последние завершённые задания и статистика за день.
                 </div>
                 <TaskHistoryPanel quests={quests} />
@@ -195,7 +195,7 @@ export function HomePage() {
 
               <div className="w-full max-w-[780px]">
                 <div className="panel-caption text-center">Расписание выполнения</div>
-                <div className="text-white/60 text-sm text-center mb-4">
+                <div className="text-white/60 text-sm text-center mb-16">
                   План задач на ближайшее время и рекомендуемая длительность.
                 </div>
                 <TaskSchedulePanel quests={quests} />
@@ -205,20 +205,16 @@ export function HomePage() {
               {settings.showFriends && (
                 <div className="w-full max-w-[420px] ml-auto">
                   <div className="panel-caption text-right">Поиск друзей</div>
-                  <div className="text-white/60 text-sm text-right mb-4">
+                  <div className="text-white/60 text-sm text-right mb-16">
                     Найдите друзей по имени пользователя и добавьте в список.
                   </div>
-                  {friends.length > 0 ? (
-                    <FriendsList friends={friends} />
-                  ) : (
-                    <FriendSearchPanel onFriendAdded={loadData} />
-                  )}
+                  <FriendSearchPanel onFriendAdded={loadData} />
                 </div>
               )}
               {friends.length > 0 && (
                 <div className="w-full max-w-[420px] ml-auto">
                   <div className="panel-caption text-right">Список друзей</div>
-                  <div className="text-white/60 text-sm text-right mb-4">
+                  <div className="text-white/60 text-sm text-right mb-16">
                     Все ваши друзья, их уровень и статус активности.
                   </div>
                   <AllFriendsPanel friends={friends} />
