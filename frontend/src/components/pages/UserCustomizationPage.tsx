@@ -4,6 +4,7 @@ import { User as UserIcon, ArrowLeft, Camera } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { authAPI } from '../../api/auth';
 import { Button } from '../ui/Button';
+import { resolveMediaUrl } from '../../utils/media';
 
 export function UserCustomizationPage() {
   const { user, refreshUser } = useAuth();
@@ -58,9 +59,9 @@ export function UserCustomizationPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-6 flex flex-col items-center text-center gap-3">
-              {user.avatar ? (
+              {resolveMediaUrl(user.avatar) ? (
                 <img
-                  src={user.avatar}
+                  src={resolveMediaUrl(user.avatar) as string}
                   alt={user.username}
                   className="w-24 h-24 rounded-full object-cover border-2 border-purple-500/60"
                 />

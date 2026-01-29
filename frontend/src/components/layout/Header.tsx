@@ -3,6 +3,7 @@ import { LogOut, User, Settings } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
 import { Button } from '../ui/Button';
+import { resolveMediaUrl } from '../../utils/media';
 export function Header() {
   const { user, logout } = useAuth();
   const { settings } = useCustomization();
@@ -50,9 +51,9 @@ export function Header() {
                   }`}
                 >
                   <Link to="/profile" className="flex items-center gap-2">
-                    {user.avatar ? (
+                    {resolveMediaUrl(user.avatar) ? (
                       <img
-                        src={user.avatar}
+                        src={resolveMediaUrl(user.avatar) as string}
                         alt={user.username}
                         className="w-9 h-9 rounded-full object-cover border border-amber-400/60"
                       />

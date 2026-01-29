@@ -2,6 +2,7 @@ import { User } from '../../types';
 import { Sparkles, Trophy, User as UserIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../ui/Button';
+import { resolveMediaUrl } from '../../utils/media';
 import { useCustomization } from '../../hooks/useCustomization';
 interface CharacterProfileProps {
   user: User;
@@ -14,9 +15,9 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
   return (
     <div className="panel-base panel-teal p-6 h-full min-h-[520px] flex flex-col">
       <div className="flex items-center gap-3 mb-6">
-        {user.avatar ? (
+        {resolveMediaUrl(user.avatar) ? (
           <img
-            src={user.avatar}
+            src={resolveMediaUrl(user.avatar) as string}
             alt={user.username}
             className="w-14 h-14 rounded-full object-cover border-2 border-purple-500/60"
           />

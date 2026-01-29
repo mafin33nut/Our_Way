@@ -50,6 +50,20 @@ h3 {
     pointer-events: none;
   }
 
+  .panel-base::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 1rem;
+    background:
+      linear-gradient(135deg, rgba(148, 163, 184, 0.65), rgba(71, 85, 105, 0.4)) top left/18px 18px no-repeat,
+      linear-gradient(225deg, rgba(148, 163, 184, 0.65), rgba(71, 85, 105, 0.4)) top right/18px 18px no-repeat,
+      linear-gradient(45deg, rgba(148, 163, 184, 0.65), rgba(71, 85, 105, 0.4)) bottom left/18px 18px no-repeat,
+      linear-gradient(315deg, rgba(148, 163, 184, 0.65), rgba(71, 85, 105, 0.4)) bottom right/18px 18px no-repeat;
+    opacity: 0.65;
+    pointer-events: none;
+  }
+
   .panel-purple {
     @apply border-purple-600/60;
   }

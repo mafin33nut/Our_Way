@@ -148,45 +148,26 @@ export function HomePage() {
         </div>
       )}
       <div className="relative z-10">
-        <div className="max-w-[1920px] mx-auto px-6 py-10 pb-20">
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-10">
-            <div className="xl:col-span-4 space-y-8">
-              <div className="mt-6">
-                <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
-              </div>
-            </div>
+        <div className="max-w-[1200px] mx-auto px-6 py-10 pb-20">
+          <div className="space-y-6">
+            <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
 
-            <div className="xl:col-span-4 space-y-8">
-              <FocusSelector currentFocus={user.current_focus || undefined} onSelectFocus={handleSelectFocus} loading={generatingQuests} />
-              <QuestList quests={quests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} onTimerStop={handleTimerStop} />
-            </div>
+            <FocusSelector currentFocus={user.current_focus || undefined} onSelectFocus={handleSelectFocus} loading={generatingQuests} />
+            <QuestList quests={quests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} onTimerStop={handleTimerStop} />
 
-            <div className="xl:col-span-4 space-y-8">
-              {settings.showFriends && (
-                friends.length > 0 ? (
-                  <FriendsList friends={friends} />
-                ) : (
-                  <FriendSearchPanel onFriendAdded={loadData} />
-                )
-              )}
-              {friends.length > 0 && (
-                <div className="mt-4">
-                  <AllFriendsPanel friends={friends} />
-                </div>
-              )}
-            </div>
-          </div>
+            {settings.showFriends && (
+              friends.length > 0 ? (
+                <FriendsList friends={friends} />
+              ) : (
+                <FriendSearchPanel onFriendAdded={loadData} />
+              )
+            )}
 
-          <div className="mt-12 grid grid-cols-1 xl:grid-cols-12 gap-10">
-            <div className="xl:col-span-4">
-              {settings.showActivities && <ActivityFeed activities={activities} />}
-            </div>
-            <div className="xl:col-span-4">
-              <TaskHistoryPanel quests={quests} />
-            </div>
-            <div className="xl:col-span-4">
-              <TaskSchedulePanel quests={quests} />
-            </div>
+            {friends.length > 0 && <AllFriendsPanel friends={friends} />}
+
+            {settings.showActivities && <ActivityFeed activities={activities} />}
+            <TaskHistoryPanel quests={quests} />
+            <TaskSchedulePanel quests={quests} />
           </div>
 
         </div>
