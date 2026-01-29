@@ -48,11 +48,6 @@ h3 {
     inset: 6px;
     border-radius: 0.75rem;
     border: 1px solid rgba(168, 85, 247, 0.15);
-    background:
-      linear-gradient(90deg, rgba(148, 163, 184, 0.6), rgba(71, 85, 105, 0.35)) top left/100% 8px no-repeat,
-      linear-gradient(90deg, rgba(148, 163, 184, 0.6), rgba(71, 85, 105, 0.35)) bottom left/100% 8px no-repeat,
-      radial-gradient(circle, rgba(226, 232, 240, 0.8) 0 2px, transparent 3px) 12px 12px/28px 28px repeat;
-    mix-blend-mode: screen;
     pointer-events: none;
   }
 
@@ -62,6 +57,8 @@ h3 {
     inset: -6px;
     border-radius: 1rem;
     background:
+      linear-gradient(90deg, rgba(148, 163, 184, 0.8), rgba(71, 85, 105, 0.45)) top left/100% 8px no-repeat,
+      linear-gradient(90deg, rgba(148, 163, 184, 0.8), rgba(71, 85, 105, 0.45)) bottom left/100% 8px no-repeat,
       linear-gradient(135deg, rgba(148, 163, 184, 0.85), rgba(71, 85, 105, 0.45)) top left/18px 18px no-repeat,
       linear-gradient(225deg, rgba(148, 163, 184, 0.85), rgba(71, 85, 105, 0.45)) top right/18px 18px no-repeat,
       linear-gradient(45deg, rgba(148, 163, 184, 0.85), rgba(71, 85, 105, 0.45)) bottom left/18px 18px no-repeat,

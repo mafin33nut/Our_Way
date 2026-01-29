@@ -192,7 +192,7 @@ export function AchievementsPage() {
             <h2 className="text-purple-300">Достижения</h2>
           </div>
           <p className="text-purple-200/70">
-            Дерево достижений развивается по мере выполнения заданий.
+            Достижения открываются по мере выполнения заданий.
           </p>
           <div className="mt-4 flex items-center gap-3 text-sm text-purple-200/70">
             <CheckCircle2 className="w-4 h-4 text-green-400" />
