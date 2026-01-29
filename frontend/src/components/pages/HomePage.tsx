@@ -148,8 +148,8 @@ export function HomePage() {
         </div>
       )}
       <div className="relative z-10">
-        <div className="max-w-[1280px] ml-auto mr-10 px-6 py-12 pb-24">
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-10">
+        <div className="max-w-[1680px] ml-auto mr-6 px-6 py-12 pb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_420px] gap-10">
             <div className="flex flex-col items-center space-y-32">
               <div className="w-full max-w-[780px]">
                 <div className="panel-caption text-center">Профиль героя</div>
@@ -185,7 +185,7 @@ export function HomePage() {
             </div>
             <div className="flex flex-col items-end space-y-32">
               {settings.showFriends && (
-                <div className="w-full max-w-[360px] ml-auto">
+                <div className="w-full max-w-[420px] ml-auto">
                   <div className="panel-caption text-right">Поиск друзей</div>
                   {friends.length > 0 ? (
                     <FriendsList friends={friends} />
@@ -195,7 +195,7 @@ export function HomePage() {
                 </div>
               )}
               {friends.length > 0 && (
-                <div className="w-full max-w-[360px] ml-auto">
+                <div className="w-full max-w-[420px] ml-auto">
                   <div className="panel-caption text-right">Список друзей</div>
                   <AllFriendsPanel friends={friends} />
                 </div>
