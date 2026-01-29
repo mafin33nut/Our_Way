@@ -150,43 +150,64 @@ export function HomePage() {
       <div className="relative z-10">
         <div className="max-w-[1680px] ml-auto mr-6 px-6 py-12 pb-24">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_420px] gap-10">
-            <div className="flex flex-col items-center space-y-32">
+            <div className="flex flex-col items-center space-y-[128px]">
               <div className="w-full max-w-[780px]">
                 <div className="panel-caption text-center">Профиль героя</div>
+                <div className="text-white/60 text-sm text-center mb-4">
+                  Основные характеристики персонажа, уровень и прогресс в заданиях.
+                </div>
                 <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
               </div>
 
               <div className="w-full max-w-[780px]">
                 <div className="panel-caption text-center">Выбор направления</div>
+                <div className="text-white/60 text-sm text-center mb-4">
+                  Выберите фокус развития, чтобы получить подходящие задания.
+                </div>
                 <FocusSelector currentFocus={user.current_focus || undefined} onSelectFocus={handleSelectFocus} loading={generatingQuests} />
               </div>
 
               <div className="w-full max-w-[780px]">
                 <div className="panel-caption text-center">Текущие задания</div>
+                <div className="text-white/60 text-sm text-center mb-4">
+                  Список активных заданий, таймеры и выполнение.
+                </div>
                 <QuestList quests={quests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} onTimerStop={handleTimerStop} />
               </div>
 
               {settings.showActivities && (
                 <div className="w-full max-w-[780px]">
                   <div className="panel-caption text-center">Активность гильдии</div>
+                  <div className="text-white/60 text-sm text-center mb-4">
+                    Хронология событий и изменений по заданиям и уровню.
+                  </div>
                   <ActivityFeed activities={activities} />
                 </div>
               )}
 
               <div className="w-full max-w-[780px]">
                 <div className="panel-caption text-center">История выполнения</div>
+                <div className="text-white/60 text-sm text-center mb-4">
+                  Последние завершённые задания и статистика за день.
+                </div>
                 <TaskHistoryPanel quests={quests} />
               </div>
 
               <div className="w-full max-w-[780px]">
                 <div className="panel-caption text-center">Расписание выполнения</div>
+                <div className="text-white/60 text-sm text-center mb-4">
+                  План задач на ближайшее время и рекомендуемая длительность.
+                </div>
                 <TaskSchedulePanel quests={quests} />
               </div>
             </div>
-            <div className="flex flex-col items-end space-y-32">
+            <div className="flex flex-col items-end space-y-[128px]">
               {settings.showFriends && (
                 <div className="w-full max-w-[420px] ml-auto">
                   <div className="panel-caption text-right">Поиск друзей</div>
+                  <div className="text-white/60 text-sm text-right mb-4">
+                    Найдите друзей по имени пользователя и добавьте в список.
+                  </div>
                   {friends.length > 0 ? (
                     <FriendsList friends={friends} />
                   ) : (
@@ -197,6 +218,9 @@ export function HomePage() {
               {friends.length > 0 && (
                 <div className="w-full max-w-[420px] ml-auto">
                   <div className="panel-caption text-right">Список друзей</div>
+                  <div className="text-white/60 text-sm text-right mb-4">
+                    Все ваши друзья, их уровень и статус активности.
+                  </div>
                   <AllFriendsPanel friends={friends} />
                 </div>
               )}
