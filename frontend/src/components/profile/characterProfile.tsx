@@ -1,5 +1,5 @@
 import { User } from '../../types';
-import { Sparkles, Trophy } from 'lucide-react';
+import { Sparkles, Trophy, User as UserIcon } from 'lucide-react';
 import { useCustomization } from '../../hooks/useCustomization';
 interface CharacterProfileProps {
   user: User;
@@ -11,13 +11,29 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
   const xpPercentage = (user.xp / user.xp_to_next_level) * 100;
   return (
     <div className="panel-base panel-teal p-6">
-      <div className="text-center mb-6">
-        <h2 className="text-purple-300">
-          {user.username}
-        </h2>
-        <p className="text-purple-200/60">
-          Авантюрист {user.level} уровня
-        </p>
+      <div className="flex items-center gap-3 mb-6">
+        {user.avatar ? (
+          <img
+            src={user.avatar}
+            alt={user.username}
+            className="w-14 h-14 rounded-full object-cover border-2 border-purple-500/60"
+          />
+        ) : (
+          <div className="w-14 h-14 rounded-full bg-slate-800/70 border-2 border-purple-500/60 flex items-center justify-center text-purple-200">
+            <UserIcon className="w-6 h-6" />
+          </div>
+        )}
+        <div className="min-w-0">
+          <h2 className="text-purple-300">
+            {user.username}
+          </h2>
+          <p className="text-purple-200/60 text-sm">
+            Авантюрист {user.level} уровня
+          </p>
+          <p className="text-purple-200/50 text-xs truncate">
+            {user.bio || 'Добавьте описание в профиле'}
+          </p>
+        </div>
       </div>
       <div className="mb-6">
         <div className="flex justify-between text-sm mb-2 text-purple-200/80">

@@ -1,14 +1,41 @@
 import { Link } from 'react-router-dom';
-import { User as UserIcon, ArrowLeft } from 'lucide-react';
+import { useState } from 'react';
+import { User as UserIcon, ArrowLeft, Camera } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { authAPI } from '../../api/auth';
 import { Button } from '../ui/Button';
 
 export function UserCustomizationPage() {
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
+  const [bio, setBio] = useState(user?.bio ?? '');
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
 
   if (!user) {
     return null;
   }
+
+  const handleSave = async () => {
+    setSaving(true);
+    setStatus(null);
+    try {
+      const formData = new FormData();
+      formData.append('bio', bio);
+      if (avatarFile) {
+        formData.append('avatar', avatarFile);
+      }
+      await authAPI.updateProfile(formData);
+      await refreshUser();
+      setStatus('Профиль обновлен');
+      setAvatarFile(null);
+    } catch (error) {
+      console.error('Failed to update profile', error);
+      setStatus('Не удалось обновить профиль');
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900">
@@ -30,21 +57,31 @@ export function UserCustomizationPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-6 flex flex-col items-center text-center">
-              <Link to="/profile" className="block">
-                {user.avatar ? (
-                  <img
-                    src={user.avatar}
-                    alt={user.username}
-                    className="w-24 h-24 rounded-full object-cover border-2 border-purple-500/60"
-                  />
-                ) : (
-                  <div className="w-24 h-24 rounded-full bg-slate-800/70 border-2 border-purple-500/60 flex items-center justify-center text-purple-200 text-2xl">
-                    {user.username.slice(0, 1).toUpperCase()}
-                  </div>
-                )}
-              </Link>
-              <p className="text-purple-200 mt-3">{user.username}</p>
+            <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-6 flex flex-col items-center text-center gap-3">
+              {user.avatar ? (
+                <img
+                  src={user.avatar}
+                  alt={user.username}
+                  className="w-24 h-24 rounded-full object-cover border-2 border-purple-500/60"
+                />
+              ) : (
+                <div className="w-24 h-24 rounded-full bg-slate-800/70 border-2 border-purple-500/60 flex items-center justify-center text-purple-200 text-2xl">
+                  {user.username.slice(0, 1).toUpperCase()}
+                </div>
+              )}
+              <label className="w-full">
+                <div className="flex items-center justify-center gap-2 w-full px-3 py-2 rounded-lg border border-purple-600/30 bg-slate-900/50 text-purple-200 text-sm cursor-pointer hover:border-purple-500/60">
+                  <Camera className="w-4 h-4" />
+                  Загрузить фото
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => setAvatarFile(e.target.files?.[0] || null)}
+                />
+              </label>
+              <p className="text-purple-200 mt-1">{user.username}</p>
               <p className="text-xs text-purple-200/60">Уровень {user.level}</p>
             </div>
 
@@ -65,12 +102,24 @@ export function UserCustomizationPage() {
                 <p className="text-xs text-purple-200/60">Выполнено заданий</p>
                 <p className="text-purple-200">{user.total_quests_completed}</p>
               </div>
-              {user.bio && (
-                <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-4">
-                  <p className="text-xs text-purple-200/60">О себе</p>
-                  <p className="text-purple-200">{user.bio}</p>
-                </div>
-              )}
+              <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-4">
+                <p className="text-xs text-purple-200/60">Описание</p>
+                <textarea
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  rows={4}
+                  className="mt-2 w-full rounded-lg border border-purple-600/30 bg-slate-950/50 p-3 text-purple-100 placeholder-purple-200/30 focus:outline-none focus:border-purple-500 transition-colors"
+                  placeholder="Добавьте короткое описание"
+                />
+              </div>
+              <div className="flex items-center gap-3">
+                <Button onClick={handleSave} disabled={saving}>
+                  {saving ? 'Сохранение...' : 'Сохранить'}
+                </Button>
+                {status && (
+                  <span className="text-sm text-purple-200/70">{status}</span>
+                )}
+              </div>
             </div>
           </div>
         </div>

@@ -47,7 +47,7 @@ export function SettingsPage() {
             backgroundAttachment: 'fixed',
           }}
         >
-          <div className={`absolute inset-0 ${bgImageLoaded ? 'bg-slate-900/30' : 'bg-slate-900/70'} backdrop-blur-sm`} />
+          <div className={`absolute inset-0 ${bgImageLoaded ? 'bg-slate-900/15' : 'bg-slate-900/40'} backdrop-blur-sm`} />
         </div>
       )}
       <div className="relative z-10 min-h-screen flex items-center justify-center px-6 py-8">
