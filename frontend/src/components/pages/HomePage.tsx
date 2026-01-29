@@ -68,7 +68,7 @@ export function HomePage() {
 
   useEffect(() => {
     if (hasBackground && backgroundUrl) {
-      const img = new Image();
+      const img = new window.Image();
       img.onload = () => setBgImageLoaded(true);
       img.onerror = () => setBgImageLoaded(false);
       img.src = backgroundUrl;
@@ -127,12 +127,12 @@ export function HomePage() {
 
   return (
     <div className={`min-h-screen relative ${hasBackground ? '' : 'bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900'}`}>
-      {hasBackground && bgImageLoaded && (
+      {hasBackground && (
         <div
           key={`bg-${settings.background}-${backgroundUrl}`}
           className="fixed inset-0 z-0"
           style={{
-            backgroundImage: `url(${backgroundUrl})`,
+            backgroundImage: bgImageLoaded ? `url(${backgroundUrl})` : undefined,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed',

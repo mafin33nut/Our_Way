@@ -55,81 +55,83 @@ export function ClansPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900">
       <div className="max-w-[1920px] mx-auto px-6 py-8 space-y-12">
-        <div className="panel-base panel-purple p-6">
-          <div className="flex items-center gap-2 mb-3">
-            <Crown className="w-5 h-5 text-purple-400" />
-            <h2 className="text-purple-300">Клан</h2>
-          </div>
-          {clan ? (
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between text-purple-200/80">
-                <span>Название</span>
-                <span className="text-purple-300">{clan.name}</span>
-              </div>
-              <div className="flex justify-between text-purple-200/80">
-                <span>Уровень клана</span>
-                <span className="text-purple-300">{clan.level || 1}</span>
-              </div>
-              <div className="flex justify-between text-purple-200/80">
-                <span>Участники</span>
-                <span className="text-purple-300">{clan.members?.length || 0}</span>
-              </div>
-              <div className="flex justify-between text-purple-200/80">
-                <span>Общий опыт</span>
-                <span className="text-purple-300">{(clan.total_xp || 0).toLocaleString()}</span>
-              </div>
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-12">
+          <div className="panel-base panel-purple p-6">
+            <div className="flex items-center gap-2 mb-3">
+              <Crown className="w-5 h-5 text-purple-400" />
+              <h2 className="text-purple-300">Клан</h2>
             </div>
-          ) : (
-            <ClanCreationPanel onClanCreated={loadData} />
-          )}
-        </div>
+            {clan ? (
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between text-purple-200/80">
+                  <span>Название</span>
+                  <span className="text-purple-300">{clan.name}</span>
+                </div>
+                <div className="flex justify-between text-purple-200/80">
+                  <span>Уровень клана</span>
+                  <span className="text-purple-300">{clan.level || 1}</span>
+                </div>
+                <div className="flex justify-between text-purple-200/80">
+                  <span>Участники</span>
+                  <span className="text-purple-300">{clan.members?.length || 0}</span>
+                </div>
+                <div className="flex justify-between text-purple-200/80">
+                  <span>Общий опыт</span>
+                  <span className="text-purple-300">{(clan.total_xp || 0).toLocaleString()}</span>
+                </div>
+              </div>
+            ) : (
+              <ClanCreationPanel onClanCreated={loadData} />
+            )}
+          </div>
 
-        <div className="panel-base panel-teal p-6">
-          <div className="flex items-center gap-2 mb-3">
-            <Crown className="w-5 h-5 text-purple-400" />
-            <h2 className="text-purple-300">Информация о вашем клане</h2>
-          </div>
-          {clan ? (
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-3">
-                  <p className="text-xs text-purple-200/60">Уровень</p>
-                  <p className="text-lg text-purple-200">{clan.level || 1}</p>
+          <div className="panel-base panel-teal p-6">
+            <div className="flex items-center gap-2 mb-3">
+              <Crown className="w-5 h-5 text-purple-400" />
+              <h2 className="text-purple-300">Информация о вашем клане</h2>
+            </div>
+            {clan ? (
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-3">
+                    <p className="text-xs text-purple-200/60">Уровень</p>
+                    <p className="text-lg text-purple-200">{clan.level || 1}</p>
+                  </div>
+                  <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-3">
+                    <p className="text-xs text-purple-200/60">Общий опыт</p>
+                    <p className="text-lg text-purple-200">{(clan.total_xp || 0).toLocaleString()}</p>
+                  </div>
                 </div>
-                <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-3">
-                  <p className="text-xs text-purple-200/60">Общий опыт</p>
-                  <p className="text-lg text-purple-200">{(clan.total_xp || 0).toLocaleString()}</p>
-                </div>
-              </div>
-              <div>
-                <p className="text-xs text-purple-200/60 mb-2">Участники</p>
-                <div className="space-y-2">
-                  {clan.members?.length ? (
-                    clan.members.map((member) => (
-                      <div
-                        key={member.id}
-                        className="flex items-center justify-between rounded-lg border border-purple-600/20 bg-slate-950/40 px-3 py-2"
-                      >
-                        <div className="min-w-0">
-                          <p className="text-sm text-purple-200 truncate">{member.username}</p>
-                          <p className="text-xs text-purple-200/50">Уровень {member.level}</p>
+                <div>
+                  <p className="text-xs text-purple-200/60 mb-2">Участники</p>
+                  <div className="space-y-2">
+                    {clan.members?.length ? (
+                      clan.members.map((member) => (
+                        <div
+                          key={member.id}
+                          className="flex items-center justify-between rounded-lg border border-purple-600/20 bg-slate-950/40 px-3 py-2"
+                        >
+                          <div className="min-w-0">
+                            <p className="text-sm text-purple-200 truncate">{member.username}</p>
+                            <p className="text-xs text-purple-200/50">Уровень {member.level}</p>
+                          </div>
+                          <span className="text-xs text-purple-200/60">{member.contribution} XP</span>
                         </div>
-                        <span className="text-xs text-purple-200/60">{member.contribution} XP</span>
+                      ))
+                    ) : (
+                      <div className="text-center py-4 text-purple-200/40 text-sm">
+                        Пока нет участников
                       </div>
-                    ))
-                  ) : (
-                    <div className="text-center py-4 text-purple-200/40 text-sm">
-                      Пока нет участников
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            <div className="text-center py-6 text-purple-200/40 text-sm">
-              Вы еще не состоите в клане
-            </div>
-          )}
+            ) : (
+              <div className="text-center py-6 text-purple-200/40 text-sm">
+                Вы еще не состоите в клане
+              </div>
+            )}
+          </div>
         </div>
 
         {clanQuests.length > 0 && (
