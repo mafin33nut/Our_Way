@@ -32,15 +32,12 @@ h3 {
 }
 
 @layer components {
-  .panel-comment {
-    font-family: 'Cinzel', 'Trajan Pro', 'Georgia', serif;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.9);
-    text-shadow: 0 2px 6px rgba(15, 23, 42, 0.8);
-    margin-bottom: 0.5rem;
+  .panel-caption {
+    @apply text-white/90 text-sm tracking-wide;
+    font-family: "Trebuchet MS", "Segoe UI", Tahoma, sans-serif;
+    text-shadow: 0 2px 8px rgba(15, 23, 42, 0.9);
   }
+
   .panel-base {
     @apply rounded-xl border-2 bg-gradient-to-b from-slate-900/80 to-slate-950/90 shadow-xl backdrop-blur-sm;
     box-shadow:
