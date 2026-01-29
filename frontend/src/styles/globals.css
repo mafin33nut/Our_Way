@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&display=swap');
 * {
   margin: 0;
   padding: 0;
@@ -33,6 +32,15 @@ h3 {
 }
 
 @layer components {
+  .panel-comment {
+    font-family: 'Cinzel', 'Trajan Pro', 'Georgia', serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 2px 6px rgba(15, 23, 42, 0.8);
+    margin-bottom: 0.5rem;
+  }
   .panel-base {
     @apply rounded-xl border-2 bg-gradient-to-b from-slate-900/80 to-slate-950/90 shadow-xl backdrop-blur-sm;
     box-shadow:
@@ -101,10 +109,5 @@ h3 {
   .panel-red {
     @apply border-red-500/60;
     --panel-accent: rgba(248, 113, 113, 0.65);
-  }
-
-  .panel-caption {
-    font-family: 'Cinzel', serif;
-    letter-spacing: 0.08em;
   }
 }

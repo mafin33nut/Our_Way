@@ -150,48 +150,51 @@ export function HomePage() {
       <div className="relative z-10">
         <div className="max-w-[1200px] ml-auto mr-24 px-6 py-12 pb-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            <div className="lg:col-span-8 space-y-6">
-              <div className="space-y-3">
-                <p className="panel-caption text-white text-sm font-semibold uppercase">Профиль героя</p>
+            <div className="lg:col-span-8 space-y-8">
+              <div>
+                <p className="panel-comment">Профиль героя</p>
                 <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
               </div>
-              <div className="space-y-3">
-                <p className="panel-caption text-white text-sm font-semibold uppercase">Выбор фокуса</p>
+              <div>
+                <p className="panel-comment">Фокус развития</p>
                 <FocusSelector currentFocus={user.current_focus || undefined} onSelectFocus={handleSelectFocus} loading={generatingQuests} />
               </div>
-              <div className="space-y-3">
-                <p className="panel-caption text-white text-sm font-semibold uppercase">Ваши задания</p>
+              <div>
+                <p className="panel-comment">Активные задания</p>
                 <QuestList quests={quests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} onTimerStop={handleTimerStop} />
               </div>
               {settings.showActivities && (
-                <div className="space-y-3">
-                  <p className="panel-caption text-white text-sm font-semibold uppercase">Активность</p>
+                <div>
+                  <p className="panel-comment">Лента активности</p>
                   <ActivityFeed activities={activities} />
                 </div>
               )}
-              <div className="space-y-3">
-                <p className="panel-caption text-white text-sm font-semibold uppercase">История завершений</p>
+              <div>
+                <p className="panel-comment">История выполнения</p>
                 <TaskHistoryPanel quests={quests} />
               </div>
-              <div className="space-y-3">
-                <p className="panel-caption text-white text-sm font-semibold uppercase">Расписание выполнения</p>
+              <div>
+                <p className="panel-comment">Расписание задач</p>
                 <TaskSchedulePanel quests={quests} />
               </div>
             </div>
-            <div className="lg:col-span-4 space-y-6">
+            <div className="lg:col-span-4 space-y-8">
               {settings.showFriends && (
-                <div className="space-y-3">
-                  <p className="panel-caption text-white text-sm font-semibold uppercase">Друзья</p>
-                  {friends.length > 0 ? (
+                friends.length > 0 ? (
+                  <div>
+                    <p className="panel-comment">Друзья рядом</p>
                     <FriendsList friends={friends} />
-                  ) : (
+                  </div>
+                ) : (
+                  <div>
+                    <p className="panel-comment">Новые союзники</p>
                     <FriendSearchPanel onFriendAdded={loadData} />
-                  )}
-                </div>
+                  </div>
+                )
               )}
               {friends.length > 0 && (
-                <div className="space-y-3">
-                  <p className="panel-caption text-white text-sm font-semibold uppercase">Все друзья</p>
+                <div>
+                  <p className="panel-comment">Все союзники</p>
                   <AllFriendsPanel friends={friends} />
                 </div>
               )}
