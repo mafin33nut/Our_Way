@@ -3,7 +3,7 @@ const FOOTER_IMAGE_URL =
 
 export function FooterArt() {
   return (
-    <div className="mt-64 flex justify-center">
+    <div className="mt-32 flex justify-center">
       <img
         src={FOOTER_IMAGE_URL}
         alt="Fantasy art"
