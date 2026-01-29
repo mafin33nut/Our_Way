@@ -148,7 +148,7 @@ export function HomePage() {
         </div>
       )}
       <div className="relative z-10">
-        <div className="max-w-[1680px] ml-auto mr-6 px-6 py-12 pb-24">
+        <div className="max-w-[1680px] mx-auto px-6 py-12 pb-24">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_420px] gap-10">
             <div className="flex flex-col items-center space-y-[128px]">
               <div className="w-full max-w-[780px]">

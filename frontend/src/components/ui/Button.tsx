@@ -17,7 +17,7 @@ export function Button({
     primary: 'bg-amber-300 text-slate-900 hover:bg-amber-400 shadow-sm',
     secondary: 'bg-slate-300 text-slate-900 hover:bg-slate-400 border border-slate-400/60',
     ghost: 'text-slate-700 hover:bg-slate-200/60',
-    orange: 'bg-orange-300 text-slate-900 hover:bg-orange-400 shadow-sm',
+    orange: 'bg-orange-500/70 text-slate-900 hover:bg-orange-500/80 shadow-sm',
     darkOrange: 'bg-orange-300/80 text-slate-900 hover:bg-orange-400/80 shadow-sm',
   };
   const sizeStyles = {
