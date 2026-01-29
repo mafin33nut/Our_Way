@@ -43,19 +43,34 @@ export function Header() {
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border ${
+                  className={`flex items-center gap-3 px-3 py-2 rounded-lg border ${
                     isLight
                       ? 'bg-amber-50 border-amber-200'
                       : 'bg-slate-800/50 border-amber-600/30'
                   }`}
                 >
-                  <User className={`w-4 h-4 ${isLight ? 'text-amber-600' : 'text-amber-400'}`} />
-                  <div>
+                  <Link to="/profile" className="flex items-center gap-2">
+                    {user.avatar ? (
+                      <img
+                        src={user.avatar}
+                        alt={user.username}
+                        className="w-9 h-9 rounded-full object-cover border border-amber-400/60"
+                      />
+                    ) : (
+                      <div className="w-9 h-9 rounded-full bg-slate-700/70 border border-amber-400/60 flex items-center justify-center text-xs text-amber-100">
+                        {user.username.slice(0, 1).toUpperCase()}
+                      </div>
+                    )}
+                  </Link>
+                  <div className="min-w-0">
                     <p className={`text-sm ${isLight ? 'text-amber-900' : 'text-amber-200'}`}>
                       {user.username}
                     </p>
                     <p className={`text-xs ${isLight ? 'text-amber-600' : 'text-amber-200/60'}`}>
-                      Уровень {user.level}
+                      Уровень {user.level} · {user.xp} XP
+                    </p>
+                    <p className={`text-xs ${isLight ? 'text-amber-600/80' : 'text-amber-200/50'}`}>
+                      Заданий выполнено: {user.total_quests_completed}
                     </p>
                   </div>
                 </div>

@@ -9,6 +9,7 @@ import { SettingsPage } from './components/pages/SettingsPage';
 import { ClansPage } from './components/pages/ClansPage';
 import { LeadersPage } from './components/pages/LeadersPage';
 import { AchievementsPage } from './components/pages/AchievementsPage';
+import { UserCustomizationPage } from './components/pages/UserCustomizationPage';
 function App() {
   return (
     <AuthProvider>
@@ -67,6 +68,17 @@ function App() {
                   <>
                     <Header />
                     <AchievementsPage />
+                  </>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <>
+                    <Header />
+                    <UserCustomizationPage />
                   </>
                 </PrivateRoute>
               }

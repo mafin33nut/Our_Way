@@ -2,6 +2,8 @@ export interface User {
   id: number;
   username: string;
   email: string;
+  avatar?: string | null;
+  bio?: string;
   level: number;
   xp: number;
   xp_to_next_level: number;
