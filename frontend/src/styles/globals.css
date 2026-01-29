@@ -33,7 +33,7 @@ h3 {
 
 @layer components {
   .panel-base {
-    @apply rounded-xl border-2 bg-slate-900/80 shadow-xl backdrop-blur-sm;
+    @apply rounded-xl border-2 bg-slate-900/60 shadow-xl backdrop-blur-sm;
   }
 
   .panel-purple {
