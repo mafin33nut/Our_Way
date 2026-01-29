@@ -42,36 +42,36 @@ h3 {
   }
 
   .panel-base {
-    @apply rounded-xl bg-white shadow-lg;
+    @apply rounded-xl border-2 bg-gradient-to-b from-slate-950/90 via-purple-950/70 to-slate-950/95 shadow-xl backdrop-blur-sm;
     position: relative;
   }
 
 
   .panel-purple {
-    @apply border-transparent;
+    @apply border-purple-800/70;
   }
 
   .panel-orange {
-    @apply border-transparent;
+    @apply border-orange-500/70;
   }
 
   .panel-teal {
-    @apply border-transparent;
+    @apply border-orange-400/40;
   }
 
   .panel-rose {
-    @apply border-transparent;
+    @apply border-orange-500/50;
   }
 
   .panel-sky {
-    @apply border-transparent;
+    @apply border-purple-700/60;
   }
 
   .panel-lime {
-    @apply border-transparent;
+    @apply border-orange-400/45;
   }
 
   .panel-red {
-    @apply border-transparent;
+    @apply border-orange-600/55;
   }
 }
