@@ -38,7 +38,7 @@ export function FriendSearchPanel({ onFriendAdded }: FriendSearchPanelProps) {
     setAddingFriend(userId);
     setError('');
     try {
-      await socialAPI.addFriend(userId);
+      await socialAPI.addFriend(Number(userId));
       setSearchResults((prev) => prev.filter((u) => u.id !== userId));
       onFriendAdded();
     } catch (err: any) {

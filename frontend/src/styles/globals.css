@@ -38,6 +38,16 @@ h3 {
       0 18px 45px rgba(15, 23, 42, 0.55),
       inset 0 1px 0 rgba(255, 255, 255, 0.06),
       inset 0 0 30px rgba(15, 23, 42, 0.45);
+    position: relative;
+  }
+
+  .panel-base::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(168, 85, 247, 0.15);
+    pointer-events: none;
   }
 
   .panel-purple {
