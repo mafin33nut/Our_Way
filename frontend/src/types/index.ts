@@ -104,21 +104,6 @@ export interface CustomizationSettings {
 }
 export const BACKGROUND_OPTIONS = [
   {
-    id: 'castle',
-    name: 'Замок',
-    url: 'https://images.unsplash.com/photo-1763446365107-6b35499f487c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYW50YXN5JTIwY2FzdGxlJTIwbGFuZHNjYXBlfGVufDF8fHx8MTc2ODM0OTUzNXww&ixlib=rb-4.1.0&q=80&w=1080',
-  },
-  {
-    id: 'forest',
-    name: 'Волшебный лес',
-    url: 'https://images.unsplash.com/photo-1675611559364-4b3e04347077?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYW50YXN5JTIwZm9yZXN0JTIwbWFnaWN8ZW58MXx8fHwxNzY4Mzk3NDkwfDA&ixlib=rb-4.1.0&q=80&w=1080',
-  },
-  {
-    id: 'mountain',
-    name: 'Драконьи горы',
-    url: 'https://images.unsplash.com/photo-1655432223749-9e902b33ed93?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYW50YXN5JTIwbW91bnRhaW4lMjBkcmFnb258ZW58MXx8fHwxNzY4Mzk3NDkwfDA&ixlib=rb-4.1.0&q=80&w=1080',
-  },
-  {
     id: 'kingdom',
     name: 'Королевство',
     url: 'https://wallpaper.forfun.com/fetch/08/08fa3e53a5ab6d9fdc5edf4871130811.jpeg',
