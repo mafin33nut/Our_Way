@@ -84,8 +84,9 @@ export function HomePage() {
     setGeneratingQuests(true);
     setGenerateError(null);
     try {
-      const newQuests = await questsAPI.generateByFocus(focus);
-      setQuests(newQuests);
+      await questsAPI.generateByFocus(focus);
+      const refreshed = await questsAPI.getAll();
+      setQuests(refreshed);
       await refreshUser();
     } catch (error) {
       if (axios.isAxiosError(error)) {

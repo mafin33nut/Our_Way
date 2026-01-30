@@ -248,7 +248,12 @@ class QuestViewSet(viewsets.ModelViewSet):
             ],
         }
 
-        items = mapping.get(focus, [('Задание по фокусу', 'Описание', 'easy', 10)])
+        items = mapping.get(focus)
+        if not items:
+            return Response(
+                {'detail': 'Неизвестный фокус.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         selection_size = min(4, len(items))
         items_to_create = random.sample(items, k=selection_size) if items else []
         created = []
