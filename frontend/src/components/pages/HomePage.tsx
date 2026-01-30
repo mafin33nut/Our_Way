@@ -90,8 +90,16 @@ export function HomePage() {
       await refreshUser();
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const detail = (error.response?.data as { detail?: string } | undefined)?.detail;
-        setGenerateError(detail || 'Не удалось сгенерировать задания.');
+        const data = error.response?.data as
+          | { detail?: string; message?: string }
+          | string
+          | undefined;
+        const detail =
+          typeof data === 'string'
+            ? data
+            : data?.detail || data?.message || JSON.stringify(data);
+        const status = error.response?.status;
+        setGenerateError(detail ? `Ошибка ${status ?? ''}: ${detail}`.trim() : 'Не удалось сгенерировать задания.');
       } else {
         setGenerateError('Не удалось сгенерировать задания.');
       }

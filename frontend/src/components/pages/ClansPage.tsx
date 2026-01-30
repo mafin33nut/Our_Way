@@ -60,7 +60,17 @@ export function ClansPage() {
       setClanQuests(refreshed);
     } catch (error) {
       console.error('Failed to generate clan quests:', error);
-      setGenerateError('Не удалось сгенерировать задания для клана.');
+      if ((error as any)?.response) {
+        const data = (error as any).response?.data;
+        const detail =
+          typeof data === 'string'
+            ? data
+            : data?.detail || data?.message || JSON.stringify(data);
+        const status = (error as any).response?.status;
+        setGenerateError(detail ? `Ошибка ${status ?? ''}: ${detail}`.trim() : 'Не удалось сгенерировать задания для клана.');
+      } else {
+        setGenerateError('Не удалось сгенерировать задания для клана.');
+      }
     } finally {
       setGeneratingQuests(false);
     }
