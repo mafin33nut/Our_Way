@@ -2,6 +2,7 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.utils import timezone
 from .models import Clan, ClanMember, ClanQuest, ClanQuestParticipant
 from .serializers import ClanSerializer, ClanMemberSerializer, ClanQuestSerializer
 import random
@@ -95,7 +96,7 @@ class ClanQuestViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         clan_ids = user.clan_memberships.values_list('clan_id', flat=True)
-        return self.queryset.filter(clan_id__in=clan_ids)
+        return self.queryset.filter(clan_id__in=clan_ids, deleted_at__isnull=True)
 
     @action(detail=False, methods=['post'])
     def generate(self, request):
@@ -107,6 +108,17 @@ class ClanQuestViewSet(viewsets.ModelViewSet):
         member_count = clan.members.count()
         if member_count == 0:
             return Response({'detail': 'В клане нет участников.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        active_count = ClanQuest.objects.filter(
+            clan=clan,
+            completed=False,
+            deleted_at__isnull=True,
+        ).count()
+        if active_count >= 8:
+            return Response(
+                {'detail': 'Нельзя генерировать задания при 8+ активных заданиях.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         tasks = [
             ('Видеозвонок с близким', 'Обсудите планы и эмоции (60 мин).', 'epic', 100),
@@ -159,7 +171,7 @@ class ClanQuestViewSet(viewsets.ModelViewSet):
             ('Организация документов', 'Скан, папки, бэкап (90 мин).', 'legendary', 150),
         ]
 
-        selection = random.sample(tasks, k=min(4, len(tasks)))
+        selection = random.sample(tasks, k=min(1, len(tasks)))
         created = []
         for title, description, difficulty, xp_reward in selection:
             created.append(ClanQuest.objects.create(
@@ -199,3 +211,20 @@ class ClanQuestViewSet(viewsets.ModelViewSet):
             quest.completed = True
         quest.save(update_fields=['total_progress', 'completed'])
         return Response(ClanQuestSerializer(quest).data)
+
+    def destroy(self, request, *args, **kwargs):
+        quest = self.get_object()
+        today = timezone.now().date()
+        deleted_today = ClanQuest.objects.filter(
+            deleted_by=request.user,
+            deleted_at__date=today,
+        ).count()
+        if deleted_today >= 5:
+            return Response(
+                {'detail': 'Лимит удаления клановых заданий на сегодня достигнут (5).'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        quest.deleted_at = timezone.now()
+        quest.deleted_by = request.user
+        quest.save(update_fields=['deleted_at', 'deleted_by'])
+        return Response(status=status.HTTP_204_NO_CONTENT)

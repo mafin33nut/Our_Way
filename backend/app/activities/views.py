@@ -179,6 +179,17 @@ class QuestViewSet(viewsets.ModelViewSet):
         """
         focus = request.data.get('focus')
         today = timezone.now().date()
+        now = timezone.now()
+        active_count = Quest.objects.filter(
+            user=request.user,
+            deleted_at__isnull=True,
+            completed=False,
+        ).filter(models.Q(expires_at__isnull=True) | models.Q(expires_at__gt=now)).count()
+        if active_count >= 8:
+            return Response(
+                {'detail': 'Нельзя генерировать задания при 8+ активных заданиях.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         if Quest.objects.filter(user=request.user, created_at__date=today).exists():
             return Response(
                 {'detail': 'Новые задания можно генерировать только один раз в день.'},
@@ -254,7 +265,7 @@ class QuestViewSet(viewsets.ModelViewSet):
                 {'detail': 'Неизвестный фокус.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        selection_size = min(4, len(items))
+        selection_size = min(1, len(items))
         items_to_create = random.sample(items, k=selection_size) if items else []
         created = []
 
@@ -320,9 +331,9 @@ class QuestViewSet(viewsets.ModelViewSet):
             user=request.user,
             deleted_at__date=today,
         ).count()
-        if deleted_today >= 3:
+        if deleted_today >= 5:
             return Response(
-                {'detail': 'Лимит удаления заданий на сегодня достигнут (3).'},
+                {'detail': 'Лимит удаления заданий на сегодня достигнут (5).'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         quest.deleted_at = timezone.now()

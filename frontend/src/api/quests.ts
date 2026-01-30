@@ -53,6 +53,10 @@ export const clanQuestsAPI = {
     const response = await apiClient.post<ClanQuest[]>(`/api/clans/quests/generate/`);
     return response.data;
   },
+
+  delete: async (id: number): Promise<void> => {
+    await apiClient.delete(`/api/clans/quests/${id}/`);
+  },
 };
 export const timersAPI = {
   startTimer: async (activityId?: number) => {

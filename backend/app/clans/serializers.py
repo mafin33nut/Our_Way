@@ -69,7 +69,7 @@ class ClanQuestSerializer(serializers.ModelSerializer):
     class Meta: 
         model = ClanQuest 
         fields = ['id', 'clan', 'title', 'description', 'difficulty', 'xp_reward', 
-                  'required_progress', 'total_progress', 'completed', 'expires_at', 'participants']
+                  'required_progress', 'total_progress', 'completed', 'expires_at', 'participants', 'deleted_at']
     
     def get_participants(self, obj):
         from app.clans.models import ClanMember

@@ -5,9 +5,10 @@ import { useState } from 'react';
 interface ClanQuestCardProps {
   quest: ClanQuest;
   onContribute: (id: number, contribution: number) => void;
+  onDelete: (id: number) => void;
   currentUsername: string;
 }
-export function ClanQuestCard({ quest, onContribute, currentUsername }: ClanQuestCardProps) {
+export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }: ClanQuestCardProps) {
   const [contributionAmount, setContributionAmount] = useState(1);
   const [isContributing, setIsContributing] = useState(false);
   const progressPercentage = (quest.total_progress / quest.required_progress) * 100;
@@ -129,6 +130,11 @@ export function ClanQuestCard({ quest, onContribute, currentUsername }: ClanQues
           </Button>
         </div>
       )}
+      <div className="mt-3">
+        <Button variant="ghost" size="sm" onClick={() => onDelete(quest.id)}>
+          Удалить
+        </Button>
+      </div>
       {userParticipation && (
         <div className="mt-3 p-2 bg-purple-900/20 rounded border border-purple-600/30">
           <p className="text-purple-200 text-sm">

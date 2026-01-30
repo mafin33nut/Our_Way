@@ -33,6 +33,14 @@ class ClanQuest(models.Model):
     total_progress = models.PositiveIntegerField(default=0)
     completed = models.BooleanField(default=False)
     expires_at = models.DateTimeField(null=True, blank=True)
+    deleted_at = models.DateTimeField(null=True, blank=True)
+    deleted_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='deleted_clan_quests',
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

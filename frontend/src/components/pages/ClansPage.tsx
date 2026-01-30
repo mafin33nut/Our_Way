@@ -51,6 +51,15 @@ export function ClansPage() {
     }
   };
 
+  const handleDeleteClanQuest = async (id: number) => {
+    try {
+      await clanQuestsAPI.delete(id);
+      setClanQuests((prev) => prev.filter((cq) => cq.id !== id));
+    } catch (error) {
+      console.error('Failed to delete clan quest:', error);
+    }
+  };
+
   const handleGenerateClanQuests = async () => {
     setGeneratingQuests(true);
     setGenerateError(null);
@@ -187,6 +196,7 @@ export function ClansPage() {
             <ClanQuestList
               quests={clanQuests}
               onContribute={handleClanQuestContribute}
+              onDelete={handleDeleteClanQuest}
               currentUsername={user.username}
             />
           </div>
