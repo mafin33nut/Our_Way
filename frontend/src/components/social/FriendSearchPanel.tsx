@@ -65,7 +65,7 @@ export function FriendSearchPanel({ onFriendAdded }: FriendSearchPanelProps) {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-              placeholder=""
+              placeholder="Введите имя пользователя"
               className="w-full pl-10 pr-4 py-2 rounded-lg border bg-slate-950/50 border-purple-600/30 text-purple-100 placeholder-purple-200/30 focus:outline-none focus:border-purple-500 transition-colors"
             />
           </div>

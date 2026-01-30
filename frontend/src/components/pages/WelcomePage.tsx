@@ -64,7 +64,9 @@ export function WelcomePage() {
             </Button>
           </div>
         </div>
-        <FooterArt />
+        <div className="mt-24">
+          <FooterArt />
+        </div>
       </div>
     </div>
   );
