@@ -13,7 +13,6 @@ import { FriendsList } from '../../components/social/FriendsList';
 import { ActivityFeed } from '../../components/social/ActivityFeed';
 import { FriendSearchPanel } from '../../components/social/FriendSearchPanel';
 import { AllFriendsPanel } from '../../components/social/AllFriendsPanel';
-import { FooterArt } from '../../components/layout/FooterArt';
 import { isToday } from '../../utils/time';
 import { Loader } from '../../components/ui/Loader';
 
@@ -229,8 +228,6 @@ export function HomePage() {
               )}
             </div>
           </div>
-
-          <FooterArt />
 
         </div>
 

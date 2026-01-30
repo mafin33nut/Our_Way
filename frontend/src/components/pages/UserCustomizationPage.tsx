@@ -5,7 +5,6 @@ import { useAuth } from '../../hooks/useAuth';
 import { authAPI } from '../../api/auth';
 import { Button } from '../ui/Button';
 import { resolveMediaUrl } from '../../utils/media';
-import { FooterArt } from '../layout/FooterArt';
 
 export function UserCustomizationPage() {
   const { user, refreshUser } = useAuth();
@@ -125,7 +124,6 @@ export function UserCustomizationPage() {
             </div>
           </div>
         </div>
-        <FooterArt />
       </div>
     </div>
   );
