@@ -44,6 +44,7 @@ h3 {
   .panel-base {
     @apply rounded-xl border-2 bg-gradient-to-b from-slate-950/90 via-purple-950/70 to-slate-950/95 shadow-xl backdrop-blur-sm;
     position: relative;
+    padding: 3rem !important;
   }
 
 

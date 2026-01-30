@@ -20,14 +20,14 @@ export function QuestCard({ quest, onComplete, onDelete, onExpire, onTimerStop }
   const [processingTimer, setProcessingTimer] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const [expired, setExpired] = useState(false);
+  const [acceptedAt, setAcceptedAt] = useState<string | null>(quest.accepted_at ?? null);
   const taskDurationSeconds = (quest.duration_minutes ?? 60) * 60;
-  const minCompleteSeconds = 3 * 60;
+  const minCompleteSeconds = 5 * 60;
 
   useEffect(() => {
-    if (quest.accepted_at) {
-      setAccepted(true);
-    }
-  }, [quest.accepted_at]);
+    setAccepted(!!quest.accepted_at);
+    setAcceptedAt(quest.accepted_at ?? null);
+  }, [quest.accepted_at, quest.expires_at]);
 
   useEffect(() => {
     return () => {
@@ -43,11 +43,6 @@ export function QuestCard({ quest, onComplete, onDelete, onExpire, onTimerStop }
       setProcessingTimer(true);
       const timer = await timersAPI.startTimer();
       setServerTimerId(timer.id);
-      setTimerRunning(true);
-      setElapsed(0);
-      timerIntervalRef.current = window.setInterval(() => {
-        setElapsed((s) => s + 1);
-      }, 1000);
     } catch (err) {
       console.error('Failed to start timer', err);
     } finally {
@@ -87,18 +82,62 @@ export function QuestCard({ quest, onComplete, onDelete, onExpire, onTimerStop }
     }
   };
 
+  const computeElapsedSeconds = (start: string | null) => {
+    if (!start) {
+      return 0;
+    }
+    const startMs = new Date(start).getTime();
+    if (Number.isNaN(startMs)) {
+      return 0;
+    }
+    return Math.max(0, Math.floor((Date.now() - startMs) / 1000));
+  };
+
   useEffect(() => {
-    if (!timerRunning) {
+    if (!acceptedAt || quest.completed) {
       return;
     }
-    if (elapsed >= taskDurationSeconds) {
-      stopTimer();
-      if (!quest.completed && !expired) {
+    const initialElapsed = computeElapsedSeconds(acceptedAt);
+    setElapsed(initialElapsed);
+
+    if (initialElapsed >= taskDurationSeconds) {
+      setTimerRunning(false);
+      if (!expired) {
         setExpired(true);
         onExpire(quest.id);
       }
+      return;
     }
-  }, [elapsed, taskDurationSeconds, timerRunning, quest.completed, expired, onExpire, quest.id, stopTimer]);
+
+    setTimerRunning(true);
+    if (timerIntervalRef.current !== null) {
+      window.clearInterval(timerIntervalRef.current);
+      timerIntervalRef.current = null;
+    }
+
+    timerIntervalRef.current = window.setInterval(() => {
+      const nextElapsed = computeElapsedSeconds(acceptedAt);
+      setElapsed(nextElapsed);
+      if (nextElapsed >= taskDurationSeconds) {
+        if (timerIntervalRef.current !== null) {
+          window.clearInterval(timerIntervalRef.current);
+          timerIntervalRef.current = null;
+        }
+        setTimerRunning(false);
+        if (!quest.completed && !expired) {
+          setExpired(true);
+          onExpire(quest.id);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      if (timerIntervalRef.current !== null) {
+        window.clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
+      }
+    };
+  }, [acceptedAt, taskDurationSeconds, quest.completed, expired, onExpire, quest.id]);
 
   const handleAcceptTask = async () => {
     if (accepted) {
@@ -108,6 +147,7 @@ export function QuestCard({ quest, onComplete, onDelete, onExpire, onTimerStop }
       const updated = await questsAPI.accept(quest.id);
       if (updated.accepted_at) {
         setAccepted(true);
+        setAcceptedAt(updated.accepted_at ?? null);
       }
       await startTimer();
     } catch (err) {

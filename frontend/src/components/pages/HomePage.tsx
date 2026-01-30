@@ -14,6 +14,7 @@ import { FriendsList } from '../../components/social/FriendsList';
 import { ActivityFeed } from '../../components/social/ActivityFeed';
 import { FriendSearchPanel } from '../../components/social/FriendSearchPanel';
 import { AllFriendsPanel } from '../../components/social/AllFriendsPanel';
+import { FooterArt } from '../../components/layout/FooterArt';
 import { isToday } from '../../utils/time';
 import { Loader } from '../../components/ui/Loader';
 
@@ -252,6 +253,10 @@ export function HomePage() {
             </div>
           </div>
 
+          <FooterArt
+            className="mt-24 flex justify-end pr-6"
+            imageClassName="w-full max-w-[420px] rounded-xl shadow-lg border border-white/10"
+          />
         </div>
 
         <div className={`mt-12 pb-6 text-center ${isLight ? 'text-amber-600/60' : 'text-amber-200/40'}`}>
