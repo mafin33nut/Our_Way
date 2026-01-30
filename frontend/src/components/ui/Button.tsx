@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  variant?: 'primary' | 'secondary' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'orange' | 'darkOrange' | 'softAmber';
   size?: 'sm' | 'md' | 'lg';
 }
 export function Button({
@@ -14,9 +14,12 @@ export function Button({
   const baseStyles = 'rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium';
   
   const variantStyles = {
-    primary: 'bg-gradient-to-r from-amber-600 to-amber-500 text-white hover:from-amber-700 hover:to-amber-600 shadow-lg hover:shadow-xl',
-    secondary: 'bg-slate-700 text-amber-100 hover:bg-slate-600 border-2 border-amber-600/30',
-    ghost: 'text-amber-300 hover:bg-slate-800/50',
+    primary: 'bg-amber-300 text-slate-900 hover:bg-amber-400 shadow-sm',
+    secondary: 'bg-slate-300 text-slate-900 hover:bg-slate-400 border border-slate-400/60',
+    ghost: 'text-slate-700 hover:bg-slate-200/60',
+    orange: 'bg-orange-500/70 text-slate-900 hover:bg-orange-500/80 shadow-sm',
+    darkOrange: 'bg-orange-300/80 text-slate-900 hover:bg-orange-400/80 shadow-sm',
+    softAmber: 'bg-amber-200/80 text-slate-900 hover:bg-amber-200 shadow-sm',
   };
   const sizeStyles = {
     sm: 'px-3 py-1.5 text-sm',

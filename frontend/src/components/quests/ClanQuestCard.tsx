@@ -5,9 +5,10 @@ import { useState } from 'react';
 interface ClanQuestCardProps {
   quest: ClanQuest;
   onContribute: (id: number, contribution: number) => void;
+  onDelete: (id: number) => void;
   currentUsername: string;
 }
-export function ClanQuestCard({ quest, onContribute, currentUsername }: ClanQuestCardProps) {
+export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }: ClanQuestCardProps) {
   const [contributionAmount, setContributionAmount] = useState(1);
   const [isContributing, setIsContributing] = useState(false);
   const progressPercentage = (quest.total_progress / quest.required_progress) * 100;
@@ -19,6 +20,9 @@ export function ClanQuestCard({ quest, onContribute, currentUsername }: ClanQues
     setIsContributing(false);
   };
   const getDaysLeft = () => {
+    if (!quest.expires_at) {
+      return null;
+    }
     const now = new Date();
     const expiresAt = new Date(quest.expires_at);
     const diffTime = expiresAt.getTime() - now.getTime();
@@ -99,12 +103,14 @@ export function ClanQuestCard({ quest, onContribute, currentUsername }: ClanQues
           </p>
         )}
       </div>
-      <div className="flex items-center gap-2 mb-4 p-3 bg-slate-800/50 rounded border border-purple-600/20">
-        <Clock className="w-4 h-4 text-purple-400" />
-        <span className="text-sm text-purple-200/80">
-          Осталось дней: <span className="text-purple-300">{getDaysLeft()}</span>
-        </span>
-      </div>
+      {getDaysLeft() !== null && (
+        <div className="flex items-center gap-2 mb-4 p-3 bg-slate-800/50 rounded border border-purple-600/20">
+          <Clock className="w-4 h-4 text-purple-400" />
+          <span className="text-sm text-purple-200/80">
+            Осталось дней: <span className="text-purple-300">{getDaysLeft()}</span>
+          </span>
+        </div>
+      )}
       {!quest.completed && (
         <div className="flex items-center gap-3">
           <input
@@ -124,6 +130,11 @@ export function ClanQuestCard({ quest, onContribute, currentUsername }: ClanQues
           </Button>
         </div>
       )}
+      <div className="mt-3">
+        <Button variant="ghost" size="sm" onClick={() => onDelete(quest.id)}>
+          Удалить
+        </Button>
+      </div>
       {userParticipation && (
         <div className="mt-3 p-2 bg-purple-900/20 rounded border border-purple-600/30">
           <p className="text-purple-200 text-sm">

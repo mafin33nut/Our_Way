@@ -5,7 +5,7 @@ class Clan(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='clans_created')
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -33,10 +33,31 @@ class ClanQuest(models.Model):
     total_progress = models.PositiveIntegerField(default=0)
     completed = models.BooleanField(default=False)
     expires_at = models.DateTimeField(null=True, blank=True)
+    deleted_at = models.DateTimeField(null=True, blank=True)
+    deleted_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='deleted_clan_quests',
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.title} (clan {self.clan.name})'
+
+
+class ClanQuestParticipant(models.Model):
+    quest = models.ForeignKey(ClanQuest, on_delete=models.CASCADE, related_name='participant_entries')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='clan_quest_participations')
+    contribution = models.PositiveIntegerField(default=0)
+    contributed_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('quest', 'user')
+
+    def __str__(self):
+        return f'{self.user.username} -> {self.quest.title}'
 
 class LeaderboardEntry(models.Model):
     clan = models.OneToOneField(Clan, on_delete=models.CASCADE, related_name='leaderboard')

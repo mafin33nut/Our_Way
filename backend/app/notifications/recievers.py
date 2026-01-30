@@ -49,12 +49,12 @@ def focus_mission_deadline_notification(sender, instance: FocusMission, created,
 # ClanQuest reminders
 @receiver(post_save, sender=ClanQuest)
 def clan_quest_deadline_notification(sender, instance: ClanQuest, created, **kwargs):
-    if instance.due_date:
-        scheduled_for = instance.due_date - REMINDER_DELTA
+    if instance.expires_at:
+        scheduled_for = instance.expires_at - REMINDER_DELTA
         if scheduled_for <= timezone.now():
             scheduled_for = timezone.now()
         subject = f'Напоминание: квест "{instance.title}" клана {instance.clan.name} скоро завершится'
-        body = f'Квест "{instance.title}" в клане {instance.clan.name} имеет дедлайн {instance.due_date}.'
+        body = f'Квест "{instance.title}" в клане {instance.clan.name} имеет дедлайн {instance.expires_at}.'
         try:
             schedule_deadline_notification(instance.clan.created_by, subject, body, scheduled_for)
         except Exception:

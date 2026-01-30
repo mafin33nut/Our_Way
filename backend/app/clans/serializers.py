@@ -1,5 +1,5 @@
 from rest_framework import serializers 
-from .models import Clan, ClanMember, ClanQuest
+from .models import Clan, ClanMember, ClanQuest, ClanQuestParticipant
 from django.db.models import Sum
 
 class ClanMemberSerializer(serializers.ModelSerializer):
@@ -45,30 +45,49 @@ class ClanSerializer(serializers.ModelSerializer):
         except Exception as e:
             return 0
 
-class ClanQuestParticipantSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    username = serializers.CharField()
-    level = serializers.IntegerField()
-    contribution = serializers.IntegerField()
+class ClanQuestParticipantSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='user.id', read_only=True)
+    username = serializers.CharField(source='user.username', read_only=True)
+    level = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ClanQuestParticipant
+        fields = ['id', 'username', 'level', 'contribution']
+
+    def get_level(self, obj):
+        try:
+            from app.user.serializers import UserSerializer
+            user_data = UserSerializer(obj.user).data
+            return user_data.get('level', 1)
+        except Exception:
+            return 1
 
 class ClanQuestSerializer(serializers.ModelSerializer):
     participants = serializers.SerializerMethodField()
-    expires_at = serializers.DateTimeField(source='due_date', read_only=True)
+    expires_at = serializers.DateTimeField(read_only=True)
     
     class Meta: 
         model = ClanQuest 
         fields = ['id', 'clan', 'title', 'description', 'difficulty', 'xp_reward', 
-                  'required_progress', 'total_progress', 'completed', 'expires_at', 'participants']
+                  'required_progress', 'total_progress', 'completed', 'expires_at', 'participants', 'deleted_at']
     
     def get_participants(self, obj):
         from app.clans.models import ClanMember
-        members = ClanMember.objects.filter(clan=obj.clan)
+        members = ClanMember.objects.filter(clan=obj.clan).select_related('user')
+        existing = {
+            p.user_id: p
+            for p in ClanQuestParticipant.objects.filter(quest=obj).select_related('user')
+        }
         participants = []
         for member in members:
-            participants.append({
-                'id': member.user.id,
-                'username': member.user.username,
-                'level': getattr(member.user, 'level', 1),
-                'contribution': 0,
-            })
+            participant = existing.get(member.user_id)
+            if participant:
+                participants.append(ClanQuestParticipantSerializer(participant).data)
+            else:
+                participants.append({
+                    'id': member.user.id,
+                    'username': member.user.username,
+                    'level': getattr(member.user, 'level', 1),
+                    'contribution': 0,
+                })
         return participants

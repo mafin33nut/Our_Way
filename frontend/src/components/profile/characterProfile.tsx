@@ -1,5 +1,8 @@
 import { User } from '../../types';
-import { Sparkles, Trophy } from 'lucide-react';
+import { Sparkles, Trophy, User as UserIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Button } from '../ui/Button';
+import { resolveMediaUrl } from '../../utils/media';
 import { useCustomization } from '../../hooks/useCustomization';
 interface CharacterProfileProps {
   user: User;
@@ -10,14 +13,37 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
   const isLight = settings.theme === 'light';
   const xpPercentage = (user.xp / user.xp_to_next_level) * 100;
   return (
-    <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-teal-400/60 ring-offset-2 ring-offset-slate-900">
-      <div className="text-center mb-6">
-        <h2 className="text-purple-300">
-          {user.username}
-        </h2>
-        <p className="text-purple-200/60">
-          Авантюрист {user.level} уровня
-        </p>
+    <div className="panel-base panel-teal p-6 min-h-[260px] flex flex-col">
+      <div className="flex items-center gap-3 mb-6">
+        {resolveMediaUrl(user.avatar) ? (
+          <img
+            src={resolveMediaUrl(user.avatar) as string}
+            alt={user.username}
+            className="w-14 h-14 rounded-full object-cover border-2 border-purple-500/60"
+          />
+        ) : (
+          <div className="w-14 h-14 rounded-full bg-slate-800/70 border-2 border-purple-500/60 flex items-center justify-center text-purple-200">
+            <UserIcon className="w-6 h-6" />
+          </div>
+        )}
+        <div className="min-w-0">
+          <h2 className="text-purple-300">
+            {user.username}
+          </h2>
+          <p className="text-purple-200/60 text-sm">
+            Авантюрист {user.level} уровня
+          </p>
+          <p className="text-purple-200/50 text-xs truncate">
+            {user.bio || 'Добавьте описание в профиле'}
+          </p>
+        </div>
+      </div>
+      <div className="mb-6">
+        <Link to="/achievements">
+          <Button variant="ghost" size="sm" className="w-full">
+            Мои достижения
+          </Button>
+        </Link>
       </div>
       <div className="mb-6">
         <div className="flex justify-between text-sm mb-2 text-purple-200/80">
@@ -31,7 +57,7 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
           />
         </div>
       </div>
-      <div className="space-y-3">
+      <div className="space-y-3 mt-auto">
         <div className="flex items-center justify-between p-3 rounded-lg border bg-purple-900/20 border-purple-600/30">
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-purple-400" />

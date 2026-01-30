@@ -2,6 +2,9 @@ export interface User {
   id: number;
   username: string;
   email: string;
+  avatar?: string | null;
+  bio?: string;
+  has_seen_welcome?: boolean;
   level: number;
   xp: number;
   xp_to_next_level: number;
@@ -14,8 +17,12 @@ export interface Quest {
   description: string;
   difficulty: 'easy' | 'medium' | 'hard';
   xp_reward: number;
+  duration_minutes?: number;
   completed: boolean;
   completed_at?: string;
+  accepted_at?: string | null;
+  expires_at?: string | null;
+  deleted_at?: string | null;
   created_at: string;
   user: number;
   focus_area?: string;
@@ -35,7 +42,7 @@ export interface ClanQuest {
   required_progress: number;
   total_progress: number;
   completed: boolean;
-  expires_at: string;
+  expires_at?: string | null;
   participants: ClanQuestParticipant[];
   clan: number;
 }
@@ -87,7 +94,8 @@ export interface Clan {
 export interface Activity {
   id: number;
   type: 'quest_complete' | 'level_up' | 'friend_achievement' | 'clan_event';
-  message: string;
+  title?: string;
+  message?: string;
   timestamp: string;
   icon: string;
 }
@@ -101,29 +109,14 @@ export interface CustomizationSettings {
 }
 export const BACKGROUND_OPTIONS = [
   {
-    id: 'castle',
-    name: 'Замок',
-    url: 'https://images.unsplash.com/photo-1763446365107-6b35499f487c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYW50YXN5JTIwY2FzdGxlJTIwbGFuZHNjYXBlfGVufDF8fHx8MTc2ODM0OTUzNXww&ixlib=rb-4.1.0&q=80&w=1080',
-  },
-  {
-    id: 'forest',
-    name: 'Волшебный лес',
-    url: 'https://images.unsplash.com/photo-1675611559364-4b3e04347077?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYW50YXN5JTIwZm9yZXN0JTIwbWFnaWN8ZW58MXx8fHwxNzY4Mzk3NDkwfDA&ixlib=rb-4.1.0&q=80&w=1080',
-  },
-  {
-    id: 'mountain',
-    name: 'Драконьи горы',
-    url: 'https://images.unsplash.com/photo-1655432223749-9e902b33ed93?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYW50YXN5JTIwbW91bnRhaW4lMjBkcmFnb258ZW58MXx8fHwxNzY4Mzk3NDkwfDA&ixlib=rb-4.1.0&q=80&w=1080',
-  },
-  {
     id: 'kingdom',
     name: 'Королевство',
-    url: 'https://wallpaper.forfun.com/fetch/08/08fa3e53a5ab6d9fdc5edf4871130811.jpeg',
+    url: '/kingdom.jpg',
   },
   {
     id: 'adventure',
     name: 'Приключение',
-    url: 'https://t3.ftcdn.net/jpg/07/90/05/02/360_F_790050252_Rh1xxWcg7DxQp8uyrwyDf6VtQVaPMO9u.jpg',
+    url: '/adventure.jpg',
   },
   {
     id: 'none',

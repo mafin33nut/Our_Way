@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -28,9 +29,25 @@ class RegisterView(generics.CreateAPIView):
 
 class UserView(APIView):
     permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
 
     def get(self, request):
         serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+
+    def patch(self, request):
+        data = request.data.copy()
+        if data.get('avatar') == '':
+            data.pop('avatar', None)
+            try:
+                request.user.avatar.delete(save=False)
+            except Exception:
+                pass
+            request.user.avatar = None
+            request.user.save(update_fields=['avatar'])
+        serializer = UserSerializer(request.user, data=data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response(serializer.data)
 
 class LogoutView(APIView):

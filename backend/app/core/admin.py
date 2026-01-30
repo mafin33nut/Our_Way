@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
-from app.activities.models import Task, Achievement
+from app.achievements.models import Achievement, UserAchievement
 from app.clans.models import Clan, LeaderboardEntry
 
 User = get_user_model()
@@ -35,14 +35,14 @@ class UserAdmin(admin.ModelAdmin):
     get_points.admin_order_field = "points"  # если есть поле points, можно сортировать
 
 
-@admin.register(Task)
-class TaskAdmin(admin.ModelAdmin):
-    list_display = ("title", "points")
-
-
 @admin.register(Achievement)
 class AchievementAdmin(admin.ModelAdmin):
-    list_display = ("user", "name", "awarded_at")
+    list_display = ("name", "points", "created_by", "created_at")
+
+
+@admin.register(UserAchievement)
+class UserAchievementAdmin(admin.ModelAdmin):
+    list_display = ("user", "achievement", "unlocked_at")
 
 
 @admin.register(Clan)

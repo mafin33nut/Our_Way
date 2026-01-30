@@ -14,6 +14,20 @@ export const apiClient = axios.create({
   },
 });
 
+type PaginatedResponse<T> = {
+  count?: number;
+  next?: string | null;
+  previous?: string | null;
+  results?: T[];
+};
+
+export function unwrapListResponse<T>(data: T[] | PaginatedResponse<T> | undefined | null): T[] {
+  if (Array.isArray(data)) {
+    return data;
+  }
+  return data?.results ?? [];
+}
+
 // Расширяем тип конфигурации, чтобы добавить флаг _retry
 interface RetryableRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;

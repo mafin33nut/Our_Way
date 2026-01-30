@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Sparkles, Target, Dumbbell, BookOpen, Heart, Briefcase, Home, Users } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { FocusArea } from '../../types';
-import { useCustomization } from '../../hooks/useCustomization';
 interface FocusSelectorProps {
   currentFocus?: string;
   onSelectFocus: (focus: string) => void;
   loading?: boolean;
+  error?: string | null;
 }
 const FOCUS_AREAS: FocusArea[] = [
   {
@@ -55,17 +55,15 @@ const ICON_MAP = {
   home: Home,
   dumbbell: Dumbbell,
 };
-export function FocusSelector({ currentFocus, onSelectFocus, loading }: FocusSelectorProps) {
+export function FocusSelector({ currentFocus, onSelectFocus, loading, error }: FocusSelectorProps) {
   const [selectedFocus, setSelectedFocus] = useState<string>(currentFocus || '');
-  const { settings } = useCustomization();
-  const isLight = settings.theme === 'light';
   const handleGenerate = () => {
     if (selectedFocus) {
       onSelectFocus(selectedFocus);
     }
   };
   return (
-    <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-xl backdrop-blur-sm ring-2 ring-orange-400/60 ring-offset-2 ring-offset-slate-900">
+    <div className="panel-base panel-orange p-6">
       <div className="flex items-center gap-2 mb-4">
         <Sparkles className="w-5 h-5 text-purple-400" />
         <h2 className="text-purple-300">
@@ -119,6 +117,11 @@ export function FocusSelector({ currentFocus, onSelectFocus, loading }: FocusSel
       >
         {loading ? 'Генерация заданий...' : 'Сгенерировать задания'}
       </Button>
+      {error && (
+        <p className="text-center text-sm mt-3 text-amber-200/80">
+          {error}
+        </p>
+      )}
       {currentFocus && (
         <p className="text-center text-sm mt-3 text-purple-200/40">
           Текущий фокус: {FOCUS_AREAS.find(a => a.id === currentFocus)?.name}

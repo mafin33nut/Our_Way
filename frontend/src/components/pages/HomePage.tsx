@@ -1,17 +1,27 @@
 import { useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
 import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
-import { questsAPI, clanQuestsAPI } from '../../api/quests';
+import { questsAPI } from '../../api/quests';
 import { socialAPI } from '../../api/social';
-import { Quest, Friend, Clan, Activity, ClanQuest, BACKGROUND_OPTIONS } from '../../types';
+import { Quest, Friend, Activity, BACKGROUND_OPTIONS } from '../../types';
 import { FocusSelector } from '../../components/quests/FocusSelector';
 import { QuestList } from '../../components/quests/QuestList';
+<<<<<<< HEAD
+=======
+import { TaskHistoryPanel } from '../../components/quests/TaskHistoryPanel';
+import { TaskSchedulePanel } from '../../components/quests/TaskSchedulePanel';
+>>>>>>> 1b84e3fe32dcb5bf11705d7cdf676dd8f3451f24
 import { CharacterProfile } from '../../components/profile/characterProfile';
 import { FriendsList } from '../../components/social/FriendsList';
 import { ActivityFeed } from '../../components/social/ActivityFeed';
 import { FriendSearchPanel } from '../../components/social/FriendSearchPanel';
+<<<<<<< HEAD
 import { ClanCreationPanel } from '../../components/social/ClanCreationPanel';
 import { ClanPanel } from '../../components/social/ClanPanel';
+=======
+import { AllFriendsPanel } from '../../components/social/AllFriendsPanel';
+>>>>>>> 1b84e3fe32dcb5bf11705d7cdf676dd8f3451f24
 import { isToday } from '../../utils/time';
 import { Loader } from '../../components/ui/Loader';
 
@@ -19,12 +29,11 @@ export function HomePage() {
   const { user, refreshUser } = useAuth();
   const { settings, playVictorySound } = useCustomization();
   const [quests, setQuests] = useState<Quest[]>([]);
-  const [clanQuests, setClanQuests] = useState<ClanQuest[]>([]);
   const [friends, setFriends] = useState<Friend[]>([]);
-  const [clan, setClan] = useState<Clan | null>(null);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatingQuests, setGeneratingQuests] = useState(false);
+  const [generateError, setGenerateError] = useState<string | null>(null);
   const [bgImageLoaded, setBgImageLoaded] = useState(false);
 
   const isLight = settings.theme === 'light';
@@ -34,25 +43,19 @@ export function HomePage() {
     try {
       const results = await Promise.allSettled([
         questsAPI.getAll().catch(() => []),
-        clanQuestsAPI.getAll().catch(() => []),
         socialAPI.getFriends().catch(() => []),
-        socialAPI.getClan().catch(() => null),
         socialAPI.getActivities().catch(() => []),
       ]);
 
-      const [questsRes, clanQuestsRes, friendsRes, clanRes, activitiesRes] = results;
+      const [questsRes, friendsRes, activitiesRes] = results;
 
       if (questsRes.status === 'fulfilled') setQuests(questsRes.value || []);
-      if (clanQuestsRes.status === 'fulfilled') setClanQuests(clanQuestsRes.value || []);
       if (friendsRes.status === 'fulfilled') setFriends(friendsRes.value || []);
-      if (clanRes.status === 'fulfilled') setClan(clanRes.value || null);
       if (activitiesRes.status === 'fulfilled') setActivities(activitiesRes.value || []);
     } catch (err) {
       console.error('Failed to load data:', err);
       setQuests([]);
-      setClanQuests([]);
       setFriends([]);
-      setClan(null);
       setActivities([]);
     } finally {
       setLoading(false);
@@ -76,7 +79,7 @@ export function HomePage() {
 
   useEffect(() => {
     if (hasBackground && backgroundUrl) {
-      const img = new Image();
+      const img = new window.Image();
       img.onload = () => setBgImageLoaded(true);
       img.onerror = () => setBgImageLoaded(false);
       img.src = backgroundUrl;
@@ -87,11 +90,27 @@ export function HomePage() {
 
   const handleSelectFocus = async (focus: string) => {
     setGeneratingQuests(true);
+    setGenerateError(null);
     try {
-      const newQuests = await questsAPI.generateByFocus(focus);
-      setQuests(newQuests);
+      await questsAPI.generateByFocus(focus);
+      const refreshed = await questsAPI.getAll();
+      setQuests(refreshed);
       await refreshUser();
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const data = error.response?.data as
+          | { detail?: string; message?: string }
+          | string
+          | undefined;
+        const detail =
+          typeof data === 'string'
+            ? data
+            : data?.detail || data?.message || JSON.stringify(data);
+        const status = error.response?.status;
+        setGenerateError(detail ? `Ошибка ${status ?? ''}: ${detail}`.trim() : 'Не удалось сгенерировать задания.');
+      } else {
+        setGenerateError('Не удалось сгенерировать задания.');
+      }
       console.error('Failed to generate quests:', error);
     } finally {
       setGeneratingQuests(false);
@@ -118,16 +137,6 @@ export function HomePage() {
     }
   };
 
-  const handleClanQuestContribute = async (id: number, contribution: number) => {
-    try {
-      const updatedClanQuest = await clanQuestsAPI.contribute(id, contribution);
-      setClanQuests((prev) => prev.map((cq) => (cq.id === id ? updatedClanQuest : cq)));
-      await refreshUser();
-    } catch (error) {
-      console.error('Failed to contribute to clan quest:', error);
-    }
-  };
-
   const handleTimerStop = async () => {
     await loadData();
     await refreshUser();
@@ -144,27 +153,39 @@ export function HomePage() {
   }
 
   return (
-    <div className={`min-h-screen relative ${hasBackground ? '' : 'bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900'}`}>
-      {hasBackground && bgImageLoaded && (
+    <div
+      className={`min-h-screen relative bg-slate-950 ${
+        hasBackground ? '' : 'bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900'
+      }`}
+    >
+      {hasBackground && (
         <div
           key={`bg-${settings.background}-${backgroundUrl}`}
           className="fixed inset-0 z-0"
           style={{
-            backgroundImage: `url(${backgroundUrl})`,
+            backgroundColor: 'rgb(2 6 23)',
+            backgroundImage: backgroundUrl ? `url(${backgroundUrl})` : undefined,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed',
           }}
         >
-          <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" />
+          <div className={`absolute inset-0 ${bgImageLoaded ? 'bg-slate-900/30' : 'bg-slate-900/70'} backdrop-blur-sm`} />
         </div>
       )}
       <div className="relative z-10">
-        <div className="max-w-[1920px] mx-auto px-6 py-8">
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-12">
-            <div className="xl:col-span-3 space-y-12">
-              <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
+        <div className="max-w-[1680px] mx-auto px-6 py-12 pb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_420px] gap-10">
+            <div className="flex flex-col items-center space-y-[128px]">
+              <div className="w-full max-w-[780px]">
+                <div className="panel-caption text-center">Профиль героя</div>
+                <div className="text-white/60 text-sm text-center mb-32">
+                  Основные характеристики персонажа, уровень и прогресс в заданиях.
+                </div>
+                <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
+              </div>
 
+<<<<<<< HEAD
               {settings.showClan && clan && (
                 <ClanPanel
                   clan={clan}
@@ -172,26 +193,80 @@ export function HomePage() {
                   onContribute={handleClanQuestContribute}
                   onClanUpdated={loadData}
                 />
-              )}
-              {settings.showClan && !clan && (
-                <ClanCreationPanel onClanCreated={loadData} />
-              )}
-            </div>
+=======
+              <div className="w-full max-w-[780px]">
+                <div className="panel-caption text-center">Выбор направления</div>
+                <div className="text-white/60 text-sm text-center mb-32">
+                  Выберите фокус развития, чтобы получить подходящие задания.
+                </div>
+                <FocusSelector
+                  currentFocus={user.current_focus || undefined}
+                  onSelectFocus={handleSelectFocus}
+                  loading={generatingQuests}
+                  error={generateError}
+                />
+              </div>
 
-            <div className="xl:col-span-6 space-y-12">
-              <FocusSelector currentFocus={user.current_focus || undefined} onSelectFocus={handleSelectFocus} loading={generatingQuests} />
-              <QuestList quests={quests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} onTimerStop={handleTimerStop} />
-            </div>
+              <div className="w-full max-w-[780px]">
+                <div className="panel-caption text-center">Текущие задания</div>
+                <div className="text-white/60 text-sm text-center mb-32">
+                  Список активных заданий, таймеры и выполнение.
+                </div>
+                <QuestList
+                  quests={quests}
+                  onComplete={handleCompleteQuest}
+                  onDelete={handleDeleteQuest}
+                  onExpire={(id) => setQuests((prev) => prev.filter((q) => q.id !== id))}
+                  onTimerStop={handleTimerStop}
+                />
+              </div>
 
-            <div className="xl:col-span-3 space-y-12">
+              {settings.showActivities && (
+                <div className="w-full max-w-[780px]">
+                  <div className="panel-caption text-center">Активность гильдии</div>
+                  <div className="text-white/60 text-sm text-center mb-32">
+                    Хронология событий и изменений по заданиям и уровню. Удалять можно не более 4 заданий в день.
+                  </div>
+                  <ActivityFeed activities={activities} />
+                </div>
+>>>>>>> 1b84e3fe32dcb5bf11705d7cdf676dd8f3451f24
+              )}
+
+              <div className="w-full max-w-[780px]">
+                <div className="panel-caption text-center">История выполнения</div>
+                <div className="text-white/60 text-sm text-center mb-32">
+                  Последние завершённые задания и статистика за день.
+                </div>
+                <TaskHistoryPanel quests={quests} />
+              </div>
+
+              <div className="w-full max-w-[780px]">
+                <div className="panel-caption text-center">Расписание выполнения</div>
+                <div className="text-white/60 text-sm text-center mb-32">
+                  План задач на ближайшее время и рекомендуемая длительность.
+                </div>
+                <TaskSchedulePanel quests={quests} />
+              </div>
+            </div>
+            <div className="flex flex-col items-end space-y-[128px]">
               {settings.showFriends && (
-                friends.length > 0 ? (
-                  <FriendsList friends={friends} />
-                ) : (
+                <div className="w-full max-w-[420px] ml-auto">
+                  <div className="panel-caption text-right">Поиск друзей</div>
+                  <div className="text-white/60 text-sm text-right mb-32">
+                    Найдите друзей по имени пользователя и добавьте в список.
+                  </div>
                   <FriendSearchPanel onFriendAdded={loadData} />
-                )
+                </div>
               )}
-              {settings.showActivities && activities.length > 0 && <ActivityFeed activities={activities} />}
+              {friends.length > 0 && (
+                <div className="w-full max-w-[420px] ml-auto">
+                  <div className="panel-caption text-right">Список друзей</div>
+                  <div className="text-white/60 text-sm text-right mb-32">
+                    Все ваши друзья, их уровень и статус активности.
+                  </div>
+                  <AllFriendsPanel friends={friends} />
+                </div>
+              )}
             </div>
           </div>
 

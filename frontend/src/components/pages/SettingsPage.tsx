@@ -1,4 +1,5 @@
-import { Settings, Volume2, VolumeX, Sun, Moon, Eye, EyeOff, Image, ArrowLeft } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Settings, Volume2, VolumeX, Sun, Moon, Eye, EyeOff, Image as ImageIcon, ArrowLeft } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useCustomization } from '../../hooks/useCustomization';
 import { BACKGROUND_OPTIONS } from '../../types';
@@ -12,12 +13,51 @@ export function SettingsPage() {
   const { settings, updateSettings, playVictorySound } = useCustomization();
   const isLight = isTheme(settings.theme) && settings.theme === 'light';
   const isDark = isTheme(settings.theme) && settings.theme === 'dark';
+  const [bgImageLoaded, setBgImageLoaded] = useState(false);
+
+  const backgroundOption = BACKGROUND_OPTIONS.find((bg) => bg.id === settings.background);
+  const backgroundUrl = backgroundOption?.url || '';
+  const hasBackground =
+    settings.background &&
+    settings.background !== 'none' &&
+    backgroundUrl &&
+    backgroundUrl.trim() !== '';
+
+  useEffect(() => {
+    if (hasBackground && backgroundUrl) {
+      const img = new window.Image();
+      img.onload = () => setBgImageLoaded(true);
+      img.onerror = () => setBgImageLoaded(false);
+      img.src = backgroundUrl;
+    } else {
+      setBgImageLoaded(false);
+    }
+  }, [hasBackground, backgroundUrl]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 relative">
-      <div className="relative z-10">
-        <div className="max-w-4xl mx-auto px-6 py-8">
-          <div className="bg-gradient-to-br from-slate-800/95 to-slate-900/95 rounded-lg border-2 border-purple-500/50 shadow-2xl backdrop-blur-sm">
+    <div
+      className={`min-h-screen relative bg-slate-950 ${
+        hasBackground ? '' : 'bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900'
+      }`}
+    >
+      {hasBackground && (
+        <div
+          key={`bg-${settings.background}-${backgroundUrl}`}
+          className="fixed inset-0 z-0"
+          style={{
+            backgroundColor: 'rgb(2 6 23)',
+            backgroundImage: backgroundUrl ? `url(${backgroundUrl})` : undefined,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+          }}
+        >
+          <div className={`absolute inset-0 ${bgImageLoaded ? 'bg-slate-900/30' : 'bg-slate-900/70'} backdrop-blur-sm`} />
+        </div>
+      )}
+      <div className="relative z-10 min-h-screen flex items-center justify-center px-6 py-8">
+        <div className="w-full max-w-4xl">
+          <div className="panel-base panel-purple">
             <div className="p-6 border-b border-purple-600/30">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -98,7 +138,7 @@ export function SettingsPage() {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-slate-800">
-                          <Image className="w-8 h-8 text-purple-400/40" />
+                          <ImageIcon className="w-8 h-8 text-purple-400/40" />
                         </div>
                       )}
                       <div className="absolute bottom-0 left-0 right-0 p-2 text-xs text-center bg-black/70 text-white">

@@ -38,7 +38,7 @@ export function FriendSearchPanel({ onFriendAdded }: FriendSearchPanelProps) {
     setAddingFriend(userId);
     setError('');
     try {
-      await socialAPI.addFriend(userId);
+      await socialAPI.addFriend(Number(userId));
       setSearchResults((prev) => prev.filter((u) => u.id !== userId));
       onFriendAdded();
     } catch (err: any) {
@@ -50,7 +50,7 @@ export function FriendSearchPanel({ onFriendAdded }: FriendSearchPanelProps) {
   };
 
   return (
-    <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-red-500/60 ring-offset-2 ring-offset-slate-900">
+    <div className="panel-base panel-red p-6">
       <div className="flex items-center gap-2 mb-4">
         <Users className="w-5 h-5 text-purple-400" />
         <h2 className="text-purple-300">Найти друзей</h2>
