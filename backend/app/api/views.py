@@ -36,7 +36,16 @@ class UserView(APIView):
         return Response(serializer.data)
 
     def patch(self, request):
-        serializer = UserSerializer(request.user, data=request.data, partial=True)
+        data = request.data.copy()
+        if data.get('avatar') == '':
+            data.pop('avatar', None)
+            try:
+                request.user.avatar.delete(save=False)
+            except Exception:
+                pass
+            request.user.avatar = None
+            request.user.save(update_fields=['avatar'])
+        serializer = UserSerializer(request.user, data=data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)

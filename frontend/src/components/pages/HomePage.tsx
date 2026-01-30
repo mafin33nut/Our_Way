@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
 import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
 import { questsAPI } from '../../api/quests';
@@ -24,6 +25,7 @@ export function HomePage() {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatingQuests, setGeneratingQuests] = useState(false);
+  const [generateError, setGenerateError] = useState<string | null>(null);
   const [bgImageLoaded, setBgImageLoaded] = useState(false);
 
   const isLight = settings.theme === 'light';
@@ -80,11 +82,18 @@ export function HomePage() {
 
   const handleSelectFocus = async (focus: string) => {
     setGeneratingQuests(true);
+    setGenerateError(null);
     try {
       const newQuests = await questsAPI.generateByFocus(focus);
       setQuests(newQuests);
       await refreshUser();
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const detail = (error.response?.data as { detail?: string } | undefined)?.detail;
+        setGenerateError(detail || 'Не удалось сгенерировать задания.');
+      } else {
+        setGenerateError('Не удалось сгенерировать задания.');
+      }
       console.error('Failed to generate quests:', error);
     } finally {
       setGeneratingQuests(false);
@@ -164,7 +173,12 @@ export function HomePage() {
                 <div className="text-white/60 text-sm text-center mb-32">
                   Выберите фокус развития, чтобы получить подходящие задания.
                 </div>
-                <FocusSelector currentFocus={user.current_focus || undefined} onSelectFocus={handleSelectFocus} loading={generatingQuests} />
+                <FocusSelector
+                  currentFocus={user.current_focus || undefined}
+                  onSelectFocus={handleSelectFocus}
+                  loading={generatingQuests}
+                  error={generateError}
+                />
               </div>
 
               <div className="w-full max-w-[780px]">

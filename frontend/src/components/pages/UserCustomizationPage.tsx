@@ -10,6 +10,7 @@ export function UserCustomizationPage() {
   const { user, refreshUser } = useAuth();
   const [bio, setBio] = useState(user?.bio ?? '');
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [removeAvatar, setRemoveAvatar] = useState(false);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
 
@@ -23,13 +24,16 @@ export function UserCustomizationPage() {
     try {
       const formData = new FormData();
       formData.append('bio', bio);
-      if (avatarFile) {
+      if (removeAvatar) {
+        formData.append('avatar', '');
+      } else if (avatarFile) {
         formData.append('avatar', avatarFile);
       }
       await authAPI.updateProfile(formData);
       await refreshUser();
       setStatus('Профиль обновлен');
       setAvatarFile(null);
+      setRemoveAvatar(false);
     } catch (error) {
       console.error('Failed to update profile', error);
       setStatus('Не удалось обновить профиль');
@@ -59,7 +63,7 @@ export function UserCustomizationPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-6 flex flex-col items-center text-center gap-3">
-              {resolveMediaUrl(user.avatar) ? (
+              {!removeAvatar && resolveMediaUrl(user.avatar) ? (
                 <img
                   src={resolveMediaUrl(user.avatar) as string}
                   alt={user.username}
@@ -79,9 +83,22 @@ export function UserCustomizationPage() {
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  onChange={(e) => setAvatarFile(e.target.files?.[0] || null)}
+                  onChange={(e) => {
+                    setAvatarFile(e.target.files?.[0] || null);
+                    setRemoveAvatar(false);
+                  }}
                 />
               </label>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setAvatarFile(null);
+                  setRemoveAvatar(true);
+                }}
+              >
+                Убрать фото
+              </Button>
               <p className="text-purple-200 mt-1">{user.username}</p>
               <p className="text-xs text-purple-200/60">Уровень {user.level}</p>
             </div>
