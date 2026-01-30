@@ -38,6 +38,19 @@ class ClanQuest(models.Model):
     def __str__(self):
         return f'{self.title} (clan {self.clan.name})'
 
+
+class ClanQuestParticipant(models.Model):
+    quest = models.ForeignKey(ClanQuest, on_delete=models.CASCADE, related_name='participant_entries')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='clan_quest_participations')
+    contribution = models.PositiveIntegerField(default=0)
+    contributed_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('quest', 'user')
+
+    def __str__(self):
+        return f'{self.user.username} -> {self.quest.title}'
+
 class LeaderboardEntry(models.Model):
     clan = models.OneToOneField(Clan, on_delete=models.CASCADE, related_name='leaderboard')
     score = models.BigIntegerField(default=0, db_index=True)

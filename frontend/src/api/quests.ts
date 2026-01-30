@@ -48,6 +48,11 @@ export const clanQuestsAPI = {
     });
     return response.data;
   },
+
+  generate: async (): Promise<ClanQuest[]> => {
+    const response = await apiClient.post<ClanQuest[]>(`/api/clans/quests/generate/`);
+    return response.data;
+  },
 };
 export const timersAPI = {
   startTimer: async (activityId?: number) => {

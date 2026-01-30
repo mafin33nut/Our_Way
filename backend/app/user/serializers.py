@@ -26,9 +26,19 @@ class UserSerializer(serializers.ModelSerializer):
     def _get_total_xp(self, obj) -> int:
         try:
             from app.activities.models import Quest
-            return Quest.objects.filter(user=obj, completed=True).aggregate(
+            quests_xp = Quest.objects.filter(user=obj, completed=True).aggregate(
                 total=models.Sum('xp_reward')
             )['total'] or 0
+            try:
+                from app.clans.models import ClanQuestParticipant
+                clan_xp = ClanQuestParticipant.objects.filter(
+                    user=obj,
+                    quest__completed=True,
+                    contribution__gt=0,
+                ).aggregate(total=models.Sum('quest__xp_reward'))['total'] or 0
+            except Exception:
+                clan_xp = 0
+            return quests_xp + clan_xp
         except Exception:
             return 0
 

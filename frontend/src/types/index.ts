@@ -42,7 +42,7 @@ export interface ClanQuest {
   required_progress: number;
   total_progress: number;
   completed: boolean;
-  expires_at: string;
+  expires_at?: string | null;
   participants: ClanQuestParticipant[];
   clan: number;
 }

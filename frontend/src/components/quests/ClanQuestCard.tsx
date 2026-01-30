@@ -19,6 +19,9 @@ export function ClanQuestCard({ quest, onContribute, currentUsername }: ClanQues
     setIsContributing(false);
   };
   const getDaysLeft = () => {
+    if (!quest.expires_at) {
+      return null;
+    }
     const now = new Date();
     const expiresAt = new Date(quest.expires_at);
     const diffTime = expiresAt.getTime() - now.getTime();
@@ -99,12 +102,14 @@ export function ClanQuestCard({ quest, onContribute, currentUsername }: ClanQues
           </p>
         )}
       </div>
-      <div className="flex items-center gap-2 mb-4 p-3 bg-slate-800/50 rounded border border-purple-600/20">
-        <Clock className="w-4 h-4 text-purple-400" />
-        <span className="text-sm text-purple-200/80">
-          Осталось дней: <span className="text-purple-300">{getDaysLeft()}</span>
-        </span>
-      </div>
+      {getDaysLeft() !== null && (
+        <div className="flex items-center gap-2 mb-4 p-3 bg-slate-800/50 rounded border border-purple-600/20">
+          <Clock className="w-4 h-4 text-purple-400" />
+          <span className="text-sm text-purple-200/80">
+            Осталось дней: <span className="text-purple-300">{getDaysLeft()}</span>
+          </span>
+        </div>
+      )}
       {!quest.completed && (
         <div className="flex items-center gap-3">
           <input

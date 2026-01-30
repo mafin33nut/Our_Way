@@ -7,12 +7,14 @@ import { ClanQuestList } from '../quests/ClanQuestList';
 import { ClanCreationPanel } from '../social/ClanCreationPanel';
 import { useAuth } from '../../hooks/useAuth';
 import { Loader } from '../ui/Loader';
+import { Button } from '../ui/Button';
 
 export function ClansPage() {
   const { user, refreshUser } = useAuth();
   const [clan, setClan] = useState<Clan | null>(null);
   const [clanQuests, setClanQuests] = useState<ClanQuest[]>([]);
   const [loading, setLoading] = useState(true);
+  const [generatingQuests, setGeneratingQuests] = useState(false);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -45,6 +47,18 @@ export function ClansPage() {
       await refreshUser();
     } catch (error) {
       console.error('Failed to contribute to clan quest:', error);
+    }
+  };
+
+  const handleGenerateClanQuests = async () => {
+    setGeneratingQuests(true);
+    try {
+      const generated = await clanQuestsAPI.generate();
+      setClanQuests((prev) => [...generated, ...prev]);
+    } catch (error) {
+      console.error('Failed to generate clan quests:', error);
+    } finally {
+      setGeneratingQuests(false);
     }
   };
 
@@ -134,7 +148,22 @@ export function ClansPage() {
           </div>
         </div>
 
-        {clanQuests.length > 0 && (
+        {clan && (
+          <div className="panel-base panel-orange p-6">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <h3 className="text-purple-200">Генерация клановых заданий</h3>
+                <p className="text-sm text-purple-200/60">
+                  Случайные задания для всего клана из общей библиотеки.
+                </p>
+              </div>
+              <Button onClick={handleGenerateClanQuests} disabled={generatingQuests}>
+                {generatingQuests ? 'Генерация...' : 'Сгенерировать'}
+              </Button>
+            </div>
+          </div>
+        )}
+        {clan && (
           <div>
             <ClanQuestList
               quests={clanQuests}
