@@ -67,9 +67,10 @@ export function WelcomePage() {
             </Button>
           </div>
         </div>
-        <div className="mt-24">
-          <FooterArt />
-        </div>
+        <FooterArt
+          className="mt-24 flex justify-end pr-6"
+          imageClassName="w-full max-w-[420px] rounded-xl shadow-lg border border-white/10"
+        />
       </div>
     </div>
   );
