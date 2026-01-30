@@ -15,6 +15,7 @@ export function ClansPage() {
   const [clanQuests, setClanQuests] = useState<ClanQuest[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatingQuests, setGeneratingQuests] = useState(false);
+  const [generateError, setGenerateError] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -52,11 +53,14 @@ export function ClansPage() {
 
   const handleGenerateClanQuests = async () => {
     setGeneratingQuests(true);
+    setGenerateError(null);
     try {
-      const generated = await clanQuestsAPI.generate();
-      setClanQuests((prev) => [...generated, ...prev]);
+      await clanQuestsAPI.generate();
+      const refreshed = await clanQuestsAPI.getAll();
+      setClanQuests(refreshed);
     } catch (error) {
       console.error('Failed to generate clan quests:', error);
+      setGenerateError('Не удалось сгенерировать задания для клана.');
     } finally {
       setGeneratingQuests(false);
     }
@@ -161,6 +165,11 @@ export function ClansPage() {
                 {generatingQuests ? 'Генерация...' : 'Сгенерировать'}
               </Button>
             </div>
+            {generateError && (
+              <p className="text-sm text-amber-200/80 mt-3">
+                {generateError}
+              </p>
+            )}
           </div>
         )}
         {clan && (
