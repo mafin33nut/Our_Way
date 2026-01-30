@@ -219,9 +219,9 @@ class ClanQuestViewSet(viewsets.ModelViewSet):
             deleted_by=request.user,
             deleted_at__date=today,
         ).count()
-        if deleted_today >= 5:
+        if deleted_today >= 4:
             return Response(
-                {'detail': 'Лимит удаления клановых заданий на сегодня достигнут (5).'},
+                {'detail': 'Лимит удаления клановых заданий на сегодня достигнут (4).'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         quest.deleted_at = timezone.now()

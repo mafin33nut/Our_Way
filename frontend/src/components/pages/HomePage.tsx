@@ -209,7 +209,7 @@ export function HomePage() {
                 <div className="w-full max-w-[780px]">
                   <div className="panel-caption text-center">Активность гильдии</div>
                   <div className="text-white/60 text-sm text-center mb-32">
-                    Хронология событий и изменений по заданиям и уровню.
+                    Хронология событий и изменений по заданиям и уровню. Удалять можно не более 4 заданий в день.
                   </div>
                   <ActivityFeed activities={activities} />
                 </div>

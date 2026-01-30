@@ -186,9 +186,14 @@ export function QuestCard({ quest, onComplete, onDelete, onExpire, onTimerStop }
         >
           Завершить
         </Button>
-        <button onClick={() => onDelete(quest.id)} className="...">
+        <Button
+          onClick={() => onDelete(quest.id)}
+          size="sm"
+          variant="ghost"
+          className="border border-rose-400/50 text-rose-200 hover:bg-rose-500/10"
+        >
           Удалить
-        </button>
+        </Button>
       </div>
     </div>
   );
