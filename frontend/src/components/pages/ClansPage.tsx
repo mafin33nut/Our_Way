@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Crown } from 'lucide-react';
+import { Crown, User as UserIcon } from 'lucide-react';
 import { clanQuestsAPI } from '../../api/quests';
 import { socialAPI } from '../../api/social';
 import { Clan, ClanQuest } from '../../types';
@@ -8,6 +8,7 @@ import { ClanCreationPanel } from '../social/ClanCreationPanel';
 import { useAuth } from '../../hooks/useAuth';
 import { Loader } from '../ui/Loader';
 import { Button } from '../ui/Button';
+import { resolveMediaUrl } from '../../utils/media';
 
 export function ClansPage() {
   const { user, refreshUser } = useAuth();
@@ -40,6 +41,11 @@ export function ClansPage() {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  const handleClanCreated = async () => {
+    await refreshUser();
+    await loadData();
+  };
 
   const handleClanQuestContribute = async (id: number, contribution: number) => {
     try {
@@ -118,7 +124,7 @@ export function ClansPage() {
                 </div>
               </div>
             ) : (
-              <ClanCreationPanel onClanCreated={loadData} />
+              <ClanCreationPanel onClanCreated={handleClanCreated} />
             )}
           </div>
 
@@ -129,6 +135,11 @@ export function ClansPage() {
             </div>
             {clan ? (
               <div className="space-y-4">
+                {(() => {
+                  const members = [...(clan.members || [])].sort(
+                    (a, b) => (b.level ?? 0) - (a.level ?? 0) || a.username.localeCompare(b.username)
+                  );
+                  return (
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-3">
                     <p className="text-xs text-purple-200/60">Уровень</p>
@@ -142,15 +153,31 @@ export function ClansPage() {
                 <div>
                   <p className="text-xs text-purple-200/60 mb-2">Участники</p>
                   <div className="space-y-2">
-                    {clan.members?.length ? (
-                      clan.members.map((member) => (
+                    {members.length ? (
+                      members.map((member, index) => (
                         <div
                           key={member.id}
                           className="flex items-center justify-between rounded-lg border border-purple-600/20 bg-slate-950/40 px-3 py-2"
                         >
-                          <div className="min-w-0">
-                            <p className="text-sm text-purple-200 truncate">{member.username}</p>
-                            <p className="text-xs text-purple-200/50">Уровень {member.level}</p>
+                          <div className="flex items-center gap-3 min-w-0">
+                            <span className="text-xs text-purple-200/60 w-5 text-right">
+                              {index + 1}
+                            </span>
+                            {resolveMediaUrl(member.avatar) ? (
+                              <img
+                                src={resolveMediaUrl(member.avatar) as string}
+                                alt={member.username}
+                                className="w-8 h-8 rounded-full object-cover border border-purple-500/60"
+                              />
+                            ) : (
+                              <div className="w-8 h-8 rounded-full bg-slate-800/70 border border-purple-500/60 flex items-center justify-center text-purple-200">
+                                <UserIcon className="w-4 h-4" />
+                              </div>
+                            )}
+                            <div className="min-w-0">
+                              <p className="text-sm text-purple-200 truncate">{member.username}</p>
+                              <p className="text-xs text-purple-200/50">Уровень {member.level}</p>
+                            </div>
                           </div>
                           <span className="text-xs text-purple-200/60">{member.contribution} XP</span>
                         </div>
@@ -162,6 +189,8 @@ export function ClansPage() {
                     )}
                   </div>
                 </div>
+                  );
+                })()}
               </div>
             ) : (
               <div className="text-center py-6 text-purple-200/40 text-sm">

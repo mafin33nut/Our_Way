@@ -1,5 +1,6 @@
 import { Friend } from '../../types';
-import { Users, Circle } from 'lucide-react';
+import { Users, Circle, User as UserIcon } from 'lucide-react';
+import { resolveMediaUrl } from '../../utils/media';
 interface FriendsListProps {
   friends: Friend[];
 }
@@ -30,6 +31,17 @@ export function FriendsList({ friends }: FriendsListProps) {
                   friend.is_online ? 'fill-green-400 text-green-400' : 'fill-gray-500 text-gray-500'
                 }`}
               />
+              {resolveMediaUrl(friend.avatar) ? (
+                <img
+                  src={resolveMediaUrl(friend.avatar) as string}
+                  alt={friend.username}
+                  className="w-8 h-8 rounded-full object-cover border border-purple-500/60"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-slate-800/70 border border-purple-500/60 flex items-center justify-center text-purple-200">
+                  <UserIcon className="w-4 h-4" />
+                </div>
+              )}
               <div>
                 <p className="text-purple-200 text-sm">{friend.username}</p>
                 <p className="text-purple-200/40 text-xs">Уровень {friend.level}</p>

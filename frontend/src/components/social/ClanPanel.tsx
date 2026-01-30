@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Crown, Users, Shield, TrendingUp, X } from 'lucide-react';
+import { Crown, Users, Shield, TrendingUp, X, User as UserIcon } from 'lucide-react';
 import { Clan, ClanQuest } from '../../types';
 import { socialAPI } from '../../api/social';
 import { ClanQuestList } from '../quests/ClanQuestList';
 import { useAuth } from '../../hooks/useAuth';
+import { resolveMediaUrl } from '../../utils/media';
 
 interface ClanPanelProps {
   clan: Clan;
@@ -36,6 +37,9 @@ export function ClanPanel({ clan, clanQuests, onContribute, onClanUpdated }: Cla
   };
 
   const currentClan = clanDetails || clan;
+  const sortedMembers = [...(currentClan.members || [])].sort(
+    (a, b) => (b.level ?? 0) - (a.level ?? 0) || a.username.localeCompare(b.username)
+  );
 
   return (
     <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-purple-500/50 p-6 shadow-2xl backdrop-blur-sm ring-2 ring-yellow-500/60 ring-offset-2 ring-offset-slate-900">
@@ -84,8 +88,8 @@ export function ClanPanel({ clan, clanQuests, onContribute, onClanUpdated }: Cla
               <h3 className="text-purple-300">Участники клана</h3>
             </div>
             <div className="space-y-2 max-h-64 overflow-y-auto">
-              {currentClan.members && currentClan.members.length > 0 ? (
-                currentClan.members.map((member) => (
+              {sortedMembers.length > 0 ? (
+                sortedMembers.map((member, index) => (
                   <div
                     key={member.id}
                     className={`flex items-center justify-between p-3 rounded-lg border bg-slate-950/40 ${
@@ -95,11 +99,20 @@ export function ClanPanel({ clan, clanQuests, onContribute, onClanUpdated }: Cla
                     } transition-colors`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
-                        <span className="text-purple-100 font-semibold text-sm">
-                          {member.username.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
+                      <span className="text-xs text-purple-200/60 w-5 text-right">
+                        {index + 1}
+                      </span>
+                      {resolveMediaUrl(member.avatar) ? (
+                        <img
+                          src={resolveMediaUrl(member.avatar) as string}
+                          alt={member.username}
+                          className="w-10 h-10 rounded-full object-cover border border-purple-500/60"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-slate-800/70 border border-purple-500/60 flex items-center justify-center text-purple-200">
+                          <UserIcon className="w-5 h-5" />
+                        </div>
+                      )}
                       <div>
                         <p className="text-purple-200 font-medium">
                           {member.username}

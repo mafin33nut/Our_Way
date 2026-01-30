@@ -7,21 +7,12 @@ import { socialAPI } from '../../api/social';
 import { Quest, Friend, Activity, BACKGROUND_OPTIONS } from '../../types';
 import { FocusSelector } from '../../components/quests/FocusSelector';
 import { QuestList } from '../../components/quests/QuestList';
-<<<<<<< HEAD
-=======
 import { TaskHistoryPanel } from '../../components/quests/TaskHistoryPanel';
 import { TaskSchedulePanel } from '../../components/quests/TaskSchedulePanel';
->>>>>>> 1b84e3fe32dcb5bf11705d7cdf676dd8f3451f24
 import { CharacterProfile } from '../../components/profile/characterProfile';
-import { FriendsList } from '../../components/social/FriendsList';
 import { ActivityFeed } from '../../components/social/ActivityFeed';
 import { FriendSearchPanel } from '../../components/social/FriendSearchPanel';
-<<<<<<< HEAD
-import { ClanCreationPanel } from '../../components/social/ClanCreationPanel';
-import { ClanPanel } from '../../components/social/ClanPanel';
-=======
 import { AllFriendsPanel } from '../../components/social/AllFriendsPanel';
->>>>>>> 1b84e3fe32dcb5bf11705d7cdf676dd8f3451f24
 import { isToday } from '../../utils/time';
 import { Loader } from '../../components/ui/Loader';
 
@@ -185,15 +176,6 @@ export function HomePage() {
                 <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
               </div>
 
-<<<<<<< HEAD
-              {settings.showClan && clan && (
-                <ClanPanel
-                  clan={clan}
-                  clanQuests={clanQuests}
-                  onContribute={handleClanQuestContribute}
-                  onClanUpdated={loadData}
-                />
-=======
               <div className="w-full max-w-[780px]">
                 <div className="panel-caption text-center">Выбор направления</div>
                 <div className="text-white/60 text-sm text-center mb-32">
@@ -229,7 +211,6 @@ export function HomePage() {
                   </div>
                   <ActivityFeed activities={activities} />
                 </div>
->>>>>>> 1b84e3fe32dcb5bf11705d7cdf676dd8f3451f24
               )}
 
               <div className="w-full max-w-[780px]">
@@ -255,7 +236,11 @@ export function HomePage() {
                   <div className="text-white/60 text-sm text-right mb-32">
                     Найдите друзей по имени пользователя и добавьте в список.
                   </div>
-                  <FriendSearchPanel onFriendAdded={loadData} />
+                  <FriendSearchPanel
+                    onFriendAdded={loadData}
+                    friendIds={friends.map((friend) => friend.id)}
+                    currentUserId={user.id}
+                  />
                 </div>
               )}
               {friends.length > 0 && (

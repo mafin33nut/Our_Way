@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Trophy } from 'lucide-react';
+import { Trophy, User as UserIcon } from 'lucide-react';
 import { socialAPI } from '../../api/social';
 import { User } from '../../types';
+import { resolveMediaUrl } from '../../utils/media';
 
 export function LeadersPage() {
   const [leaders, setLeaders] = useState<User[]>([]);
@@ -52,7 +53,22 @@ export function LeadersPage() {
                 {leaders.map((player, index) => (
                   <tr key={player.id} className="border-t border-purple-600/10">
                     <td className="px-4 py-3 text-purple-200/70">{index + 1}</td>
-                    <td className="px-4 py-3 text-purple-200">{player.username}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3 text-purple-200">
+                        {resolveMediaUrl(player.avatar) ? (
+                          <img
+                            src={resolveMediaUrl(player.avatar) as string}
+                            alt={player.username}
+                            className="w-8 h-8 rounded-full object-cover border border-purple-500/60"
+                          />
+                        ) : (
+                          <div className="w-8 h-8 rounded-full bg-slate-800/70 border border-purple-500/60 flex items-center justify-center text-purple-200">
+                            <UserIcon className="w-4 h-4" />
+                          </div>
+                        )}
+                        <span>{player.username}</span>
+                      </div>
+                    </td>
                     <td className="px-4 py-3 text-right text-purple-200">{player.level ?? 1}</td>
                   </tr>
                 ))}

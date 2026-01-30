@@ -74,6 +74,7 @@ export interface QuestCreate {
 export interface Friend {
   id: number;
   username: string;
+  avatar?: string | null;
   level: number;
   quests_completed_today: number;
   is_online: boolean;
@@ -81,6 +82,7 @@ export interface Friend {
 export interface ClanMember {
   id: number;
   username: string;
+  avatar?: string | null;
   level: number;
   contribution: number;
 }

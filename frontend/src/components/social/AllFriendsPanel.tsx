@@ -1,5 +1,6 @@
 import { Friend } from '../../types';
-import { Users } from 'lucide-react';
+import { Users, User as UserIcon } from 'lucide-react';
+import { resolveMediaUrl } from '../../utils/media';
 
 interface AllFriendsPanelProps {
   friends: Friend[];
@@ -19,9 +20,22 @@ export function AllFriendsPanel({ friends }: AllFriendsPanelProps) {
               key={friend.id}
               className="flex items-center justify-between p-3 bg-slate-950/40 rounded-lg border border-purple-600/20 hover:border-purple-500/50 transition-colors"
             >
-              <div className="min-w-0">
-                <p className="text-purple-200 text-sm truncate">{friend.username}</p>
-                <p className="text-purple-200/40 text-xs">Уровень {friend.level}</p>
+              <div className="flex items-center gap-3 min-w-0">
+                {resolveMediaUrl(friend.avatar) ? (
+                  <img
+                    src={resolveMediaUrl(friend.avatar) as string}
+                    alt={friend.username}
+                    className="w-8 h-8 rounded-full object-cover border border-purple-500/60"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-slate-800/70 border border-purple-500/60 flex items-center justify-center text-purple-200">
+                    <UserIcon className="w-4 h-4" />
+                  </div>
+                )}
+                <div className="min-w-0">
+                  <p className="text-purple-200 text-sm truncate">{friend.username}</p>
+                  <p className="text-purple-200/40 text-xs">Уровень {friend.level}</p>
+                </div>
               </div>
               <span className={`text-xs ${friend.is_online ? 'text-green-400' : 'text-purple-200/50'}`}>
                 {friend.is_online ? 'Онлайн' : 'Оффлайн'}
