@@ -12,6 +12,7 @@ import { AchievementsPage } from './components/pages/AchievementsPage';
 import { UserCustomizationPage } from './components/pages/UserCustomizationPage';
 import { WelcomePage } from './components/pages/WelcomePage';
 import { FocusTasksPage } from './components/pages/FocusTasksPage';
+import { ProgressPage } from './components/pages/ProgressPage';
 import { useAuth } from './hooks/useAuth';
 
 function HomeRoute() {
@@ -51,8 +52,9 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route path="/focus" element={<Navigate to="/quests" replace />} />
             <Route
-              path="/focus"
+              path="/quests"
               element={
                 <PrivateRoute>
                   <>
@@ -91,6 +93,17 @@ function App() {
                   <>
                     <Header />
                     <LeadersPage />
+                  </>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/progress"
+              element={
+                <PrivateRoute>
+                  <>
+                    <Header />
+                    <ProgressPage />
                   </>
                 </PrivateRoute>
               }

@@ -43,16 +43,16 @@ export function WelcomePage() {
               <div>
                 <p className="text-purple-200">Выберите направление</p>
                 <p className="text-purple-200/60 text-sm">
-                  В разделе фокуса выберите сферу развития и получите задания.
+                  В разделе квестов выберите сферу развития и получите квесты.
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <ListChecks className="w-5 h-5 text-amber-300 mt-0.5" />
               <div>
-                <p className="text-purple-200">Выполняйте задания</p>
+                <p className="text-purple-200">Выполняйте квесты</p>
                 <p className="text-purple-200/60 text-sm">
-                  Создавайте свои задания и завершайте их по мере выполнения.
+                  Создавайте свои квесты и завершайте их по мере выполнения.
                 </p>
               </div>
             </div>

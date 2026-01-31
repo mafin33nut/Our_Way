@@ -23,10 +23,11 @@ export function Header() {
               <div className="flex flex-wrap gap-2">
                 {[
                   { to: '/', label: 'Главная' },
-                  { to: '/focus', label: 'Фокусы' },
+                  { to: '/quests', label: 'Квесты' },
                   { to: '/clans', label: 'Кланы' },
                   { to: '/leaders', label: 'Лидеры' },
                   { to: '/achievements', label: 'Достижения' },
+                  { to: '/progress', label: 'Прогресс' },
                 ].map((item) => (
                   <NavLink
                     key={item.to}
@@ -72,7 +73,7 @@ export function Header() {
                       Уровень {user.level} · {user.xp} XP
                     </p>
                     <p className={`text-xs ${isLight ? 'text-amber-600/80' : 'text-amber-200/50'}`}>
-                      Заданий выполнено: {user.total_quests_completed}
+                      Квестов выполнено: {user.total_quests_completed}
                     </p>
                   </div>
                 </div>

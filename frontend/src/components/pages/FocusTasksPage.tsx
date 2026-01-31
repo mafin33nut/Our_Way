@@ -101,7 +101,7 @@ export function FocusTasksPage() {
       setSteps(['']);
       setTaskType('simple');
     } catch (e) {
-      setError('Не удалось создать задание.');
+      setError('Не удалось создать квест.');
     } finally {
       setSaving(false);
     }
@@ -113,7 +113,7 @@ export function FocusTasksPage() {
       setQuests((prev) => prev.map((q) => (q.id === id ? updated : q)));
       playVictorySound();
     } catch (e) {
-      setError('Не удалось завершить задание.');
+      setError('Не удалось завершить квест.');
     }
   };
 
@@ -122,7 +122,7 @@ export function FocusTasksPage() {
       await questsAPI.delete(id);
       setQuests((prev) => prev.filter((q) => q.id !== id));
     } catch (e) {
-      setError('Не удалось удалить задание.');
+      setError('Не удалось удалить квест.');
     }
   };
 
@@ -180,13 +180,13 @@ export function FocusTasksPage() {
         <div className="panel-base panel-orange">
           <div className="flex items-center gap-2 mb-4">
             <ClipboardList className="w-5 h-5 text-purple-300" />
-            <h2 className="text-purple-200">Создать задание</h2>
+            <h2 className="text-purple-200">Создать квест</h2>
           </div>
           <div className="space-y-3">
             <input
               value={taskTitle}
               onChange={(e) => setTaskTitle(e.target.value)}
-              placeholder="Название задания"
+              placeholder="Название квеста"
               className="w-full rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
             />
             <textarea
@@ -262,13 +262,13 @@ export function FocusTasksPage() {
             )}
             {error && <p className="text-sm text-rose-200">{error}</p>}
             <Button onClick={handleCreateTask} disabled={!canCreateTask || saving}>
-              {saving ? 'Создание...' : 'Создать задание'}
+              {saving ? 'Создание...' : 'Создать квест'}
             </Button>
           </div>
         </div>
 
         <div className="panel-base panel-sky">
-          <div className="panel-caption text-center">Мои задания по фокусам</div>
+          <div className="panel-caption text-center">Мои квесты по фокусам</div>
           {loading ? (
             <p className="text-center text-purple-200/60">Загрузка...</p>
           ) : (

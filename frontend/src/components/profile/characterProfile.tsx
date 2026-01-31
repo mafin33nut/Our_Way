@@ -76,7 +76,7 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-purple-400" />
             <span className="text-sm text-purple-200">
-              Заданий сегодня
+              Квестов сегодня
             </span>
           </div>
           <span className="text-purple-100">
@@ -87,7 +87,7 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
           <div className="flex items-center gap-2">
             <Trophy className="w-4 h-4 text-purple-400" />
             <span className="text-sm text-purple-200">
-              Всего заданий
+              Всего квестов
             </span>
           </div>
           <span className="text-purple-100">

@@ -101,7 +101,7 @@ export function UserCustomizationPage() {
                 <p className="text-purple-200">{user.xp_to_next_level} XP</p>
               </div>
               <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-4">
-                <p className="text-xs text-purple-200/60">Выполнено заданий</p>
+                <p className="text-xs text-purple-200/60">Выполнено квестов</p>
                 <p className="text-purple-200">{user.total_quests_completed}</p>
               </div>
               <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-4">

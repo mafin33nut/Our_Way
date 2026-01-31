@@ -31,7 +31,7 @@ export function TaskSchedulePanel({ quests }: TaskSchedulePanelProps) {
         ))}
         {slots.length === 0 && (
           <div className="text-center py-6 text-purple-200/40 text-sm">
-            Нет активных задач для расписания
+            Нет активных квестов для расписания
           </div>
         )}
       </div>

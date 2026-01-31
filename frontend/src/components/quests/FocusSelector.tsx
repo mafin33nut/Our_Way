@@ -74,7 +74,7 @@ export function FocusSelector({ currentFocus, onSelectFocus, loading }: FocusSel
       </div>
       
       <p className="text-sm mb-6 text-purple-200/60">
-        Приложение сгенерирует персональные задания на основе выбранного фокуса
+        Приложение сгенерирует персональные квесты на основе выбранного фокуса
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
         {FOCUS_AREAS.map((area) => {
@@ -117,7 +117,7 @@ export function FocusSelector({ currentFocus, onSelectFocus, loading }: FocusSel
         disabled={!selectedFocus || loading}
         className="w-full"
       >
-        {loading ? 'Генерация заданий...' : 'Сгенерировать задания'}
+        {loading ? 'Генерация квестов...' : 'Сгенерировать квесты'}
       </Button>
       {currentFocus && (
         <p className="text-center text-sm mt-3 text-purple-200/40">

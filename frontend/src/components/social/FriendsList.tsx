@@ -49,7 +49,7 @@ export function FriendsList({ friends }: FriendsListProps) {
             </div>
             <div className="text-right">
               <p className="text-purple-300 text-sm">{friend.quests_completed_today}</p>
-              <p className="text-purple-200/40 text-xs">заданий</p>
+              <p className="text-purple-200/40 text-xs">квестов</p>
             </div>
           </div>
         ))}

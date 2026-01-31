@@ -33,7 +33,7 @@ export function TaskHistoryPanel({ quests }: TaskHistoryPanelProps) {
       </div>
 
       <div className="space-y-2">
-        <p className="text-xs text-purple-200/60 mb-2">Последние задания</p>
+        <p className="text-xs text-purple-200/60 mb-2">Последние квесты</p>
         {recent.map((quest) => (
           <div
             key={quest.id}
@@ -52,7 +52,7 @@ export function TaskHistoryPanel({ quests }: TaskHistoryPanelProps) {
         ))}
         {recent.length === 0 && (
           <div className="text-center py-6 text-purple-200/40 text-sm">
-            Пока нет завершенных заданий
+            Пока нет завершенных квестов
           </div>
         )}
       </div>

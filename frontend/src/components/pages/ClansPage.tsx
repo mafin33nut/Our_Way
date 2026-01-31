@@ -82,9 +82,9 @@ export function ClansPage() {
             ? data
             : data?.detail || data?.message || JSON.stringify(data);
         const status = (error as any).response?.status;
-        setGenerateError(detail ? `Ошибка ${status ?? ''}: ${detail}`.trim() : 'Не удалось сгенерировать задания для клана.');
+        setGenerateError(detail ? `Ошибка ${status ?? ''}: ${detail}`.trim() : 'Не удалось сгенерировать квесты для клана.');
       } else {
-        setGenerateError('Не удалось сгенерировать задания для клана.');
+        setGenerateError('Не удалось сгенерировать квесты для клана.');
       }
     } finally {
       setGeneratingQuests(false);
@@ -203,9 +203,9 @@ export function ClansPage() {
           <div className="panel-base panel-orange p-6">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <h3 className="text-purple-200">Генерация клановых заданий</h3>
+                <h3 className="text-purple-200">Генерация клановых квестов</h3>
                 <p className="text-sm text-purple-200/60">
-                  Случайные задания для всего клана из общей библиотеки.
+                  Случайные квесты для всего клана из общей библиотеки.
                 </p>
               </div>
               <Button onClick={handleGenerateClanQuests} disabled={generatingQuests}>

@@ -31,7 +31,7 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
           const title =
             activity.title?.trim() ||
             activity.message?.trim() ||
-            'Задание';
+            'Квест';
           return (
             <div
               key={activity.id}

@@ -142,7 +142,7 @@ export function ClanPanel({ clan, clanQuests, onContribute, onClanUpdated }: Cla
             <div>
               <div className="flex items-center gap-2 mb-3">
                 <Crown className="w-5 h-5 text-purple-400" />
-                <h3 className="text-purple-300">Клановые задания</h3>
+                <h3 className="text-purple-300">Клановые квесты</h3>
               </div>
               <div className="max-h-96 overflow-y-auto">
                 <ClanQuestList
@@ -156,7 +156,7 @@ export function ClanPanel({ clan, clanQuests, onContribute, onClanUpdated }: Cla
 
           {clanQuests.length === 0 && (
             <div className="text-center py-4 text-purple-200/60">
-              <p className="text-sm">Пока нет клановых заданий</p>
+              <p className="text-sm">Пока нет клановых квестов</p>
             </div>
           )}
         </div>

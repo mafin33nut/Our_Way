@@ -25,7 +25,7 @@ const achievementGroups: AchievementGroup[] = [
   {
     id: 'team',
     title: 'Командное взаимодействие',
-    subtitle: 'Получайте за прогресс в заданиях',
+    subtitle: 'Получайте за прогресс в квестах',
     nodes: [
       {
         id: 'social-circle',
@@ -87,7 +87,7 @@ const achievementGroups: AchievementGroup[] = [
   {
     id: 'quests',
     title: 'Квесты',
-    subtitle: 'Достижения за выполненные задания',
+    subtitle: 'Достижения за выполненные квесты',
     nodes: [
       {
         id: 'first-step',
@@ -193,7 +193,7 @@ export function AchievementsPage() {
             <h2 className="text-purple-300">Достижения</h2>
           </div>
           <p className="text-purple-200/70">
-            Достижения открываются по мере выполнения заданий.
+            Достижения открываются по мере выполнения квестов.
           </p>
           <div className="mt-4 flex items-center gap-3 text-sm text-purple-200/70">
             <CheckCircle2 className="w-4 h-4 text-green-400" />

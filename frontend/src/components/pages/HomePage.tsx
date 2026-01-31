@@ -48,7 +48,7 @@ export function HomePage() {
           id: -q.id,
           type: 'quest_complete',
           title: q.title,
-          message: 'Задание выполнено',
+          message: 'Квест завершён',
           timestamp: q.completed_at as string,
           icon: 'quest',
         }));
@@ -101,7 +101,7 @@ export function HomePage() {
           id: -updatedQuest.id,
           type: 'quest_complete',
           title: updatedQuest.title,
-          message: 'Задание выполнено',
+          message: 'Квест завершён',
           timestamp: updatedQuest.completed_at || new Date().toISOString(),
           icon: 'quest',
         },
@@ -161,15 +161,15 @@ export function HomePage() {
               <div className="w-full max-w-[780px]">
                 <div className="panel-caption text-center">Профиль героя</div>
                 <div className="text-white/60 text-sm text-center mb-32">
-                  Основные характеристики персонажа, уровень и прогресс в заданиях.
+                  Основные характеристики персонажа, уровень и прогресс в квестах.
                 </div>
                 <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
               </div>
 
               <div className="w-full max-w-[780px]">
-                <div className="panel-caption text-center">Текущие задания</div>
+                <div className="panel-caption text-center">Текущие квесты</div>
                 <div className="text-white/60 text-sm text-center mb-32">
-                  Список активных заданий, таймеры и выполнение.
+                  Список активных квестов и выполнение.
                 </div>
                 <QuestList
                   quests={quests}
@@ -182,7 +182,7 @@ export function HomePage() {
                 <div className="w-full max-w-[780px]">
                   <div className="panel-caption text-center">Активность гильдии</div>
                   <div className="text-white/60 text-sm text-center mb-32">
-                    Хронология событий и изменений по заданиям и уровню.
+                    Хронология событий и изменений по квестам и уровню.
                   </div>
                   <ActivityFeed activities={activities} />
                 </div>
@@ -191,7 +191,7 @@ export function HomePage() {
               <div className="w-full max-w-[780px]">
                 <div className="panel-caption text-center">История выполнения</div>
                 <div className="text-white/60 text-sm text-center mb-32">
-                  Последние завершённые задания и статистика за день.
+                  Последние завершённые квесты и статистика за день.
                 </div>
                 <TaskHistoryPanel quests={quests} />
               </div>
@@ -199,7 +199,7 @@ export function HomePage() {
               <div className="w-full max-w-[780px]">
                 <div className="panel-caption text-center">Расписание выполнения</div>
                 <div className="text-white/60 text-sm text-center mb-32">
-                  План задач на ближайшее время и рекомендуемая длительность.
+                  План квестов на ближайшее время и рекомендуемая длительность.
                 </div>
                 <TaskSchedulePanel quests={quests} />
               </div>

@@ -1,4 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Jersey+10&family=Playwrite+NZ+Basic+Guides&display=swap');
+
+@font-face {
+  font-family: 'Hanky Bold';
+  src: url('/fonts/HankyBold.woff2') format('woff2'),
+    url('/fonts/HankyBold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 @import 'tailwindcss';
 * {
   margin: 0;
@@ -45,7 +54,7 @@ h3 {
     @apply rounded-xl border-2 bg-gradient-to-b from-slate-950/90 via-purple-950/70 to-slate-950/95 shadow-xl backdrop-blur-sm;
     position: relative;
     padding: 3rem !important;
-    font-family: "Jersey 10", "Segoe UI", sans-serif;
+    font-family: "Hanky Bold", "Jersey 10", "Segoe UI", sans-serif;
   }
 
 
