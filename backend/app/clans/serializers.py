@@ -37,9 +37,8 @@ class ClanSerializer(serializers.ModelSerializer):
     
     def get_total_xp(self, obj):
         try:
-            from app.activities.models import Quest
-            return Quest.objects.filter(
-                user__clan_memberships__clan=obj,
+            return ClanQuest.objects.filter(
+                clan=obj,
                 completed=True
             ).aggregate(total=Sum('xp_reward'))['total'] or 0
         except Exception as e:
@@ -65,11 +64,14 @@ class ClanQuestParticipantSerializer(serializers.ModelSerializer):
 class ClanQuestSerializer(serializers.ModelSerializer):
     participants = serializers.SerializerMethodField()
     expires_at = serializers.DateTimeField(read_only=True)
+    participant_count = serializers.SerializerMethodField()
     
     class Meta: 
         model = ClanQuest 
         fields = ['id', 'clan', 'title', 'description', 'difficulty', 'xp_reward', 
-                  'required_progress', 'total_progress', 'completed', 'expires_at', 'participants', 'deleted_at']
+                  'required_progress', 'total_progress', 'max_participants', 'completed', 'expires_at',
+                  'participants', 'participant_count', 'deleted_at']
+        read_only_fields = ['xp_reward', 'required_progress', 'total_progress', 'completed', 'expires_at']
     
     def get_participants(self, obj):
         from app.clans.models import ClanMember
@@ -91,3 +93,6 @@ class ClanQuestSerializer(serializers.ModelSerializer):
                     'contribution': 0,
                 })
         return participants
+
+    def get_participant_count(self, obj):
+        return ClanQuestParticipant.objects.filter(quest=obj, contribution__gt=0).count()

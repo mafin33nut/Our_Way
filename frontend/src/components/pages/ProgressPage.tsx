@@ -1,12 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { questsAPI } from '../../api/quests';
-import { socialAPI } from '../../api/social';
-import { Activity, Quest } from '../../types';
-import { ActivityFeed } from '../social/ActivityFeed';
+import { Quest } from '../../types';
 import { TaskHistoryPanel } from '../quests/TaskHistoryPanel';
-import { TaskSchedulePanel } from '../quests/TaskSchedulePanel';
 import { Loader } from '../ui/Loader';
-import { useCustomization } from '../../hooks/useCustomization';
 
 type DayBucket = {
   key: string;
@@ -31,39 +27,18 @@ const formatMinutes = (minutes: number) => {
 };
 
 export function ProgressPage() {
-  const { settings } = useCustomization();
   const [quests, setQuests] = useState<Quest[]>([]);
-  const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
     const load = async () => {
       try {
-        const results = await Promise.allSettled([
-          questsAPI.getAll().catch(() => []),
-          socialAPI.getActivities().catch(() => []),
-        ]);
-        const [questsRes, activitiesRes] = results;
+        const results = await Promise.allSettled([questsAPI.getAll().catch(() => [])]);
+        const [questsRes] = results;
         const questList = questsRes.status === 'fulfilled' ? questsRes.value || [] : [];
-        const activitiesList =
-          activitiesRes.status === 'fulfilled' ? activitiesRes.value || [] : [];
         if (active) {
           setQuests(questList);
-          const questActivities: Activity[] = questList
-            .filter((q) => q.completed && q.completed_at)
-            .map((q) => ({
-              id: -q.id,
-              type: 'quest_complete',
-              title: q.title,
-              message: 'Квест завершён',
-              timestamp: q.completed_at as string,
-              icon: 'quest',
-            }));
-          const mergedActivities = [...questActivities, ...activitiesList].sort(
-            (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-          );
-          setActivities(mergedActivities);
         }
       } finally {
         if (active) {
@@ -168,30 +143,12 @@ export function ProgressPage() {
           </div>
         </div>
 
-        {settings.showActivities && (
-          <div>
-            <div className="panel-caption text-center">Активность гильдии</div>
-            <div className="text-white/60 text-sm text-center mb-32">
-              Хронология событий и изменений по квестам и уровню.
-            </div>
-            <ActivityFeed activities={activities} />
-          </div>
-        )}
-
         <div>
           <div className="panel-caption text-center">История выполнения</div>
           <div className="text-white/60 text-sm text-center mb-32">
             Последние завершённые квесты и статистика за день.
           </div>
           <TaskHistoryPanel quests={quests} />
-        </div>
-
-        <div>
-          <div className="panel-caption text-center">Расписание выполнения</div>
-          <div className="text-white/60 text-sm text-center mb-32">
-            План квестов на ближайшее время и рекомендуемая длительность.
-          </div>
-          <TaskSchedulePanel quests={quests} />
         </div>
       </div>
     </div>

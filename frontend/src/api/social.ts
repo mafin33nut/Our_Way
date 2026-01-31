@@ -42,6 +42,10 @@ export const socialAPI = {
       return null;
     }
   },
+  getMyClans: async (): Promise<Clan[]> => {
+    const response = await apiClient.get<Clan[] | { results: Clan[] }>('/api/clans/clans/my/');
+    return unwrapListResponse(response.data);
+  },
 
   createClan: async (data: ClanCreateData): Promise<Clan> => {
     const response = await apiClient.post<Clan>('/api/clans/clans/', data);

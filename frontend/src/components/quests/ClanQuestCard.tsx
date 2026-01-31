@@ -4,19 +4,23 @@ import { Button } from '../ui/Button';
 import { useState } from 'react';
 interface ClanQuestCardProps {
   quest: ClanQuest;
-  onContribute: (id: number, contribution: number) => void;
+  onContribute: (id: number) => void;
   onDelete: (id: number) => void;
   currentUsername: string;
 }
 export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }: ClanQuestCardProps) {
-  const [contributionAmount, setContributionAmount] = useState(1);
   const [isContributing, setIsContributing] = useState(false);
+  const participantCount =
+    quest.participant_count ??
+    quest.participants.filter((participant) => participant.contribution > 0).length;
+  const maxParticipants = quest.max_participants ?? quest.required_progress;
   const progressPercentage = (quest.total_progress / quest.required_progress) * 100;
   const isEpic = quest.difficulty === 'epic';
   const userParticipation = quest.participants.find(p => p.username === currentUsername);
+  const hasJoined = (userParticipation?.contribution || 0) > 0;
   const handleContribute = async () => {
     setIsContributing(true);
-    await onContribute(quest.id, contributionAmount);
+    await onContribute(quest.id);
     setIsContributing(false);
   };
   const getDaysLeft = () => {
@@ -61,8 +65,8 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
       {/* Progress Bar */}
       <div className="mb-4">
         <div className="flex justify-between text-sm text-purple-200/80 mb-2">
-          <span>Прогресс</span>
-          <span>{quest.total_progress} / {quest.required_progress}</span>
+          <span>Участники</span>
+          <span>{participantCount} / {maxParticipants}</span>
         </div>
         <div className="w-full h-4 bg-slate-950/50 rounded-full overflow-hidden border border-purple-600/30">
           <div
@@ -113,20 +117,12 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
       )}
       {!quest.completed && (
         <div className="flex items-center gap-3">
-          <input
-            type="number"
-            min="1"
-            max="10"
-            value={contributionAmount}
-            onChange={(e) => setContributionAmount(Math.max(1, Math.min(10, parseInt(e.target.value) || 1)))}
-            className="w-20 bg-slate-950/50 border border-purple-600/30 rounded px-3 py-2 text-purple-100 text-center focus:outline-none focus:border-purple-500"
-          />
           <Button
             onClick={handleContribute}
-            disabled={isContributing}
+            disabled={isContributing || hasJoined}
             className="flex-1"
           >
-            {isContributing ? 'Отправка...' : 'Внести вклад'}
+            {isContributing ? 'Отправка...' : hasJoined ? 'Вы участвуете' : 'Участвовать'}
           </Button>
         </div>
       )}

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Crown, User as UserIcon } from 'lucide-react';
 import { clanQuestsAPI } from '../../api/quests';
 import { socialAPI } from '../../api/social';
@@ -12,7 +12,8 @@ import { resolveMediaUrl } from '../../utils/media';
 
 export function ClansPage() {
   const { user, refreshUser } = useAuth();
-  const [clan, setClan] = useState<Clan | null>(null);
+  const [clans, setClans] = useState<Clan[]>([]);
+  const [selectedClanId, setSelectedClanId] = useState<number | null>(null);
   const [clanQuests, setClanQuests] = useState<ClanQuest[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatingQuests, setGeneratingQuests] = useState(false);
@@ -22,16 +23,25 @@ export function ClansPage() {
     setLoading(true);
     try {
       const results = await Promise.allSettled([
-        socialAPI.getClan().catch(() => null),
+        socialAPI.getMyClans().catch(() => []),
         clanQuestsAPI.getAll().catch(() => []),
       ]);
 
-      const [clanRes, clanQuestsRes] = results;
-      if (clanRes.status === 'fulfilled') setClan(clanRes.value || null);
+      const [clansRes, clanQuestsRes] = results;
+      const clanList = clansRes.status === 'fulfilled' ? clansRes.value || [] : [];
+      if (clansRes.status === 'fulfilled') setClans(clanList);
       if (clanQuestsRes.status === 'fulfilled') setClanQuests(clanQuestsRes.value || []);
+      if (clanList.length > 0) {
+        setSelectedClanId((prev) =>
+          prev && clanList.some((clanItem) => clanItem.id === prev) ? prev : clanList[0].id
+        );
+      } else {
+        setSelectedClanId(null);
+      }
     } catch (error) {
       console.error('Failed to load clan data:', error);
-      setClan(null);
+      setClans([]);
+      setSelectedClanId(null);
       setClanQuests([]);
     } finally {
       setLoading(false);
@@ -47,9 +57,9 @@ export function ClansPage() {
     await loadData();
   };
 
-  const handleClanQuestContribute = async (id: number, contribution: number) => {
+  const handleClanQuestContribute = async (id: number) => {
     try {
-      const updatedClanQuest = await clanQuestsAPI.contribute(id, contribution);
+      const updatedClanQuest = await clanQuestsAPI.contribute(id);
       setClanQuests((prev) => prev.map((cq) => (cq.id === id ? updatedClanQuest : cq)));
       await refreshUser();
     } catch (error) {
@@ -70,7 +80,7 @@ export function ClansPage() {
     setGeneratingQuests(true);
     setGenerateError(null);
     try {
-      await clanQuestsAPI.generate();
+      await clanQuestsAPI.generate(selectedClanId ?? undefined);
       const refreshed = await clanQuestsAPI.getAll();
       setClanQuests(refreshed);
     } catch (error) {
@@ -95,10 +105,17 @@ export function ClansPage() {
     return <Loader />;
   }
 
-  const members = clan?.members
-    ? [...clan.members].sort(
+  const selectedClan = useMemo(
+    () => clans.find((item) => item.id === selectedClanId) || null,
+    [clans, selectedClanId]
+  );
+  const members = selectedClan?.members
+    ? [...selectedClan.members].sort(
         (a, b) => (b.level ?? 0) - (a.level ?? 0) || a.username.localeCompare(b.username)
       )
+    : [];
+  const selectedClanQuests = selectedClan
+    ? clanQuests.filter((quest) => quest.clan === selectedClan.id)
     : [];
 
   return (
@@ -110,23 +127,40 @@ export function ClansPage() {
               <Crown className="w-5 h-5 text-purple-400" />
               <h2 className="text-purple-300">Клан</h2>
             </div>
-            {clan ? (
+            {clans.length > 1 && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {clans.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setSelectedClanId(item.id)}
+                    className={`px-3 py-1.5 rounded-lg border text-xs transition-colors ${
+                      selectedClanId === item.id
+                        ? 'border-amber-400 bg-amber-500/10 text-amber-100'
+                        : 'border-purple-700/40 text-purple-200/70 hover:border-purple-500/60'
+                    }`}
+                  >
+                    {item.name}
+                  </button>
+                ))}
+              </div>
+            )}
+            {selectedClan ? (
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between text-purple-200/80">
                   <span>Название</span>
-                  <span className="text-purple-300">{clan.name}</span>
+                  <span className="text-purple-300">{selectedClan.name}</span>
                 </div>
                 <div className="flex justify-between text-purple-200/80">
                   <span>Уровень клана</span>
-                  <span className="text-purple-300">{clan.level || 1}</span>
+                  <span className="text-purple-300">{selectedClan.level || 1}</span>
                 </div>
                 <div className="flex justify-between text-purple-200/80">
                   <span>Участники</span>
-                  <span className="text-purple-300">{clan.members?.length || 0}</span>
+                  <span className="text-purple-300">{selectedClan.members?.length || 0}</span>
                 </div>
                 <div className="flex justify-between text-purple-200/80">
                   <span>Общий опыт</span>
-                  <span className="text-purple-300">{(clan.total_xp || 0).toLocaleString()}</span>
+                  <span className="text-purple-300">{(selectedClan.total_xp || 0).toLocaleString()}</span>
                 </div>
               </div>
             ) : (
@@ -139,16 +173,16 @@ export function ClansPage() {
               <Crown className="w-5 h-5 text-purple-400" />
               <h2 className="text-purple-300">Информация о вашем клане</h2>
             </div>
-            {clan ? (
+            {selectedClan ? (
               <>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-3">
                     <p className="text-xs text-purple-200/60">Уровень</p>
-                    <p className="text-lg text-purple-200">{clan.level || 1}</p>
+                    <p className="text-lg text-purple-200">{selectedClan.level || 1}</p>
                   </div>
                   <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-3">
                     <p className="text-xs text-purple-200/60">Общий опыт</p>
-                    <p className="text-lg text-purple-200">{(clan.total_xp || 0).toLocaleString()}</p>
+                    <p className="text-lg text-purple-200">{(selectedClan.total_xp || 0).toLocaleString()}</p>
                   </div>
                 </div>
                 <div className="mt-4">
@@ -199,7 +233,7 @@ export function ClansPage() {
           </div>
         </div>
 
-        {clan && (
+        {selectedClan && (
           <div className="panel-base panel-orange p-6">
             <div className="flex items-center justify-between gap-4">
               <div>
@@ -219,10 +253,10 @@ export function ClansPage() {
             )}
           </div>
         )}
-        {clan && (
+        {selectedClan && (
           <div>
             <ClanQuestList
-              quests={clanQuests}
+              quests={selectedClanQuests}
               onContribute={handleClanQuestContribute}
               onDelete={handleDeleteClanQuest}
               currentUsername={user.username}

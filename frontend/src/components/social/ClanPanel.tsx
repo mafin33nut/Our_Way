@@ -9,11 +9,12 @@ import { resolveMediaUrl } from '../../utils/media';
 interface ClanPanelProps {
   clan: Clan;
   clanQuests: ClanQuest[];
-  onContribute: (id: number, contribution: number) => void;
+  onContribute: (id: number) => void;
+  onDelete: (id: number) => void;
   onClanUpdated: () => void;
 }
 
-export function ClanPanel({ clan, clanQuests, onContribute, onClanUpdated }: ClanPanelProps) {
+export function ClanPanel({ clan, clanQuests, onContribute, onDelete, onClanUpdated }: ClanPanelProps) {
   const { user } = useAuth();
   const [isExpanded, setIsExpanded] = useState(false);
   const [clanDetails, setClanDetails] = useState<Clan | null>(clan);
@@ -148,6 +149,7 @@ export function ClanPanel({ clan, clanQuests, onContribute, onClanUpdated }: Cla
                 <ClanQuestList
                   quests={clanQuests}
                   onContribute={onContribute}
+                  onDelete={onDelete}
                   currentUsername={user?.username || ''}
                 />
               </div>

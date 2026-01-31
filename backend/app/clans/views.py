@@ -64,6 +64,12 @@ class ClanViewSet(viewsets.ModelViewSet):
             traceback.print_exc()
             return Response({'detail': str(e)}, status=500)
 
+    @action(detail=False, methods=['get'])
+    def my(self, request):
+        clans = Clan.objects.filter(members__user=request.user).distinct()
+        serializer = self.get_serializer(clans, many=True)
+        return Response(serializer.data)
+
 class ClanMemberViewSet(viewsets.ModelViewSet): 
     queryset = ClanMember.objects.all() 
     serializer_class = ClanMemberSerializer 
@@ -97,9 +103,30 @@ class ClanQuestViewSet(viewsets.ModelViewSet):
         clan_ids = user.clan_memberships.values_list('clan_id', flat=True)
         return self.queryset.filter(clan_id__in=clan_ids)
 
+    def create(self, request, *args, **kwargs):
+        clan_id = request.data.get('clan')
+        if not clan_id:
+            return Response({'detail': 'Клан обязателен.'}, status=status.HTTP_400_BAD_REQUEST)
+        if not ClanMember.objects.filter(clan_id=clan_id, user=request.user).exists():
+            return Response({'detail': 'Вы не состоите в выбранном клане.'}, status=status.HTTP_403_FORBIDDEN)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        max_participants = serializer.validated_data.get('max_participants') or 1
+        serializer.save(
+            xp_reward=0,
+            required_progress=max_participants,
+            total_progress=0,
+            completed=False,
+        )
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     @action(detail=False, methods=['post'])
     def generate(self, request):
-        membership = request.user.clan_memberships.select_related('clan').first()
+        clan_id = request.data.get('clan')
+        if clan_id:
+            membership = request.user.clan_memberships.filter(clan_id=clan_id).select_related('clan').first()
+        else:
+            membership = request.user.clan_memberships.select_related('clan').first()
         if not membership:
             return Response({'detail': 'Вы не состоите в клане.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -167,7 +194,8 @@ class ClanQuestViewSet(viewsets.ModelViewSet):
                 title=title,
                 description=description,
                 difficulty=difficulty,
-                xp_reward=xp_reward,
+                xp_reward=0,
+                max_participants=member_count,
                 required_progress=member_count,
                 total_progress=0,
                 completed=False,
@@ -179,23 +207,32 @@ class ClanQuestViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def contribute(self, request, pk=None):
         quest = self.get_object()
-        contribution = int(request.data.get('contribution', 1))
-        participant, _ = ClanQuestParticipant.objects.get_or_create(
+        participant, created = ClanQuestParticipant.objects.get_or_create(
             quest=quest,
             user=request.user,
             defaults={'contribution': 0},
         )
-        participant.contribution = (participant.contribution or 0) + max(contribution, 0)
-        participant.save(update_fields=['contribution', 'contributed_at'])
-
-        quest.total_progress = (quest.total_progress or 0) + max(contribution, 0)
-
-        member_ids = set(quest.clan.members.values_list('user_id', flat=True))
-        participants_with_contrib = set(
-            ClanQuestParticipant.objects.filter(quest=quest, contribution__gt=0)
-            .values_list('user_id', flat=True)
-        )
-        if member_ids and member_ids.issubset(participants_with_contrib):
-            quest.completed = True
-        quest.save(update_fields=['total_progress', 'completed'])
+        if not quest.completed:
+            participant.contribution = 1
+            participant.save(update_fields=['contribution', 'contributed_at'])
+            participant_count = ClanQuestParticipant.objects.filter(
+                quest=quest, contribution__gt=0
+            ).count()
+            quest.total_progress = participant_count
+            quest.required_progress = max(quest.max_participants or 1, 1)
+            if participant_count >= quest.required_progress:
+                quest.completed = True
+                if participant_count <= 0:
+                    quest.xp_reward = 0
+                elif participant_count == 1:
+                    quest.xp_reward = 30
+                elif participant_count == 2:
+                    quest.xp_reward = 70
+                elif participant_count == 3:
+                    quest.xp_reward = 110
+                elif participant_count == 4:
+                    quest.xp_reward = 150
+                else:
+                    quest.xp_reward = 150 + (participant_count - 4) * 60
+            quest.save(update_fields=['total_progress', 'completed', 'xp_reward', 'required_progress'])
         return Response(ClanQuestSerializer(quest).data)

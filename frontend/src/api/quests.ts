@@ -37,20 +37,30 @@ export const clanQuestsAPI = {
     return unwrapListResponse(response.data);
   },
 
-  contribute: async (id: number, contribution: number): Promise<ClanQuest> => {
-    const response = await apiClient.post<ClanQuest>(`/api/clans/quests/${id}/contribute/`, {
-      contribution,
-    });
+  contribute: async (id: number): Promise<ClanQuest> => {
+    const response = await apiClient.post<ClanQuest>(`/api/clans/quests/${id}/contribute/`);
     return response.data;
   },
 
-  generate: async (): Promise<ClanQuest[]> => {
-    const response = await apiClient.post<ClanQuest[]>(`/api/clans/quests/generate/`);
+  generate: async (clanId?: number): Promise<ClanQuest[]> => {
+    const response = await apiClient.post<ClanQuest[]>(
+      `/api/clans/quests/generate/`,
+      clanId ? { clan: clanId } : {}
+    );
     return response.data;
   },
 
   delete: async (id: number): Promise<void> => {
     await apiClient.delete(`/api/clans/quests/${id}/`);
+  },
+  create: async (payload: {
+    clan: number;
+    title: string;
+    description?: string;
+    max_participants: number;
+  }): Promise<ClanQuest> => {
+    const response = await apiClient.post<ClanQuest>(`/api/clans/quests/`, payload);
+    return response.data;
   },
 };
 export const timersAPI = {

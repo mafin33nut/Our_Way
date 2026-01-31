@@ -31,6 +31,7 @@ class ClanQuest(models.Model):
     xp_reward = models.PositiveIntegerField(default=20)
     required_progress = models.PositiveIntegerField(default=100)
     total_progress = models.PositiveIntegerField(default=0)
+    max_participants = models.PositiveIntegerField(default=1)
     completed = models.BooleanField(default=False)
     expires_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

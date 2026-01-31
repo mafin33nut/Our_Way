@@ -57,6 +57,8 @@ export interface ClanQuest {
   xp_reward: number;
   required_progress: number;
   total_progress: number;
+  max_participants?: number;
+  participant_count?: number;
   completed: boolean;
   expires_at?: string | null;
   participants: ClanQuestParticipant[];
