@@ -413,7 +413,11 @@ class QuestSerializer(serializers.ModelSerializer):
         if request and hasattr(request, 'user'):
             validated_data['user'] = request.user
         validated_data['is_custom'] = True
-        validated_data['xp_reward'] = 100
+        if steps_data:
+            extra_steps = max(len(steps_data) - 1, 0)
+            validated_data['xp_reward'] = 100 + extra_steps * 50
+        else:
+            validated_data['xp_reward'] = 100
         quest = super().create(validated_data)
 
         if focus_ids:

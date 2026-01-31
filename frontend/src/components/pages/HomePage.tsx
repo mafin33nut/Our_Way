@@ -219,11 +219,7 @@ export function HomePage() {
 
         </div>
 
-        <div className="mt-16 pb-10 text-center">
-          <div className="inline-flex items-center gap-3 rounded-full border border-slate-600/50 bg-slate-900/60 px-6 py-3 text-slate-200">
-            <span className="text-lg tracking-widest">Our_Way</span>
-          </div>
-        </div>
+        <div className="mt-28 pb-16 text-center"></div>
       </div>
     </div>
   );
