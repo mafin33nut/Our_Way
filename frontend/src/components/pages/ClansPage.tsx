@@ -128,7 +128,7 @@ export function ClansPage() {
               <h2 className="text-purple-300">Информация о вашем клане</h2>
             </div>
             {clan ? (
-              <div className="space-y-4">
+              <>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-3">
                     <p className="text-xs text-purple-200/60">Уровень</p>
@@ -139,7 +139,7 @@ export function ClansPage() {
                     <p className="text-lg text-purple-200">{(clan.total_xp || 0).toLocaleString()}</p>
                   </div>
                 </div>
-                <div>
+                <div className="mt-4">
                   <p className="text-xs text-purple-200/60 mb-2">Участники</p>
                   <div className="space-y-2">
                     {clan.members?.length ? (
@@ -162,7 +162,7 @@ export function ClansPage() {
                     )}
                   </div>
                 </div>
-              </div>
+              </>
             ) : (
               <div className="text-center py-6 text-purple-200/40 text-sm">
                 Вы еще не состоите в клане
