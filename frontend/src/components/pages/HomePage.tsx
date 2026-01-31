@@ -36,9 +36,26 @@ export function HomePage() {
 
       const [questsRes, friendsRes, activitiesRes] = results;
 
-      if (questsRes.status === 'fulfilled') setQuests(questsRes.value || []);
+      const questsValue = questsRes.status === 'fulfilled' ? questsRes.value || [] : [];
+      const activitiesValue = activitiesRes.status === 'fulfilled' ? activitiesRes.value || [] : [];
+
+      if (questsRes.status === 'fulfilled') setQuests(questsValue);
       if (friendsRes.status === 'fulfilled') setFriends(friendsRes.value || []);
-      if (activitiesRes.status === 'fulfilled') setActivities(activitiesRes.value || []);
+
+      const questActivities: Activity[] = questsValue
+        .filter((q) => q.completed && q.completed_at)
+        .map((q) => ({
+          id: -q.id,
+          type: 'quest_complete',
+          title: q.title,
+          message: 'Задание выполнено',
+          timestamp: q.completed_at as string,
+          icon: 'quest',
+        }));
+      const mergedActivities = [...questActivities, ...activitiesValue].sort(
+        (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      );
+      setActivities(mergedActivities);
     } catch (err) {
       console.error('Failed to load data:', err);
       setQuests([]);
@@ -79,6 +96,17 @@ export function HomePage() {
     try {
       const updatedQuest = await questsAPI.complete(id);
       setQuests((prev) => prev.map((q) => (q.id === id ? updatedQuest : q)));
+      setActivities((prev) => [
+        {
+          id: -updatedQuest.id,
+          type: 'quest_complete',
+          title: updatedQuest.title,
+          message: 'Задание выполнено',
+          timestamp: updatedQuest.completed_at || new Date().toISOString(),
+          icon: 'quest',
+        },
+        ...prev,
+      ]);
       playVictorySound();
       await refreshUser();
     } catch (error) {

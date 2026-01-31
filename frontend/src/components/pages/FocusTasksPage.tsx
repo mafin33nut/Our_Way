@@ -15,7 +15,7 @@ export function FocusTasksPage() {
   const [loading, setLoading] = useState(true);
 
   const [newFocusName, setNewFocusName] = useState('');
-  const [selectedFocuses, setSelectedFocuses] = useState<number[]>([]);
+  const [selectedFocusId, setSelectedFocusId] = useState<number | null>(null);
 
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
@@ -67,7 +67,9 @@ export function FocusTasksPage() {
     try {
       await focusesAPI.delete(id);
       setFocuses((prev) => prev.filter((f) => f.id !== id));
-      setSelectedFocuses((prev) => prev.filter((focusId) => focusId !== id));
+      if (selectedFocusId === id) {
+        setSelectedFocusId(null);
+      }
     } catch (e) {
       setError('Не удалось удалить фокус.');
     }
@@ -84,7 +86,7 @@ export function FocusTasksPage() {
         title: taskTitle.trim(),
         description: taskDescription.trim(),
         difficulty: 'easy' as const,
-        focus_ids: selectedFocuses,
+        focus_ids: selectedFocusId ? [selectedFocusId] : [],
         steps:
           taskType === 'stepwise'
             ? steps
@@ -134,33 +136,32 @@ export function FocusTasksPage() {
           </div>
           <div className="flex gap-3 flex-wrap mb-4">
             {focuses.map((focus) => (
-              <label
+              <div
                 key={focus.id}
-                className={`px-3 py-2 rounded-lg border cursor-pointer ${
-                  selectedFocuses.includes(focus.id)
+                className={`px-3 py-2 rounded-lg border flex items-center gap-2 ${
+                  selectedFocusId === focus.id
                     ? 'border-amber-400 bg-amber-500/10 text-amber-100'
                     : 'border-purple-700/40 text-purple-200/70'
                 }`}
               >
                 <input
-                  type="checkbox"
-                  className="mr-2"
-                  checked={selectedFocuses.includes(focus.id)}
-                  onChange={(e) => {
-                    setSelectedFocuses((prev) =>
-                      e.target.checked ? [...prev, focus.id] : prev.filter((id) => id !== focus.id)
-                    );
-                  }}
+                  type="radio"
+                  name="focus"
+                  className="mr-1"
+                  checked={selectedFocusId === focus.id}
+                  onChange={() => setSelectedFocusId(focus.id)}
                 />
-                {focus.name}
-                <button
+                <span>{focus.name}</span>
+                <Button
                   type="button"
-                  className="ml-2 text-xs text-rose-200"
+                  size="sm"
+                  variant="ghost"
+                  className="ml-1 bg-rose-500/70 text-white hover:bg-rose-500/90 border border-rose-400/60"
                   onClick={() => handleDeleteFocus(focus.id)}
                 >
-                  удалить
-                </button>
-              </label>
+                  Удалить
+                </Button>
+              </div>
             ))}
           </div>
           <div className="flex gap-3">
@@ -215,6 +216,21 @@ export function FocusTasksPage() {
                 Поэтапное
               </label>
             </div>
+            <div className="flex items-center gap-3">
+              <label className="text-purple-200/80 text-sm">Фокус:</label>
+              <select
+                value={selectedFocusId ?? ''}
+                onChange={(e) => setSelectedFocusId(e.target.value ? Number(e.target.value) : null)}
+                className="rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
+              >
+                <option value="">Без фокуса</option>
+                {focuses.map((focus) => (
+                  <option key={focus.id} value={focus.id}>
+                    {focus.name}
+                  </option>
+                ))}
+              </select>
+            </div>
             {taskType === 'stepwise' && (
               <div className="space-y-2">
                 {steps.map((step, idx) => (
@@ -252,11 +268,27 @@ export function FocusTasksPage() {
         </div>
 
         <div className="panel-base panel-sky">
-          <div className="panel-caption text-center">Мои задания</div>
+          <div className="panel-caption text-center">Мои задания по фокусам</div>
           {loading ? (
             <p className="text-center text-purple-200/60">Загрузка...</p>
           ) : (
-            <QuestList quests={quests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {[...focuses, { id: 0, name: 'Без фокуса', created_at: '' }].map((focus) => {
+                const focusQuests =
+                  focus.id === 0
+                    ? quests.filter((q) => !q.focuses || q.focuses.length === 0)
+                    : quests.filter((q) => q.focuses?.some((f) => f.id === focus.id));
+                if (focusQuests.length === 0) {
+                  return null;
+                }
+                return (
+                  <div key={focus.id} className="rounded-lg border border-purple-700/30 bg-slate-950/40 p-4">
+                    <h3 className="text-purple-200 mb-3">{focus.name}</h3>
+                    <QuestList quests={focusQuests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} />
+                  </div>
+                );
+              })}
+            </div>
           )}
         </div>
       </div>

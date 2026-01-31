@@ -28,6 +28,7 @@ export interface Quest {
   user: number;
   focus_area?: string;
   steps?: QuestStep[];
+  focuses?: UserFocus[];
 }
 
 export interface QuestStep {

@@ -11,7 +11,21 @@ interface CharacterProfileProps {
 export function CharacterProfile({ user, questsCompletedToday }: CharacterProfileProps) {
   const { settings } = useCustomization();
   const isLight = settings.theme === 'light';
-  const xpPercentage = (user.xp / user.xp_to_next_level) * 100;
+  const nextThreshold = (() => {
+    if (user.level <= 1) return 50;
+    if (user.level === 2) return 150;
+    if (user.level === 3) return 375;
+    return 375 + (user.level - 3) * 300;
+  })();
+  const prevThreshold = (() => {
+    if (user.level <= 1) return 0;
+    if (user.level === 2) return 50;
+    if (user.level === 3) return 150;
+    return 375 + (user.level - 4) * 300;
+  })();
+  const xpInLevel = Math.max(user.xp - prevThreshold, 0);
+  const xpNeeded = Math.max(nextThreshold - prevThreshold, 1);
+  const xpPercentage = Math.min((xpInLevel / xpNeeded) * 100, 100);
   return (
     <div className="panel-base panel-teal p-6 min-h-[260px] flex flex-col">
       <div className="flex items-center gap-3 mb-6">
@@ -48,7 +62,7 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
       <div className="mb-6">
         <div className="flex justify-between text-sm mb-2 text-purple-200/80">
           <span>Опыт</span>
-          <span>{user.xp} / {user.xp_to_next_level} XP</span>
+          <span>{xpInLevel} / {xpNeeded} XP</span>
         </div>
         <div className="w-full h-3 rounded-full overflow-hidden border bg-slate-950/50 border-purple-600/30">
           <div

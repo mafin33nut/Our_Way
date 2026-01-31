@@ -373,6 +373,7 @@ class QuestStepSerializer(serializers.ModelSerializer):
 
 
 class QuestSerializer(serializers.ModelSerializer):
+    focuses = UserFocusSerializer(many=True, read_only=True)
     focus_ids = serializers.ListField(
         child=serializers.IntegerField(),
         write_only=True,
@@ -399,6 +400,7 @@ class QuestSerializer(serializers.ModelSerializer):
             'created_at',
             'user',
             'focus_area',
+            'focuses',
             'focus_ids',
             'steps',
         ]
