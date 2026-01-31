@@ -124,12 +124,19 @@ export function ClansPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
       <div className="max-w-[1920px] mx-auto px-6 py-8 space-y-12">
+        <div className="panel-caption text-left">Кланы</div>
         {loadError && (
           <div className="panel-base panel-orange p-6">
             <p className="text-slate-200">{loadError}</p>
           </div>
         )}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-12">
+
+        {clans.length === 0 ? (
+          <div className="panel-base panel-purple p-6">
+            <ClanCreationPanel onClanCreated={handleClanCreated} />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-12">
           <div className="panel-base panel-purple p-6">
             <div className="flex items-center gap-2 mb-3">
               <Crown className="w-5 h-5 text-teal-300" />
@@ -248,6 +255,9 @@ export function ClansPage() {
             )}
           </div>
         </div>
+
+          </div>
+        )}
 
         {selectedClan && (
           <div className="panel-base panel-orange p-6">
