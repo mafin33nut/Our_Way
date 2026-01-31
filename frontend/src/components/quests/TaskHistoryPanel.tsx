@@ -17,33 +17,33 @@ export function TaskHistoryPanel({ quests }: TaskHistoryPanelProps) {
   return (
     <div className="panel-base panel-purple p-6">
       <div className="flex items-center gap-2 mb-4">
-        <ClipboardList className="w-5 h-5 text-purple-400" />
-        <h2 className="text-purple-300">Завершение и история</h2>
+        <ClipboardList className="w-5 h-5 text-teal-300" />
+        <h2 className="text-slate-100">Завершение и история</h2>
       </div>
 
       <div className="grid grid-cols-2 gap-3 mb-4">
-        <div className="rounded-lg border border-purple-600/30 bg-slate-950/40 p-3">
-          <p className="text-xs text-purple-200/60">Сегодня выполнено</p>
-          <p className="text-lg text-purple-200">{completedToday.length}</p>
+        <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-3">
+          <p className="text-xs text-slate-300/70">Сегодня выполнено</p>
+          <p className="text-lg text-slate-100">{completedToday.length}</p>
         </div>
-        <div className="rounded-lg border border-purple-600/30 bg-slate-950/40 p-3">
-          <p className="text-xs text-purple-200/60">XP сегодня</p>
-          <p className="text-lg text-purple-200">{xpToday}</p>
+        <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-3">
+          <p className="text-xs text-slate-300/70">XP сегодня</p>
+          <p className="text-lg text-slate-100">{xpToday}</p>
         </div>
       </div>
 
       <div className="space-y-2">
-        <p className="text-xs text-purple-200/60 mb-2">Последние квесты</p>
+        <p className="text-xs text-slate-300/70 mb-2">Последние квесты</p>
         {recent.map((quest) => (
           <div
             key={quest.id}
-            className="flex items-start gap-2 rounded-lg border border-purple-600/20 bg-slate-950/40 p-3"
+            className="flex items-start gap-2 rounded-lg border border-slate-600/40 bg-slate-900/50 p-3"
           >
-            <CheckCircle2 className="w-4 h-4 text-purple-400 mt-0.5" />
+            <CheckCircle2 className="w-4 h-4 text-teal-300 mt-0.5" />
             <div className="min-w-0">
-              <p className="text-sm text-purple-200 truncate">{quest.title}</p>
+              <p className="text-sm text-slate-200 truncate">{quest.title}</p>
               {quest.completed_at && (
-                <p className="text-xs text-purple-200/50">
+                <p className="text-xs text-slate-300/60">
                   {formatTime(quest.completed_at)}
                 </p>
               )}
@@ -51,7 +51,7 @@ export function TaskHistoryPanel({ quests }: TaskHistoryPanelProps) {
           </div>
         ))}
         {recent.length === 0 && (
-          <div className="text-center py-6 text-purple-200/40 text-sm">
+          <div className="text-center py-6 text-slate-300/60 text-sm">
             Пока нет завершенных квестов
           </div>
         )}

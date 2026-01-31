@@ -15,7 +15,7 @@ export function ClanQuestList({ quests, onContribute, onDelete, currentUsername 
       {/* Active Clan Quests */}
       {activeQuests.length > 0 && (
         <div className="panel-base panel-lime p-6">
-          <h2 className="text-purple-300 mb-4 flex items-center gap-2">
+          <h2 className="text-slate-100 mb-4 flex items-center gap-2">
             <Swords className="w-5 h-5" />
             Клановые квесты ({activeQuests.length})
           </h2>
@@ -35,7 +35,7 @@ export function ClanQuestList({ quests, onContribute, onDelete, currentUsername 
       {/* Completed Clan Quests */}
       {completedQuests.length > 0 && (
         <div className="panel-base panel-lime p-6">
-          <h2 className="text-purple-300 mb-4 flex items-center gap-2">
+          <h2 className="text-slate-100 mb-4 flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5" />
             Завершенные клановые квесты ({completedQuests.length})
           </h2>
@@ -55,9 +55,9 @@ export function ClanQuestList({ quests, onContribute, onDelete, currentUsername 
       {/* Empty State */}
       {quests.length === 0 && (
         <div className="panel-base panel-purple p-12 text-center">
-          <Swords className="w-12 h-12 text-purple-400/40 mx-auto mb-4" />
-          <p className="text-purple-200/60">Пока нет клановых квестов</p>
-          <p className="text-purple-200/40 text-sm mt-2">Вступите в клан, чтобы участвовать в совместных квестах</p>
+          <Swords className="w-12 h-12 text-teal-300/60 mx-auto mb-4" />
+          <p className="text-slate-300/70">Пока нет клановых квестов</p>
+          <p className="text-slate-300/50 text-sm mt-2">Вступите в клан, чтобы участвовать в совместных квестах</p>
         </div>
       )}
     </div>

@@ -105,6 +105,7 @@ export interface ClanMember {
   avatar?: string | null;
   level: number;
   contribution: number;
+  role?: string;
 }
 export interface Clan {
   id: number;

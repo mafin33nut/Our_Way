@@ -16,17 +16,17 @@ export function Button({
   
   const variantStyles = {
     primary:
-      'bg-orange-400/60 text-slate-900 hover:bg-orange-400/70 border border-orange-300/50 shadow-sm',
+      'bg-teal-400/80 text-slate-900 hover:bg-teal-400 border border-teal-300/60 shadow-sm',
     secondary:
-      'bg-orange-300/45 text-slate-900 hover:bg-orange-300/55 border border-orange-300/40 shadow-sm',
+      'bg-slate-700/60 text-slate-100 hover:bg-slate-700 border border-slate-600/60 shadow-sm',
     ghost:
-      'text-orange-200 hover:bg-orange-300/20 border border-orange-300/30',
+      'text-slate-100 hover:bg-slate-700/60 border border-slate-600/60',
     orange:
-      'bg-orange-400/60 text-slate-900 hover:bg-orange-400/70 border border-orange-300/50 shadow-sm',
+      'bg-teal-400/80 text-slate-900 hover:bg-teal-400 border border-teal-300/60 shadow-sm',
     darkOrange:
-      'bg-orange-300/55 text-slate-900 hover:bg-orange-300/65 border border-orange-300/50 shadow-sm',
+      'bg-teal-300/70 text-slate-900 hover:bg-teal-300 border border-teal-300/60 shadow-sm',
     softAmber:
-      'bg-orange-300/50 text-slate-900 hover:bg-orange-300/60 border border-orange-300/45 shadow-sm',
+      'bg-teal-300/60 text-slate-900 hover:bg-teal-300 border border-teal-300/50 shadow-sm',
   };
   const sizeStyles = {
     sm: 'px-3.5 py-2 text-sm',

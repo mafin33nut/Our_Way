@@ -119,13 +119,13 @@ export function ClansPage() {
     : [];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
       <div className="max-w-[1920px] mx-auto px-6 py-8 space-y-12">
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-12">
-          <div className="panel-base panel-purple p-6">
+            <div className="panel-base panel-purple p-6">
             <div className="flex items-center gap-2 mb-3">
-              <Crown className="w-5 h-5 text-purple-400" />
-              <h2 className="text-purple-300">Клан</h2>
+                <Crown className="w-5 h-5 text-teal-300" />
+                <h2 className="text-slate-100">Клан</h2>
             </div>
             {clans.length > 1 && (
               <div className="flex flex-wrap gap-2 mb-4">
@@ -135,8 +135,8 @@ export function ClansPage() {
                     onClick={() => setSelectedClanId(item.id)}
                     className={`px-3 py-1.5 rounded-lg border text-xs transition-colors ${
                       selectedClanId === item.id
-                        ? 'border-amber-400 bg-amber-500/10 text-amber-100'
-                        : 'border-purple-700/40 text-purple-200/70 hover:border-purple-500/60'
+                    ? 'border-teal-300/60 bg-teal-400/10 text-teal-100'
+                    : 'border-slate-600/60 text-slate-300/70 hover:border-slate-500/60'
                     }`}
                   >
                     {item.name}
@@ -146,21 +146,21 @@ export function ClansPage() {
             )}
             {selectedClan ? (
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-purple-200/80">
+            <div className="flex justify-between text-slate-300/80">
                   <span>Название</span>
-                  <span className="text-purple-300">{selectedClan.name}</span>
+              <span className="text-slate-100">{selectedClan.name}</span>
                 </div>
-                <div className="flex justify-between text-purple-200/80">
+            <div className="flex justify-between text-slate-300/80">
                   <span>Уровень клана</span>
-                  <span className="text-purple-300">{selectedClan.level || 1}</span>
+              <span className="text-slate-100">{selectedClan.level || 1}</span>
                 </div>
-                <div className="flex justify-between text-purple-200/80">
+            <div className="flex justify-between text-slate-300/80">
                   <span>Участники</span>
-                  <span className="text-purple-300">{selectedClan.members?.length || 0}</span>
+              <span className="text-slate-100">{selectedClan.members?.length || 0}</span>
                 </div>
-                <div className="flex justify-between text-purple-200/80">
+            <div className="flex justify-between text-slate-300/80">
                   <span>Общий опыт</span>
-                  <span className="text-purple-300">{(selectedClan.total_xp || 0).toLocaleString()}</span>
+              <span className="text-slate-100">{(selectedClan.total_xp || 0).toLocaleString()}</span>
                 </div>
               </div>
             ) : (
@@ -168,57 +168,57 @@ export function ClansPage() {
             )}
           </div>
 
-          <div className="panel-base panel-teal p-6">
+      <div className="panel-base panel-teal p-6">
             <div className="flex items-center gap-2 mb-3">
-              <Crown className="w-5 h-5 text-purple-400" />
-              <h2 className="text-purple-300">Информация о вашем клане</h2>
+          <Crown className="w-5 h-5 text-teal-300" />
+          <h2 className="text-slate-100">Информация о вашем клане</h2>
             </div>
             {selectedClan ? (
               <>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-3">
-                    <p className="text-xs text-purple-200/60">Уровень</p>
-                    <p className="text-lg text-purple-200">{selectedClan.level || 1}</p>
+                  <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-3">
+                    <p className="text-xs text-slate-300/70">Уровень</p>
+                    <p className="text-lg text-slate-100">{selectedClan.level || 1}</p>
                   </div>
-                  <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-3">
-                    <p className="text-xs text-purple-200/60">Общий опыт</p>
-                    <p className="text-lg text-purple-200">{(selectedClan.total_xp || 0).toLocaleString()}</p>
+                  <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-3">
+                    <p className="text-xs text-slate-300/70">Общий опыт</p>
+                    <p className="text-lg text-slate-100">{(selectedClan.total_xp || 0).toLocaleString()}</p>
                   </div>
                 </div>
                 <div className="mt-4">
-                  <p className="text-xs text-purple-200/60 mb-2">Участники</p>
+                  <p className="text-xs text-slate-300/70 mb-2">Участники</p>
                   <div className="space-y-2">
                     {members.length ? (
                       members.map((member, index) => (
                         <div
                           key={member.id}
-                          className="flex items-center justify-between rounded-lg border border-purple-600/20 bg-slate-950/40 px-3 py-2"
+                          className="flex items-center justify-between rounded-lg border border-slate-600/40 bg-slate-900/50 px-3 py-2"
                         >
                           <div className="flex items-center gap-3 min-w-0">
-                            <span className="text-xs text-purple-200/60 w-5 text-right">
+                            <span className="text-xs text-slate-300/70 w-5 text-right">
                               {index + 1}
                             </span>
                             {resolveMediaUrl(member.avatar) ? (
                               <img
                                 src={resolveMediaUrl(member.avatar) as string}
                                 alt={member.username}
-                                className="w-8 h-8 rounded-full object-cover border border-purple-500/60"
+                              className="w-8 h-8 rounded-full object-cover border border-teal-300/60"
                               />
                             ) : (
-                              <div className="w-8 h-8 rounded-full bg-slate-800/70 border border-purple-500/60 flex items-center justify-center text-purple-200">
+                            <div className="w-8 h-8 rounded-full bg-slate-800/70 border border-teal-300/60 flex items-center justify-center text-slate-200">
                                 <UserIcon className="w-4 h-4" />
                               </div>
                             )}
                             <div className="min-w-0">
-                              <p className="text-sm text-purple-200 truncate">{member.username}</p>
-                              <p className="text-xs text-purple-200/50">Уровень {member.level}</p>
+                            <p className="text-sm text-slate-200 truncate">{member.username}</p>
+                            <p className="text-xs text-slate-300/60">Уровень {member.level}</p>
                             </div>
                           </div>
-                          <span className="text-xs text-purple-200/60">{member.contribution} XP</span>
+                        <span className="text-xs text-slate-300/70">{member.contribution} XP</span>
                         </div>
                       ))
                     ) : (
-                      <div className="text-center py-4 text-purple-200/40 text-sm">
+                    <div className="text-center py-4 text-slate-300/60 text-sm">
                         Пока нет участников
                       </div>
                     )}
@@ -234,11 +234,11 @@ export function ClansPage() {
         </div>
 
         {selectedClan && (
-          <div className="panel-base panel-orange p-6">
+            <div className="panel-base panel-orange p-6">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <h3 className="text-purple-200">Генерация клановых квестов</h3>
-                <p className="text-sm text-purple-200/60">
+                  <h3 className="text-slate-100">Генерация клановых квестов</h3>
+                  <p className="text-sm text-slate-300/60">
                   Случайные квесты для всего клана из общей библиотеки.
                 </p>
               </div>

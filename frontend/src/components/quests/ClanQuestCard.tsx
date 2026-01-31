@@ -35,50 +35,50 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
   };
   return (
     <div
-      className={`bg-slate-950/40 rounded-lg border-2 p-6 transition-all ${
+      className={`bg-slate-900/50 rounded-xl border p-6 transition-all ${
         quest.completed
-          ? 'border-purple-600/30 opacity-75'
-          : 'border-purple-500/50 shadow-lg shadow-purple-500/20 ring-2 ring-purple-500/60 ring-offset-2 ring-offset-slate-900'
+          ? 'border-slate-600/40 opacity-80'
+          : 'border-teal-300/60 shadow-lg shadow-teal-400/10 ring-1 ring-teal-300/60 ring-offset-2 ring-offset-slate-900'
       }`}
     >
       {/* Header */}
       <div className="flex items-start justify-between gap-4 mb-4">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
-            <Crown className="w-5 h-5 text-purple-400" />
-            <span className="text-xs px-2 py-1 rounded bg-purple-900/30 text-purple-300">
+            <Crown className="w-5 h-5 text-teal-300" />
+            <span className="text-xs px-2 py-1 rounded bg-slate-800/60 text-slate-200">
               {isEpic ? 'Эпическое' : 'Легендарное'}
             </span>
           </div>
-          <h3 className={`text-lg mb-2 ${quest.completed ? 'text-purple-200 line-through' : 'text-purple-100'}`}>
+          <h3 className={`text-lg mb-2 ${quest.completed ? 'text-slate-300 line-through' : 'text-slate-100'}`}>
             {quest.title}
           </h3>
-          <p className="text-purple-200/60 text-sm">{quest.description}</p>
+          <p className="text-slate-300/70 text-sm">{quest.description}</p>
         </div>
         <div className="text-right flex-shrink-0">
-          <div className="text-2xl text-purple-300">
+          <div className="text-2xl text-teal-200">
             +{quest.xp_reward}
           </div>
-          <div className="text-xs text-purple-200/40">XP награда</div>
+          <div className="text-xs text-slate-300/60">XP награда</div>
         </div>
       </div>
       {/* Progress Bar */}
       <div className="mb-4">
-        <div className="flex justify-between text-sm text-purple-200/80 mb-2">
+        <div className="flex justify-between text-sm text-slate-300/80 mb-2">
           <span>Участники</span>
           <span>{participantCount} / {maxParticipants}</span>
         </div>
-        <div className="w-full h-4 bg-slate-950/50 rounded-full overflow-hidden border border-purple-600/30">
+        <div className="w-full h-4 bg-slate-950/50 rounded-full overflow-hidden border border-slate-600/40">
           <div
-            className="h-full transition-all duration-500 bg-gradient-to-r from-purple-600 to-purple-400"
+            className="h-full transition-all duration-500 bg-gradient-to-r from-teal-400 to-cyan-300"
             style={{ width: `${Math.min(progressPercentage, 100)}%` }}
           />
         </div>
       </div>
       <div className="mb-4">
         <div className="flex items-center gap-2 mb-2">
-          <Users className="w-4 h-4 text-purple-400" />
-          <span className="text-sm text-purple-200/80">Участники ({quest.participants.length})</span>
+          <Users className="w-4 h-4 text-teal-300" />
+          <span className="text-sm text-slate-300/80">Участники ({quest.participants.length})</span>
         </div>
         <div className="grid grid-cols-2 gap-2">
           {quest.participants.slice(0, 6).map((participant) => (
@@ -86,32 +86,32 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
               key={participant.id}
               className={`flex items-center justify-between p-2 rounded bg-slate-800/50 border ${
                 participant.username === currentUsername
-                  ? 'border-purple-500/50'
+                  ? 'border-teal-300/60'
                   : 'border-slate-700/50'
               }`}
             >
               <div>
-                <p className="text-purple-200 text-sm">{participant.username}</p>
-                <p className="text-purple-200/40 text-xs">Уровень {participant.level}</p>
+                <p className="text-slate-200 text-sm">{participant.username}</p>
+                <p className="text-slate-300/60 text-xs">Уровень {participant.level}</p>
               </div>
               <div className="text-right">
-                <div className="text-purple-300 text-sm">+{participant.contribution}</div>
-                <TrendingUp className="w-3 h-3 text-purple-400/60 ml-auto" />
+                <div className="text-teal-200 text-sm">+{participant.contribution}</div>
+                <TrendingUp className="w-3 h-3 text-teal-200/70 ml-auto" />
               </div>
             </div>
           ))}
         </div>
         {quest.participants.length > 6 && (
-          <p className="text-purple-200/40 text-xs text-center mt-2">
+          <p className="text-slate-300/60 text-xs text-center mt-2">
             +{quest.participants.length - 6} ещё участников
           </p>
         )}
       </div>
       {getDaysLeft() !== null && (
-        <div className="flex items-center gap-2 mb-4 p-3 bg-slate-800/50 rounded border border-purple-600/20">
-          <Clock className="w-4 h-4 text-purple-400" />
-          <span className="text-sm text-purple-200/80">
-            Осталось дней: <span className="text-purple-300">{getDaysLeft()}</span>
+        <div className="flex items-center gap-2 mb-4 p-3 bg-slate-800/50 rounded border border-slate-600/40">
+          <Clock className="w-4 h-4 text-teal-300" />
+          <span className="text-sm text-slate-300/80">
+            Осталось дней: <span className="text-teal-200">{getDaysLeft()}</span>
           </span>
         </div>
       )}
@@ -132,9 +132,9 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
         </Button>
       </div>
       {userParticipation && (
-        <div className="mt-3 p-2 bg-purple-900/20 rounded border border-purple-600/30">
-          <p className="text-purple-200 text-sm">
-            Ваш вклад: <span className="text-purple-300">+{userParticipation.contribution}</span>
+        <div className="mt-3 p-2 bg-slate-900/40 rounded border border-slate-600/40">
+          <p className="text-slate-200 text-sm">
+            Ваш вклад: <span className="text-teal-200">+{userParticipation.contribution}</span>
           </p>
         </div>
       )}

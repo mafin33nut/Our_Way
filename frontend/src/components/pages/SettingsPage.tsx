@@ -38,7 +38,7 @@ export function SettingsPage() {
   return (
     <div
       className={`min-h-screen relative bg-slate-950 ${
-        hasBackground ? '' : 'bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900'
+        hasBackground ? '' : 'bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950'
       }`}
     >
       {hasBackground && (

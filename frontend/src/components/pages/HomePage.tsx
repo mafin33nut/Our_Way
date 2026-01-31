@@ -10,6 +10,7 @@ import { FriendSearchPanel } from '../../components/social/FriendSearchPanel';
 import { AllFriendsPanel } from '../../components/social/AllFriendsPanel';
 import { isToday } from '../../utils/time';
 import { Loader } from '../../components/ui/Loader';
+import { Award } from 'lucide-react';
 
 export function HomePage() {
   const { user, refreshUser } = useAuth();
@@ -94,6 +95,16 @@ export function HomePage() {
   };
 
   const questsCompletedToday = quests.filter((q) => q.completed && q.completed_at && isToday(q.completed_at)).length;
+  const achievementSlots = [
+    { id: 'a1', title: 'Новичок', req: 1 },
+    { id: 'a2', title: 'Боец', req: 5 },
+    { id: 'a3', title: 'Солдат', req: 10 },
+    { id: 'a4', title: 'Легенда', req: 20 },
+    { id: 'a5', title: 'Герой', req: 30 },
+    { id: 'a6', title: 'Мастер', req: 40 },
+    { id: 'a7', title: 'Титан', req: 50 },
+    { id: 'a8', title: 'Вершина', req: 75 },
+  ];
 
   if (!user) {
     return <Loader />;
@@ -106,7 +117,7 @@ export function HomePage() {
   return (
     <div
       className={`min-h-screen relative bg-slate-950 ${
-        hasBackground ? '' : 'bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900'
+        hasBackground ? '' : 'bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950'
       }`}
     >
       {hasBackground && (
@@ -126,19 +137,19 @@ export function HomePage() {
       )}
       <div className="relative z-10">
         <div className="max-w-[1680px] mx-auto px-6 py-12 pb-24">
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_420px] gap-10">
-            <div className="flex flex-col items-center space-y-[128px]">
-              <div className="w-full max-w-[780px]">
-                <div className="panel-caption text-center">Профиль героя</div>
-                <div className="text-white/60 text-sm text-center mb-32">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] gap-10">
+            <div className="space-y-10">
+              <div className="w-full">
+                <div className="panel-caption text-left">Профиль героя</div>
+                <div className="text-slate-300/70 text-sm mb-6">
                   Основные характеристики персонажа, уровень и прогресс в квестах.
                 </div>
                 <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
               </div>
 
-              <div className="w-full max-w-[780px]">
-                <div className="panel-caption text-center">Текущие квесты</div>
-                <div className="text-white/60 text-sm text-center mb-32">
+              <div className="w-full">
+                <div className="panel-caption text-left">Текущие квесты</div>
+                <div className="text-slate-300/70 text-sm mb-6">
                   Список активных квестов и выполнение.
                 </div>
                 <QuestList
@@ -147,29 +158,51 @@ export function HomePage() {
                   onDelete={handleDeleteQuest}
                 />
               </div>
-
             </div>
-            <div className="flex flex-col items-end space-y-[128px]">
-              {settings.showFriends && (
-                <div className="w-full max-w-[420px] ml-auto">
-                  <div className="panel-caption text-right">Поиск друзей</div>
-                  <div className="text-white/60 text-sm text-right mb-32">
-                    Найдите друзей по имени пользователя и добавьте в список.
+
+            <div className="space-y-10">
+              <div className="panel-base panel-teal">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <Award className="w-5 h-5 text-teal-300" />
+                    <h3 className="text-slate-100">Достижения</h3>
                   </div>
-                  <FriendSearchPanel
-                    onFriendAdded={loadData}
-                    friendIds={friends.map((friend) => friend.id)}
-                    currentUserId={user.id}
-                  />
+                  <span className="text-xs text-slate-300/70">Все</span>
                 </div>
-              )}
-              {friends.length > 0 && (
-                <div className="w-full max-w-[420px] ml-auto">
-                  <div className="panel-caption text-right">Список друзей</div>
-                  <div className="text-white/60 text-sm text-right mb-32">
-                    Все ваши друзья, их уровень и статус активности.
+                <div className="grid grid-cols-4 gap-3">
+                  {achievementSlots.map((item) => {
+                    const unlocked = (user.total_quests_completed || 0) >= item.req;
+                    return (
+                      <div
+                        key={item.id}
+                        className={`h-16 rounded-xl border flex items-center justify-center ${
+                          unlocked
+                            ? 'bg-teal-400/20 border-teal-300/60 text-teal-100'
+                            : 'bg-slate-800/60 border-slate-600/60 text-slate-400'
+                        }`}
+                        title={`${item.title} · ${item.req} квестов`}
+                      >
+                        <span className="text-sm">{unlocked ? '★' : '•'}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {settings.showFriends && (
+                <div className="w-full">
+                  <div className="panel-caption text-left">Друзья</div>
+                  <div className="text-slate-300/70 text-sm mb-6">
+                    Найдите друзей и следите за их активностью.
                   </div>
-                  <AllFriendsPanel friends={friends} />
+                  <div className="space-y-6">
+                    <FriendSearchPanel
+                      onFriendAdded={loadData}
+                      friendIds={friends.map((friend) => friend.id)}
+                      currentUserId={user.id}
+                    />
+                    {friends.length > 0 && <AllFriendsPanel friends={friends} />}
+                  </div>
                 </div>
               )}
             </div>

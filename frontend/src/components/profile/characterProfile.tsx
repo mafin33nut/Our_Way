@@ -33,21 +33,21 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
           <img
             src={resolveMediaUrl(user.avatar) as string}
             alt={user.username}
-            className="w-14 h-14 rounded-full object-cover border-2 border-purple-500/60"
+            className="w-14 h-14 rounded-full object-cover border-2 border-teal-300/60"
           />
         ) : (
-          <div className="w-14 h-14 rounded-full bg-slate-800/70 border-2 border-purple-500/60 flex items-center justify-center text-purple-200">
+          <div className="w-14 h-14 rounded-full bg-slate-800/70 border-2 border-teal-300/60 flex items-center justify-center text-slate-200">
             <UserIcon className="w-6 h-6" />
           </div>
         )}
         <div className="min-w-0">
-          <h2 className="text-purple-300">
+          <h2 className="text-slate-100">
             {user.username}
           </h2>
-          <p className="text-purple-200/60 text-sm">
+          <p className="text-slate-300/70 text-sm">
             Авантюрист {user.level} уровня
           </p>
-          <p className="text-purple-200/50 text-xs truncate">
+          <p className="text-slate-300/60 text-xs truncate">
             {user.bio || 'Добавьте описание в профиле'}
           </p>
         </div>
@@ -60,37 +60,37 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
         </Link>
       </div>
       <div className="mb-6">
-        <div className="flex justify-between text-sm mb-2 text-purple-200/80">
+        <div className="flex justify-between text-sm mb-2 text-slate-300/80">
           <span>Опыт</span>
           <span>{xpInLevel} / {xpNeeded} XP</span>
         </div>
-        <div className="w-full h-3 rounded-full overflow-hidden border bg-slate-950/50 border-purple-600/30">
+        <div className="w-full h-3 rounded-full overflow-hidden border bg-slate-950/50 border-slate-600/40">
           <div
-            className="h-full bg-gradient-to-r from-purple-600 to-purple-400 transition-all duration-500 rounded-full"
+            className="h-full bg-gradient-to-r from-teal-400 to-cyan-300 transition-all duration-500 rounded-full"
             style={{ width: `${xpPercentage}%` }}
           />
         </div>
       </div>
       <div className="space-y-3 mt-auto">
-        <div className="flex items-center justify-between p-3 rounded-lg border bg-purple-900/20 border-purple-600/30">
+        <div className="flex items-center justify-between p-3 rounded-lg border bg-slate-900/40 border-slate-600/40">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-purple-400" />
-            <span className="text-sm text-purple-200">
+            <Sparkles className="w-4 h-4 text-teal-300" />
+            <span className="text-sm text-slate-200">
               Квестов сегодня
             </span>
           </div>
-          <span className="text-purple-100">
+          <span className="text-slate-100">
             {questsCompletedToday}
           </span>
         </div>
-        <div className="flex items-center justify-between p-3 rounded-lg border bg-purple-900/20 border-purple-600/30">
+        <div className="flex items-center justify-between p-3 rounded-lg border bg-slate-900/40 border-slate-600/40">
           <div className="flex items-center gap-2">
-            <Trophy className="w-4 h-4 text-purple-400" />
-            <span className="text-sm text-purple-200">
+            <Trophy className="w-4 h-4 text-teal-300" />
+            <span className="text-sm text-slate-200">
               Всего квестов
             </span>
           </div>
-          <span className="text-purple-100">
+          <span className="text-slate-100">
             {user.total_quests_completed}
           </span>
         </div>

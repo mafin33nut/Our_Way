@@ -84,45 +84,45 @@ export function ProgressPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
       <div className="max-w-[1400px] mx-auto px-6 py-10 space-y-10">
         <div className="panel-base panel-purple">
           <div className="panel-caption text-center">Прогресс по квестам</div>
-          <div className="text-white/60 text-sm text-center mb-32">
+          <div className="text-slate-300/70 text-sm text-center mb-20">
             Статистика за последние 7 дней: выполненные квесты и время в них.
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="rounded-lg border border-purple-700/30 bg-slate-950/40 p-6">
-              <h3 className="text-purple-200 mb-4">Квесты по дням</h3>
+            <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-6">
+              <h3 className="text-slate-100 mb-4">Квесты по дням</h3>
               <div className="space-y-3">
                 {buckets.map((day) => (
                   <div key={day.key} className="flex items-center gap-3">
-                    <div className="w-24 text-xs text-purple-200/60">{day.label}</div>
+                    <div className="w-24 text-xs text-slate-300/70">{day.label}</div>
                     <div className="flex-1 h-3 rounded-full bg-slate-900/70 overflow-hidden">
                       <div
-                        className="h-full rounded-full bg-orange-400/60"
+                        className="h-full rounded-full bg-teal-400/70"
                         style={{ width: `${(day.count / maxCount) * 100}%` }}
                       />
                     </div>
-                    <div className="w-10 text-right text-xs text-purple-200/70">{day.count}</div>
+                    <div className="w-10 text-right text-xs text-slate-300/70">{day.count}</div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="rounded-lg border border-purple-700/30 bg-slate-950/40 p-6">
-              <h3 className="text-purple-200 mb-4">Время по дням</h3>
+            <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-6">
+              <h3 className="text-slate-100 mb-4">Время по дням</h3>
               <div className="space-y-3">
                 {buckets.map((day) => (
                   <div key={day.key} className="flex items-center gap-3">
-                    <div className="w-24 text-xs text-purple-200/60">{day.label}</div>
+                    <div className="w-24 text-xs text-slate-300/70">{day.label}</div>
                     <div className="flex-1 h-3 rounded-full bg-slate-900/70 overflow-hidden">
                       <div
-                        className="h-full rounded-full bg-orange-300/60"
+                        className="h-full rounded-full bg-cyan-300/70"
                         style={{ width: `${(day.minutes / maxMinutes) * 100}%` }}
                       />
                     </div>
-                    <div className="w-16 text-right text-xs text-purple-200/70">
+                    <div className="w-16 text-right text-xs text-slate-300/70">
                       {formatMinutes(day.minutes)}
                     </div>
                   </div>
@@ -132,13 +132,13 @@ export function ProgressPage() {
           </div>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="rounded-lg border border-purple-700/30 bg-slate-950/40 p-4">
-              <p className="text-xs text-purple-200/60 mb-1">Квестов за 7 дней</p>
-              <p className="text-lg text-purple-100">{totalCompleted}</p>
+            <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-4">
+              <p className="text-xs text-slate-300/70 mb-1">Квестов за 7 дней</p>
+              <p className="text-lg text-slate-100">{totalCompleted}</p>
             </div>
-            <div className="rounded-lg border border-purple-700/30 bg-slate-950/40 p-4">
-              <p className="text-xs text-purple-200/60 mb-1">Время за 7 дней</p>
-              <p className="text-lg text-purple-100">{formatMinutes(totalMinutes)}</p>
+            <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-4">
+              <p className="text-xs text-slate-300/70 mb-1">Время за 7 дней</p>
+              <p className="text-lg text-slate-100">{formatMinutes(totalMinutes)}</p>
             </div>
           </div>
         </div>

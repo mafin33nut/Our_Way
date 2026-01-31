@@ -26,32 +26,32 @@ export function WelcomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
       <div className="max-w-[900px] mx-auto px-6 py-12">
         <div className="panel-base panel-orange p-8">
           <div className="flex items-center gap-2 mb-4">
-            <Sparkles className="w-5 h-5 text-purple-400" />
-            <h2 className="text-purple-300">Добро пожаловать, {user.username}!</h2>
+            <Sparkles className="w-5 h-5 text-teal-300" />
+            <h2 className="text-slate-100">Добро пожаловать, {user.username}!</h2>
           </div>
-          <p className="text-purple-200/70 mb-6">
+          <p className="text-slate-300/70 mb-6">
             Это краткий гид по приложению, чтобы быстрее начать приключение.
           </p>
 
           <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <ShieldCheck className="w-5 h-5 text-amber-300 mt-0.5" />
+              <ShieldCheck className="w-5 h-5 text-teal-300 mt-0.5" />
               <div>
-                <p className="text-purple-200">Выберите направление</p>
-                <p className="text-purple-200/60 text-sm">
+                <p className="text-slate-200">Выберите направление</p>
+                <p className="text-slate-300/60 text-sm">
                   В разделе квестов выберите сферу развития и получите квесты.
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <ListChecks className="w-5 h-5 text-amber-300 mt-0.5" />
+              <ListChecks className="w-5 h-5 text-teal-300 mt-0.5" />
               <div>
-                <p className="text-purple-200">Выполняйте квесты</p>
-                <p className="text-purple-200/60 text-sm">
+                <p className="text-slate-200">Выполняйте квесты</p>
+                <p className="text-slate-300/60 text-sm">
                   Создавайте свои квесты и завершайте их по мере выполнения.
                 </p>
               </div>

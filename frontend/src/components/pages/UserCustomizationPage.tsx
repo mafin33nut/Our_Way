@@ -52,7 +52,7 @@ export function UserCustomizationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
       <div className="max-w-[1200px] mx-auto px-6 py-10">
         <div className="panel-base panel-purple p-6">
           <div className="flex items-center justify-between mb-6">

@@ -160,12 +160,12 @@ export function FocusTasksPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
       <div className="max-w-[1400px] mx-auto px-6 py-10 space-y-10">
         <div className="panel-base panel-purple">
           <div className="flex items-center gap-2 mb-4">
-            <Target className="w-5 h-5 text-purple-300" />
-            <h2 className="text-purple-200">Мои фокусы</h2>
+            <Target className="w-5 h-5 text-teal-300" />
+            <h2 className="text-slate-100">Мои фокусы</h2>
           </div>
           <div className="flex gap-3 flex-wrap mb-4">
             {focuses.map((focus) => (
@@ -212,8 +212,8 @@ export function FocusTasksPage() {
 
         <div className="panel-base panel-orange">
           <div className="flex items-center gap-2 mb-4">
-            <ClipboardList className="w-5 h-5 text-purple-300" />
-            <h2 className="text-purple-200">Создать квест</h2>
+            <ClipboardList className="w-5 h-5 text-teal-300" />
+            <h2 className="text-slate-100">Создать квест</h2>
           </div>
           <div className="space-y-3">
             <div className="flex gap-3 flex-wrap">

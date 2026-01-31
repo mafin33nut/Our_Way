@@ -81,4 +81,8 @@ export const socialAPI = {
     const users = unwrapListResponse(response.data);
     return users.sort((a, b) => (b.level ?? 0) - (a.level ?? 0)).slice(0, 10);
   },
+  getClanLeaders: async (): Promise<Clan[]> => {
+    const response = await apiClient.get<Clan[] | { results: Clan[] }>('/api/clans/clans/');
+    return unwrapListResponse(response.data);
+  },
 };

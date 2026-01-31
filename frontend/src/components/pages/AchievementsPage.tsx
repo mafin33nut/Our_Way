@@ -185,17 +185,17 @@ export function AchievementsPage() {
   const unlockedCount = allNodes.filter((n) => isUnlocked(n, stats)).length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
       <div className="max-w-[1200px] mx-auto px-6 py-10">
         <div className="panel-base panel-teal p-6">
           <div className="flex items-center gap-2 mb-3">
-            <Award className="w-5 h-5 text-purple-400" />
-            <h2 className="text-purple-300">Достижения</h2>
+            <Award className="w-5 h-5 text-teal-300" />
+            <h2 className="text-slate-100">Достижения</h2>
           </div>
-          <p className="text-purple-200/70">
+          <p className="text-slate-300/70">
             Достижения открываются по мере выполнения квестов.
           </p>
-          <div className="mt-4 flex items-center gap-3 text-sm text-purple-200/70">
+          <div className="mt-4 flex items-center gap-3 text-sm text-slate-300/70">
             <CheckCircle2 className="w-4 h-4 text-green-400" />
             Получено: {unlockedCount} / {allNodes.length}
           </div>
@@ -205,9 +205,9 @@ export function AchievementsPage() {
           {achievementGroups.map((group) => (
             <div key={group.id} className="panel-base panel-purple p-6">
               <div className="mb-4">
-                <h3 className="text-purple-300">{group.title}</h3>
+                <h3 className="text-slate-100">{group.title}</h3>
                 {group.subtitle && (
-                  <p className="text-xs text-purple-200/50">{group.subtitle}</p>
+                  <p className="text-xs text-slate-300/60">{group.subtitle}</p>
                 )}
               </div>
               <div className="space-y-4">
@@ -219,17 +219,17 @@ export function AchievementsPage() {
                         {unlocked ? (
                           <CheckCircle2 className="w-4 h-4 text-green-400" />
                         ) : (
-                          <Lock className="w-4 h-4 text-purple-300/60" />
+                          <Lock className="w-4 h-4 text-slate-500" />
                         )}
                       </div>
-                      <div className="flex-1 rounded-lg border border-purple-600/20 bg-slate-950/40 p-3">
+                      <div className="flex-1 rounded-lg border border-slate-600/40 bg-slate-900/50 p-3">
                         <div className="flex items-center justify-between">
-                          <p className="text-purple-200 text-sm">{node.title}</p>
-                          <span className="text-xs text-purple-200/50">
+                          <p className="text-slate-200 text-sm">{node.title}</p>
+                          <span className="text-xs text-slate-300/60">
                             {requirementText(node.requirement)}
                           </span>
                         </div>
-                        <p className="text-xs text-purple-200/50 mt-1">
+                        <p className="text-xs text-slate-300/60 mt-1">
                           {node.description}
                         </p>
                       </div>

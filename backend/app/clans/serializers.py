@@ -6,10 +6,11 @@ class ClanMemberSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
     level = serializers.SerializerMethodField()
     contribution = serializers.IntegerField(default=0)
+    role = serializers.CharField(read_only=True)
     
     class Meta: 
         model = ClanMember 
-        fields = ['id', 'username', 'level', 'contribution']
+        fields = ['id', 'username', 'level', 'contribution', 'role']
     
     def get_level(self, obj):
         try:
