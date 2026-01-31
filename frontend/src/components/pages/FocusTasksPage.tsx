@@ -161,8 +161,9 @@ export function FocusTasksPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
-      <div className="max-w-[1400px] mx-auto px-6 py-10 space-y-10">
-        <div className="panel-base panel-purple">
+      <div className="max-w-[1400px] mx-auto px-6 py-10">
+        <div className="flex flex-col items-center space-y-10">
+          <div className="panel-base panel-purple w-full max-w-[1100px]">
           <div className="flex items-center gap-2 mb-4">
             <Target className="w-5 h-5 text-teal-300" />
             <h2 className="text-slate-100">Мои фокусы</h2>
@@ -210,7 +211,9 @@ export function FocusTasksPage() {
           </div>
         </div>
 
-        <div className="panel-base panel-orange">
+          </div>
+
+          <div className="panel-base panel-orange w-full max-w-[1100px]">
           <div className="flex items-center gap-2 mb-4">
             <ClipboardList className="w-5 h-5 text-teal-300" />
             <h2 className="text-slate-100">Создать квест</h2>
@@ -355,7 +358,9 @@ export function FocusTasksPage() {
           </div>
         </div>
 
-        <div className="panel-base panel-sky">
+          </div>
+
+          <div className="panel-base panel-sky w-full max-w-[1100px]">
           <div className="panel-caption text-center">Мои квесты по фокусам</div>
           {loading ? (
             <p className="text-center text-purple-200/60">Загрузка...</p>
@@ -378,6 +383,7 @@ export function FocusTasksPage() {
               })}
             </div>
           )}
+          </div>
         </div>
       </div>
     </div>

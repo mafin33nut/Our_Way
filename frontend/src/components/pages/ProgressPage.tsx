@@ -85,8 +85,9 @@ export function ProgressPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
-      <div className="max-w-[1400px] mx-auto px-6 py-10 space-y-10">
-        <div className="panel-base panel-purple">
+      <div className="max-w-[1400px] mx-auto px-6 py-10">
+        <div className="flex flex-col items-center space-y-10">
+          <div className="panel-base panel-purple w-full max-w-[1100px]">
           <div className="panel-caption text-center">Прогресс по квестам</div>
           <div className="text-slate-300/70 text-sm text-center mb-20">
             Статистика за последние 7 дней: выполненные квесты и время в них.
@@ -143,12 +144,13 @@ export function ProgressPage() {
           </div>
         </div>
 
-        <div>
+          <div className="w-full max-w-[1100px]">
           <div className="panel-caption text-center">История выполнения</div>
-          <div className="text-white/60 text-sm text-center mb-32">
+          <div className="text-slate-300/70 text-sm text-center mb-20">
             Последние завершённые квесты и статистика за день.
           </div>
           <TaskHistoryPanel quests={quests} />
+        </div>
         </div>
       </div>
     </div>

@@ -161,31 +161,40 @@ export function HomePage() {
             </div>
 
             <div className="space-y-10">
-              <div className="panel-base panel-teal">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
-                    <Award className="w-5 h-5 text-teal-300" />
-                    <h3 className="text-slate-100">Достижения</h3>
-                  </div>
-                  <span className="text-xs text-slate-300/70">Все</span>
+              <div className="w-full">
+                <div className="panel-caption text-left">Достижения</div>
+                <div className="text-slate-300/70 text-sm mb-6">
+                  Ваши полученные достижения и текущий прогресс.
                 </div>
-                <div className="grid grid-cols-4 gap-3">
-                  {achievementSlots.map((item) => {
-                    const unlocked = (user.total_quests_completed || 0) >= item.req;
-                    return (
-                      <div
-                        key={item.id}
-                        className={`h-16 rounded-xl border flex items-center justify-center ${
-                          unlocked
-                            ? 'bg-teal-400/20 border-teal-300/60 text-teal-100'
-                            : 'bg-slate-800/60 border-slate-600/60 text-slate-400'
-                        }`}
-                        title={`${item.title} · ${item.req} квестов`}
-                      >
-                        <span className="text-sm">{unlocked ? '★' : '•'}</span>
+                <div className="panel-base panel-teal">
+                  <div className="space-y-3">
+                    {achievementSlots
+                      .filter((item) => (user.total_quests_completed || 0) >= item.req)
+                      .map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex items-center justify-between rounded-xl border border-slate-600/40 bg-slate-900/50 px-4 py-3"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="w-9 h-9 rounded-lg bg-teal-400/20 border border-teal-300/60 flex items-center justify-center text-teal-100">
+                              ★
+                            </div>
+                            <div>
+                              <p className="text-slate-100 text-sm">{item.title}</p>
+                              <p className="text-slate-300/60 text-xs">
+                                Достигнуто: {item.req} квестов
+                              </p>
+                            </div>
+                          </div>
+                          <span className="text-xs text-slate-300/60">Получено</span>
+                        </div>
+                      ))}
+                    {achievementSlots.filter((item) => (user.total_quests_completed || 0) >= item.req).length === 0 && (
+                      <div className="text-center text-slate-300/60 text-sm py-6">
+                        Пока нет полученных достижений
                       </div>
-                    );
-                  })}
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -210,8 +219,10 @@ export function HomePage() {
 
         </div>
 
-        <div className={`mt-12 pb-6 text-center ${isLight ? 'text-amber-600/60' : 'text-amber-200/40'}`}>
-          <p>Приключения вместе, величие навсегда...</p>
+        <div className="mt-16 pb-10 text-center">
+          <div className="inline-flex items-center gap-3 rounded-full border border-slate-600/50 bg-slate-900/60 px-6 py-3 text-slate-200">
+            <span className="text-lg tracking-widest">Our_Way</span>
+          </div>
         </div>
       </div>
     </div>
