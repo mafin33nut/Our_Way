@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Sparkles, Target, Dumbbell, BookOpen, Heart, Briefcase, Home, Users } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { FocusArea } from '../../types';
+import { useCustomization } from '../../hooks/useCustomization';
 interface FocusSelectorProps {
   currentFocus?: string;
   onSelectFocus: (focus: string) => void;
   loading?: boolean;
-  error?: string | null;
 }
 const FOCUS_AREAS: FocusArea[] = [
   {
@@ -55,8 +55,10 @@ const ICON_MAP = {
   home: Home,
   dumbbell: Dumbbell,
 };
-export function FocusSelector({ currentFocus, onSelectFocus, loading, error }: FocusSelectorProps) {
+export function FocusSelector({ currentFocus, onSelectFocus, loading }: FocusSelectorProps) {
   const [selectedFocus, setSelectedFocus] = useState<string>(currentFocus || '');
+  const { settings } = useCustomization();
+  const isLight = settings.theme === 'light';
   const handleGenerate = () => {
     if (selectedFocus) {
       onSelectFocus(selectedFocus);
@@ -117,11 +119,6 @@ export function FocusSelector({ currentFocus, onSelectFocus, loading, error }: F
       >
         {loading ? 'Генерация заданий...' : 'Сгенерировать задания'}
       </Button>
-      {error && (
-        <p className="text-center text-sm mt-3 text-amber-200/80">
-          {error}
-        </p>
-      )}
       {currentFocus && (
         <p className="text-center text-sm mt-3 text-purple-200/40">
           Текущий фокус: {FOCUS_AREAS.find(a => a.id === currentFocus)?.name}

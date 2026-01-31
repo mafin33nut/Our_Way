@@ -4,6 +4,7 @@ import { Button } from '../ui/Button';
 import { useCustomization } from '../../hooks/useCustomization';
 import { BACKGROUND_OPTIONS } from '../../types';
 import { Link } from 'react-router-dom';
+import { FooterArt } from '../layout/FooterArt';
 
 function isTheme(value: unknown): value is 'light' | 'dark' {
   return value === 'light' || value === 'dark';
@@ -229,6 +230,7 @@ export function SettingsPage() {
               </div>
             </div>
           </div>
+          <FooterArt />
         </div>
       </div>
     </div>

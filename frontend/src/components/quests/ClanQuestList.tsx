@@ -4,10 +4,9 @@ import { Swords, CheckCircle2 } from 'lucide-react';
 interface ClanQuestListProps {
   quests: ClanQuest[];
   onContribute: (id: number, contribution: number) => void;
-  onDelete: (id: number) => void;
   currentUsername: string;
 }
-export function ClanQuestList({ quests, onContribute, onDelete, currentUsername }: ClanQuestListProps) {
+export function ClanQuestList({ quests, onContribute, currentUsername }: ClanQuestListProps) {
   const activeQuests = quests.filter(q => !q.completed);
   const completedQuests = quests.filter(q => q.completed);
   return (
@@ -25,7 +24,6 @@ export function ClanQuestList({ quests, onContribute, onDelete, currentUsername 
                 key={quest.id}
                 quest={quest}
                 onContribute={onContribute}
-                onDelete={onDelete}
                 currentUsername={currentUsername}
               />
             ))}
@@ -45,7 +43,6 @@ export function ClanQuestList({ quests, onContribute, onDelete, currentUsername 
                 key={quest.id}
                 quest={quest}
                 onContribute={onContribute}
-                onDelete={onDelete}
                 currentUsername={currentUsername}
               />
             ))}

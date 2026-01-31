@@ -1,5 +1,6 @@
 import { Award, CheckCircle2, Lock } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { FooterArt } from '../layout/FooterArt';
 
 type Requirement = {
   quests?: number;
@@ -239,6 +240,7 @@ export function AchievementsPage() {
             </div>
           ))}
         </div>
+        <FooterArt />
       </div>
     </div>
   );
