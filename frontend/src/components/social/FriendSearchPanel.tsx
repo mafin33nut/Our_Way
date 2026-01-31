@@ -1,13 +1,16 @@
 import { useState } from 'react';
-import { Users, Search, UserPlus, Loader2 } from 'lucide-react';
+import { Users, Search, UserPlus, Loader2, User as UserIcon } from 'lucide-react';
 import { socialAPI, User } from '../../api/social';
 import { Button } from '../ui/Button';
+import { resolveMediaUrl } from '../../utils/media';
 
 interface FriendSearchPanelProps {
-  onFriendAdded: () => void;
+  onFriendAdded: () => void | Promise<void>;
+  friendIds?: number[];
+  currentUserId?: number;
 }
 
-export function FriendSearchPanel({ onFriendAdded }: FriendSearchPanelProps) {
+export function FriendSearchPanel({ onFriendAdded, friendIds = [], currentUserId }: FriendSearchPanelProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [searching, setSearching] = useState(false);
@@ -24,7 +27,10 @@ export function FriendSearchPanel({ onFriendAdded }: FriendSearchPanelProps) {
     setError('');
     try {
       const results = await socialAPI.searchUsers(searchQuery);
-      setSearchResults(results);
+      const filtered = results.filter(
+        (user) => user.id !== currentUserId && !friendIds.includes(user.id)
+      );
+      setSearchResults(filtered);
     } catch (err: any) {
       console.error('Search error:', err);
       setError('Ошибка поиска пользователей');
@@ -40,7 +46,7 @@ export function FriendSearchPanel({ onFriendAdded }: FriendSearchPanelProps) {
     try {
       await socialAPI.addFriend(Number(userId));
       setSearchResults((prev) => prev.filter((u) => u.id !== userId));
-      onFriendAdded();
+      await onFriendAdded();
     } catch (err: any) {
       console.error('Add friend error:', err);
       setError(err.response?.data?.detail || 'Не удалось добавить друга');
@@ -64,7 +70,7 @@ export function FriendSearchPanel({ onFriendAdded }: FriendSearchPanelProps) {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
               placeholder="Введите имя пользователя"
               className="w-full pl-10 pr-4 py-2 rounded-lg border bg-slate-950/50 border-purple-600/30 text-purple-100 placeholder-purple-200/30 focus:outline-none focus:border-purple-500 transition-colors"
             />
@@ -91,11 +97,24 @@ export function FriendSearchPanel({ onFriendAdded }: FriendSearchPanelProps) {
                 key={user.id}
                 className="flex items-center justify-between p-3 rounded-lg border bg-slate-950/40 border-purple-600/20 hover:border-purple-500/50 transition-colors"
               >
-                <div>
-                  <p className="text-purple-200">{user.username}</p>
-                  <p className="text-xs text-purple-200/60">
-                    Уровень {user.level}
-                  </p>
+                <div className="flex items-center gap-3 min-w-0">
+                  {resolveMediaUrl(user.avatar) ? (
+                    <img
+                      src={resolveMediaUrl(user.avatar) as string}
+                      alt={user.username}
+                      className="w-10 h-10 rounded-full object-cover border border-purple-500/60"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-slate-800/70 border border-purple-500/60 flex items-center justify-center text-purple-200">
+                      <UserIcon className="w-5 h-5" />
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <p className="text-purple-200 truncate">{user.username}</p>
+                    <p className="text-xs text-purple-200/60">
+                      Уровень {user.level}
+                    </p>
+                  </div>
                 </div>
                 <Button
                   onClick={() => handleAddFriend(user.id)}

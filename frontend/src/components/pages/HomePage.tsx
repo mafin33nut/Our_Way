@@ -8,7 +8,6 @@ import { QuestList } from '../../components/quests/QuestList';
 import { TaskHistoryPanel } from '../../components/quests/TaskHistoryPanel';
 import { TaskSchedulePanel } from '../../components/quests/TaskSchedulePanel';
 import { CharacterProfile } from '../../components/profile/characterProfile';
-import { FriendsList } from '../../components/social/FriendsList';
 import { ActivityFeed } from '../../components/social/ActivityFeed';
 import { FriendSearchPanel } from '../../components/social/FriendSearchPanel';
 import { AllFriendsPanel } from '../../components/social/AllFriendsPanel';
@@ -184,7 +183,11 @@ export function HomePage() {
                   <div className="text-white/60 text-sm text-right mb-32">
                     Найдите друзей по имени пользователя и добавьте в список.
                   </div>
-                  <FriendSearchPanel onFriendAdded={loadData} />
+                  <FriendSearchPanel
+                    onFriendAdded={loadData}
+                    friendIds={friends.map((friend) => friend.id)}
+                    currentUserId={user.id}
+                  />
                 </div>
               )}
               {friends.length > 0 && (

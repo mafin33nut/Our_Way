@@ -5,7 +5,7 @@ import { Clan } from '../../types';
 import { Button } from '../ui/Button';
 
 interface ClanCreationPanelProps {
-  onClanCreated: () => void;
+  onClanCreated: () => void | Promise<void>;
 }
 
 export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
@@ -32,7 +32,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
         name: clanName.trim(),
         description: clanDescription.trim() || undefined,
       });
-      onClanCreated();
+      await onClanCreated();
     } catch (err: any) {
       console.error('Create clan error:', err);
       console.error('Error response:', err.response?.data);
@@ -72,7 +72,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
     setError('');
     try {
       await socialAPI.joinClan(clanId);
-      onClanCreated();
+      await onClanCreated();
     } catch (err: any) {
       console.error('Join clan error:', err);
       setError(err.response?.data?.detail || 'Не удалось вступить в клан');
@@ -180,7 +180,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSearchClans()}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearchClans()}
                 placeholder="Введите название клана"
                 className="w-full pl-10 pr-4 py-2 rounded-lg border bg-slate-950/50 border-purple-600/30 text-purple-100 placeholder-purple-200/30 focus:outline-none focus:border-purple-500 transition-colors"
               />
