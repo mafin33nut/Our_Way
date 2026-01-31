@@ -7,7 +7,6 @@ import { ClanQuestList } from '../quests/ClanQuestList';
 import { ClanCreationPanel } from '../social/ClanCreationPanel';
 import { useAuth } from '../../hooks/useAuth';
 import { Loader } from '../ui/Loader';
-import { Button } from '../ui/Button';
 import { resolveMediaUrl } from '../../utils/media';
 
 export function ClansPage() {
@@ -17,8 +16,6 @@ export function ClansPage() {
   const [clanQuests, setClanQuests] = useState<ClanQuest[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [generatingQuests, setGeneratingQuests] = useState(false);
-  const [generateError, setGenerateError] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -79,30 +76,6 @@ export function ClansPage() {
     }
   };
 
-  const handleGenerateClanQuests = async () => {
-    setGeneratingQuests(true);
-    setGenerateError(null);
-    try {
-      await clanQuestsAPI.generate(selectedClanId ?? undefined);
-      const refreshed = await clanQuestsAPI.getAll();
-      setClanQuests(refreshed);
-    } catch (error) {
-      console.error('Failed to generate clan quests:', error);
-      if ((error as any)?.response) {
-        const data = (error as any).response?.data;
-        const detail =
-          typeof data === 'string'
-            ? data
-            : data?.detail || data?.message || JSON.stringify(data);
-        const status = (error as any).response?.status;
-        setGenerateError(detail ? `Ошибка ${status ?? ''}: ${detail}`.trim() : 'Не удалось сгенерировать квесты для клана.');
-      } else {
-        setGenerateError('Не удалось сгенерировать квесты для клана.');
-      }
-    } finally {
-      setGeneratingQuests(false);
-    }
-  };
 
   const selectedClan = useMemo(
     () => clans.find((item) => item.id === selectedClanId) || null,
@@ -257,24 +230,6 @@ export function ClansPage() {
         </div>
         )}
 
-        {selectedClan && (
-          <div className="panel-base panel-orange p-6">
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <h3 className="text-slate-100">Генерация клановых квестов</h3>
-                <p className="text-sm text-slate-300/60">
-                  Случайные квесты для всего клана из общей библиотеки.
-                </p>
-              </div>
-              <Button onClick={handleGenerateClanQuests} disabled={generatingQuests}>
-                {generatingQuests ? 'Генерация...' : 'Сгенерировать'}
-              </Button>
-            </div>
-            {generateError && (
-              <p className="text-sm text-amber-200/80 mt-3">{generateError}</p>
-            )}
-          </div>
-        )}
         {selectedClan && (
           <div>
             <ClanQuestList

@@ -42,13 +42,6 @@ export const clanQuestsAPI = {
     return response.data;
   },
 
-  generate: async (clanId?: number): Promise<ClanQuest[]> => {
-    const response = await apiClient.post<ClanQuest[]>(
-      `/api/clans/quests/generate/`,
-      clanId ? { clan: clanId } : {}
-    );
-    return response.data;
-  },
 
   delete: async (id: number): Promise<void> => {
     await apiClient.delete(`/api/clans/quests/${id}/`);
