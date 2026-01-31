@@ -3,12 +3,9 @@ import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
 import { questsAPI } from '../../api/quests';
 import { socialAPI } from '../../api/social';
-import { Quest, Friend, Activity, BACKGROUND_OPTIONS } from '../../types';
+import { Quest, Friend, BACKGROUND_OPTIONS } from '../../types';
 import { QuestList } from '../../components/quests/QuestList';
-import { TaskHistoryPanel } from '../../components/quests/TaskHistoryPanel';
-import { TaskSchedulePanel } from '../../components/quests/TaskSchedulePanel';
 import { CharacterProfile } from '../../components/profile/characterProfile';
-import { ActivityFeed } from '../../components/social/ActivityFeed';
 import { FriendSearchPanel } from '../../components/social/FriendSearchPanel';
 import { AllFriendsPanel } from '../../components/social/AllFriendsPanel';
 import { isToday } from '../../utils/time';
@@ -19,7 +16,6 @@ export function HomePage() {
   const { settings, playVictorySound } = useCustomization();
   const [quests, setQuests] = useState<Quest[]>([]);
   const [friends, setFriends] = useState<Friend[]>([]);
-  const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
   const [bgImageLoaded, setBgImageLoaded] = useState(false);
 
@@ -31,36 +27,18 @@ export function HomePage() {
       const results = await Promise.allSettled([
         questsAPI.getAll().catch(() => []),
         socialAPI.getFriends().catch(() => []),
-        socialAPI.getActivities().catch(() => []),
       ]);
 
-      const [questsRes, friendsRes, activitiesRes] = results;
+      const [questsRes, friendsRes] = results;
 
       const questsValue = questsRes.status === 'fulfilled' ? questsRes.value || [] : [];
-      const activitiesValue = activitiesRes.status === 'fulfilled' ? activitiesRes.value || [] : [];
 
       if (questsRes.status === 'fulfilled') setQuests(questsValue);
       if (friendsRes.status === 'fulfilled') setFriends(friendsRes.value || []);
-
-      const questActivities: Activity[] = questsValue
-        .filter((q) => q.completed && q.completed_at)
-        .map((q) => ({
-          id: -q.id,
-          type: 'quest_complete',
-          title: q.title,
-          message: 'Квест завершён',
-          timestamp: q.completed_at as string,
-          icon: 'quest',
-        }));
-      const mergedActivities = [...questActivities, ...activitiesValue].sort(
-        (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-      );
-      setActivities(mergedActivities);
     } catch (err) {
       console.error('Failed to load data:', err);
       setQuests([]);
       setFriends([]);
-      setActivities([]);
     } finally {
       setLoading(false);
     }
@@ -96,17 +74,6 @@ export function HomePage() {
     try {
       const updatedQuest = await questsAPI.complete(id);
       setQuests((prev) => prev.map((q) => (q.id === id ? updatedQuest : q)));
-      setActivities((prev) => [
-        {
-          id: -updatedQuest.id,
-          type: 'quest_complete',
-          title: updatedQuest.title,
-          message: 'Квест завершён',
-          timestamp: updatedQuest.completed_at || new Date().toISOString(),
-          icon: 'quest',
-        },
-        ...prev,
-      ]);
       playVictorySound();
       await refreshUser();
     } catch (error) {
@@ -178,31 +145,6 @@ export function HomePage() {
                 />
               </div>
 
-              {settings.showActivities && (
-                <div className="w-full max-w-[780px]">
-                  <div className="panel-caption text-center">Активность гильдии</div>
-                  <div className="text-white/60 text-sm text-center mb-32">
-                    Хронология событий и изменений по квестам и уровню.
-                  </div>
-                  <ActivityFeed activities={activities} />
-                </div>
-              )}
-
-              <div className="w-full max-w-[780px]">
-                <div className="panel-caption text-center">История выполнения</div>
-                <div className="text-white/60 text-sm text-center mb-32">
-                  Последние завершённые квесты и статистика за день.
-                </div>
-                <TaskHistoryPanel quests={quests} />
-              </div>
-
-              <div className="w-full max-w-[780px]">
-                <div className="panel-caption text-center">Расписание выполнения</div>
-                <div className="text-white/60 text-sm text-center mb-32">
-                  План квестов на ближайшее время и рекомендуемая длительность.
-                </div>
-                <TaskSchedulePanel quests={quests} />
-              </div>
             </div>
             <div className="flex flex-col items-end space-y-[128px]">
               {settings.showFriends && (
