@@ -56,7 +56,10 @@ export function HomePage() {
   }, []);
 
   const backgroundOption = BACKGROUND_OPTIONS.find((bg) => bg.id === settings.background);
-  const backgroundUrl = backgroundOption?.url || '';
+  const backgroundUrl =
+    settings.background === 'custom'
+      ? settings.customBackgroundUrl || ''
+      : backgroundOption?.url || '';
   const hasBackground = settings.background && settings.background !== 'none' && backgroundUrl && backgroundUrl.trim() !== '';
 
   useEffect(() => {

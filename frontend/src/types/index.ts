@@ -122,6 +122,7 @@ export interface Activity {
 export interface CustomizationSettings {
   theme: 'light' | 'dark';
   background: string;
+  customBackgroundUrl?: string;
   soundEnabled: boolean;
   showFriends: boolean;
   showActivities: boolean;
@@ -137,6 +138,11 @@ export const BACKGROUND_OPTIONS = [
     id: 'adventure',
     name: 'Приключение',
     url: '/adventure.jpg',
+  },
+  {
+    id: 'custom',
+    name: 'Свой фон',
+    url: '',
   },
   {
     id: 'none',

@@ -55,7 +55,7 @@ h3 {
     @apply rounded-xl border-2 bg-gradient-to-b from-slate-950/90 via-purple-950/70 to-slate-950/95 shadow-xl backdrop-blur-sm;
     position: relative;
     padding: 3rem !important;
-    font-family: "Hanky Bold", "Jersey 10", "Segoe UI", sans-serif;
+    font-family: "Hanky Bold", "Segoe UI", sans-serif;
   }
 
 

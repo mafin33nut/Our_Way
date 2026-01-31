@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { User as UserIcon, ArrowLeft, Camera } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { authAPI } from '../../api/auth';
@@ -13,6 +13,18 @@ export function UserCustomizationPage() {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
+  const avatarPreview = useMemo(() => {
+    if (!avatarFile) return null;
+    return URL.createObjectURL(avatarFile);
+  }, [avatarFile]);
+
+  useEffect(() => {
+    return () => {
+      if (avatarPreview) {
+        URL.revokeObjectURL(avatarPreview);
+      }
+    };
+  }, [avatarPreview]);
 
   if (!user) {
     return null;
@@ -60,7 +72,13 @@ export function UserCustomizationPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-6 flex flex-col items-center text-center gap-3">
-              {resolveMediaUrl(user.avatar) ? (
+              {avatarPreview ? (
+                <img
+                  src={avatarPreview}
+                  alt={user.username}
+                  className="w-24 h-24 rounded-full object-cover border-2 border-purple-500/60"
+                />
+              ) : resolveMediaUrl(user.avatar) ? (
                 <img
                   src={resolveMediaUrl(user.avatar) as string}
                   alt={user.username}
