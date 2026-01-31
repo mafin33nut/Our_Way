@@ -104,10 +104,6 @@ export function ClansPage() {
     }
   };
 
-  if (!user || loading) {
-    return <Loader />;
-  }
-
   const selectedClan = useMemo(
     () => clans.find((item) => item.id === selectedClanId) || null,
     [clans, selectedClanId]
@@ -120,6 +116,10 @@ export function ClansPage() {
   const selectedClanQuests = selectedClan
     ? clanQuests.filter((quest) => quest.clan === selectedClan.id)
     : [];
+
+  if (!user || loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
