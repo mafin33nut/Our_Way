@@ -9,14 +9,15 @@ interface ClanQuestCardProps {
   currentUsername: string;
 }
 export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }: ClanQuestCardProps) {
+  const safeParticipants = quest.participants ?? [];
   const [isContributing, setIsContributing] = useState(false);
   const participantCount =
     quest.participant_count ??
-    quest.participants.filter((participant) => participant.contribution > 0).length;
+    safeParticipants.filter((participant) => participant.contribution > 0).length;
   const maxParticipants = quest.max_participants ?? quest.required_progress;
   const progressPercentage = (quest.total_progress / quest.required_progress) * 100;
   const isEpic = quest.difficulty === 'epic';
-  const userParticipation = quest.participants.find(p => p.username === currentUsername);
+  const userParticipation = safeParticipants.find(p => p.username === currentUsername);
   const hasJoined = (userParticipation?.contribution || 0) > 0;
   const handleContribute = async () => {
     setIsContributing(true);
@@ -78,10 +79,10 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
       <div className="mb-4">
         <div className="flex items-center gap-2 mb-2">
           <Users className="w-4 h-4 text-teal-300" />
-          <span className="text-sm text-slate-300/80">Участники ({quest.participants.length})</span>
+          <span className="text-sm text-slate-300/80">Участники ({safeParticipants.length})</span>
         </div>
         <div className="grid grid-cols-2 gap-2">
-          {quest.participants.slice(0, 6).map((participant) => (
+          {safeParticipants.slice(0, 6).map((participant) => (
             <div
               key={participant.id}
               className={`flex items-center justify-between p-2 rounded bg-slate-800/50 border ${
@@ -101,9 +102,9 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
             </div>
           ))}
         </div>
-        {quest.participants.length > 6 && (
+        {safeParticipants.length > 6 && (
           <p className="text-slate-300/60 text-xs text-center mt-2">
-            +{quest.participants.length - 6} ещё участников
+            +{safeParticipants.length - 6} ещё участников
           </p>
         )}
       </div>
