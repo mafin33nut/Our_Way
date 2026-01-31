@@ -5,7 +5,6 @@ import { useAuth } from '../../hooks/useAuth';
 import { authAPI } from '../../api/auth';
 import { Button } from '../ui/Button';
 import { resolveMediaUrl } from '../../utils/media';
-import { FooterArt } from '../layout/FooterArt';
 
 export function UserCustomizationPage() {
   const { user, refreshUser } = useAuth();
@@ -46,6 +45,24 @@ export function UserCustomizationPage() {
     } catch (error) {
       console.error('Failed to update profile', error);
       setStatus('Не удалось обновить профиль');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleRemoveAvatar = async () => {
+    setSaving(true);
+    setStatus(null);
+    try {
+      const formData = new FormData();
+      formData.append('avatar', '');
+      await authAPI.updateProfile(formData);
+      await refreshUser();
+      setAvatarFile(null);
+      setStatus('Аватар удален');
+    } catch (error) {
+      console.error('Failed to remove avatar', error);
+      setStatus('Не удалось удалить аватар');
     } finally {
       setSaving(false);
     }
@@ -101,6 +118,18 @@ export function UserCustomizationPage() {
                   onChange={(e) => setAvatarFile(e.target.files?.[0] || null)}
                 />
               </label>
+              {(avatarPreview || user.avatar) && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleRemoveAvatar}
+                  disabled={saving}
+                  className="w-full"
+                >
+                  Удалить аватар
+                </Button>
+              )}
               <p className="text-purple-200 mt-1">{user.username}</p>
               <p className="text-xs text-purple-200/60">Уровень {user.level}</p>
             </div>
@@ -143,7 +172,6 @@ export function UserCustomizationPage() {
             </div>
           </div>
         </div>
-        <FooterArt />
       </div>
     </div>
   );

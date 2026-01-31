@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Trophy, Users } from 'lucide-react';
 import { socialAPI } from '../../api/social';
 import { Clan, User } from '../../types';
-import { FooterArt } from '../layout/FooterArt';
 
 export function LeadersPage() {
   const [leaders, setLeaders] = useState<User[]>([]);
@@ -133,7 +132,6 @@ export function LeadersPage() {
             </div>
           </div>
         </div>
-        <FooterArt />
       </div>
     </div>
   );

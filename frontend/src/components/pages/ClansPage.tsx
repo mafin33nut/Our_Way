@@ -16,11 +16,13 @@ export function ClansPage() {
   const [selectedClanId, setSelectedClanId] = useState<number | null>(null);
   const [clanQuests, setClanQuests] = useState<ClanQuest[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [generatingQuests, setGeneratingQuests] = useState(false);
   const [generateError, setGenerateError] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
     setLoading(true);
+    setLoadError(null);
     try {
       const results = await Promise.allSettled([
         socialAPI.getMyClans().catch(() => []),
@@ -40,6 +42,7 @@ export function ClansPage() {
       }
     } catch (error) {
       console.error('Failed to load clan data:', error);
+      setLoadError('Не удалось загрузить данные кланов.');
       setClans([]);
       setSelectedClanId(null);
       setClanQuests([]);
@@ -121,11 +124,16 @@ export function ClansPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
       <div className="max-w-[1920px] mx-auto px-6 py-8 space-y-12">
+        {loadError && (
+          <div className="panel-base panel-orange p-6">
+            <p className="text-slate-200">{loadError}</p>
+          </div>
+        )}
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-12">
-            <div className="panel-base panel-purple p-6">
+          <div className="panel-base panel-purple p-6">
             <div className="flex items-center gap-2 mb-3">
-                <Crown className="w-5 h-5 text-teal-300" />
-                <h2 className="text-slate-100">Клан</h2>
+              <Crown className="w-5 h-5 text-teal-300" />
+              <h2 className="text-slate-100">Клан</h2>
             </div>
             {clans.length > 1 && (
               <div className="flex flex-wrap gap-2 mb-4">
@@ -135,8 +143,8 @@ export function ClansPage() {
                     onClick={() => setSelectedClanId(item.id)}
                     className={`px-3 py-1.5 rounded-lg border text-xs transition-colors ${
                       selectedClanId === item.id
-                    ? 'border-teal-300/60 bg-teal-400/10 text-teal-100'
-                    : 'border-slate-600/60 text-slate-300/70 hover:border-slate-500/60'
+                        ? 'border-teal-300/60 bg-teal-400/10 text-teal-100'
+                        : 'border-slate-600/60 text-slate-300/70 hover:border-slate-500/60'
                     }`}
                   >
                     {item.name}
@@ -146,21 +154,23 @@ export function ClansPage() {
             )}
             {selectedClan ? (
               <div className="space-y-2 text-sm">
-            <div className="flex justify-between text-slate-300/80">
+                <div className="flex justify-between text-slate-300/80">
                   <span>Название</span>
-              <span className="text-slate-100">{selectedClan.name}</span>
+                  <span className="text-slate-100">{selectedClan.name}</span>
                 </div>
-            <div className="flex justify-between text-slate-300/80">
+                <div className="flex justify-between text-slate-300/80">
                   <span>Уровень клана</span>
-              <span className="text-slate-100">{selectedClan.level || 1}</span>
+                  <span className="text-slate-100">{selectedClan.level || 1}</span>
                 </div>
-            <div className="flex justify-between text-slate-300/80">
+                <div className="flex justify-between text-slate-300/80">
                   <span>Участники</span>
-              <span className="text-slate-100">{selectedClan.members?.length || 0}</span>
+                  <span className="text-slate-100">{selectedClan.members?.length || 0}</span>
                 </div>
-            <div className="flex justify-between text-slate-300/80">
+                <div className="flex justify-between text-slate-300/80">
                   <span>Общий опыт</span>
-              <span className="text-slate-100">{(selectedClan.total_xp || 0).toLocaleString()}</span>
+                  <span className="text-slate-100">
+                    {(selectedClan.total_xp || 0).toLocaleString()}
+                  </span>
                 </div>
               </div>
             ) : (
@@ -168,10 +178,10 @@ export function ClansPage() {
             )}
           </div>
 
-      <div className="panel-base panel-teal p-6">
+          <div className="panel-base panel-teal p-6">
             <div className="flex items-center gap-2 mb-3">
-          <Crown className="w-5 h-5 text-teal-300" />
-          <h2 className="text-slate-100">Информация о вашем клане</h2>
+              <Crown className="w-5 h-5 text-teal-300" />
+              <h2 className="text-slate-100">Информация о вашем клане</h2>
             </div>
             {selectedClan ? (
               <>
@@ -182,7 +192,9 @@ export function ClansPage() {
                   </div>
                   <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-3">
                     <p className="text-xs text-slate-300/70">Общий опыт</p>
-                    <p className="text-lg text-slate-100">{(selectedClan.total_xp || 0).toLocaleString()}</p>
+                    <p className="text-lg text-slate-100">
+                      {(selectedClan.total_xp || 0).toLocaleString()}
+                    </p>
                   </div>
                 </div>
                 <div className="mt-4">
@@ -202,23 +214,27 @@ export function ClansPage() {
                               <img
                                 src={resolveMediaUrl(member.avatar) as string}
                                 alt={member.username}
-                              className="w-8 h-8 rounded-full object-cover border border-teal-300/60"
+                                className="w-8 h-8 rounded-full object-cover border border-teal-300/60"
                               />
                             ) : (
-                            <div className="w-8 h-8 rounded-full bg-slate-800/70 border border-teal-300/60 flex items-center justify-center text-slate-200">
+                              <div className="w-8 h-8 rounded-full bg-slate-800/70 border border-teal-300/60 flex items-center justify-center text-slate-200">
                                 <UserIcon className="w-4 h-4" />
                               </div>
                             )}
                             <div className="min-w-0">
-                            <p className="text-sm text-slate-200 truncate">{member.username}</p>
-                            <p className="text-xs text-slate-300/60">Уровень {member.level}</p>
+                              <p className="text-sm text-slate-200 truncate">{member.username}</p>
+                              <p className="text-xs text-slate-300/60">
+                                Уровень {member.level}
+                              </p>
                             </div>
                           </div>
-                        <span className="text-xs text-slate-300/70">{member.contribution} XP</span>
+                          <span className="text-xs text-slate-300/70">
+                            {member.contribution} XP
+                          </span>
                         </div>
                       ))
                     ) : (
-                    <div className="text-center py-4 text-slate-300/60 text-sm">
+                      <div className="text-center py-4 text-slate-300/60 text-sm">
                         Пока нет участников
                       </div>
                     )}
@@ -226,7 +242,7 @@ export function ClansPage() {
                 </div>
               </>
             ) : (
-              <div className="text-center py-6 text-purple-200/40 text-sm">
+              <div className="text-center py-6 text-slate-300/60 text-sm">
                 Вы еще не состоите в клане
               </div>
             )}
@@ -234,11 +250,11 @@ export function ClansPage() {
         </div>
 
         {selectedClan && (
-            <div className="panel-base panel-orange p-6">
+          <div className="panel-base panel-orange p-6">
             <div className="flex items-center justify-between gap-4">
               <div>
-                  <h3 className="text-slate-100">Генерация клановых квестов</h3>
-                  <p className="text-sm text-slate-300/60">
+                <h3 className="text-slate-100">Генерация клановых квестов</h3>
+                <p className="text-sm text-slate-300/60">
                   Случайные квесты для всего клана из общей библиотеки.
                 </p>
               </div>
@@ -247,9 +263,7 @@ export function ClansPage() {
               </Button>
             </div>
             {generateError && (
-              <p className="text-sm text-amber-200/80 mt-3">
-                {generateError}
-              </p>
+              <p className="text-sm text-amber-200/80 mt-3">{generateError}</p>
             )}
           </div>
         )}
