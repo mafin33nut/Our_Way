@@ -356,7 +356,6 @@ export function FocusTasksPage() {
               {saving ? 'Создание...' : 'Создать квест'}
             </Button>
           </div>
-          </div>
 
           <div className="panel-base panel-sky w-full max-w-[1100px]">
             <div className="panel-caption text-center">Мои квесты по фокусам</div>
