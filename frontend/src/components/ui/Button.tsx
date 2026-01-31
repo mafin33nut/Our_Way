@@ -11,20 +11,27 @@ export function Button({
   className = '',
   ...props
 }: ButtonProps) {
-  const baseStyles = 'rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium';
+  const baseStyles =
+    'rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium leading-snug font-sans';
   
   const variantStyles = {
-    primary: 'bg-amber-300 text-slate-900 hover:bg-amber-400 shadow-sm',
-    secondary: 'bg-slate-300 text-slate-900 hover:bg-slate-400 border border-slate-400/60',
-    ghost: 'text-slate-700 hover:bg-slate-200/60',
-    orange: 'bg-orange-500/70 text-slate-900 hover:bg-orange-500/80 shadow-sm',
-    darkOrange: 'bg-orange-300/80 text-slate-900 hover:bg-orange-400/80 shadow-sm',
-    softAmber: 'bg-amber-200/80 text-slate-900 hover:bg-amber-200 shadow-sm',
+    primary:
+      'bg-orange-400/60 text-slate-900 hover:bg-orange-400/70 border border-orange-300/50 shadow-sm',
+    secondary:
+      'bg-orange-300/45 text-slate-900 hover:bg-orange-300/55 border border-orange-300/40 shadow-sm',
+    ghost:
+      'text-orange-200 hover:bg-orange-300/20 border border-orange-300/30',
+    orange:
+      'bg-orange-400/60 text-slate-900 hover:bg-orange-400/70 border border-orange-300/50 shadow-sm',
+    darkOrange:
+      'bg-orange-300/55 text-slate-900 hover:bg-orange-300/65 border border-orange-300/50 shadow-sm',
+    softAmber:
+      'bg-orange-300/50 text-slate-900 hover:bg-orange-300/60 border border-orange-300/45 shadow-sm',
   };
   const sizeStyles = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2',
-    lg: 'px-6 py-3 text-lg',
+    sm: 'px-3.5 py-2 text-sm',
+    md: 'px-5 py-2.5',
+    lg: 'px-6 py-3.5 text-lg',
   };
   return (
     <button
