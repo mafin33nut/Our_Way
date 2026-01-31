@@ -255,8 +255,6 @@ export function ClansPage() {
             )}
           </div>
         </div>
-
-          </div>
         )}
 
         {selectedClan && (
