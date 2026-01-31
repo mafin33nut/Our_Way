@@ -95,6 +95,12 @@ export function ClansPage() {
     return <Loader />;
   }
 
+  const members = clan?.members
+    ? [...clan.members].sort(
+        (a, b) => (b.level ?? 0) - (a.level ?? 0) || a.username.localeCompare(b.username)
+      )
+    : [];
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900">
       <div className="max-w-[1920px] mx-auto px-6 py-8 space-y-12">
@@ -134,16 +140,7 @@ export function ClansPage() {
               <h2 className="text-purple-300">Информация о вашем клане</h2>
             </div>
             {clan ? (
-<<<<<<< HEAD
               <>
-=======
-              <div className="space-y-4">
-                {(() => {
-                  const members = [...(clan.members || [])].sort(
-                    (a, b) => (b.level ?? 0) - (a.level ?? 0) || a.username.localeCompare(b.username)
-                  );
-                  return (
->>>>>>> 523f3fd9d3e88e6408fd92c33cea892fe0654610
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-3">
                     <p className="text-xs text-purple-200/60">Уровень</p>
@@ -193,13 +190,7 @@ export function ClansPage() {
                     )}
                   </div>
                 </div>
-<<<<<<< HEAD
               </>
-=======
-                  );
-                })()}
-              </div>
->>>>>>> 523f3fd9d3e88e6408fd92c33cea892fe0654610
             ) : (
               <div className="text-center py-6 text-purple-200/40 text-sm">
                 Вы еще не состоите в клане
