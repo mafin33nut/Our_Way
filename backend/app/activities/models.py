@@ -115,6 +115,20 @@ class ActivityTimer(models.Model):
 from django.conf import settings
 from django.db import models
 
+
+class UserFocus(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='focuses')
+    name = models.CharField(max_length=120)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'name')
+        ordering = ['name']
+
+    def __str__(self):
+        return f'{self.user} - {self.name}'
+
+
 class Quest(models.Model):
     DIFFICULTY_CHOICES = [('easy','easy'), ('medium','medium'), ('hard','hard')]
     title = models.CharField(max_length=200)
@@ -122,6 +136,7 @@ class Quest(models.Model):
     difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, default='easy')
     xp_reward = models.PositiveIntegerField(default=10)
     duration_minutes = models.PositiveIntegerField(default=60)
+    is_custom = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
     completed_at = models.DateTimeField(null=True, blank=True)
     accepted_at = models.DateTimeField(null=True, blank=True)
@@ -130,9 +145,24 @@ class Quest(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='quests')
     focus_area = models.CharField(max_length=100, blank=True, null=True)
+    focuses = models.ManyToManyField(UserFocus, related_name='quests', blank=True)
 
     class Meta:
         ordering = ['-created_at']
 
     def __str__(self):
         return self.title
+
+
+class QuestStep(models.Model):
+    quest = models.ForeignKey(Quest, on_delete=models.CASCADE, related_name='steps')
+    title = models.CharField(max_length=200)
+    completed = models.BooleanField(default=False)
+    order = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return f'{self.quest.title}: {self.title}'

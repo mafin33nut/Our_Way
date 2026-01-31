@@ -1,11 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
 import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
 import { questsAPI } from '../../api/quests';
 import { socialAPI } from '../../api/social';
 import { Quest, Friend, Activity, BACKGROUND_OPTIONS } from '../../types';
-import { FocusSelector } from '../../components/quests/FocusSelector';
 import { QuestList } from '../../components/quests/QuestList';
 import { TaskHistoryPanel } from '../../components/quests/TaskHistoryPanel';
 import { TaskSchedulePanel } from '../../components/quests/TaskSchedulePanel';
@@ -24,8 +22,6 @@ export function HomePage() {
   const [friends, setFriends] = useState<Friend[]>([]);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
-  const [generatingQuests, setGeneratingQuests] = useState(false);
-  const [generateError, setGenerateError] = useState<string | null>(null);
   const [bgImageLoaded, setBgImageLoaded] = useState(false);
 
   const isLight = settings.theme === 'light';
@@ -80,35 +76,6 @@ export function HomePage() {
     }
   }, [hasBackground, backgroundUrl]);
 
-  const handleSelectFocus = async (focus: string) => {
-    setGeneratingQuests(true);
-    setGenerateError(null);
-    try {
-      await questsAPI.generateByFocus(focus);
-      const refreshed = await questsAPI.getAll();
-      setQuests(refreshed);
-      await refreshUser();
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const data = error.response?.data as
-          | { detail?: string; message?: string }
-          | string
-          | undefined;
-        const detail =
-          typeof data === 'string'
-            ? data
-            : data?.detail || data?.message || JSON.stringify(data);
-        const status = error.response?.status;
-        setGenerateError(detail ? `Ошибка ${status ?? ''}: ${detail}`.trim() : 'Не удалось сгенерировать задания.');
-      } else {
-        setGenerateError('Не удалось сгенерировать задания.');
-      }
-      console.error('Failed to generate quests:', error);
-    } finally {
-      setGeneratingQuests(false);
-    }
-  };
-
   const handleCompleteQuest = async (id: number) => {
     try {
       const updatedQuest = await questsAPI.complete(id);
@@ -127,11 +94,6 @@ export function HomePage() {
     } catch (error) {
       console.error('Failed to delete quest:', error);
     }
-  };
-
-  const handleTimerStop = async () => {
-    await loadData();
-    await refreshUser();
   };
 
   const questsCompletedToday = quests.filter((q) => q.completed && q.completed_at && isToday(q.completed_at)).length;
@@ -178,19 +140,6 @@ export function HomePage() {
               </div>
 
               <div className="w-full max-w-[780px]">
-                <div className="panel-caption text-center">Выбор направления</div>
-                <div className="text-white/60 text-sm text-center mb-32">
-                  Выберите фокус развития, чтобы получить подходящие задания.
-                </div>
-                <FocusSelector
-                  currentFocus={user.current_focus || undefined}
-                  onSelectFocus={handleSelectFocus}
-                  loading={generatingQuests}
-                  error={generateError}
-                />
-              </div>
-
-              <div className="w-full max-w-[780px]">
                 <div className="panel-caption text-center">Текущие задания</div>
                 <div className="text-white/60 text-sm text-center mb-32">
                   Список активных заданий, таймеры и выполнение.
@@ -199,8 +148,6 @@ export function HomePage() {
                   quests={quests}
                   onComplete={handleCompleteQuest}
                   onDelete={handleDeleteQuest}
-                  onExpire={(id) => setQuests((prev) => prev.filter((q) => q.id !== id))}
-                  onTimerStop={handleTimerStop}
                 />
               </div>
 
@@ -208,7 +155,7 @@ export function HomePage() {
                 <div className="w-full max-w-[780px]">
                   <div className="panel-caption text-center">Активность гильдии</div>
                   <div className="text-white/60 text-sm text-center mb-32">
-                    Хронология событий и изменений по заданиям и уровню. Удалять можно не более 4 заданий в день.
+                    Хронология событий и изменений по заданиям и уровню.
                   </div>
                   <ActivityFeed activities={activities} />
                 </div>

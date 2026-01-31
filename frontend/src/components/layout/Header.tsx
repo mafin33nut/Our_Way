@@ -23,6 +23,7 @@ export function Header() {
               <div className="flex flex-wrap gap-2">
                 {[
                   { to: '/', label: 'Главная' },
+                  { to: '/focus', label: 'Фокусы' },
                   { to: '/clans', label: 'Кланы' },
                   { to: '/leaders', label: 'Лидеры' },
                   { to: '/achievements', label: 'Достижения' },

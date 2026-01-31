@@ -1,5 +1,5 @@
 import { apiClient, unwrapListResponse } from './client';
-import { Quest, QuestCreate, ClanQuest } from '../types';
+import { Quest, QuestCreate, ClanQuest, QuestStep, UserFocus } from '../types';
 
 export const questsAPI = {
   getAll: async (): Promise<Quest[]> => {
@@ -14,23 +14,18 @@ export const questsAPI = {
     return response.data;
   },
 
-  generateByFocus: async (focus: string): Promise<Quest[]> => {
-    const response = await apiClient.post<Quest[]>('/api/activities/quests/generate/', { focus });
-    return response.data;
-  },
-
   complete: async (id: number): Promise<Quest> => {
     const response = await apiClient.post<Quest>(`/api/activities/quests/${id}/complete/`);
     return response.data;
   },
 
-  accept: async (id: number): Promise<Quest> => {
-    const response = await apiClient.post<Quest>(`/api/activities/quests/${id}/accept/`);
-    return response.data;
-  },
-
   delete: async (id: number): Promise<void> => {
     await apiClient.delete(`/api/activities/quests/${id}/`);
+  },
+
+  create: async (payload: QuestCreate): Promise<Quest> => {
+    const response = await apiClient.post<Quest>(`/api/activities/quests/`, payload);
+    return response.data;
   },
 };
 
@@ -67,6 +62,29 @@ export const timersAPI = {
 
   stopTimer: async (timerId: number) => {
     const response = await apiClient.post(`/api/activities/timers/${timerId}/stop/`);
+    return response.data;
+  },
+};
+
+export const focusesAPI = {
+  getAll: async (): Promise<UserFocus[]> => {
+    const response = await apiClient.get<UserFocus[] | { results: UserFocus[] }>(
+      '/api/activities/focuses/'
+    );
+    return unwrapListResponse(response.data);
+  },
+  create: async (name: string): Promise<UserFocus> => {
+    const response = await apiClient.post<UserFocus>('/api/activities/focuses/', { name });
+    return response.data;
+  },
+  delete: async (id: number): Promise<void> => {
+    await apiClient.delete(`/api/activities/focuses/${id}/`);
+  },
+};
+
+export const questStepsAPI = {
+  complete: async (id: number): Promise<QuestStep> => {
+    const response = await apiClient.post<QuestStep>(`/api/activities/quest-steps/${id}/complete/`);
     return response.data;
   },
 };

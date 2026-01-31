@@ -1,7 +1,4 @@
-import random
 from rest_framework import viewsets, permissions, status
-from django.db import models
-from datetime import timedelta
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -14,6 +11,8 @@ from .models import (
     ActivityReward,
     ActivityTimer,
     Quest,
+    QuestStep,
+    UserFocus,
 )
 from .serializers import (
     ActivityCategorySerializer,
@@ -22,6 +21,8 @@ from .serializers import (
     ActivityRewardSerializer,
     ActivityTimerSerializer,
     QuestSerializer,
+    QuestStepSerializer,
+    UserFocusSerializer,
 )
 from .services import ActivityService
 from app.api.permissions import IsOwnerOrReadOnly
@@ -147,6 +148,31 @@ class ActivityTimerViewSet(viewsets.ModelViewSet):
         timer = ActivityTimer.objects.create(user=request.user, activity=activity)
         return Response(ActivityTimerSerializer(timer).data, status=status.HTTP_201_CREATED)
 
+class UserFocusViewSet(viewsets.ModelViewSet):
+    serializer_class = UserFocusSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return UserFocus.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class QuestStepViewSet(viewsets.ModelViewSet):
+    serializer_class = QuestStepSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return QuestStep.objects.filter(quest__user=self.request.user, quest__is_custom=True)
+
+    @action(detail=True, methods=['post'])
+    def complete(self, request, pk=None):
+        step = self.get_object()
+        step.completed = True
+        step.save(update_fields=['completed'])
+        return Response(self.get_serializer(step).data)
+
 
 # ---------------------------
 # Quest viewset (в рамках activities)
@@ -154,135 +180,21 @@ class ActivityTimerViewSet(viewsets.ModelViewSet):
 
 class QuestViewSet(viewsets.ModelViewSet):
     """
-    CRUD для пользовательских квестов (tasks) — интегрированы в activities.
-    Предоставляют actions generate (создать набор задач по фокусу) и complete.
+    CRUD для пользовательских квестов (tasks).
     """
     queryset = Quest.objects.all()
     serializer_class = QuestSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        # пользователи видят только свои задания
-        now = timezone.now()
-        qs = Quest.objects.filter(user=self.request.user, deleted_at__isnull=True)
-        qs = qs.filter(models.Q(expires_at__isnull=True) | models.Q(completed=True) | models.Q(expires_at__gt=now))
-        return qs.order_by('-created_at')
+        return Quest.objects.filter(
+            user=self.request.user,
+            is_custom=True,
+            deleted_at__isnull=True,
+        ).order_by('-created_at')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-
-    @action(detail=False, methods=['post'], url_path='generate')
-    def generate_by_focus(self, request):
-        """
-        Генерация заданий на основе выбранного фокуса.
-        Простая примерная реализация — можно заменить более умной логикой.
-        """
-        focus = request.data.get('focus')
-        today = timezone.now().date()
-        now = timezone.now()
-        active_count = Quest.objects.filter(
-            user=request.user,
-            deleted_at__isnull=True,
-            completed=False,
-        ).filter(models.Q(expires_at__isnull=True) | models.Q(expires_at__gt=now)).count()
-        if active_count >= 8:
-            return Response(
-                {'detail': 'Нельзя генерировать задания при 8+ активных заданиях.'},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        if Quest.objects.filter(user=request.user, created_at__date=today).exists():
-            return Response(
-                {'detail': 'Новые задания можно генерировать только один раз в день.'},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        mapping = {
-            'social': [
-                ('Видеозвонок с близким', 'Обсудите планы и эмоции (60 мин).', 'medium', 100, 60),
-                ('Мини-встреча для группы', 'Провести сессию для 4–6 человек (60 мин).', 'hard', 100, 60),
-                ('Персональные сообщения', '8 персональных сообщений с поддержкой (60 мин).', 'medium', 100, 60),
-                ('Офлайн-мероприятие', 'Посетить событие и установить 3 контакта (60 мин).', 'hard', 100, 60),
-                ('Совместный коворкинг', 'Организовать 1 час работы с чек-инами (60 мин).', 'medium', 100, 60),
-                ('Глубокая встреча', 'Развитие и план действий с ментором (90 мин).', 'hard', 150, 90),
-                ('Мини-воркшоп', 'Провести воркшоп по хобби (90 мин).', 'hard', 150, 90),
-                ('Нетворкинг-сессия', 'Собрать контакты и написать ответные сообщения (90 мин).', 'hard', 150, 90),
-            ],
-            'work': [
-                ('Крупный шаг в проекте', 'Реализовать и протестировать часть (60 мин).', 'hard', 100, 60),
-                ('Сессия продуктивности', 'Техника Помодоро 50/10, закрыть 3 задачи (60 мин).', 'medium', 100, 60),
-                ('Отчёт для руководства', 'Подготовить 1 страницу с метриками (60 мин).', 'medium', 100, 60),
-                ('Анализ процессов', 'Собрать узкие места и 3 улучшения (60 мин).', 'hard', 100, 60),
-                ('Обновить портфолио', 'Подготовить и опубликовать демонстрацию проекта (60 мин).', 'medium', 100, 60),
-                ('Мелкий фичер + тесты', 'Разработка + рефакторинг + тесты (90 мин).', 'hard', 150, 90),
-                ('Встреча с протоколом', '45 мин встреча + 45 мин документ (90 мин).', 'hard', 150, 90),
-                ('Глубокое ревью', '3–5 пул‑реквестов с подробными комментариями (90 мин).', 'hard', 150, 90),
-            ],
-            'learning': [
-                ('Конспект материала', 'Глава/статья с 15 идеями (60 мин).', 'medium', 100, 60),
-                ('Серия упражнений', '20–30 задач по теме (60 мин).', 'hard', 100, 60),
-                ('Практический семинар', 'Теория + небольшой проект (60 мин).', 'medium', 100, 60),
-                ('Флеш‑карты', '30–50 терминов (60 мин).', 'medium', 100, 60),
-                ('Пилотная презентация', 'Подготовить 10-минутное выступление (60 мин).', 'medium', 100, 60),
-                ('Новая тема', '60 мин лекции + 30 мин практики (90 мин).', 'hard', 150, 90),
-                ('Развёрнутое эссе', '500–800 слов с источниками (90 мин).', 'hard', 150, 90),
-                ('Мини‑исследование', '5 источников и 10 выводов (90 мин).', 'hard', 150, 90),
-            ],
-            'health': [
-                ('Комплексная тренировка', 'Разминка, силовая, растяжка (60 мин).', 'hard', 100, 60),
-                ('Питание + план', 'Готовка и план на 3 дня (60 мин).', 'medium', 100, 60),
-                ('Йога/пилатес', 'Сессия с фокусом на спину (60 мин).', 'medium', 100, 60),
-                ('Контроль здоровья', 'Замеры и 3 цели на месяц (60 мин).', 'medium', 100, 60),
-                ('План восстановления', 'Самомассаж + дыхание + прогулка (60 мин).', 'medium', 100, 60),
-                ('Длинная кардио‑сессия', '60 мин кардио + 30 мин растяжки (90 мин).', 'hard', 150, 90),
-                ('Полный чек‑ап', 'Подготовка к врачу и анализам (90 мин).', 'hard', 150, 90),
-                ('3 здоровых рецепта', 'Тест и оценка для недели (90 мин).', 'hard', 150, 90),
-            ],
-            'personal': [
-                ('SWOT‑самооценка', 'SWOT-анализ (сильные/слабые стороны, возможности, угрозы) + 3 цели (60 мин).', 'medium', 100, 60),
-                ('Утренняя рутина', '5–7 пунктов, выполнить и записать (60 мин).', 'medium', 100, 60),
-                ('Книга по развитию', '10 практических шагов (60 мин).', 'medium', 100, 60),
-                ('Сессия навыка', 'Практика навыка с обратной связью (60 мин).', 'medium', 100, 60),
-                ('Старт 30‑дневного плана', 'Первые 7 дней и день 1 (60 мин).', 'medium', 100, 60),
-                ('Тренировочное выступление', 'Подготовка + выступление с разбором (90 мин).', 'hard', 150, 90),
-                ('Годовой план целей', 'Разбивка по кварталам (90 мин).', 'hard', 150, 90),
-                ('Коучинг‑сессия', 'План действий и регулярные проверки (90 мин).', 'hard', 150, 90),
-            ],
-            'home': [
-                ('Организация комнаты', 'Уборка и список покупок (60 мин).', 'hard', 100, 60),
-                ('План питания', 'Список и закупка продуктов (60 мин).', 'medium', 100, 60),
-                ('Мелкий ремонт', 'Починить 3 мелочи (60 мин).', 'hard', 100, 60),
-                ('Уборка техники', 'Холодильник/плита/микроволновка (60 мин).', 'medium', 100, 60),
-                ('Система хранения', 'Организовать 4 категории вещей (60 мин).', 'medium', 100, 60),
-                ('Генеральная уборка', '90 минут порядка и хранения (90 мин).', 'hard', 150, 90),
-                ('Ревизия гардероба', 'Сортировка и список покупок (90 мин).', 'hard', 150, 90),
-                ('Организация документов', 'Скан, папки, бэкап (90 мин).', 'hard', 150, 90),
-            ],
-        }
-
-        items = mapping.get(focus)
-        if not items:
-            return Response(
-                {'detail': 'Неизвестный фокус.'},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        selection_size = min(1, len(items))
-        items_to_create = random.sample(items, k=selection_size) if items else []
-        created = []
-
-        for title, desc, diff, xp, duration in items_to_create:
-            q = Quest.objects.create(
-                title=title,
-                description=desc,
-                difficulty=diff,
-                xp_reward=xp,
-                duration_minutes=duration,
-                user=request.user,
-                focus_area=focus,
-            )
-            created.append(q)
-
-        serializer = QuestSerializer(created, many=True)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=['post'])
     def complete(self, request, pk=None):
@@ -293,6 +205,12 @@ class QuestViewSet(viewsets.ModelViewSet):
 
         if quest.completed:
             return Response(self.get_serializer(quest).data)
+
+        if quest.steps.exists() and quest.steps.filter(completed=False).exists():
+            return Response(
+                {'detail': 'Нельзя завершить задание, пока не выполнены все этапы.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         quest.completed = True
         quest.completed_at = timezone.now()
@@ -313,29 +231,8 @@ class QuestViewSet(viewsets.ModelViewSet):
 
         return Response(self.get_serializer(quest).data)
 
-    @action(detail=True, methods=['post'])
-    def accept(self, request, pk=None):
-        quest = self.get_object()
-        if quest.accepted_at:
-            return Response(self.get_serializer(quest).data)
-        now = timezone.now()
-        quest.accepted_at = now
-        quest.expires_at = now + timedelta(minutes=quest.duration_minutes or 60)
-        quest.save(update_fields=['accepted_at', 'expires_at'])
-        return Response(self.get_serializer(quest).data)
-
     def destroy(self, request, *args, **kwargs):
         quest = self.get_object()
-        today = timezone.now().date()
-        deleted_today = Quest.objects.filter(
-            user=request.user,
-            deleted_at__date=today,
-        ).count()
-        if deleted_today >= 4:
-            return Response(
-                {'detail': 'Лимит удаления заданий на сегодня достигнут (4).'},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
         quest.deleted_at = timezone.now()
         quest.save(update_fields=['deleted_at'])
         return Response(status=status.HTTP_204_NO_CONTENT)

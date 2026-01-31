@@ -11,6 +11,7 @@ import { LeadersPage } from './components/pages/LeadersPage';
 import { AchievementsPage } from './components/pages/AchievementsPage';
 import { UserCustomizationPage } from './components/pages/UserCustomizationPage';
 import { WelcomePage } from './components/pages/WelcomePage';
+import { FocusTasksPage } from './components/pages/FocusTasksPage';
 import { useAuth } from './hooks/useAuth';
 
 function HomeRoute() {
@@ -46,6 +47,17 @@ function App() {
                   <>
                     <Header />
                     <WelcomePage />
+                  </>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/focus"
+              element={
+                <PrivateRoute>
+                  <>
+                    <Header />
+                    <FocusTasksPage />
                   </>
                 </PrivateRoute>
               }

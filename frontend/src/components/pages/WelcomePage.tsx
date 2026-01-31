@@ -52,10 +52,7 @@ export function WelcomePage() {
               <div>
                 <p className="text-purple-200">Выполняйте задания</p>
                 <p className="text-purple-200/60 text-sm">
-                  Принимайте задания, запускайте таймер и завершайте их.
-                </p>
-                <p className="text-purple-200/50 text-sm mt-2">
-                  Завершить задание нельзя в первые 5 минут после принятия.
+                  Создавайте свои задания и завершайте их по мере выполнения.
                 </p>
               </div>
             </div>

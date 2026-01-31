@@ -8,6 +8,8 @@ from .models import (
     ActivityReward,
     ActivityTimer,
     Quest,
+    QuestStep,
+    UserFocus,
 )
 
 QUEST_TRANSLATIONS = {
@@ -356,7 +358,29 @@ class ActivityTimerSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
+class UserFocusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserFocus
+        fields = ['id', 'name', 'created_at']
+        read_only_fields = ['id', 'created_at']
+
+
+class QuestStepSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QuestStep
+        fields = ['id', 'title', 'completed', 'order', 'created_at']
+        read_only_fields = ['id', 'created_at']
+
+
 class QuestSerializer(serializers.ModelSerializer):
+    focus_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        write_only=True,
+        required=False,
+        default=list,
+    )
+    steps = QuestStepSerializer(many=True, required=False)
+
     class Meta:
         model = Quest
         fields = [
@@ -366,6 +390,7 @@ class QuestSerializer(serializers.ModelSerializer):
             'difficulty',
             'xp_reward',
             'duration_minutes',
+            'is_custom',
             'completed',
             'completed_at',
             'accepted_at',
@@ -374,8 +399,33 @@ class QuestSerializer(serializers.ModelSerializer):
             'created_at',
             'user',
             'focus_area',
+            'focus_ids',
+            'steps',
         ]
         read_only_fields = ['id', 'created_at', 'completed_at', 'user', 'accepted_at', 'expires_at', 'deleted_at']
+
+    def create(self, validated_data):
+        steps_data = validated_data.pop('steps', [])
+        focus_ids = validated_data.pop('focus_ids', [])
+        request = self.context.get('request')
+        if request and hasattr(request, 'user'):
+            validated_data['user'] = request.user
+        validated_data['is_custom'] = True
+        validated_data['xp_reward'] = 100
+        quest = super().create(validated_data)
+
+        if focus_ids:
+            focuses = UserFocus.objects.filter(id__in=focus_ids, user=quest.user)
+            quest.focuses.set(focuses)
+
+        if steps_data:
+            for idx, step in enumerate(steps_data):
+                QuestStep.objects.create(
+                    quest=quest,
+                    title=step.get('title', ''),
+                    order=step.get('order', idx),
+                )
+        return quest
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -386,3 +436,5 @@ class QuestSerializer(serializers.ModelSerializer):
             data['title'] = translated_title
             data['description'] = translated_desc
         return data
+
+ 

@@ -18,6 +18,7 @@ export interface Quest {
   difficulty: 'easy' | 'medium' | 'hard';
   xp_reward: number;
   duration_minutes?: number;
+  is_custom?: boolean;
   completed: boolean;
   completed_at?: string;
   accepted_at?: string | null;
@@ -26,6 +27,20 @@ export interface Quest {
   created_at: string;
   user: number;
   focus_area?: string;
+  steps?: QuestStep[];
+}
+
+export interface QuestStep {
+  id: number;
+  title: string;
+  completed: boolean;
+  order: number;
+}
+
+export interface UserFocus {
+  id: number;
+  name: string;
+  created_at: string;
 }
 export interface ClanQuestParticipant {
   id: number;
@@ -70,6 +85,8 @@ export interface QuestCreate {
   title: string;
   description: string;
   difficulty: 'easy' | 'medium' | 'hard';
+  focus_ids?: number[];
+  steps?: Array<{ title: string; order?: number }>;
 }
 export interface Friend {
   id: number;
