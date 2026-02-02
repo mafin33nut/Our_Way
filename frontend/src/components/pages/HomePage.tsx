@@ -2,12 +2,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
 import { questsAPI } from '../../api/quests';
-import { socialAPI } from '../../api/social';
-import { Quest, Friend, BACKGROUND_OPTIONS } from '../../types';
+import { Quest, BACKGROUND_OPTIONS } from '../../types';
 import { QuestList } from '../../components/quests/QuestList';
 import { CharacterProfile } from '../../components/profile/characterProfile';
-import { FriendSearchPanel } from '../../components/social/FriendSearchPanel';
-import { AllFriendsPanel } from '../../components/social/AllFriendsPanel';
 import { isToday } from '../../utils/time';
 import { Loader } from '../../components/ui/Loader';
 import { Award } from 'lucide-react';
@@ -16,30 +13,17 @@ export function HomePage() {
   const { user, refreshUser } = useAuth();
   const { settings, playVictorySound } = useCustomization();
   const [quests, setQuests] = useState<Quest[]>([]);
-  const [friends, setFriends] = useState<Friend[]>([]);
   const [loading, setLoading] = useState(true);
   const [bgImageLoaded, setBgImageLoaded] = useState(false);
-
-  const isLight = settings.theme === 'light';
 
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const results = await Promise.allSettled([
-        questsAPI.getAll().catch(() => []),
-        socialAPI.getFriends().catch(() => []),
-      ]);
-
-      const [questsRes, friendsRes] = results;
-
-      const questsValue = questsRes.status === 'fulfilled' ? questsRes.value || [] : [];
-
-      if (questsRes.status === 'fulfilled') setQuests(questsValue);
-      if (friendsRes.status === 'fulfilled') setFriends(friendsRes.value || []);
+      const questList = await questsAPI.getAll().catch(() => []);
+      setQuests(questList || []);
     } catch (err) {
       console.error('Failed to load data:', err);
       setQuests([]);
-      setFriends([]);
     } finally {
       setLoading(false);
     }
@@ -141,7 +125,7 @@ export function HomePage() {
             <div className="space-y-10">
               <div className="w-full">
                 <div className="panel-caption text-left">Профиль героя</div>
-                <div className="text-slate-300/70 text-sm mb-6">
+                <div className="text-slate-300/70 text-sm mb-6 min-h-[48px]">
                   Основные характеристики персонажа, уровень и прогресс в квестах.
                 </div>
                 <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
@@ -163,7 +147,7 @@ export function HomePage() {
             <div className="space-y-10">
               <div className="w-full">
                 <div className="panel-caption text-left">Достижения</div>
-                <div className="text-slate-300/70 text-sm mb-6">
+                <div className="text-slate-300/70 text-sm mb-6 min-h-[48px]">
                   Ваши полученные достижения и текущий прогресс.
                 </div>
                 <div className="panel-base panel-teal">
@@ -198,22 +182,6 @@ export function HomePage() {
                 </div>
               </div>
 
-              {settings.showFriends && (
-                <div className="w-full">
-                  <div className="panel-caption text-left">Друзья</div>
-                  <div className="text-slate-300/70 text-sm mb-6">
-                    Найдите друзей и следите за их активностью.
-                  </div>
-                  <div className="space-y-6">
-                    <FriendSearchPanel
-                      onFriendAdded={loadData}
-                      friendIds={friends.map((friend) => friend.id)}
-                      currentUserId={user.id}
-                    />
-                    {friends.length > 0 && <AllFriendsPanel friends={friends} />}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
 

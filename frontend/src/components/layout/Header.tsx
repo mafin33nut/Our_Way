@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
 import { Button } from '../ui/Button';
 import { resolveMediaUrl } from '../../utils/media';
+import { FriendsPanel } from '../social/FriendsPanel';
 export function Header() {
   const { user, logout } = useAuth();
   const { settings } = useCustomization();
@@ -82,6 +83,7 @@ export function Header() {
                     <Settings className="w-4 h-4" />
                   </Button>
                 </Link>
+                <FriendsPanel />
                 <Button variant="ghost" size="sm" onClick={logout}>
                   <LogOut className="w-4 h-4 mr-2" />
                   Выйти

@@ -64,8 +64,12 @@ class FriendsView(APIView):
             user=request.user,
             friend=friend
         )
+        reverse_friendship, reverse_created = Friendship.objects.get_or_create(
+            user=friend,
+            friend=request.user
+        )
         
-        if not created:
+        if not created and not reverse_created:
             return Response({'detail': 'Already friends'}, status=status.HTTP_400_BAD_REQUEST)
         
         return Response({'detail': 'Friend added successfully'}, status=status.HTTP_201_CREATED)
