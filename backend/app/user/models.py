@@ -6,6 +6,7 @@ class User(AbstractUser):
     bio = models.TextField(blank=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     has_seen_welcome = models.BooleanField(default=False)
+    last_daily_login_email = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return self.username

@@ -8,6 +8,7 @@ import { ClanCreationPanel } from '../social/ClanCreationPanel';
 import { useAuth } from '../../hooks/useAuth';
 import { Loader } from '../ui/Loader';
 import { resolveMediaUrl } from '../../utils/media';
+import { Button } from '../ui/Button';
 
 export function ClansPage() {
   const { user, refreshUser } = useAuth();
@@ -16,6 +17,11 @@ export function ClansPage() {
   const [clanQuests, setClanQuests] = useState<ClanQuest[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [clanQuestTitle, setClanQuestTitle] = useState('');
+  const [clanQuestDescription, setClanQuestDescription] = useState('');
+  const [clanQuestMaxParticipants, setClanQuestMaxParticipants] = useState(2);
+  const [creatingClanQuest, setCreatingClanQuest] = useState(false);
+  const [createClanQuestError, setCreateClanQuestError] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -73,6 +79,31 @@ export function ClansPage() {
       setClanQuests((prev) => prev.filter((cq) => cq.id !== id));
     } catch (error) {
       console.error('Failed to delete clan quest:', error);
+    }
+  };
+
+  const handleCreateClanQuest = async () => {
+    if (!selectedClan || !clanQuestTitle.trim()) {
+      return;
+    }
+    setCreatingClanQuest(true);
+    setCreateClanQuestError(null);
+    try {
+      const created = await clanQuestsAPI.create({
+        clan: selectedClan.id,
+        title: clanQuestTitle.trim(),
+        description: clanQuestDescription.trim(),
+        max_participants: clanQuestMaxParticipants,
+      });
+      setClanQuests((prev) => [created, ...prev]);
+      setClanQuestTitle('');
+      setClanQuestDescription('');
+      setClanQuestMaxParticipants(2);
+    } catch (error) {
+      console.error('Failed to create clan quest:', error);
+      setCreateClanQuestError('Не удалось создать клановый квест.');
+    } finally {
+      setCreatingClanQuest(false);
     }
   };
 
@@ -228,6 +259,58 @@ export function ClansPage() {
             )}
           </div>
         </div>
+        )}
+
+        {selectedClan && (
+          <div className="panel-base panel-orange p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Crown className="w-5 h-5 text-teal-300" />
+              <h2 className="text-slate-100">Создать клановый квест</h2>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-4">
+              <div className="space-y-3">
+                <input
+                  value={clanQuestTitle}
+                  onChange={(e) => setClanQuestTitle(e.target.value)}
+                  placeholder="Название квеста"
+                  className="w-full rounded-lg border border-slate-600/40 bg-slate-950/50 px-3 py-2 text-slate-100"
+                />
+                <textarea
+                  value={clanQuestDescription}
+                  onChange={(e) => setClanQuestDescription(e.target.value)}
+                  placeholder="Описание"
+                  rows={3}
+                  className="w-full rounded-lg border border-slate-600/40 bg-slate-950/50 px-3 py-2 text-slate-100"
+                />
+              </div>
+              <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-4 space-y-3">
+                <p className="text-sm text-slate-200">Параметры</p>
+                <label className="text-slate-300/80 text-sm flex items-center justify-between">
+                  Макс. участников
+                  <input
+                    type="number"
+                    min={1}
+                    value={clanQuestMaxParticipants}
+                    onChange={(e) =>
+                      setClanQuestMaxParticipants(Math.max(1, Number(e.target.value) || 1))
+                    }
+                    className="w-20 rounded-lg border border-slate-600/40 bg-slate-950/60 px-2 py-1 text-slate-100"
+                  />
+                </label>
+              </div>
+            </div>
+            {createClanQuestError && (
+              <p className="text-sm text-rose-200 mt-3">{createClanQuestError}</p>
+            )}
+            <div className="mt-4 flex justify-end">
+              <Button
+                onClick={handleCreateClanQuest}
+                disabled={creatingClanQuest || !clanQuestTitle.trim()}
+              >
+                {creatingClanQuest ? 'Создание...' : 'Создать'}
+              </Button>
+            </div>
+          </div>
         )}
 
         {selectedClan && (

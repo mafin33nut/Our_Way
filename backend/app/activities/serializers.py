@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.utils import timezone
+from app.notifications.services import send_notification_to_user
 
 from .models import (
     ActivityCategory,
@@ -431,6 +432,14 @@ class QuestSerializer(serializers.ModelSerializer):
                     title=step.get('title', ''),
                     order=step.get('order', idx),
                 )
+        try:
+            send_notification_to_user(
+                quest.user,
+                subject='Создан новый квест',
+                body=f'Квест "{quest.title}" создан. Награда: {quest.xp_reward} XP.',
+            )
+        except Exception:
+            pass
         return quest
 
     def to_representation(self, instance):
