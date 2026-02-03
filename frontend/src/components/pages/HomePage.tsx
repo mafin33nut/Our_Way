@@ -125,7 +125,7 @@ export function HomePage() {
             <div className="space-y-10">
               <div className="w-full">
                 <div className="panel-caption text-left">Профиль героя</div>
-                <div className="text-slate-300/70 text-sm mb-6 min-h-[48px]">
+                <div className="panel-comment mb-6 min-h-[48px]">
                   Основные характеристики персонажа, уровень и прогресс в квестах.
                 </div>
                 <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
@@ -133,7 +133,7 @@ export function HomePage() {
 
               <div className="w-full">
                 <div className="panel-caption text-left">Текущие квесты</div>
-                <div className="text-slate-300/70 text-sm mb-6">
+                <div className="panel-comment mb-6">
                   Список активных квестов и выполнение.
                 </div>
                 <QuestList
@@ -147,7 +147,7 @@ export function HomePage() {
             <div className="space-y-10">
               <div className="w-full">
                 <div className="panel-caption text-left">Достижения</div>
-                <div className="text-slate-300/70 text-sm mb-6 min-h-[48px]">
+                <div className="panel-comment mb-6 min-h-[48px]">
                   Ваши полученные достижения и текущий прогресс.
                 </div>
                 <div className="panel-base panel-teal">

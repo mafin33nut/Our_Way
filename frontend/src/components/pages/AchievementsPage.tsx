@@ -192,7 +192,7 @@ export function AchievementsPage() {
               <Award className="w-5 h-5 text-teal-300" />
               <h2 className="text-slate-100">Достижения</h2>
             </div>
-            <p className="text-slate-300/70">
+            <p className="panel-comment">
               Достижения открываются по мере выполнения квестов.
             </p>
             <div className="mt-4 flex items-center gap-3 text-sm text-slate-300/70">

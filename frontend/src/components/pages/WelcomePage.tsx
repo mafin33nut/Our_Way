@@ -34,7 +34,7 @@ export function WelcomePage() {
             <Sparkles className="w-5 h-5 text-teal-300" />
             <h2 className="text-slate-100">Добро пожаловать, {user.username}!</h2>
           </div>
-          <p className="text-slate-300/70 mb-6">
+          <p className="panel-comment mb-6">
             Это краткий гид по приложению, чтобы быстрее начать приключение.
           </p>
 
