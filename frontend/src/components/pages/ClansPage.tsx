@@ -20,6 +20,7 @@ export function ClansPage() {
   const [clanQuestTitle, setClanQuestTitle] = useState('');
   const [clanQuestDescription, setClanQuestDescription] = useState('');
   const [clanQuestMaxParticipants, setClanQuestMaxParticipants] = useState(2);
+  const [clanQuestDifficulty, setClanQuestDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
   const [creatingClanQuest, setCreatingClanQuest] = useState(false);
   const [createClanQuestError, setCreateClanQuestError] = useState<string | null>(null);
 
@@ -94,11 +95,13 @@ export function ClansPage() {
         title: clanQuestTitle.trim(),
         description: clanQuestDescription.trim(),
         max_participants: clanQuestMaxParticipants,
+        difficulty: clanQuestDifficulty,
       });
       setClanQuests((prev) => [created, ...prev]);
       setClanQuestTitle('');
       setClanQuestDescription('');
       setClanQuestMaxParticipants(2);
+      setClanQuestDifficulty('easy');
     } catch (error) {
       console.error('Failed to create clan quest:', error);
       setCreateClanQuestError('Не удалось создать клановый квест.');
@@ -275,6 +278,18 @@ export function ClansPage() {
               </div>
               <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-4 space-y-3">
                 <p className="text-sm text-slate-200">Параметры</p>
+                <label className="text-slate-300/80 text-sm flex flex-col gap-2">
+                  Сложность
+                  <select
+                    value={clanQuestDifficulty}
+                    onChange={(e) => setClanQuestDifficulty(e.target.value as 'easy' | 'medium' | 'hard')}
+                    className="rounded-lg border border-slate-600/40 bg-slate-950/60 px-2 py-2 text-slate-100"
+                  >
+                    <option value="easy">Легкая — 100 XP</option>
+                    <option value="medium">Средняя — 150 XP</option>
+                    <option value="hard">Сложная — 200 XP</option>
+                  </select>
+                </label>
                 <label className="text-slate-300/80 text-sm flex items-center justify-between">
                   Макс. участников
                   <input

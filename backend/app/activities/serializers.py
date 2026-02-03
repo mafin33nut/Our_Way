@@ -369,7 +369,7 @@ class UserFocusSerializer(serializers.ModelSerializer):
 class QuestStepSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuestStep
-        fields = ['id', 'title', 'completed', 'order', 'created_at']
+        fields = ['id', 'title', 'difficulty', 'completed', 'order', 'created_at']
         read_only_fields = ['id', 'created_at']
 
 
@@ -414,11 +414,20 @@ class QuestSerializer(serializers.ModelSerializer):
         if request and hasattr(request, 'user'):
             validated_data['user'] = request.user
         validated_data['is_custom'] = True
+        base_xp = {
+            'easy': 100,
+            'medium': 150,
+            'hard': 200,
+        }.get(validated_data.get('difficulty') or 'easy', 100)
+        step_bonus = 0
         if steps_data:
-            extra_steps = max(len(steps_data) - 1, 0)
-            validated_data['xp_reward'] = 100 + extra_steps * 50
-        else:
-            validated_data['xp_reward'] = 100
+            for step in steps_data:
+                step_bonus += {
+                    'easy': 30,
+                    'medium': 50,
+                    'hard': 70,
+                }.get(step.get('difficulty') or 'easy', 30)
+        validated_data['xp_reward'] = base_xp + step_bonus
         quest = super().create(validated_data)
 
         if focus_ids:
@@ -430,6 +439,7 @@ class QuestSerializer(serializers.ModelSerializer):
                 QuestStep.objects.create(
                     quest=quest,
                     title=step.get('title', ''),
+                    difficulty=step.get('difficulty') or 'easy',
                     order=step.get('order', idx),
                 )
         try:

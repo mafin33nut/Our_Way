@@ -1,4 +1,5 @@
 from rest_framework import viewsets, permissions, status
+from datetime import timedelta
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -205,6 +206,12 @@ class QuestViewSet(viewsets.ModelViewSet):
 
         if quest.completed:
             return Response(self.get_serializer(quest).data)
+
+        if quest.created_at and timezone.now() - quest.created_at < timedelta(seconds=30):
+            return Response(
+                {'detail': 'Задание можно завершить не раньше чем через 30 секунд после создания.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         if quest.steps.exists() and quest.steps.filter(completed=False).exists():
             return Response(

@@ -34,6 +34,7 @@ export interface Quest {
 export interface QuestStep {
   id: number;
   title: string;
+  difficulty?: 'easy' | 'medium' | 'hard';
   completed: boolean;
   order: number;
 }
@@ -53,7 +54,7 @@ export interface ClanQuest {
   id: number;
   title: string;
   description: string;
-  difficulty: 'epic' | 'legendary';
+  difficulty: 'easy' | 'medium' | 'hard';
   xp_reward: number;
   required_progress: number;
   total_progress: number;
@@ -89,7 +90,7 @@ export interface QuestCreate {
   description: string;
   difficulty: 'easy' | 'medium' | 'hard';
   focus_ids?: number[];
-  steps?: Array<{ title: string; order?: number }>;
+  steps?: Array<{ title: string; difficulty?: 'easy' | 'medium' | 'hard'; order?: number }>;
 }
 export interface Friend {
   id: number;

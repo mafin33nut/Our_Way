@@ -1,4 +1,5 @@
 from rest_framework import viewsets, permissions, status
+from datetime import timedelta
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -112,13 +113,26 @@ class ClanQuestViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         max_participants = max(serializer.validated_data.get('max_participants') or 1, 1)
+        base_xp = {
+            'easy': 100,
+            'medium': 150,
+            'hard': 200,
+        }.get(serializer.validated_data.get('difficulty') or 'easy', 100)
         serializer.save(
-            xp_reward=0,
+            xp_reward=base_xp,
             required_progress=max_participants,
             total_progress=0,
             completed=False,
         )
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @staticmethod
+    def _difficulty_base_xp(difficulty: str) -> int:
+        return {
+            'easy': 100,
+            'medium': 150,
+            'hard': 200,
+        }.get(difficulty or 'easy', 100)
 
     @staticmethod
     def _calculate_xp_reward(participant_count: int) -> int:
@@ -150,7 +164,12 @@ class ClanQuestViewSet(viewsets.ModelViewSet):
         quest.total_progress = participant_count
         quest.required_progress = max(quest.max_participants or 1, 1)
         if participant_count >= quest.required_progress:
+            if quest.created_at and timezone.now() - quest.created_at < timedelta(seconds=30):
+                quest.save(update_fields=['total_progress', 'required_progress'])
+                return Response(ClanQuestSerializer(quest).data)
             quest.completed = True
-            quest.xp_reward = self._calculate_xp_reward(participant_count)
+            base_xp = self._difficulty_base_xp(quest.difficulty)
+            bonus_xp = self._calculate_xp_reward(participant_count)
+            quest.xp_reward = base_xp + bonus_xp
         quest.save(update_fields=['total_progress', 'completed', 'xp_reward', 'required_progress'])
         return Response(ClanQuestSerializer(quest).data)

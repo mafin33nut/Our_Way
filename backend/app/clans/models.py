@@ -21,13 +21,14 @@ class ClanMember(models.Model):
 
 class ClanQuest(models.Model):
     DIFFICULTY_CHOICES = [
-        ('epic', 'Epic'),
-        ('legendary', 'Legendary'),
+        ('easy', 'Easy'),
+        ('medium', 'Medium'),
+        ('hard', 'Hard'),
     ]
     clan = models.ForeignKey(Clan, on_delete=models.CASCADE, related_name='quests')
     title = models.CharField(max_length=150)
     description = models.TextField(blank=True)
-    difficulty = models.CharField(max_length=20, choices=DIFFICULTY_CHOICES, default='epic')
+    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, default='easy')
     xp_reward = models.PositiveIntegerField(default=20)
     required_progress = models.PositiveIntegerField(default=100)
     total_progress = models.PositiveIntegerField(default=0)

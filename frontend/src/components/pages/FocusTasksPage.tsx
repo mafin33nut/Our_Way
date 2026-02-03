@@ -7,6 +7,7 @@ import { QuestList } from '../quests/QuestList';
 import { useCustomization } from '../../hooks/useCustomization';
 
 type TaskType = 'simple' | 'stepwise';
+type TaskDifficulty = 'easy' | 'medium' | 'hard';
 
 export function FocusTasksPage() {
   const { playVictorySound } = useCustomization();
@@ -20,7 +21,10 @@ export function FocusTasksPage() {
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
   const [taskType, setTaskType] = useState<TaskType>('simple');
-  const [steps, setSteps] = useState<string[]>(['']);
+  const [taskDifficulty, setTaskDifficulty] = useState<TaskDifficulty>('easy');
+  const [steps, setSteps] = useState<Array<{ title: string; difficulty: TaskDifficulty }>>([
+    { title: '', difficulty: 'easy' },
+  ]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -45,7 +49,7 @@ export function FocusTasksPage() {
   const canCreateTask = useMemo(() => {
     if (!taskTitle.trim()) return false;
     if (taskType === 'stepwise') {
-      return steps.some((s) => s.trim());
+      return steps.some((s) => s.title.trim());
     }
     return true;
   }, [taskTitle, taskType, steps]);
@@ -85,12 +89,16 @@ export function FocusTasksPage() {
       const payload = {
         title: taskTitle.trim(),
         description: taskDescription.trim(),
-        difficulty: 'easy' as const,
+        difficulty: taskDifficulty,
         focus_ids: selectedFocusId ? [selectedFocusId] : [],
         steps:
           taskType === 'stepwise'
             ? steps
-                .map((title, idx) => ({ title: title.trim(), order: idx }))
+                .map((step, idx) => ({
+                  title: step.title.trim(),
+                  difficulty: step.difficulty,
+                  order: idx,
+                }))
                 .filter((step) => step.title)
             : [],
       };
@@ -98,8 +106,9 @@ export function FocusTasksPage() {
       setQuests((prev) => [created, ...prev]);
       setTaskTitle('');
       setTaskDescription('');
-      setSteps(['']);
+      setSteps([{ title: '', difficulty: 'easy' }]);
       setTaskType('simple');
+      setTaskDifficulty('easy');
     } catch (e) {
       setError('Не удалось создать квест.');
     } finally {
@@ -241,15 +250,33 @@ export function FocusTasksPage() {
                       checked={taskType === 'stepwise'}
                       onChange={() => setTaskType('stepwise')}
                     />
-                    Поэтапный (100 + 50 за шаг)
+                    Поэтапный (XP по сложности шагов)
                   </label>
+                  <div className="pt-2">
+                    <label className="text-purple-200/80 text-sm block mb-2">Сложность</label>
+                    <select
+                      value={taskDifficulty}
+                      onChange={(e) => setTaskDifficulty(e.target.value as TaskDifficulty)}
+                      className="w-full rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
+                    >
+                      <option value="easy">Легкая — 100 XP</option>
+                      <option value="medium">Средняя — 150 XP</option>
+                      <option value="hard">Сложная — 200 XP</option>
+                    </select>
+                  </div>
                 </div>
               </div>
               {taskType === 'stepwise' && (
                 <div className="mt-6 space-y-3">
                   <div className="flex items-center justify-between">
                     <p className="text-slate-200 text-sm">Шаги квеста</p>
-                    <Button size="sm" variant="ghost" onClick={() => setSteps((prev) => [...prev, ''])}>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() =>
+                        setSteps((prev) => [...prev, { title: '', difficulty: 'easy' }])
+                      }
+                    >
                       <Plus className="w-4 h-4 mr-2" />
                       Добавить шаг
                     </Button>
@@ -258,15 +285,28 @@ export function FocusTasksPage() {
                     {steps.map((step, idx) => (
                       <div key={idx} className="flex gap-2">
                         <input
-                          value={step}
+                          value={step.title}
                           onChange={(e) => {
                             const copy = [...steps];
-                            copy[idx] = e.target.value;
+                            copy[idx] = { ...copy[idx], title: e.target.value };
                             setSteps(copy);
                           }}
                           placeholder={`Шаг ${idx + 1}`}
                           className="flex-1 rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
                         />
+                        <select
+                          value={step.difficulty}
+                          onChange={(e) => {
+                            const copy = [...steps];
+                            copy[idx] = { ...copy[idx], difficulty: e.target.value as TaskDifficulty };
+                            setSteps(copy);
+                          }}
+                          className="w-40 rounded-lg border border-purple-600/30 bg-slate-950/50 px-2 py-2 text-purple-100"
+                        >
+                          <option value="easy">Легк. +30</option>
+                          <option value="medium">Средн. +50</option>
+                          <option value="hard">Сложн. +70</option>
+                        </select>
                         <Button
                           size="sm"
                           variant="ghost"
@@ -281,9 +321,17 @@ export function FocusTasksPage() {
               )}
               <div className="mt-6 flex items-center justify-between">
                 <p className="text-xs text-slate-300/70">
-                  {taskType === 'stepwise'
-                    ? `Награда: ${100 + Math.max(steps.filter((s) => s.trim()).length - 1, 0) * 50} XP`
-                    : 'Награда: 100 XP'}
+                  {(() => {
+                    const baseXp = taskDifficulty === 'hard' ? 200 : taskDifficulty === 'medium' ? 150 : 100;
+                    const stepXp = steps
+                      .filter((s) => s.title.trim())
+                      .reduce((sum, s) => {
+                        const bonus = s.difficulty === 'hard' ? 70 : s.difficulty === 'medium' ? 50 : 30;
+                        return sum + bonus;
+                      }, 0);
+                    const total = taskType === 'stepwise' ? baseXp + stepXp : baseXp;
+                    return `Награда: ${total} XP`;
+                  })()}
                 </p>
                 <Button onClick={handleCreateTask} disabled={!canCreateTask || saving}>
                   {saving ? 'Создание...' : 'Создать квест'}

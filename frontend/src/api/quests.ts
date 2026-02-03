@@ -51,6 +51,7 @@ export const clanQuestsAPI = {
     title: string;
     description?: string;
     max_participants: number;
+    difficulty: 'easy' | 'medium' | 'hard';
   }): Promise<ClanQuest> => {
     const response = await apiClient.post<ClanQuest>(`/api/clans/quests/`, payload);
     return response.data;

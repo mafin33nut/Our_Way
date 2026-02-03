@@ -16,7 +16,8 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
     safeParticipants.length;
   const maxParticipants = quest.max_participants ?? quest.required_progress ?? 1;
   const progressPercentage = maxParticipants > 0 ? (participantCount / maxParticipants) * 100 : 0;
-  const isEpic = quest.difficulty === 'epic';
+  const difficultyLabel =
+    quest.difficulty === 'hard' ? 'Сложный' : quest.difficulty === 'medium' ? 'Средний' : 'Легкий';
   const hasJoined = safeParticipants.some((participant) => participant.username === currentUsername);
   const isFull = participantCount >= maxParticipants;
   const handleContribute = async () => {
@@ -48,7 +49,7 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
           <div className="flex items-center gap-2 mb-2">
             <Crown className="w-5 h-5 text-teal-300" />
             <span className="text-xs px-2 py-1 rounded bg-slate-800/60 text-slate-200">
-              {isEpic ? 'Эпическое' : 'Легендарное'}
+              {difficultyLabel}
             </span>
           </div>
           <h3 className={`text-lg mb-2 ${quest.completed ? 'text-slate-300 line-through' : 'text-slate-100'}`}>

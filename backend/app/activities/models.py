@@ -155,8 +155,10 @@ class Quest(models.Model):
 
 
 class QuestStep(models.Model):
+    DIFFICULTY_CHOICES = [('easy','easy'), ('medium','medium'), ('hard','hard')]
     quest = models.ForeignKey(Quest, on_delete=models.CASCADE, related_name='steps')
     title = models.CharField(max_length=200)
+    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, default='easy')
     completed = models.BooleanField(default=False)
     order = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
