@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
 import { questsAPI } from '../../api/quests';
@@ -89,6 +89,19 @@ export function HomePage() {
     { id: 'a7', title: 'Титан', req: 50 },
     { id: 'a8', title: 'Вершина', req: 75 },
   ];
+  const focusColumns = useMemo(() => {
+    const sorted = [...quests]
+      .filter((quest) => quest.completed)
+      .sort((a, b) => (b.completed_at || '').localeCompare(a.completed_at || ''));
+    const groups = new Map<string, Quest[]>();
+    sorted.forEach((quest) => {
+      const focusLabel = quest.focuses?.[0]?.name || quest.focus_area || 'Без фокуса';
+      const bucket = groups.get(focusLabel) ?? [];
+      bucket.push(quest);
+      groups.set(focusLabel, bucket);
+    });
+    return Array.from(groups.entries());
+  }, [quests]);
 
   if (!user) {
     return <Loader />;
@@ -128,6 +141,11 @@ export function HomePage() {
                 <div className="panel-comment mb-6 min-h-[48px]">
                   Основные характеристики персонажа, уровень и прогресс в квестах.
                 </div>
+                <div className="panel-guide mb-4">
+                  <p>1) Проверь текущий уровень и прогресс до следующего.</p>
+                  <p>2) Следи за дневной активностью и выполненными квестами.</p>
+                  <p>3) Обновляй профиль, если меняешь цели или темп.</p>
+                </div>
                 <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
               </div>
 
@@ -135,6 +153,11 @@ export function HomePage() {
                 <div className="panel-caption text-left">Текущие квесты</div>
                 <div className="panel-comment mb-6">
                   Список активных квестов и выполнение.
+                </div>
+                <div className="panel-guide mb-4">
+                  <p>1) Выполни квест и нажми «Завершить».</p>
+                  <p>2) Удаляй устаревшие квесты, чтобы не засорять список.</p>
+                  <p>3) Следи за наградой и сложностью перед стартом.</p>
                 </div>
                 <QuestList
                   quests={quests}
@@ -149,6 +172,11 @@ export function HomePage() {
                 <div className="panel-caption text-left">Достижения</div>
                 <div className="panel-comment mb-6 min-h-[48px]">
                   Ваши полученные достижения и текущий прогресс.
+                </div>
+                <div className="panel-guide mb-4">
+                  <p>1) Выполняй квесты — открываются новые уровни достижений.</p>
+                  <p>2) Смотри требования рядом с каждым значком.</p>
+                  <p>3) Планируй следующую цель по оставшимся квестам.</p>
                 </div>
                 <div className="panel-base panel-teal">
                   <div className="space-y-3">
@@ -183,6 +211,56 @@ export function HomePage() {
               </div>
 
             </div>
+          </div>
+
+          <div className="mt-12">
+            <div className="panel-base panel-sky w-full">
+              <div className="panel-caption text-left">Активности по фокусам</div>
+              <div className="panel-comment mb-6">
+                Разбивка последних завершенных квестов по выбранным направлениям.
+              </div>
+              <div className="panel-guide mb-6">
+                <p>1) Сверяй баланс активности между фокусами.</p>
+                <p>2) Добавляй квесты в слабые направления, чтобы выровнять прогресс.</p>
+                <p>3) Ориентируйся на свежие выполненные задания в каждом блоке.</p>
+              </div>
+              {focusColumns.length === 0 ? (
+                <div className="text-center text-slate-300/60 py-6">
+                  Пока нет завершенных квестов
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                  {focusColumns.map(([focus, items]) => (
+                    <div key={focus} className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <p className="text-slate-100">{focus}</p>
+                        <span className="text-xs text-slate-300/60">{items.length}</span>
+                      </div>
+                      <div className="space-y-2">
+                        {items.slice(0, 4).map((quest) => (
+                          <div
+                            key={quest.id}
+                            className="rounded-lg border border-slate-700/50 bg-slate-950/40 px-3 py-2"
+                          >
+                            <p className="text-sm text-slate-200">{quest.title}</p>
+                            <p className="text-xs text-slate-300/60">{quest.description}</p>
+                          </div>
+                        ))}
+                        {items.length > 4 && (
+                          <p className="text-xs text-slate-300/60">
+                            +{items.length - 4} ещё завершённых
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-10 text-center text-slate-200/80 font-indie text-2xl">
+            С каждым шагом твоя история становится сильнее — продолжай путь!
           </div>
         </div>
       </div>

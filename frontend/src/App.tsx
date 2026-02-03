@@ -1,8 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import type { ReactNode } from 'react';
 import { AuthProvider } from './contexts/AuthContext';
 import { CustomizationProvider } from './contexts/Customization';
 import { PrivateRoute } from './components/layout/PrivateRoute';
 import { Header } from './components/layout/Header';
+import { Sidebar } from './components/layout/Sidebar';
 import { LoginPage } from './components/pages/LoginPage';
 import { HomePage } from './components/pages/HomePage';
 import { SettingsPage } from './components/pages/SettingsPage';
@@ -23,6 +25,18 @@ function HomeRoute() {
   return <HomePage />;
 }
 
+function AppLayout({ children }: { children: ReactNode }) {
+  return (
+    <>
+      <Header />
+      <Sidebar />
+      <div className="pl-20">
+        {children}
+      </div>
+    </>
+  );
+}
+
 function App() {
   return (
     <AuthProvider>
@@ -34,10 +48,9 @@ function App() {
               path="/"
               element={
                 <PrivateRoute>
-                  <>
-                    <Header />
+                  <AppLayout>
                     <HomeRoute />
-                  </>
+                  </AppLayout>
                 </PrivateRoute>
               }
             />
@@ -45,10 +58,9 @@ function App() {
               path="/welcome"
               element={
                 <PrivateRoute>
-                  <>
-                    <Header />
+                  <AppLayout>
                     <WelcomePage />
-                  </>
+                  </AppLayout>
                 </PrivateRoute>
               }
             />
@@ -57,10 +69,9 @@ function App() {
               path="/quests"
               element={
                 <PrivateRoute>
-                  <>
-                    <Header />
+                  <AppLayout>
                     <FocusTasksPage />
-                  </>
+                  </AppLayout>
                 </PrivateRoute>
               }
             />
@@ -68,10 +79,9 @@ function App() {
               path="/settings"
               element={
                 <PrivateRoute>
-                  <>
-                    <Header />
+                  <AppLayout>
                     <SettingsPage />
-                  </>
+                  </AppLayout>
                 </PrivateRoute>
               }
             />
@@ -79,10 +89,9 @@ function App() {
               path="/clans"
               element={
                 <PrivateRoute>
-                  <>
-                    <Header />
+                  <AppLayout>
                     <ClansPage />
-                  </>
+                  </AppLayout>
                 </PrivateRoute>
               }
             />
@@ -90,10 +99,9 @@ function App() {
               path="/leaders"
               element={
                 <PrivateRoute>
-                  <>
-                    <Header />
+                  <AppLayout>
                     <LeadersPage />
-                  </>
+                  </AppLayout>
                 </PrivateRoute>
               }
             />
@@ -101,10 +109,9 @@ function App() {
               path="/progress"
               element={
                 <PrivateRoute>
-                  <>
-                    <Header />
+                  <AppLayout>
                     <ProgressPage />
-                  </>
+                  </AppLayout>
                 </PrivateRoute>
               }
             />
@@ -112,10 +119,9 @@ function App() {
               path="/achievements"
               element={
                 <PrivateRoute>
-                  <>
-                    <Header />
+                  <AppLayout>
                     <AchievementsPage />
-                  </>
+                  </AppLayout>
                 </PrivateRoute>
               }
             />
@@ -123,10 +129,9 @@ function App() {
               path="/profile"
               element={
                 <PrivateRoute>
-                  <>
-                    <Header />
+                  <AppLayout>
                     <UserCustomizationPage />
-                  </>
+                  </AppLayout>
                 </PrivateRoute>
               }
             />

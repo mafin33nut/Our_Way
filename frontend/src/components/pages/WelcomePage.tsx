@@ -37,6 +37,10 @@ export function WelcomePage() {
             <p className="panel-comment mb-6">
               Это краткий гид по приложению, чтобы быстрее начать приключение.
             </p>
+            <div className="panel-guide mb-6">
+              <p>1) Пройдите шаги ниже, чтобы начать с правильных настроек.</p>
+              <p>2) После этого переходите к квестам и создавайте первые задачи.</p>
+            </div>
 
             <div className="space-y-4">
               <div className="flex items-start gap-3">

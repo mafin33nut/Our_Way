@@ -146,6 +146,11 @@ export function ClansPage() {
                 <Crown className="w-5 h-5 text-teal-300" />
                 <h2 className="text-slate-100">Ваши кланы</h2>
               </div>
+              <div className="panel-guide mb-4">
+                <p>1) Выберите клан, чтобы увидеть участников и статистику.</p>
+                <p>2) Следите за XP — он влияет на позицию в рейтинге.</p>
+                <p>3) Создавайте клановые квесты ниже, чтобы ускорить рост.</p>
+              </div>
               {clans.length > 1 && (
                 <div className="flex flex-wrap gap-2 mb-4">
                   {clans.map((item) => (
@@ -246,6 +251,11 @@ export function ClansPage() {
             <div className="flex items-center gap-2 mb-4">
               <Crown className="w-5 h-5 text-teal-300" />
               <h2 className="text-slate-100">Создать клановый квест</h2>
+            </div>
+            <div className="panel-guide mb-4">
+              <p>1) Опишите цель так, чтобы её понял весь клан.</p>
+              <p>2) Укажите лимит участников — квест закроется по достижению лимита.</p>
+              <p>3) После создания пригласите участников в ленте клана.</p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-4">
               <div className="space-y-3">

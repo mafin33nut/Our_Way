@@ -88,6 +88,11 @@ export function UserCustomizationPage() {
               </div>
             </div>
 
+            <div className="panel-guide mb-6">
+              <p>1) Загрузите фото и добавьте короткое описание.</p>
+              <p>2) Проверьте данные и нажмите «Сохранить».</p>
+              <p>3) Если нужно, удалите аватар и загрузите новый.</p>
+            </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-6 flex flex-col items-center text-center gap-3">
                 {avatarPreview ? (

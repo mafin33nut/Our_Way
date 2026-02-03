@@ -40,12 +40,17 @@ export function LeadersPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
       <div className="min-h-screen flex items-start justify-center px-8 py-12">
-        <div className="w-full max-w-[1400px]">
+        <div className="w-full max-w-none">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
             <div className="panel-base panel-orange p-6 flex flex-col">
               <div className="flex items-center gap-2 mb-3">
                 <Trophy className="w-5 h-5 text-teal-300" />
                 <h2 className="text-slate-100">Лидеры</h2>
+              </div>
+              <div className="panel-guide mb-4">
+                <p>1) Следи за топом игроков по уровню.</p>
+                <p>2) Сравни свой прогресс с ближайшими позициями.</p>
+                <p>3) Планируй цели, чтобы подняться выше.</p>
               </div>
               <div className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4 flex-1">
                 <div className="rounded-lg border border-slate-600/30 bg-slate-950/40 overflow-hidden">
@@ -96,6 +101,11 @@ export function LeadersPage() {
               <div className="flex items-center gap-2 mb-3">
                 <Users className="w-5 h-5 text-teal-300" />
                 <h2 className="text-slate-100">Лидеры кланов</h2>
+              </div>
+              <div className="panel-guide mb-4">
+                <p>1) Оцени вклад каждого клана по общему XP.</p>
+                <p>2) Смотри на лидера — он показывает темп команды.</p>
+                <p>3) Сравни рост клана с соседними позициями.</p>
               </div>
               <div className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4 flex-1">
                 <div className="rounded-lg border border-slate-600/30 bg-slate-950/40 overflow-hidden">

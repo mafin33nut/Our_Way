@@ -195,6 +195,11 @@ export function AchievementsPage() {
             <p className="panel-comment">
               Достижения открываются по мере выполнения квестов.
             </p>
+            <div className="panel-guide mt-4">
+              <p>1) Выполняй квесты и повышай уровень, чтобы открыть новые блоки.</p>
+              <p>2) Сверяй требования в каждом пункте списка.</p>
+              <p>3) Планируй, какие группы достижений закрыть следующими.</p>
+            </div>
             <div className="mt-4 flex items-center gap-3 text-sm text-slate-300/70">
               <CheckCircle2 className="w-4 h-4 text-green-400" />
               Получено: {unlockedCount} / {allNodes.length}
