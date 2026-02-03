@@ -127,21 +127,22 @@ export function ClansPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
-      <div className="max-w-[1920px] mx-auto px-6 py-8 space-y-12">
-        <div className="panel-caption text-left">Кланы</div>
-        {loadError && (
-          <div className="panel-base panel-orange p-6">
-            <p className="text-slate-200">{loadError}</p>
-          </div>
-        )}
+      <div className="min-h-screen flex items-center justify-center px-8 py-12">
+        <div className="w-full max-w-[1400px] flex flex-col gap-12">
+          <div className="panel-caption text-left">Кланы</div>
+          {loadError && (
+            <div className="panel-base panel-orange p-6">
+              <p className="text-slate-200">{loadError}</p>
+            </div>
+          )}
 
-        {clans.length === 0 ? (
-          <div className="panel-base panel-purple p-6">
-            <ClanCreationPanel onClanCreated={handleClanCreated} />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-12">
-          <div className="panel-base panel-purple p-6">
+          {clans.length === 0 ? (
+            <div className="panel-base panel-purple p-6">
+              <ClanCreationPanel onClanCreated={handleClanCreated} />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
+            <div className="panel-base panel-purple p-6">
             <div className="flex items-center gap-2 mb-3">
               <Crown className="w-5 h-5 text-teal-300" />
               <h2 className="text-slate-100">Клан</h2>
@@ -189,7 +190,7 @@ export function ClansPage() {
             )}
           </div>
 
-          <div className="panel-base panel-teal p-6">
+            <div className="panel-base panel-teal p-6">
             <div className="flex items-center gap-2 mb-3">
               <Crown className="w-5 h-5 text-teal-300" />
               <h2 className="text-slate-100">Информация о вашем клане</h2>
@@ -257,9 +258,9 @@ export function ClansPage() {
                 Вы еще не состоите в клане
               </div>
             )}
+            </div>
           </div>
-        </div>
-        )}
+          )}
 
         {selectedClan && (
           <div className="panel-base panel-orange p-6">
@@ -323,6 +324,7 @@ export function ClansPage() {
             />
           </div>
         )}
+        </div>
       </div>
     </div>
   );

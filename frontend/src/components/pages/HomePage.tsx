@@ -119,9 +119,9 @@ export function HomePage() {
           <div className={`absolute inset-0 ${bgImageLoaded ? 'bg-slate-900/30' : 'bg-slate-900/70'} backdrop-blur-sm`} />
         </div>
       )}
-      <div className="relative z-10">
-        <div className="max-w-[1680px] mx-auto px-6 py-12 pb-24">
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] gap-10">
+      <div className="relative z-10 min-h-screen flex items-center justify-center px-8 py-12">
+        <div className="w-full max-w-[1500px]">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] gap-12">
             <div className="space-y-10">
               <div className="w-full">
                 <div className="panel-caption text-left">Профиль героя</div>
@@ -184,10 +184,7 @@ export function HomePage() {
 
             </div>
           </div>
-
         </div>
-
-        <div className="mt-28 pb-16 text-center"></div>
       </div>
     </div>
   );

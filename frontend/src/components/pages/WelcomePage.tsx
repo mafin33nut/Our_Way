@@ -27,8 +27,9 @@ export function WelcomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
-      <div className="max-w-[900px] mx-auto px-6 py-12">
-        <div className="panel-base panel-orange p-8">
+      <div className="min-h-screen flex items-center justify-center px-8 py-12">
+        <div className="w-full max-w-[1000px]">
+          <div className="panel-base panel-orange p-8">
           <div className="flex items-center gap-2 mb-4">
             <Sparkles className="w-5 h-5 text-teal-300" />
             <h2 className="text-slate-100">Добро пожаловать, {user.username}!</h2>
@@ -63,11 +64,12 @@ export function WelcomePage() {
               Перейти к приложению
             </Button>
           </div>
+          </div>
+          <FooterArt
+            className="mt-24 flex justify-end pr-6"
+            imageClassName="w-full max-w-[420px] rounded-xl shadow-lg border border-white/10"
+          />
         </div>
-        <FooterArt
-          className="mt-24 flex justify-end pr-6"
-          imageClassName="w-full max-w-[420px] rounded-xl shadow-lg border border-white/10"
-        />
       </div>
     </div>
   );

@@ -128,57 +128,58 @@ export function FocusTasksPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
-      <div className="max-w-[1400px] mx-auto px-6 py-10">
-        <div className="flex flex-col items-center space-y-10">
-          <div className="panel-base panel-purple w-full max-w-[1100px]">
-          <div className="flex items-center gap-2 mb-4">
-            <Target className="w-5 h-5 text-teal-300" />
-            <h2 className="text-slate-100">Мои фокусы</h2>
-          </div>
-          <div className="flex gap-3 flex-wrap mb-4">
-            {focuses.map((focus) => (
-              <div
-                key={focus.id}
-                className={`px-3 py-2 rounded-lg border flex items-center gap-2 ${
-                  selectedFocusId === focus.id
-                    ? 'border-amber-400 bg-amber-500/10 text-amber-100'
-                    : 'border-purple-700/40 text-purple-200/70'
-                }`}
-              >
+      <div className="min-h-screen flex items-center justify-center px-8 py-12">
+        <div className="w-full max-w-[1400px]">
+          <div className="flex flex-col items-center gap-10">
+            <div className="panel-base panel-purple w-full max-w-[1200px]">
+              <div className="flex items-center gap-2 mb-4">
+                <Target className="w-5 h-5 text-teal-300" />
+                <h2 className="text-slate-100">Мои фокусы</h2>
+              </div>
+              <div className="flex gap-3 flex-wrap mb-4">
+                {focuses.map((focus) => (
+                  <div
+                    key={focus.id}
+                    className={`px-3 py-2 rounded-lg border flex items-center gap-2 ${
+                      selectedFocusId === focus.id
+                        ? 'border-amber-400 bg-amber-500/10 text-amber-100'
+                        : 'border-purple-700/40 text-purple-200/70'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="focus"
+                      className="mr-1"
+                      checked={selectedFocusId === focus.id}
+                      onChange={() => setSelectedFocusId(focus.id)}
+                    />
+                    <span>{focus.name}</span>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="ghost"
+                      className="ml-1 bg-rose-500/70 text-white hover:bg-rose-500/90 border border-rose-400/60"
+                      onClick={() => handleDeleteFocus(focus.id)}
+                    >
+                      Удалить
+                    </Button>
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-3">
                 <input
-                  type="radio"
-                  name="focus"
-                  className="mr-1"
-                  checked={selectedFocusId === focus.id}
-                  onChange={() => setSelectedFocusId(focus.id)}
+                  value={newFocusName}
+                  onChange={(e) => setNewFocusName(e.target.value)}
+                  placeholder="Новый фокус"
+                  className="flex-1 rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
                 />
-                <span>{focus.name}</span>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="ghost"
-                  className="ml-1 bg-rose-500/70 text-white hover:bg-rose-500/90 border border-rose-400/60"
-                  onClick={() => handleDeleteFocus(focus.id)}
-                >
-                  Удалить
+                <Button onClick={handleAddFocus} size="sm">
+                  Добавить
                 </Button>
               </div>
-            ))}
-          </div>
-          <div className="flex gap-3">
-            <input
-              value={newFocusName}
-              onChange={(e) => setNewFocusName(e.target.value)}
-              placeholder="Новый фокус"
-              className="flex-1 rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
-            />
-            <Button onClick={handleAddFocus} size="sm">
-              Добавить
-            </Button>
-          </div>
-        </div>
+            </div>
 
-          <div className="panel-base panel-orange w-full max-w-[1100px]">
+            <div className="panel-base panel-orange w-full max-w-[1200px]">
             <div className="flex items-center gap-2 mb-4">
               <ClipboardList className="w-5 h-5 text-teal-300" />
               <h2 className="text-slate-100">Создать квест</h2>
@@ -281,7 +282,7 @@ export function FocusTasksPage() {
             {error && <p className="text-sm text-rose-200 mt-3">{error}</p>}
           </div>
 
-          <div className="panel-base panel-sky w-full max-w-[1100px]">
+          <div className="panel-base panel-sky w-full max-w-[1200px]">
             <div className="panel-caption text-center">Мои квесты по фокусам</div>
             {loading ? (
               <p className="text-center text-purple-200/60">Загрузка...</p>
@@ -304,6 +305,7 @@ export function FocusTasksPage() {
                 })}
               </div>
             )}
+          </div>
           </div>
         </div>
       </div>
