@@ -61,11 +61,7 @@ export const authAPI = {
   },
 
   updateProfile: async (formData: FormData): Promise<User> => {
-    const response = await apiClient.patch<User>('/api/auth/user/', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const response = await apiClient.patch<User>('/api/auth/user/', formData);
     return response.data;
   },
 };

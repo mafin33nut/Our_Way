@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Jersey+10&family=Playwrite+NZ+Basic+Guides&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Jersey+10&family=Playwrite+NZ+Basic+Guides&family=Lobster+Two:wght@400;700&display=swap');
 @import 'tailwindcss';
 @reference 'tailwindcss';
 
@@ -47,7 +47,7 @@ h3 {
 @layer components {
   .panel-caption {
     @apply text-slate-100 text-2xl tracking-wide mb-10;
-    font-family: "Playwrite NZ Basic Guides", "Segoe UI", cursive;
+    font-family: "Lobster Two", "Playwrite NZ Basic Guides", "Segoe UI", cursive;
     text-shadow: 0 2px 6px rgba(15, 23, 42, 0.7);
   }
 

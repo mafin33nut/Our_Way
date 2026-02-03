@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Users, X } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useCustomization } from '../../hooks/useCustomization';
@@ -38,65 +39,75 @@ export function FriendsPanel() {
 
   return (
     <>
-      <Button variant="ghost" size="sm" onClick={() => setIsOpen(true)} aria-label="Открыть друзей">
-        <Users className="w-4 h-4" />
+      <Button
+        variant="ghost"
+        size="md"
+        onClick={() => setIsOpen(true)}
+        aria-label="Открыть друзей"
+        className="flex items-center gap-2"
+      >
+        <Users className="w-5 h-5" />
+        Друзья
       </Button>
 
-      {isOpen && (
-        <div className="fixed inset-0 z-50">
-          <button
-            type="button"
-            className="absolute inset-0 bg-black/30 backdrop-blur-[1px]"
-            onClick={() => setIsOpen(false)}
-            aria-label="Закрыть окно друзей"
-          />
-          <div
-            className={`absolute right-0 top-0 h-full w-full max-w-full sm:max-w-[50vw] ${
-              isLight
-                ? 'bg-white border-l border-slate-200'
-                : 'bg-gradient-to-br from-slate-900/95 to-slate-950/95 border-l border-slate-700/60'
-            }`}
-          >
+      {isOpen &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <div className="fixed inset-0 z-[80]">
+            <button
+              type="button"
+              className="absolute inset-0 bg-black/30 backdrop-blur-[1px]"
+              onClick={() => setIsOpen(false)}
+              aria-label="Закрыть окно друзей"
+            />
             <div
-              className={`flex items-center justify-between px-6 py-4 border-b ${
-                isLight ? 'border-slate-200' : 'border-slate-700/60'
+              className={`absolute right-0 top-0 h-full w-full max-w-full sm:max-w-[50vw] ${
+                isLight
+                  ? 'bg-white border-l border-slate-200'
+                  : 'bg-gradient-to-br from-slate-900/95 to-slate-950/95 border-l border-slate-700/60'
               }`}
             >
-              <div className="flex items-center gap-2">
-                <Users className={`${isLight ? 'text-slate-800' : 'text-teal-200'}`} />
-                <h2 className={`${isLight ? 'text-slate-900' : 'text-slate-100'}`}>Друзья</h2>
-              </div>
-              <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)}>
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
-
-            <div className="h-[calc(100%-72px)] overflow-y-auto p-6 space-y-6">
-              {!user && (
-                <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
-                  Войдите, чтобы управлять друзьями.
+              <div
+                className={`flex items-center justify-between px-6 py-4 border-b ${
+                  isLight ? 'border-slate-200' : 'border-slate-700/60'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <Users className={`${isLight ? 'text-slate-800' : 'text-teal-200'}`} />
+                  <h2 className={`${isLight ? 'text-slate-900' : 'text-slate-100'}`}>Друзья</h2>
                 </div>
-              )}
-              {user && (
-                <>
-                  <FriendSearchPanel
-                    onFriendAdded={loadFriends}
-                    friendIds={friends.map((friend) => friend.id)}
-                    currentUserId={user.id}
-                  />
-                  {loading ? (
-                    <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
-                      Загрузка списка друзей...
-                    </div>
-                  ) : (
-                    <AllFriendsPanel friends={friends} />
-                  )}
-                </>
-              )}
+                <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)}>
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+
+              <div className="h-[calc(100%-72px)] overflow-y-auto p-6 space-y-6">
+                {!user && (
+                  <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
+                    Войдите, чтобы управлять друзьями.
+                  </div>
+                )}
+                {user && (
+                  <>
+                    <FriendSearchPanel
+                      onFriendAdded={loadFriends}
+                      friendIds={friends.map((friend) => friend.id)}
+                      currentUserId={user.id}
+                    />
+                    {loading ? (
+                      <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
+                        Загрузка списка друзей...
+                      </div>
+                    ) : (
+                      <AllFriendsPanel friends={friends} />
+                    )}
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </>
   );
 }

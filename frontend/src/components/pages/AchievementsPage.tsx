@@ -185,8 +185,8 @@ export function AchievementsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
-      <div className="max-w-[1200px] mx-auto px-6 py-10">
-        <div className="panel-base panel-teal p-6">
+      <div className="max-w-[1200px] mx-auto px-6 py-10 flex flex-col items-center">
+        <div className="panel-base panel-teal p-6 w-full max-w-[900px]">
           <div className="flex items-center gap-2 mb-3">
             <Award className="w-5 h-5 text-teal-300" />
             <h2 className="text-slate-100">Достижения</h2>
@@ -200,7 +200,7 @@ export function AchievementsPage() {
           </div>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-[1100px]">
           {achievementGroups.map((group) => (
             <div key={group.id} className="panel-base panel-purple p-6">
               <div className="mb-4">

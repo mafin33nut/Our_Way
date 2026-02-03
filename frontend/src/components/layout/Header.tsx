@@ -79,13 +79,14 @@ export function Header() {
                   </div>
                 </div>
                 <Link to="/settings">
-                  <Button variant="ghost" size="sm">
-                    <Settings className="w-4 h-4" />
+                  <Button variant="ghost" size="md" className="flex items-center gap-2">
+                    <Settings className="w-5 h-5" />
+                    Настройки
                   </Button>
                 </Link>
                 <FriendsPanel />
-                <Button variant="ghost" size="sm" onClick={logout}>
-                  <LogOut className="w-4 h-4 mr-2" />
+                <Button variant="ghost" size="md" onClick={logout} className="flex items-center gap-2">
+                  <LogOut className="w-5 h-5" />
                   Выйти
                 </Button>
               </div>
