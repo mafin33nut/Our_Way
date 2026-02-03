@@ -11,7 +11,7 @@ export function Header() {
   const isLight = settings.theme === 'light';
   return (
     <div
-      className={`border-b sticky top-0 z-50 backdrop-blur-sm pl-20 ${
+      className={`border-b sticky top-0 z-50 backdrop-blur-sm pl-24 ${
         isLight
           ? 'bg-white/90 border-slate-200 shadow-sm'
           : 'bg-slate-900/70 border-slate-700/50'

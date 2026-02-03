@@ -30,7 +30,7 @@ function AppLayout({ children }: { children: ReactNode }) {
     <>
       <Header />
       <Sidebar />
-      <div className="pl-20">
+      <div className="pl-24">
         {children}
       </div>
     </>

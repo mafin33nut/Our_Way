@@ -57,7 +57,7 @@ h3 {
   }
 
   .panel-base {
-    @apply rounded-2xl border-2 border-slate-500/70 ring-1 ring-slate-400/20 bg-gradient-to-b from-slate-800/80 via-slate-800/70 to-slate-900/80 shadow-xl backdrop-blur-sm text-slate-100;
+    @apply rounded-2xl border-2 border-slate-400/70 ring-1 ring-white/10 bg-gradient-to-b from-slate-800/80 via-slate-800/70 to-slate-900/80 shadow-[0_12px_30px_-18px_rgba(15,23,42,0.9)] backdrop-blur-sm text-slate-100;
     position: relative;
     padding: 3rem !important;
     font-family: "Hanky Bold", "Segoe UI", sans-serif;
