@@ -202,44 +202,45 @@ export function AchievementsPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[1200px]">
-          {achievementGroups.map((group) => (
-            <div key={group.id} className="panel-base panel-purple p-6">
-              <div className="mb-4">
-                <h3 className="text-slate-100">{group.title}</h3>
-                {group.subtitle && (
-                  <p className="text-xs text-slate-300/60">{group.subtitle}</p>
-                )}
-              </div>
-              <div className="space-y-4">
-                {group.nodes.map((node) => {
-                  const unlocked = isUnlocked(node, stats);
-                  return (
-                    <div key={node.id} className="flex items-start gap-3">
-                      <div className="mt-1">
-                        {unlocked ? (
-                          <CheckCircle2 className="w-4 h-4 text-green-400" />
-                        ) : (
-                          <Lock className="w-4 h-4 text-slate-500" />
-                        )}
-                      </div>
-                      <div className="flex-1 rounded-lg border border-slate-600/40 bg-slate-900/50 p-3">
-                        <div className="flex items-center justify-between">
-                          <p className="text-slate-200 text-sm">{node.title}</p>
-                          <span className="text-xs text-slate-300/60">
-                            {requirementText(node.requirement)}
-                          </span>
+            {achievementGroups.map((group) => (
+              <div key={group.id} className="panel-base panel-purple p-6">
+                <div className="mb-4">
+                  <h3 className="text-slate-100">{group.title}</h3>
+                  {group.subtitle && (
+                    <p className="text-xs text-slate-300/60">{group.subtitle}</p>
+                  )}
+                </div>
+                <div className="space-y-4">
+                  {group.nodes.map((node) => {
+                    const unlocked = isUnlocked(node, stats);
+                    return (
+                      <div key={node.id} className="flex items-start gap-3">
+                        <div className="mt-1">
+                          {unlocked ? (
+                            <CheckCircle2 className="w-4 h-4 text-green-400" />
+                          ) : (
+                            <Lock className="w-4 h-4 text-slate-500" />
+                          )}
                         </div>
-                        <p className="text-xs text-slate-300/60 mt-1">
-                          {node.description}
-                        </p>
+                        <div className="flex-1 rounded-lg border border-slate-600/40 bg-slate-900/50 p-3">
+                          <div className="flex items-center justify-between">
+                            <p className="text-slate-200 text-sm">{node.title}</p>
+                            <span className="text-xs text-slate-300/60">
+                              {requirementText(node.requirement)}
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-300/60 mt-1">
+                            {node.description}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
           </div>
+        </div>
       </div>
     </div>
   );
