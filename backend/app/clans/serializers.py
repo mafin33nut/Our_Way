@@ -75,25 +75,8 @@ class ClanQuestSerializer(serializers.ModelSerializer):
         read_only_fields = ['xp_reward', 'required_progress', 'total_progress', 'completed', 'expires_at']
     
     def get_participants(self, obj):
-        from app.clans.models import ClanMember
-        members = ClanMember.objects.filter(clan=obj.clan).select_related('user')
-        existing = {
-            p.user_id: p
-            for p in ClanQuestParticipant.objects.filter(quest=obj).select_related('user')
-        }
-        participants = []
-        for member in members:
-            participant = existing.get(member.user_id)
-            if participant:
-                participants.append(ClanQuestParticipantSerializer(participant).data)
-            else:
-                participants.append({
-                    'id': member.user.id,
-                    'username': member.user.username,
-                    'level': getattr(member.user, 'level', 1),
-                    'contribution': 0,
-                })
-        return participants
+        participants = ClanQuestParticipant.objects.filter(quest=obj).select_related('user')
+        return ClanQuestParticipantSerializer(participants, many=True).data
 
     def get_participant_count(self, obj):
-        return ClanQuestParticipant.objects.filter(quest=obj, contribution__gt=0).count()
+        return ClanQuestParticipant.objects.filter(quest=obj).count()

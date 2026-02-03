@@ -43,7 +43,7 @@ export const socialAPI = {
     }
   },
   getMyClans: async (): Promise<Clan[]> => {
-    const response = await apiClient.get<Clan[] | { results: Clan[] }>('/api/clans/clans/my/');
+    const response = await apiClient.get<Clan[] | { results: Clan[] }>('/api/clans/my/');
     return unwrapListResponse(response.data);
   },
 

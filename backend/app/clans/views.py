@@ -111,7 +111,7 @@ class ClanQuestViewSet(viewsets.ModelViewSet):
             return Response({'detail': 'Вы не состоите в выбранном клане.'}, status=status.HTTP_403_FORBIDDEN)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        max_participants = serializer.validated_data.get('max_participants') or 1
+        max_participants = max(serializer.validated_data.get('max_participants') or 1, 1)
         serializer.save(
             xp_reward=0,
             required_progress=max_participants,
@@ -120,35 +120,37 @@ class ClanQuestViewSet(viewsets.ModelViewSet):
         )
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    @staticmethod
+    def _calculate_xp_reward(participant_count: int) -> int:
+        if participant_count <= 0:
+            return 0
+        if participant_count == 1:
+            return 30
+        if participant_count == 2:
+            return 70
+        if participant_count == 3:
+            return 110
+        if participant_count == 4:
+            return 150
+        return 150 + (participant_count - 4) * 60
+
     @action(detail=True, methods=['post'])
     def contribute(self, request, pk=None):
         quest = self.get_object()
+        if quest.completed:
+            return Response(ClanQuestSerializer(quest).data)
         participant, created = ClanQuestParticipant.objects.get_or_create(
             quest=quest,
             user=request.user,
-            defaults={'contribution': 0},
+            defaults={'contribution': 1},
         )
-        if not quest.completed:
-            participant.contribution = 1
+        if created:
             participant.save(update_fields=['contribution', 'contributed_at'])
-            participant_count = ClanQuestParticipant.objects.filter(
-                quest=quest, contribution__gt=0
-            ).count()
-            quest.total_progress = participant_count
-            quest.required_progress = max(quest.max_participants or 1, 1)
-            if participant_count >= quest.required_progress:
-                quest.completed = True
-                if participant_count <= 0:
-                    quest.xp_reward = 0
-                elif participant_count == 1:
-                    quest.xp_reward = 30
-                elif participant_count == 2:
-                    quest.xp_reward = 70
-                elif participant_count == 3:
-                    quest.xp_reward = 110
-                elif participant_count == 4:
-                    quest.xp_reward = 150
-                else:
-                    quest.xp_reward = 150 + (participant_count - 4) * 60
-            quest.save(update_fields=['total_progress', 'completed', 'xp_reward', 'required_progress'])
+        participant_count = ClanQuestParticipant.objects.filter(quest=quest).count()
+        quest.total_progress = participant_count
+        quest.required_progress = max(quest.max_participants or 1, 1)
+        if participant_count >= quest.required_progress:
+            quest.completed = True
+            quest.xp_reward = self._calculate_xp_reward(participant_count)
+        quest.save(update_fields=['total_progress', 'completed', 'xp_reward', 'required_progress'])
         return Response(ClanQuestSerializer(quest).data)

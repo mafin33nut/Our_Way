@@ -8,4 +8,5 @@ router.register(r'quests', ClanQuestViewSet, basename='clan-quest')
 urlpatterns = [ 
     path('', include(router.urls)),
     path('clan/', CurrentClanView.as_view(), name='current-clan'),
+    path('my/', ClanViewSet.as_view({'get': 'my'}), name='my-clans'),
 ]

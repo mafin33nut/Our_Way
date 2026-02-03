@@ -1,5 +1,5 @@
 import { ClanQuest } from '../../types';
-import { Users, Crown, Clock, TrendingUp } from 'lucide-react';
+import { Users, Crown, Clock } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useState } from 'react';
 interface ClanQuestCardProps {
@@ -13,12 +13,12 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
   const [isContributing, setIsContributing] = useState(false);
   const participantCount =
     quest.participant_count ??
-    safeParticipants.filter((participant) => participant.contribution > 0).length;
-  const maxParticipants = quest.max_participants ?? quest.required_progress;
-  const progressPercentage = (quest.total_progress / quest.required_progress) * 100;
+    safeParticipants.length;
+  const maxParticipants = quest.max_participants ?? quest.required_progress ?? 1;
+  const progressPercentage = maxParticipants > 0 ? (participantCount / maxParticipants) * 100 : 0;
   const isEpic = quest.difficulty === 'epic';
-  const userParticipation = safeParticipants.find(p => p.username === currentUsername);
-  const hasJoined = (userParticipation?.contribution || 0) > 0;
+  const hasJoined = safeParticipants.some((participant) => participant.username === currentUsername);
+  const isFull = participantCount >= maxParticipants;
   const handleContribute = async () => {
     setIsContributing(true);
     await onContribute(quest.id);
@@ -95,10 +95,6 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
                 <p className="text-slate-200 text-sm">{participant.username}</p>
                 <p className="text-slate-300/60 text-xs">Уровень {participant.level}</p>
               </div>
-              <div className="text-right">
-                <div className="text-teal-200 text-sm">+{participant.contribution}</div>
-                <TrendingUp className="w-3 h-3 text-teal-200/70 ml-auto" />
-              </div>
             </div>
           ))}
         </div>
@@ -120,10 +116,10 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
         <div className="flex items-center gap-3">
           <Button
             onClick={handleContribute}
-            disabled={isContributing || hasJoined}
+            disabled={isContributing || hasJoined || isFull}
             className="flex-1"
           >
-            {isContributing ? 'Отправка...' : hasJoined ? 'Вы участвуете' : 'Участвовать'}
+            {isContributing ? 'Отправка...' : hasJoined ? 'Вы участвуете' : isFull ? 'Набор завершён' : 'Участвовать'}
           </Button>
         </div>
       )}
@@ -132,13 +128,6 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
           Удалить
         </Button>
       </div>
-      {userParticipation && (
-        <div className="mt-3 p-2 bg-slate-900/40 rounded border border-slate-600/40">
-          <p className="text-slate-200 text-sm">
-            Ваш вклад: <span className="text-teal-200">+{userParticipation.contribution}</span>
-          </p>
-        </div>
-      )}
     </div>
   );
 }
