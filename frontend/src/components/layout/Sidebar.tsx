@@ -16,7 +16,7 @@ export function Sidebar() {
   const isLight = settings.theme === 'light';
   return (
     <aside
-      className={`fixed left-0 top-0 h-screen w-20 border-r backdrop-blur-sm z-40 ${
+      className={`fixed left-0 top-0 h-screen w-20 border-r backdrop-blur-sm z-60 ${
         isLight ? 'bg-white/90 border-slate-200' : 'bg-slate-900/80 border-slate-700/60'
       }`}
     >
