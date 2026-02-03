@@ -63,7 +63,7 @@ export function SettingsPage() {
           <div className={`absolute inset-0 ${bgImageLoaded ? 'bg-slate-900/30' : 'bg-slate-900/70'} backdrop-blur-sm`} />
         </div>
       )}
-      <div className="relative z-10 min-h-screen flex items-center justify-center px-8 py-12">
+      <div className="relative z-10 min-h-screen flex items-start justify-center px-8 py-12">
         <div className="w-full max-w-4xl">
           <div className="panel-base panel-purple">
             <div className="p-6 border-b border-purple-600/30">

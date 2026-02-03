@@ -22,11 +22,11 @@ export function Button({
     ghost:
       'text-slate-100 hover:bg-slate-700/60 border border-slate-600/60',
     orange:
-      'bg-teal-400/80 text-slate-900 hover:bg-teal-400 border border-teal-300/60 shadow-sm',
+      'bg-amber-400/80 text-slate-900 hover:bg-amber-400 border border-amber-300/60 shadow-sm',
     darkOrange:
-      'bg-teal-300/70 text-slate-900 hover:bg-teal-300 border border-teal-300/60 shadow-sm',
+      'bg-amber-300/70 text-slate-900 hover:bg-amber-300 border border-amber-300/60 shadow-sm',
     softAmber:
-      'bg-teal-300/60 text-slate-900 hover:bg-teal-300 border border-teal-300/50 shadow-sm',
+      'bg-amber-300/60 text-slate-900 hover:bg-amber-300 border border-amber-300/50 shadow-sm',
   };
   const sizeStyles = {
     sm: 'px-3.5 py-2 text-sm',

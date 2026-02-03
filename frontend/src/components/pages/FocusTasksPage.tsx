@@ -161,7 +161,7 @@ export function FocusTasksPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
-      <div className="min-h-screen flex items-center justify-center px-8 py-12">
+      <div className="min-h-screen flex items-start justify-center px-8 py-12">
         <div className="w-full max-w-[1400px]">
           <div className="flex flex-col items-center gap-10">
             <div className="panel-base panel-purple w-full max-w-[1200px]">
@@ -218,22 +218,30 @@ export function FocusTasksPage() {
                 <h2 className="text-slate-100">Создать квест</h2>
               </div>
               <div className="flex flex-wrap gap-3 mb-4">
-                <label className="text-purple-200/80 text-sm flex items-center gap-2">
-                  <input
-                    type="radio"
-                    checked={questScope === 'personal'}
-                    onChange={() => setQuestScope('personal')}
-                  />
-                  Личный квест
-                </label>
-                <label className="text-purple-200/80 text-sm flex items-center gap-2">
-                  <input
-                    type="radio"
-                    checked={questScope === 'clan'}
-                    onChange={() => setQuestScope('clan')}
-                  />
-                  Клановый квест
-                </label>
+                <div className="inline-flex rounded-lg border border-slate-600/40 bg-slate-950/40 p-1">
+                  <button
+                    type="button"
+                    onClick={() => setQuestScope('personal')}
+                    className={`px-4 py-2 text-sm rounded-md transition-colors ${
+                      questScope === 'personal'
+                        ? 'bg-teal-400/20 text-teal-100'
+                        : 'text-slate-300/70 hover:text-slate-100'
+                    }`}
+                  >
+                    Личный квест
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setQuestScope('clan')}
+                    className={`px-4 py-2 text-sm rounded-md transition-colors ${
+                      questScope === 'clan'
+                        ? 'bg-amber-400/20 text-amber-100'
+                        : 'text-slate-300/70 hover:text-slate-100'
+                    }`}
+                  >
+                    Клановый квест
+                  </button>
+                </div>
               </div>
               <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-6">
                 <div className="space-y-4">
@@ -351,7 +359,7 @@ export function FocusTasksPage() {
                           variant="ghost"
                           onClick={() => setSteps((prev) => prev.filter((_, i) => i !== idx))}
                         >
-                          удалить
+                          Удалить
                         </Button>
                       </div>
                     ))}

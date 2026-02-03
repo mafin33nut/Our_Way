@@ -39,7 +39,7 @@ export function LeadersPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
-      <div className="min-h-screen flex items-center justify-center px-8 py-12">
+      <div className="min-h-screen flex items-start justify-center px-8 py-12">
         <div className="w-full max-w-[1400px]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
             <div className="panel-base panel-orange p-6 flex flex-col">
