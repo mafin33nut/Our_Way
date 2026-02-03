@@ -145,5 +145,6 @@ export function LeadersPage() {
         </div>
       </div>
     </div>
+    </div>
   );
 }
