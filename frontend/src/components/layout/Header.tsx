@@ -31,7 +31,11 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
           <button
             type="button"
             onClick={onToggleSidebar}
-            className="inline-flex items-center justify-center w-10 h-10 rounded-lg border transition-colors bg-white border-slate-200 hover:bg-slate-50 text-slate-900"
+            className={`inline-flex items-center justify-center w-10 h-10 rounded-lg border transition-colors text-white ${
+              isLight
+                ? 'bg-white/80 border-slate-200 hover:bg-white'
+                : 'bg-slate-800/70 border-slate-700/60 hover:bg-slate-800'
+            }`}
             aria-label={isSidebarOpen ? 'Скрыть боковую панель' : 'Показать боковую панель'}
           >
             {isSidebarOpen ? (
