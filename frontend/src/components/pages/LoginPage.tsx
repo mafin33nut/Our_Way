@@ -6,6 +6,7 @@ import { LogIn, Shield } from 'lucide-react';
 
 export function LoginPage() {
   const [isRegisterMode, setIsRegisterMode] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -102,17 +103,21 @@ export function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950 flex items-center justify-center px-8 py-12">
       <div className="w-full max-w-md">
-        <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-2 border-amber-600/50 p-8 shadow-2xl backdrop-blur-sm">
-          <div className="text-center mb-8">
-            <Shield className="w-16 h-16 text-amber-400 mx-auto mb-4" />
-            <h1 className="text-amber-400 mb-2">
-              OurWay
-            </h1>
-            <p className="text-amber-200/60">Командное саморазвитие</p>
+        <div className="relative bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-4 border-amber-600/60 p-10 sm:p-12 shadow-2xl backdrop-blur-sm">
+          <div className="absolute left-5 top-5">
+            <Shield className="w-28 h-28 text-amber-400" />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+          {showForm && (
+            <div className="text-center mb-8">
+              <h1 className="text-amber-400 mb-2">
+                OurWay
+              </h1>
+              <p className="text-amber-200/60">Командное саморазвитие</p>
+            </div>
+          )}
+          <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 ${showForm ? 'mb-8' : ''}`}>
             <div
-              className={`group rounded-xl border p-4 transition-all duration-300 ${
+              className={`group rounded-2xl border p-6 min-h-[140px] transition-all duration-300 ${
                 !isRegisterMode
                   ? 'border-amber-400/80 bg-amber-500/10 shadow-lg shadow-amber-500/20'
                   : 'border-amber-600/30 bg-slate-900/50 hover:border-amber-400/70 hover:bg-amber-500/10'
@@ -123,6 +128,7 @@ export function LoginPage() {
                 type="button"
                 onClick={() => {
                   setIsRegisterMode(false);
+                  setShowForm(true);
                   setError('');
                 }}
                 className="w-full"
@@ -131,7 +137,7 @@ export function LoginPage() {
               </Button>
             </div>
             <div
-              className={`group rounded-xl border p-4 transition-all duration-300 ${
+              className={`group rounded-2xl border p-6 min-h-[140px] transition-all duration-300 ${
                 isRegisterMode
                   ? 'border-amber-400/80 bg-amber-500/10 shadow-lg shadow-amber-500/20'
                   : 'border-amber-600/30 bg-slate-900/50 hover:border-amber-400/70 hover:bg-amber-500/10'
@@ -142,6 +148,7 @@ export function LoginPage() {
                 type="button"
                 onClick={() => {
                   setIsRegisterMode(true);
+                  setShowForm(true);
                   setError('');
                 }}
                 className="w-full"
@@ -150,7 +157,8 @@ export function LoginPage() {
               </Button>
             </div>
           </div>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          {showForm && (
+            <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="username" className="block text-sm text-amber-200 mb-2">
                 Имя пользователя
@@ -233,29 +241,32 @@ export function LoginPage() {
                 </>
               )}
             </Button>
-          </form>
-          <div className="mt-6 text-center space-y-2">
-            <button
-              type="button"
-              onClick={() => {
-                setIsRegisterMode(!isRegisterMode);
-                setError('');
-                setEmail('');
-                setPassword('');
-                setPassword2('');
-              }}
-              className="text-amber-400 hover:text-amber-300 text-sm underline transition-colors"
-            >
-              {isRegisterMode 
-                ? 'Уже есть аккаунт? Войти' 
-                : 'Нет аккаунта? Зарегистрироваться'}
-            </button>
-            {!isRegisterMode && (
-              <p className="text-amber-200/40 text-sm">
-                Присоединяйтесь к команде и начните свое саморазвитие
-              </p>
-            )}
-          </div>
+            </form>
+          )}
+          {showForm && (
+            <div className="mt-6 text-center space-y-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsRegisterMode(!isRegisterMode);
+                  setError('');
+                  setEmail('');
+                  setPassword('');
+                  setPassword2('');
+                }}
+                className="text-amber-400 hover:text-amber-300 text-sm underline transition-colors"
+              >
+                {isRegisterMode 
+                  ? 'Уже есть аккаунт? Войти' 
+                  : 'Нет аккаунта? Зарегистрироваться'}
+              </button>
+              {!isRegisterMode && (
+                <p className="text-amber-200/40 text-sm">
+                  Присоединяйтесь к команде и начните свое саморазвитие
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
