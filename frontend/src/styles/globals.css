@@ -97,6 +97,7 @@ h3 {
 
   .panel-guide {
     @apply text-xs text-white leading-relaxed;
+    font-size: calc(0.75rem * 1.5);
   }
 
   .panel-caption,
@@ -164,6 +165,7 @@ h3 {
     .panel-base {
       padding: 2rem !important;
       font-size: 115%;
+      width: 100%;
       max-width: calc(100% - 1.5rem);
       margin-left: auto;
       margin-right: auto;
@@ -181,6 +183,8 @@ h3 {
       padding-left: 0.75rem;
       padding-right: 0.75rem;
       text-align: center;
+      margin-left: auto;
+      margin-right: auto;
     }
   }
 
