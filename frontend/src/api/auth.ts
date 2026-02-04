@@ -61,7 +61,14 @@ export const authAPI = {
   },
 
   updateProfile: async (formData: FormData): Promise<User> => {
-    const response = await apiClient.patch<User>('/api/auth/user/', formData);
+    const response = await apiClient.patch<User>('/api/auth/user/', formData, {
+      transformRequest: (data, headers) => {
+        if (headers) {
+          delete (headers as Record<string, string>)['Content-Type'];
+        }
+        return data;
+      },
+    });
     return response.data;
   },
 };
