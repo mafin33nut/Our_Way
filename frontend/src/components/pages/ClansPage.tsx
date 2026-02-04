@@ -84,7 +84,11 @@ export function ClansPage() {
   };
 
   const handleCreateClanQuest = async () => {
-    if (!selectedClan || !clanQuestTitle.trim()) {
+    if (!selectedClan) {
+      setCreateClanQuestError('Выберите клан для создания квеста.');
+      return;
+    }
+    if (!clanQuestTitle.trim()) {
       return;
     }
     setCreatingClanQuest(true);
@@ -104,7 +108,12 @@ export function ClansPage() {
       setClanQuestDifficulty('easy');
     } catch (error) {
       console.error('Failed to create clan quest:', error);
-      setCreateClanQuestError('Не удалось создать клановый квест.');
+      const err = error as any;
+      setCreateClanQuestError(
+        err?.response?.data?.detail ||
+          err?.response?.data?.message ||
+          'Не удалось создать клановый квест.'
+      );
     } finally {
       setCreatingClanQuest(false);
     }
@@ -325,7 +334,7 @@ export function ClansPage() {
             <div className="mt-4 flex justify-end">
               <Button
                 onClick={handleCreateClanQuest}
-                disabled={creatingClanQuest || !clanQuestTitle.trim()}
+                disabled={creatingClanQuest || !clanQuestTitle.trim() || !selectedClan}
               >
                 {creatingClanQuest ? 'Создание...' : 'Создать'}
               </Button>
