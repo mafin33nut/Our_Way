@@ -27,7 +27,7 @@ export function WelcomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
-      <div className="min-h-screen flex items-start justify-center px-8 py-12">
+      <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1000px]">
           <div className="panel-base panel-orange p-8">
             <div className="flex items-center gap-2 mb-4">

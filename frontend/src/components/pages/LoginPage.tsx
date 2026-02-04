@@ -101,7 +101,7 @@ export function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950 flex items-center justify-center px-8 py-12">
+    <div className="relative min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950 flex items-center justify-center px-4 py-6 sm:px-8 sm:py-12">
       <div className="absolute left-6 top-6">
         <Shield className="w-20 h-20 sm:w-24 sm:h-24 text-amber-400" />
       </div>
