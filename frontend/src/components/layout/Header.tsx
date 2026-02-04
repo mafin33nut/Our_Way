@@ -17,14 +17,16 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
   return (
     <div
       className={`border-b sticky top-0 z-50 backdrop-blur-sm ${
-        isSidebarOpen ? 'pl-28' : 'pl-6'
-      } ${
         isLight
           ? 'bg-white/90 border-slate-200 shadow-sm'
           : 'bg-slate-900/70 border-slate-700/50'
       }`}
     >
-      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 py-3 sm:py-4">
+      <div
+        className={`max-w-[1920px] mx-auto px-4 sm:px-6 py-3 sm:py-4 ${
+          isSidebarOpen ? 'ml-28' : ''
+        }`}
+      >
         <div className="flex items-center gap-2 sm:gap-4 flex-nowrap">
           <button
             type="button"
