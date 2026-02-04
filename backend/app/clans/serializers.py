@@ -69,9 +69,9 @@ class ClanQuestSerializer(serializers.ModelSerializer):
     
     class Meta: 
         model = ClanQuest 
-        fields = ['id', 'clan', 'title', 'description', 'difficulty', 'xp_reward', 
+        fields = ['id', 'clan', 'title', 'description', 'difficulty', 'xp_reward',
                   'required_progress', 'total_progress', 'max_participants', 'completed', 'expires_at',
-                  'participants', 'participant_count', 'deleted_at']
+                  'participants', 'participant_count']
         read_only_fields = ['xp_reward', 'required_progress', 'total_progress', 'completed', 'expires_at']
     
     def get_participants(self, obj):
