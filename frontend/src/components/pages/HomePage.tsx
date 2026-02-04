@@ -239,83 +239,87 @@ export function HomePage() {
                 <div className="panel-guide mb-4">
                   <p>1) Следи за последними событиями в игре.</p>
                   <p>2) Сравнивай, какие фокусы получают больше внимания.</p>
-                  <p>3) Поддерживай баланс, добавляя задания в слабые направления.</p>
+                  <p>3) Поддерживай баланс, добавляя квесты в слабые направления.</p>
                 </div>
                 <div className="panel-base panel-lime">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Bell className="w-5 h-5 text-purple-400" />
-                    <h2 className="text-purple-300">Последняя активность</h2>
-                  </div>
-                  <div className="space-y-6">
-                    {recentActivities.map((activity) => {
-                      const IconComponent = activityIcons[activity.type] || TrendingUp;
-                      const color = activityColors[activity.type] || 'text-purple-400';
-                      const title =
-                        activity.title?.trim() ||
-                        activity.message?.trim() ||
-                        'Квест';
-                      return (
-                        <div
-                          key={activity.id}
-                          className="flex items-start gap-3 p-3 bg-slate-950/40 rounded-lg border border-purple-600/20 hover:border-purple-500/50 transition-colors"
-                        >
-                          <IconComponent className={`w-4 h-4 ${color} flex-shrink-0 mt-0.5`} />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-purple-200 text-sm">
-                              {title}
-                            </p>
-                            {activity.message && activity.message !== title && (
-                              <p className="text-purple-200/60 text-xs mt-1">{activity.message}</p>
-                            )}
-                            <p className="text-purple-200/40 text-xs mt-1">{formatTime(activity.timestamp)}</p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  {activities.length === 0 && (
-                    <div className="text-center py-8">
-                      <p className="text-purple-200/40 text-sm">Пока нет активности</p>
-                    </div>
-                  )}
-
-                  <div className="mt-8 border-t border-slate-700/60 pt-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <p className="text-slate-100">Распределение по фокусам</p>
-                      <span className="text-xs text-slate-300/60">Завершенные квесты</span>
-                    </div>
-                    {focusColumns.length === 0 ? (
-                      <div className="text-center text-slate-300/60 py-4">
-                        Пока нет завершенных квестов
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                    <div className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Bell className="w-5 h-5 text-purple-400" />
+                        <h2 className="text-purple-300">Последние квесты</h2>
                       </div>
-                    ) : (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {focusColumns.map(([focus, items]) => (
-                          <div key={focus} className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4">
-                            <div className="flex items-center justify-between mb-3">
-                              <p className="text-slate-100">{focus}</p>
-                              <span className="text-xs text-slate-300/60">{items.length}</span>
-                            </div>
-                            <div className="space-y-2">
-                              {items.slice(0, 4).map((quest) => (
-                                <div
-                                  key={quest.id}
-                                  className="rounded-lg border border-slate-700/50 bg-slate-950/40 px-3 py-2"
-                                >
-                                  <p className="text-sm text-slate-200">{quest.title}</p>
-                                  <p className="text-xs text-slate-300/60">{quest.description}</p>
-                                </div>
-                              ))}
-                              {items.length > 4 && (
-                                <p className="text-xs text-slate-300/60">
-                                  +{items.length - 4} ещё завершённых
+                      <div className="space-y-6">
+                        {recentActivities.map((activity) => {
+                          const IconComponent = activityIcons[activity.type] || TrendingUp;
+                          const color = activityColors[activity.type] || 'text-purple-400';
+                          const title =
+                            activity.title?.trim() ||
+                            activity.message?.trim() ||
+                            'Квест';
+                          return (
+                            <div
+                              key={activity.id}
+                              className="flex items-start gap-3 p-3 bg-slate-950/40 rounded-lg border border-purple-600/20 hover:border-purple-500/50 transition-colors"
+                            >
+                              <IconComponent className={`w-4 h-4 ${color} flex-shrink-0 mt-0.5`} />
+                              <div className="flex-1 min-w-0">
+                                <p className="text-purple-200 text-sm">
+                                  {title}
                                 </p>
-                              )}
+                                {activity.message && activity.message !== title && (
+                                  <p className="text-purple-200/60 text-xs mt-1">{activity.message}</p>
+                                )}
+                                <p className="text-purple-200/40 text-xs mt-1">{formatTime(activity.timestamp)}</p>
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
-                    )}
+                      {activities.length === 0 && (
+                        <div className="text-center py-8">
+                          <p className="text-purple-200/40 text-sm">Пока нет активности</p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4">
+                      <div className="flex items-center justify-between mb-4">
+                        <p className="text-slate-100">Активности по фокусам</p>
+                        <span className="text-xs text-slate-300/60">Завершенные квесты</span>
+                      </div>
+                      {focusColumns.length === 0 ? (
+                        <div className="text-center text-slate-300/60 py-4">
+                          Пока нет завершенных квестов
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {focusColumns.map(([focus, items]) => (
+                            <div key={focus} className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4">
+                              <div className="flex items-center justify-between mb-3">
+                                <p className="text-slate-100">{focus}</p>
+                                <span className="text-xs text-slate-300/60">{items.length}</span>
+                              </div>
+                              <div className="space-y-2">
+                                {items.slice(0, 4).map((quest) => (
+                                  <div
+                                    key={quest.id}
+                                    className="rounded-lg border border-slate-700/50 bg-slate-950/40 px-3 py-2"
+                                  >
+                                    <p className="text-sm text-slate-200">{quest.title}</p>
+                                    <p className="text-xs text-slate-300/60">{quest.description}</p>
+                                  </div>
+                                ))}
+                                {items.length > 4 && (
+                                  <p className="text-xs text-slate-300/60">
+                                    +{items.length - 4} ещё завершённых
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
