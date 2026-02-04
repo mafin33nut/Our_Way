@@ -81,7 +81,7 @@ export function FriendsPanel() {
                 </Button>
               </div>
 
-              <div className="h-[calc(100%-72px)] overflow-y-auto p-6 space-y-6">
+              <div className="h-[calc(100%-72px)] overflow-y-auto px-8 py-6 space-y-8">
                 {!user && (
                   <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
                     Войдите, чтобы управлять друзьями.
@@ -94,12 +94,20 @@ export function FriendsPanel() {
                       friendIds={friends.map((friend) => friend.id)}
                       currentUserId={user.id}
                     />
+                    <div className="panel-comment">
+                      Найдите новых друзей по имени или никнейму.
+                    </div>
                     {loading ? (
                       <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
                         Загрузка списка друзей...
                       </div>
                     ) : (
-                      <AllFriendsPanel friends={friends} />
+                      <>
+                        <div className="panel-comment">
+                          Список друзей с быстрым доступом к профилям.
+                        </div>
+                        <AllFriendsPanel friends={friends} />
+                      </>
                     )}
                   </>
                 )}

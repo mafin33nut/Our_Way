@@ -17,13 +17,6 @@ export function AllFriendsPanel({ friends }: AllFriendsPanelProps) {
         <Users className="w-5 h-5 text-purple-400" />
         <h2 className="text-purple-300">Все друзья</h2>
       </div>
-      <p className="panel-comment mb-4">
-        Просматривайте статусы друзей и быстро переходите к их профилям.
-      </p>
-      <div className="panel-guide mb-4">
-        <p>1) Нажмите «Смотреть профиль», чтобы увидеть достижения.</p>
-        <p>2) Сравните уровни и опыт для мотивации.</p>
-      </div>
       {friends.length > 0 ? (
         <div className="space-y-2 max-h-80 overflow-y-auto">
           {friends.map((friend) => (
