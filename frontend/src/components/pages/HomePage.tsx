@@ -2,28 +2,35 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
 import { questsAPI } from '../../api/quests';
-import { Quest, BACKGROUND_OPTIONS } from '../../types';
+import { socialAPI } from '../../api/social';
+import { Quest, BACKGROUND_OPTIONS, Activity } from '../../types';
 import { QuestList } from '../../components/quests/QuestList';
 import { CharacterProfile } from '../../components/profile/characterProfile';
-import { isToday } from '../../utils/time';
+import { formatTime, isToday } from '../../utils/time';
 import { Loader } from '../../components/ui/Loader';
-import { Award } from 'lucide-react';
+import { Bell, TrendingUp, Trophy, Users, Zap } from 'lucide-react';
 
 export function HomePage() {
   const { user, refreshUser } = useAuth();
   const { settings, playVictorySound } = useCustomization();
   const [quests, setQuests] = useState<Quest[]>([]);
+  const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
   const [bgImageLoaded, setBgImageLoaded] = useState(false);
 
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const questList = await questsAPI.getAll().catch(() => []);
+      const [questList, activityList] = await Promise.all([
+        questsAPI.getAll().catch(() => []),
+        socialAPI.getActivities().catch(() => []),
+      ]);
       setQuests(questList || []);
+      setActivities(activityList || []);
     } catch (err) {
       console.error('Failed to load data:', err);
       setQuests([]);
+      setActivities([]);
     } finally {
       setLoading(false);
     }
@@ -102,6 +109,20 @@ export function HomePage() {
     });
     return Array.from(groups.entries());
   }, [quests]);
+
+  const recentActivities = activities.slice(0, 8);
+  const activityIcons = {
+    quest_complete: TrendingUp,
+    level_up: Zap,
+    friend_achievement: Trophy,
+    clan_event: Users,
+  } as const;
+  const activityColors: Record<string, string> = {
+    quest_complete: 'text-green-400',
+    level_up: 'text-yellow-400',
+    friend_achievement: 'text-purple-400',
+    clan_event: 'text-orange-400',
+  };
 
   if (!user) {
     return <Loader />;
@@ -210,52 +231,94 @@ export function HomePage() {
                 </div>
               </div>
 
-            </div>
-          </div>
-
-          <div className="mt-12">
-            <div className="panel-base panel-sky w-full">
-              <div className="panel-caption text-left">Активности по фокусам</div>
-              <div className="panel-comment mb-6">
-                Разбивка последних завершенных квестов по выбранным направлениям.
-              </div>
-              <div className="panel-guide mb-6">
-                <p>1) Сверяй баланс активности между фокусами.</p>
-                <p>2) Добавляй квесты в слабые направления, чтобы выровнять прогресс.</p>
-                <p>3) Ориентируйся на свежие выполненные задания в каждом блоке.</p>
-              </div>
-              {focusColumns.length === 0 ? (
-                <div className="text-center text-slate-300/60 py-6">
-                  Пока нет завершенных квестов
+              <div className="w-full">
+                <div className="panel-caption text-left">Активность</div>
+                <div className="panel-comment mb-6">
+                  Лента событий и распределение завершенных квестов по фокусам.
                 </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-                  {focusColumns.map(([focus, items]) => (
-                    <div key={focus} className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <p className="text-slate-100">{focus}</p>
-                        <span className="text-xs text-slate-300/60">{items.length}</span>
+                <div className="panel-guide mb-4">
+                  <p>1) Следи за последними событиями в игре.</p>
+                  <p>2) Сравнивай, какие фокусы получают больше внимания.</p>
+                  <p>3) Поддерживай баланс, добавляя задания в слабые направления.</p>
+                </div>
+                <div className="panel-base panel-lime">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Bell className="w-5 h-5 text-purple-400" />
+                    <h2 className="text-purple-300">Последняя активность</h2>
+                  </div>
+                  <div className="space-y-6">
+                    {recentActivities.map((activity) => {
+                      const IconComponent = activityIcons[activity.type] || TrendingUp;
+                      const color = activityColors[activity.type] || 'text-purple-400';
+                      const title =
+                        activity.title?.trim() ||
+                        activity.message?.trim() ||
+                        'Квест';
+                      return (
+                        <div
+                          key={activity.id}
+                          className="flex items-start gap-3 p-3 bg-slate-950/40 rounded-lg border border-purple-600/20 hover:border-purple-500/50 transition-colors"
+                        >
+                          <IconComponent className={`w-4 h-4 ${color} flex-shrink-0 mt-0.5`} />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-purple-200 text-sm">
+                              {title}
+                            </p>
+                            {activity.message && activity.message !== title && (
+                              <p className="text-purple-200/60 text-xs mt-1">{activity.message}</p>
+                            )}
+                            <p className="text-purple-200/40 text-xs mt-1">{formatTime(activity.timestamp)}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  {activities.length === 0 && (
+                    <div className="text-center py-8">
+                      <p className="text-purple-200/40 text-sm">Пока нет активности</p>
+                    </div>
+                  )}
+
+                  <div className="mt-8 border-t border-slate-700/60 pt-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <p className="text-slate-100">Распределение по фокусам</p>
+                      <span className="text-xs text-slate-300/60">Завершенные квесты</span>
+                    </div>
+                    {focusColumns.length === 0 ? (
+                      <div className="text-center text-slate-300/60 py-4">
+                        Пока нет завершенных квестов
                       </div>
-                      <div className="space-y-2">
-                        {items.slice(0, 4).map((quest) => (
-                          <div
-                            key={quest.id}
-                            className="rounded-lg border border-slate-700/50 bg-slate-950/40 px-3 py-2"
-                          >
-                            <p className="text-sm text-slate-200">{quest.title}</p>
-                            <p className="text-xs text-slate-300/60">{quest.description}</p>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {focusColumns.map(([focus, items]) => (
+                          <div key={focus} className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4">
+                            <div className="flex items-center justify-between mb-3">
+                              <p className="text-slate-100">{focus}</p>
+                              <span className="text-xs text-slate-300/60">{items.length}</span>
+                            </div>
+                            <div className="space-y-2">
+                              {items.slice(0, 4).map((quest) => (
+                                <div
+                                  key={quest.id}
+                                  className="rounded-lg border border-slate-700/50 bg-slate-950/40 px-3 py-2"
+                                >
+                                  <p className="text-sm text-slate-200">{quest.title}</p>
+                                  <p className="text-xs text-slate-300/60">{quest.description}</p>
+                                </div>
+                              ))}
+                              {items.length > 4 && (
+                                <p className="text-xs text-slate-300/60">
+                                  +{items.length - 4} ещё завершённых
+                                </p>
+                              )}
+                            </div>
                           </div>
                         ))}
-                        {items.length > 4 && (
-                          <p className="text-xs text-slate-300/60">
-                            +{items.length - 4} ещё завершённых
-                          </p>
-                        )}
                       </div>
-                    </div>
-                  ))}
+                    )}
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
           </div>
 
