@@ -107,17 +107,15 @@ export function LoginPage() {
       </div>
       <div className="w-full max-w-md">
         <div className="relative bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-4 border-amber-600/60 p-10 sm:p-12 shadow-2xl backdrop-blur-sm">
-          {showForm && (
-            <div className="text-center mb-8">
-              <h1 className="text-amber-400 mb-2">
-                Our way
-              </h1>
-              <p className="text-amber-200/60">Командное саморазвитие</p>
-            </div>
-          )}
+          <div className="text-center mb-8">
+            <h1 className="text-amber-400 mb-2">
+              Our way
+            </h1>
+            <p className="text-amber-200/60">Командное саморазвитие</p>
+          </div>
           <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 ${showForm ? 'mb-8' : ''}`}>
             <div
-              className={`group rounded-2xl border p-6 min-h-[140px] transition-all duration-300 ${
+              className={`group rounded-2xl border p-7 sm:p-8 min-h-[170px] transition-all duration-300 ${
                 !isRegisterMode
                   ? 'border-amber-400/80 bg-amber-500/10 shadow-lg shadow-amber-500/20'
                   : 'border-amber-600/30 bg-slate-900/50 hover:border-amber-400/70 hover:bg-amber-500/10'
@@ -137,7 +135,7 @@ export function LoginPage() {
               </Button>
             </div>
             <div
-              className={`group rounded-2xl border p-6 min-h-[140px] transition-all duration-300 ${
+              className={`group rounded-2xl border p-7 sm:p-8 min-h-[170px] transition-all duration-300 ${
                 isRegisterMode
                   ? 'border-amber-400/80 bg-amber-500/10 shadow-lg shadow-amber-500/20'
                   : 'border-amber-600/30 bg-slate-900/50 hover:border-amber-400/70 hover:bg-amber-500/10'

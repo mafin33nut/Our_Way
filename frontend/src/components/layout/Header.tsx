@@ -1,27 +1,51 @@
 import { Link } from 'react-router-dom';
-import { LogOut, User, Settings } from 'lucide-react';
+import { LogOut, PanelLeftClose, PanelLeftOpen, Settings } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
 import { Button } from '../ui/Button';
 import { resolveMediaUrl } from '../../utils/media';
 import { FriendsPanel } from '../social/FriendsPanel';
-export function Header() {
+type HeaderProps = {
+  isSidebarOpen: boolean;
+  onToggleSidebar: () => void;
+};
+
+export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
   const { user, logout } = useAuth();
   const { settings } = useCustomization();
   const isLight = settings.theme === 'light';
   return (
     <div
-      className={`border-b sticky top-0 z-50 backdrop-blur-sm pl-28 ${
+      className={`border-b sticky top-0 z-50 backdrop-blur-sm ${
+        isSidebarOpen ? 'pl-28' : 'pl-6'
+      } ${
         isLight
           ? 'bg-white/90 border-slate-200 shadow-sm'
           : 'bg-slate-900/70 border-slate-700/50'
       }`}
     >
       <div className="max-w-[1920px] mx-auto px-6 py-4">
-        {user && (
-          <div className="rounded-xl border border-slate-700/60 bg-slate-800/70 px-3 py-2">
-            <div className="flex flex-wrap items-center justify-end gap-3">
-              <div className="flex flex-wrap items-center gap-3 ml-auto">
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={onToggleSidebar}
+            className={`inline-flex items-center justify-center w-10 h-10 rounded-lg border transition-colors ${
+              isLight
+                ? 'bg-white border-slate-200 hover:bg-slate-50'
+                : 'bg-slate-800/70 border-slate-700/60 hover:bg-slate-800'
+            }`}
+            aria-label={isSidebarOpen ? 'Скрыть боковую панель' : 'Показать боковую панель'}
+          >
+            {isSidebarOpen ? (
+              <PanelLeftClose className="w-5 h-5" />
+            ) : (
+              <PanelLeftOpen className="w-5 h-5" />
+            )}
+          </button>
+          {user && (
+            <div className="flex-1 rounded-xl border border-slate-700/60 bg-slate-800/70 px-3 py-2">
+              <div className="flex flex-wrap items-center justify-end gap-3">
+                <div className="flex flex-wrap items-center gap-3 ml-auto">
                 <Link
                   to="/profile"
                   className={`flex items-center gap-3 px-3 py-2 rounded-lg border transition-colors ${
@@ -64,10 +88,9 @@ export function Header() {
               </Button>
             </div>
           </div>
-        )}
-        {!user && (
-          <div className="h-1" />
-        )}
+          )}
+          {!user && <div className="flex-1" />}
+        </div>
       </div>
     </div>
   );

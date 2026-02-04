@@ -11,14 +11,14 @@ const NAV_ITEMS = [
   { to: '/progress', label: 'Прогресс', icon: BarChart2 },
 ];
 
-export function Sidebar() {
+export function Sidebar({ isOpen }: { isOpen: boolean }) {
   const { settings } = useCustomization();
   const isLight = settings.theme === 'light';
   return (
     <aside
-      className={`fixed left-0 top-0 h-screen w-24 border-r backdrop-blur-sm z-60 ${
-        isLight ? 'bg-white/90 border-slate-200' : 'bg-slate-900/80 border-slate-700/60'
-      }`}
+      className={`fixed left-0 top-0 h-screen w-24 border-r backdrop-blur-sm z-60 transition-transform duration-300 ${
+        isOpen ? 'translate-x-0' : '-translate-x-full'
+      } ${isLight ? 'bg-white/90 border-slate-200' : 'bg-slate-900/80 border-slate-700/60'}`}
     >
       <div className="pt-24 px-3 flex flex-col gap-2">
         {NAV_ITEMS.map((item) => {
