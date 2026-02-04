@@ -109,10 +109,12 @@ h3 {
   }
 
   .panel-base .text-xs {
+    color: rgba(255, 255, 255, 0.67) !important;
     font-size: calc(0.75rem * 1.25) !important;
   }
 
   .panel-base .text-sm {
+    color: rgba(255, 255, 255, 0.67) !important;
     font-size: calc(0.875rem * 1.25) !important;
   }
 
@@ -141,6 +143,7 @@ h3 {
   }
 
   .panel-base .panel-comment {
+    color: rgba(255, 255, 255, 0.67) !important;
     font-size: calc(0.875rem * 1.5) !important;
     font-family: "Playpen Sans", "Segoe UI", sans-serif;
   }
