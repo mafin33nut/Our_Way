@@ -152,17 +152,17 @@ export function HomePage() {
                         className="flex items-center justify-between rounded-xl border border-slate-600/40 bg-slate-900/50 px-4 py-3"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-lg bg-teal-400/20 border border-teal-300/60 flex items-center justify-center text-teal-100">
+                          <div className="w-9 h-9 rounded-lg bg-amber-300/20 border border-amber-300/60 flex items-center justify-center achievement-earned">
                             ★
                           </div>
                           <div>
-                            <p className="text-slate-100 text-sm">{item.title}</p>
-                            <p className="text-slate-300/60 text-xs">
+                            <p className="text-slate-100 text-sm achievement-earned">{item.title}</p>
+                            <p className="text-slate-300/60 text-xs achievement-earned">
                               Достигнуто: {item.req} квестов
                             </p>
                           </div>
                         </div>
-                        <span className="text-xs text-slate-300/60">Получено</span>
+                        <span className="text-xs achievement-earned">Получено</span>
                       </div>
                     ))}
                   {achievementSlots.filter((item) => (user.total_quests_completed || 0) >= item.req).length === 0 && (

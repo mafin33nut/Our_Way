@@ -139,8 +139,8 @@ export function FriendProfileModal({ friendId, onClose }: FriendProfileModalProp
                         key={slot.id}
                         className="rounded-lg border border-slate-700/50 bg-slate-950/40 px-3 py-2"
                       >
-                        <p className="text-sm text-slate-100">{slot.title}</p>
-                        <p className="text-xs text-slate-300/70">Квестов: {slot.req}</p>
+                        <p className="text-sm text-slate-100 achievement-earned">{slot.title}</p>
+                        <p className="text-xs text-slate-300/70 achievement-earned">Квестов: {slot.req}</p>
                       </div>
                     ))}
                   </div>

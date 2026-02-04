@@ -148,6 +148,10 @@ h3 {
     font-family: "Playpen Sans", "Segoe UI", sans-serif;
   }
 
+  .achievement-earned {
+    color: #f4b36b !important;
+  }
+
   .panel-comment .text-xs {
     font-size: calc(0.75rem * 1.2) !important;
   }
