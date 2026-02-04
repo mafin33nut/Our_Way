@@ -24,6 +24,12 @@ class FriendsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
+        incoming = Friendship.objects.filter(friend=request.user).select_related('user')
+        for incoming_friendship in incoming:
+            Friendship.objects.get_or_create(
+                user=request.user,
+                friend=incoming_friendship.user
+            )
         friendships = Friendship.objects.filter(user=request.user).select_related('friend')
         friends_data = []
         today = timezone.now().date()
