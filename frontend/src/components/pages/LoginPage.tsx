@@ -110,6 +110,46 @@ export function LoginPage() {
             </h1>
             <p className="text-amber-200/60">Командное саморазвитие</p>
           </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            <div
+              className={`group rounded-xl border p-4 transition-all duration-300 ${
+                !isRegisterMode
+                  ? 'border-amber-400/80 bg-amber-500/10 shadow-lg shadow-amber-500/20'
+                  : 'border-amber-600/30 bg-slate-900/50 hover:border-amber-400/70 hover:bg-amber-500/10'
+              }`}
+            >
+              <p className="text-amber-200/80 text-sm mb-2">Рады видеть вас снова</p>
+              <Button
+                type="button"
+                onClick={() => {
+                  setIsRegisterMode(false);
+                  setError('');
+                }}
+                className="w-full"
+              >
+                Войти
+              </Button>
+            </div>
+            <div
+              className={`group rounded-xl border p-4 transition-all duration-300 ${
+                isRegisterMode
+                  ? 'border-amber-400/80 bg-amber-500/10 shadow-lg shadow-amber-500/20'
+                  : 'border-amber-600/30 bg-slate-900/50 hover:border-amber-400/70 hover:bg-amber-500/10'
+              }`}
+            >
+              <p className="text-amber-200/80 text-sm mb-2">Добро пожаловать</p>
+              <Button
+                type="button"
+                onClick={() => {
+                  setIsRegisterMode(true);
+                  setError('');
+                }}
+                className="w-full"
+              >
+                Зарегистрироваться
+              </Button>
+            </div>
+          </div>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="username" className="block text-sm text-amber-200 mb-2">

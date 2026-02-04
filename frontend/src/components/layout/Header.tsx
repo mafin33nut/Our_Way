@@ -22,26 +22,25 @@ export function Header() {
           <div className="rounded-xl border border-slate-700/60 bg-slate-800/70 px-3 py-2">
             <div className="flex flex-wrap items-center justify-end gap-3">
               <div className="flex flex-wrap items-center gap-3 ml-auto">
-                <div
-                  className={`flex items-center gap-3 px-3 py-2 rounded-lg border ${
+                <Link
+                  to="/profile"
+                  className={`flex items-center gap-3 px-3 py-2 rounded-lg border transition-colors ${
                     isLight
-                      ? 'bg-slate-50 border-slate-200'
-                      : 'bg-slate-800/50 border-slate-700/50'
+                      ? 'bg-slate-50 border-slate-200 hover:bg-slate-100'
+                      : 'bg-slate-800/50 border-slate-700/50 hover:bg-slate-800/70'
                   }`}
                 >
-                  <Link to="/profile" className="flex items-center gap-2">
-                    {resolveMediaUrl(user.avatar) ? (
-                      <img
-                        src={resolveMediaUrl(user.avatar) as string}
-                        alt={user.username}
-                        className="w-9 h-9 rounded-full object-cover border border-teal-300/60"
-                      />
-                    ) : (
-                      <div className="w-9 h-9 rounded-full bg-slate-700/70 border border-teal-300/60 flex items-center justify-center text-xs text-slate-100">
-                        {user.username.slice(0, 1).toUpperCase()}
-                      </div>
-                    )}
-                  </Link>
+                  {resolveMediaUrl(user.avatar) ? (
+                    <img
+                      src={resolveMediaUrl(user.avatar) as string}
+                      alt={user.username}
+                      className="w-8 h-8 rounded-full object-cover border border-teal-300/60"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-slate-700/70 border border-teal-300/60 flex items-center justify-center text-xs text-slate-100">
+                      {user.username.slice(0, 1).toUpperCase()}
+                    </div>
+                  )}
                   <div className="min-w-0">
                     <p className={`text-sm ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
                       {user.username}
@@ -49,11 +48,8 @@ export function Header() {
                     <p className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
                       Уровень {user.level} · {user.xp} XP
                     </p>
-                    <p className={`text-xs ${isLight ? 'text-slate-600/80' : 'text-slate-300/50'}`}>
-                      Квестов выполнено: {user.total_quests_completed}
-                    </p>
                   </div>
-                </div>
+                </Link>
                 <Link to="/settings">
                   <Button variant="ghost" size="md" className="flex items-center gap-2">
                     <Settings className="w-5 h-5" />
