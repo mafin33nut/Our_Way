@@ -249,6 +249,21 @@ export function ClansPage() {
             </div>
           )}
 
+          {clans.length > 0 && (
+            <div className="panel-base panel-teal p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Crown className="w-5 h-5 text-teal-300" />
+                <h2 className="text-slate-100">Найти или создать клан</h2>
+              </div>
+              <div className="panel-guide mb-4">
+                <p>1) Создайте новый клан, если хотите собственное сообщество.</p>
+                <p>2) Найдите кланы по названию и вступайте в несколько.</p>
+                <p>3) После вступления клан появится в списке выше.</p>
+              </div>
+              <ClanCreationPanel onClanCreated={handleClanCreated} />
+            </div>
+          )}
+
         {selectedClan && (
           <div className="panel-base panel-orange p-6">
             <div className="flex items-center gap-2 mb-4">
