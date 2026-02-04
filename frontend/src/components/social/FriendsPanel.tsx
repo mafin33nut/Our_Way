@@ -47,7 +47,7 @@ export function FriendsPanel() {
         className="flex items-center gap-2"
       >
         <Users className="w-5 h-5" />
-        Друзья
+        <span className="hidden sm:inline">Друзья</span>
       </Button>
 
       {isOpen &&

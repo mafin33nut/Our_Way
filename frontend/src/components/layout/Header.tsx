@@ -65,7 +65,7 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                       {user.username.slice(0, 1).toUpperCase()}
                     </div>
                   )}
-                  <div className="min-w-0">
+                  <div className="min-w-0 hidden sm:block">
                     <p className={`text-sm ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
                       {user.username}
                     </p>
@@ -77,7 +77,7 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 <Link to="/settings" className="shrink-0">
                   <Button variant="ghost" size="md" className="flex items-center gap-2 whitespace-nowrap">
                     <Settings className="w-5 h-5" />
-                    Настройки
+                    <span className="hidden sm:inline">Настройки</span>
                   </Button>
                 </Link>
                 <div className="shrink-0">
@@ -86,7 +86,7 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
               </div>
               <Button variant="ghost" size="md" onClick={logout} className="flex items-center gap-2 whitespace-nowrap shrink-0">
                 <LogOut className="w-5 h-5" />
-                Выйти
+                <span className="hidden sm:inline">Выйти</span>
               </Button>
             </div>
           </div>
