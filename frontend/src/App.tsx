@@ -34,7 +34,10 @@ function AppLayout({ children }: { children: ReactNode }) {
         isSidebarOpen={isSidebarOpen}
         onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
       />
-      <Sidebar isOpen={isSidebarOpen} />
+      <Sidebar
+        isOpen={isSidebarOpen}
+        onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
+      />
       <div className={isSidebarOpen ? 'pl-28' : 'pl-6'}>
         {children}
       </div>

@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, ListChecks, Crown, Trophy, Star, BarChart2 } from 'lucide-react';
+import { Home, ListChecks, Crown, Trophy, Star, BarChart2, PanelLeftClose } from 'lucide-react';
 import { useCustomization } from '../../hooks/useCustomization';
 
 const NAV_ITEMS = [
@@ -11,7 +11,12 @@ const NAV_ITEMS = [
   { to: '/progress', label: 'Прогресс', icon: BarChart2 },
 ];
 
-export function Sidebar({ isOpen }: { isOpen: boolean }) {
+type SidebarProps = {
+  isOpen: boolean;
+  onToggleSidebar: () => void;
+};
+
+export function Sidebar({ isOpen, onToggleSidebar }: SidebarProps) {
   const { settings } = useCustomization();
   const isLight = settings.theme === 'light';
   return (
@@ -21,6 +26,19 @@ export function Sidebar({ isOpen }: { isOpen: boolean }) {
       } ${isLight ? 'bg-white/90 border-slate-200' : 'bg-slate-900/80 border-slate-700/60'}`}
     >
       <div className="pt-24 px-3 flex flex-col gap-2">
+        <button
+          type="button"
+          onClick={onToggleSidebar}
+          className={`flex flex-col items-center gap-1 rounded-xl px-2 py-3 text-[11px] transition-colors border ${
+            isLight
+              ? 'bg-white/80 border-slate-200 text-slate-700 hover:bg-white'
+              : 'bg-slate-800/60 border-slate-700/60 text-slate-200 hover:bg-slate-800/80'
+          }`}
+          aria-label="Скрыть боковую панель"
+        >
+          <PanelLeftClose className="w-4 h-4" />
+          <span className="text-center leading-tight">Скрыть</span>
+        </button>
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           return (
