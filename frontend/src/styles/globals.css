@@ -160,6 +160,9 @@ h3 {
     .panel-base {
       padding: 2rem !important;
       font-size: 115%;
+      max-width: calc(100% - 1.5rem);
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .panel-caption {

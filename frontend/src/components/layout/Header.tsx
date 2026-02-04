@@ -24,8 +24,8 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
           : 'bg-slate-900/70 border-slate-700/50'
       }`}
     >
-      <div className="max-w-[1920px] mx-auto px-6 py-4">
-        <div className="flex items-center gap-4">
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 py-3 sm:py-4">
+        <div className="flex items-center gap-2 sm:gap-4 flex-nowrap">
           <button
             type="button"
             onClick={onToggleSidebar}
@@ -43,12 +43,12 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
             )}
           </button>
           {user && (
-            <div className="flex-1 rounded-xl border border-slate-700/60 bg-slate-800/70 px-3 py-2">
-              <div className="flex flex-wrap items-center justify-end gap-3">
-                <div className="flex flex-wrap items-center gap-3 ml-auto">
+            <div className="flex-1 rounded-xl border border-slate-700/60 bg-slate-800/70 px-3 py-2 min-w-0">
+              <div className="flex items-center justify-end gap-2 sm:gap-3 flex-nowrap overflow-x-auto">
+                <div className="flex items-center gap-2 sm:gap-3 ml-auto flex-nowrap">
                 <Link
                   to="/profile"
-                  className={`flex items-center gap-3 px-3 py-2 rounded-lg border transition-colors ${
+                  className={`flex items-center gap-3 px-3 py-2 rounded-lg border transition-colors whitespace-nowrap shrink-0 ${
                     isLight
                       ? 'bg-slate-50 border-slate-200 hover:bg-slate-100'
                       : 'bg-slate-800/50 border-slate-700/50 hover:bg-slate-800/70'
@@ -74,15 +74,17 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                     </p>
                   </div>
                 </Link>
-                <Link to="/settings">
-                  <Button variant="ghost" size="md" className="flex items-center gap-2">
+                <Link to="/settings" className="shrink-0">
+                  <Button variant="ghost" size="md" className="flex items-center gap-2 whitespace-nowrap">
                     <Settings className="w-5 h-5" />
                     Настройки
                   </Button>
                 </Link>
-                <FriendsPanel />
+                <div className="shrink-0">
+                  <FriendsPanel />
+                </div>
               </div>
-              <Button variant="ghost" size="md" onClick={logout} className="flex items-center gap-2">
+              <Button variant="ghost" size="md" onClick={logout} className="flex items-center gap-2 whitespace-nowrap shrink-0">
                 <LogOut className="w-5 h-5" />
                 Выйти
               </Button>
