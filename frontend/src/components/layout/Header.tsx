@@ -23,19 +23,15 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
       }`}
     >
       <div
-        className={`max-w-[1920px] mx-auto px-4 sm:px-6 py-3 sm:py-4 ${
-          isSidebarOpen ? 'ml-28' : ''
+        className={`max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 py-3 sm:py-4 ${
+          isSidebarOpen ? 'md:ml-28' : ''
         }`}
       >
         <div className="flex items-center gap-2 sm:gap-4 flex-nowrap">
           <button
             type="button"
             onClick={onToggleSidebar}
-            className={`inline-flex items-center justify-center w-10 h-10 rounded-lg border transition-colors ${
-              isLight
-                ? 'bg-white border-slate-200 hover:bg-slate-50'
-                : 'bg-slate-800/70 border-slate-700/60 hover:bg-slate-800'
-            }`}
+            className="inline-flex items-center justify-center w-10 h-10 rounded-lg border transition-colors bg-white border-slate-200 hover:bg-slate-50 text-slate-900"
             aria-label={isSidebarOpen ? 'Скрыть боковую панель' : 'Показать боковую панель'}
           >
             {isSidebarOpen ? (

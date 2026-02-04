@@ -169,12 +169,14 @@ h3 {
       font-size: 1.5rem;
       line-height: 2rem;
       margin-bottom: 1.5rem;
+      text-align: center;
     }
 
     .panel-comment,
     .panel-guide {
       padding-left: 0.75rem;
       padding-right: 0.75rem;
+      text-align: center;
     }
   }
 
