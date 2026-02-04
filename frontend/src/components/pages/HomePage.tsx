@@ -242,8 +242,8 @@ export function HomePage() {
                   <p>3) Поддерживай баланс, добавляя квесты в слабые направления.</p>
                 </div>
                 <div className="panel-base panel-lime">
-                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                    <div className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4">
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-stretch">
+                    <div className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4 h-full">
                       <div className="flex items-center gap-2 mb-4">
                         <Bell className="w-5 h-5 text-purple-400" />
                         <h2 className="text-purple-300">Последние квесты</h2>
@@ -282,7 +282,7 @@ export function HomePage() {
                       )}
                     </div>
 
-                    <div className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4">
+                    <div className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4 h-full">
                       <div className="flex items-center justify-between mb-4">
                         <p className="text-slate-100">Активности по фокусам</p>
                         <span className="text-xs text-slate-300/60">Завершенные квесты</span>
