@@ -101,16 +101,16 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950 flex items-center justify-center px-8 py-12">
+    <div className="relative min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950 flex items-center justify-center px-8 py-12">
+      <div className="absolute left-6 top-6">
+        <Shield className="w-20 h-20 sm:w-24 sm:h-24 text-amber-400" />
+      </div>
       <div className="w-full max-w-md">
         <div className="relative bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-4 border-amber-600/60 p-10 sm:p-12 shadow-2xl backdrop-blur-sm">
-          <div className="absolute left-5 top-5">
-            <Shield className="w-28 h-28 text-amber-400" />
-          </div>
           {showForm && (
             <div className="text-center mb-8">
               <h1 className="text-amber-400 mb-2">
-                OurWay
+                Our way
               </h1>
               <p className="text-amber-200/60">Командное саморазвитие</p>
             </div>
@@ -243,28 +243,11 @@ export function LoginPage() {
             </Button>
             </form>
           )}
-          {showForm && (
-            <div className="mt-6 text-center space-y-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setIsRegisterMode(!isRegisterMode);
-                  setError('');
-                  setEmail('');
-                  setPassword('');
-                  setPassword2('');
-                }}
-                className="text-amber-400 hover:text-amber-300 text-sm underline transition-colors"
-              >
-                {isRegisterMode 
-                  ? 'Уже есть аккаунт? Войти' 
-                  : 'Нет аккаунта? Зарегистрироваться'}
-              </button>
-              {!isRegisterMode && (
-                <p className="text-amber-200/40 text-sm">
-                  Присоединяйтесь к команде и начните свое саморазвитие
-                </p>
-              )}
+          {showForm && !isRegisterMode && (
+            <div className="mt-6 text-center">
+              <p className="text-amber-200/40 text-sm">
+                Присоединяйтесь к команде и начните свое саморазвитие
+              </p>
             </div>
           )}
         </div>
