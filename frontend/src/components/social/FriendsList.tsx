@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import { Friend } from '../../types';
 import { Users, Circle, User as UserIcon } from 'lucide-react';
 import { resolveMediaUrl } from '../../utils/media';
+import { Button } from '../ui/Button';
+import { FriendProfileModal } from './FriendProfileModal';
 interface FriendsListProps {
   friends: Friend[];
 }
 export function FriendsList({ friends }: FriendsListProps) {
+  const [selectedFriendId, setSelectedFriendId] = useState<number | null>(null);
   const onlineFriends = friends.filter(f => f.is_online);
   const topFriends = [...friends].sort((a, b) => b.quests_completed_today - a.quests_completed_today).slice(0, 5);
   return (
@@ -12,6 +16,13 @@ export function FriendsList({ friends }: FriendsListProps) {
       <div className="flex items-center gap-2 mb-4">
         <Users className="w-5 h-5 text-purple-400" />
         <h2 className="text-purple-300">Друзья</h2>
+      </div>
+      <p className="panel-comment mb-4">
+        Быстрый доступ к профилям друзей и их текущему прогрессу.
+      </p>
+      <div className="panel-guide mb-4">
+        <p>1) Смотрите, кто онлайн и сколько квестов выполнено.</p>
+        <p>2) Открывайте профиль для достижений и описания.</p>
       </div>
       <div className="mb-4 p-3 bg-purple-900/20 rounded-lg border border-purple-600/30">
         <p className="text-purple-200/80 text-sm">
@@ -47,9 +58,18 @@ export function FriendsList({ friends }: FriendsListProps) {
                 <p className="text-purple-200/40 text-xs">Уровень {friend.level}</p>
               </div>
             </div>
-            <div className="text-right">
-              <p className="text-purple-300 text-sm">{friend.quests_completed_today}</p>
-              <p className="text-purple-200/40 text-xs">квестов</p>
+            <div className="text-right space-y-2">
+              <div>
+                <p className="text-purple-300 text-sm">{friend.quests_completed_today}</p>
+                <p className="text-purple-200/40 text-xs">квестов</p>
+              </div>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setSelectedFriendId(friend.id)}
+              >
+                Смотреть профиль
+              </Button>
             </div>
           </div>
         ))}
@@ -59,6 +79,10 @@ export function FriendsList({ friends }: FriendsListProps) {
           <p className="text-purple-200/40 text-sm">Пока нет друзей</p>
         </div>
       )}
+      <FriendProfileModal
+        friendId={selectedFriendId}
+        onClose={() => setSelectedFriendId(null)}
+      />
     </div>
   );
 }

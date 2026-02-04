@@ -1,17 +1,28 @@
+import { useState } from 'react';
 import { Friend } from '../../types';
 import { Users, User as UserIcon } from 'lucide-react';
 import { resolveMediaUrl } from '../../utils/media';
+import { Button } from '../ui/Button';
+import { FriendProfileModal } from './FriendProfileModal';
 
 interface AllFriendsPanelProps {
   friends: Friend[];
 }
 
 export function AllFriendsPanel({ friends }: AllFriendsPanelProps) {
+  const [selectedFriendId, setSelectedFriendId] = useState<number | null>(null);
   return (
     <div className="panel-base panel-purple p-6">
       <div className="flex items-center gap-2 mb-4">
         <Users className="w-5 h-5 text-purple-400" />
         <h2 className="text-purple-300">Все друзья</h2>
+      </div>
+      <p className="panel-comment mb-4">
+        Просматривайте статусы друзей и быстро переходите к их профилям.
+      </p>
+      <div className="panel-guide mb-4">
+        <p>1) Нажмите «Смотреть профиль», чтобы увидеть достижения.</p>
+        <p>2) Сравните уровни и опыт для мотивации.</p>
       </div>
       {friends.length > 0 ? (
         <div className="space-y-2 max-h-80 overflow-y-auto">
@@ -37,9 +48,18 @@ export function AllFriendsPanel({ friends }: AllFriendsPanelProps) {
                   <p className="text-purple-200/40 text-xs">Уровень {friend.level}</p>
                 </div>
               </div>
-              <span className={`text-xs ${friend.is_online ? 'text-green-400' : 'text-purple-200/50'}`}>
-                {friend.is_online ? 'Онлайн' : 'Оффлайн'}
-              </span>
+              <div className="flex items-center gap-3">
+                <span className={`text-xs ${friend.is_online ? 'text-green-400' : 'text-purple-200/50'}`}>
+                  {friend.is_online ? 'Онлайн' : 'Оффлайн'}
+                </span>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setSelectedFriendId(friend.id)}
+                >
+                  Смотреть профиль
+                </Button>
+              </div>
             </div>
           ))}
         </div>
@@ -48,6 +68,10 @@ export function AllFriendsPanel({ friends }: AllFriendsPanelProps) {
           <p className="text-purple-200/40 text-sm">Пока нет друзей</p>
         </div>
       )}
+      <FriendProfileModal
+        friendId={selectedFriendId}
+        onClose={() => setSelectedFriendId(null)}
+      />
     </div>
   );
 }

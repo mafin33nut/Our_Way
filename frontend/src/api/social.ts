@@ -30,6 +30,11 @@ export const socialAPI = {
     return unwrapListResponse(response.data);
   },
 
+  getUserById: async (userId: number): Promise<User> => {
+    const response = await apiClient.get<User>(`/api/users/${userId}/`);
+    return response.data;
+  },
+
   addFriend: async (userId: number): Promise<void> => {
     await apiClient.post(`/api/friends/`, { user_id: userId });
   },
