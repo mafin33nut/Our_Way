@@ -121,6 +121,7 @@ export function HomePage() {
         <div className="w-full max-w-[1200px] mx-auto">
           <div className="flex flex-col items-center gap-12">
             <div className="w-full">
+              <div className="panel-base panel-teal">
               <div className="panel-caption text-left">Профиль героя</div>
               <div className="panel-comment mb-6 min-h-[48px]">
                 Основные характеристики персонажа, уровень и прогресс в квестах.
@@ -132,7 +133,7 @@ export function HomePage() {
               </div>
               <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
 
-              <div className="mt-8 panel-base panel-teal">
+              <div className="mt-8">
                 <div className="panel-caption text-left">Достижения героя</div>
                 <div className="panel-comment mb-6 min-h-[48px]">
                   Ваши полученные достижения и текущий прогресс.
@@ -171,6 +172,7 @@ export function HomePage() {
                   )}
                 </div>
               </div>
+            </div>
             </div>
 
             <div className="w-full">
