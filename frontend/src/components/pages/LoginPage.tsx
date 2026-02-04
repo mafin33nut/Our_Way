@@ -115,7 +115,7 @@ export function LoginPage() {
           </div>
           <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 ${showForm ? 'mb-8' : ''}`}>
             <div
-              className={`group rounded-2xl border p-7 sm:p-8 min-h-[170px] transition-all duration-300 ${
+              className={`group rounded-2xl border p-5 sm:p-6 min-h-[136px] flex flex-col items-center justify-center text-center transition-all duration-300 ${
                 !isRegisterMode
                   ? 'border-amber-400/80 bg-amber-500/10 shadow-lg shadow-amber-500/20'
                   : 'border-amber-600/30 bg-slate-900/50 hover:border-amber-400/70 hover:bg-amber-500/10'
@@ -129,13 +129,13 @@ export function LoginPage() {
                   setShowForm(true);
                   setError('');
                 }}
-                className="w-full"
+                className="w-44"
               >
                 Войти
               </Button>
             </div>
             <div
-              className={`group rounded-2xl border p-7 sm:p-8 min-h-[170px] transition-all duration-300 ${
+              className={`group rounded-2xl border p-5 sm:p-6 min-h-[136px] flex flex-col items-center justify-center text-center transition-all duration-300 ${
                 isRegisterMode
                   ? 'border-amber-400/80 bg-amber-500/10 shadow-lg shadow-amber-500/20'
                   : 'border-amber-600/30 bg-slate-900/50 hover:border-amber-400/70 hover:bg-amber-500/10'
@@ -149,7 +149,7 @@ export function LoginPage() {
                   setShowForm(true);
                   setError('');
                 }}
-                className="w-full"
+                className="w-44"
               >
                 Зарегистрироваться
               </Button>
