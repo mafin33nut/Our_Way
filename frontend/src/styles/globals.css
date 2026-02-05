@@ -110,9 +110,14 @@ h3 {
   }
 
   .panel-base button {
-    font-size: 300% !important;
-    padding: 1.5rem 2.5rem !important;
+    font-size: 171% !important;
+    padding: 0.9rem 1.45rem !important;
     line-height: 1.2;
+  }
+
+  .panel-base .action-button {
+    font-size: 86% !important;
+    padding: 0.6rem 1.1rem !important;
   }
 
   .panel-base .text-xs {

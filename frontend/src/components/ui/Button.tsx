@@ -29,9 +29,9 @@ export function Button({
       'bg-amber-300/60 text-slate-900 hover:bg-amber-300 border border-amber-300/50 shadow-sm',
   };
   const sizeStyles = {
-    sm: 'px-3.5 py-2 text-sm',
-    md: 'px-5 py-2.5',
-    lg: 'px-6 py-3.5 text-lg',
+    sm: 'px-2 py-1.5 text-xs',
+    md: 'px-3 py-2 text-sm',
+    lg: 'px-4 py-2.5 text-base',
   };
   return (
     <button

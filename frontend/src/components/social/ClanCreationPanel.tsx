@@ -70,7 +70,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
       setSearchResults(results);
     } catch (err: any) {
       console.error('Search clans error:', err);
-      setError('Ошибка поиска кланов');
+      setError('');
       setSearchResults([]);
     } finally {
       setSearching(false);
@@ -216,7 +216,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
           <Button
             onClick={handleCreateClan}
             disabled={creating || !clanName.trim()}
-            className="w-full"
+            className="w-full action-button"
           >
             {creating ? (
               <>
@@ -235,14 +235,13 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
         <div className="space-y-4">
           <div className="flex gap-2">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-teal-300" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearchClans()}
                 placeholder="Введите название клана"
-                className="w-full pl-10 pr-4 py-2 rounded-lg border bg-slate-950/50 border-slate-600/40 text-slate-100 placeholder-slate-400/40 focus:outline-none focus:border-teal-300 transition-colors"
+                className="w-full px-4 py-2 rounded-lg border bg-slate-950/50 border-slate-600/40 text-slate-100 placeholder-slate-400/40 focus:outline-none focus:border-teal-300 transition-colors"
               />
             </div>
             <Button

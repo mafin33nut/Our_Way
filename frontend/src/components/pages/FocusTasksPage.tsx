@@ -218,7 +218,7 @@ export function FocusTasksPage() {
                   placeholder="Новый фокус"
                   className="flex-1 rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
                 />
-                <Button onClick={handleAddFocus} size="sm">
+                <Button onClick={handleAddFocus} size="sm" className="action-button">
                   Добавить
                 </Button>
               </div>
@@ -423,7 +423,7 @@ export function FocusTasksPage() {
                     Награда зависит от числа участников (1→30, 2→70, 3→110, 4→150, далее +60)
                   </p>
                 )}
-                <Button onClick={handleCreateTask} disabled={!canCreateTask || saving}>
+                <Button onClick={handleCreateTask} disabled={!canCreateTask || saving} className="action-button">
                   {saving ? 'Создание...' : 'Создать квест'}
                 </Button>
               </div>
