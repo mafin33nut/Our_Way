@@ -54,10 +54,6 @@ export function UserCustomizationPage() {
               </div>
             </div>
 
-            <PanelHelp>
-              <p>1) Обновите описание и сохраните изменения.</p>
-              <p>2) Проверьте данные профиля ниже.</p>
-            </PanelHelp>
             <div className="space-y-4">
                 <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-4">
                   <p className="text-xs text-purple-200/60">Email</p>
@@ -94,6 +90,10 @@ export function UserCustomizationPage() {
                 )}
               </div>
             </div>
+            <PanelHelp>
+              <p>1) Обновите описание и сохраните изменения.</p>
+              <p>2) Проверьте данные профиля ниже.</p>
+            </PanelHelp>
           </div>
         </div>
       </div>

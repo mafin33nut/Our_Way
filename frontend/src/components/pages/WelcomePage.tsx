@@ -35,10 +35,6 @@ export function WelcomePage() {
               <h2 className="text-slate-100">Добро пожаловать, {user.username}!</h2>
             </div>
             <p className="panel-comment mb-6">Гид по старту</p>
-            <PanelHelp>
-              <p>1) Пройдите шаги ниже — так вы быстрее настроите приложение под себя.</p>
-              <p>2) После этого переходите к квестам и начинайте прокачку.</p>
-            </PanelHelp>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
               <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-4">
@@ -82,6 +78,10 @@ export function WelcomePage() {
                 </p>
               </div>
             </div>
+            <PanelHelp>
+              <p>1) Пройдите шаги ниже — так вы быстрее настроите приложение под себя.</p>
+              <p>2) После этого переходите к квестам и начинайте прокачку.</p>
+            </PanelHelp>
 
             <div className="mt-8 flex justify-end">
               <Button onClick={handleContinue} size="lg">

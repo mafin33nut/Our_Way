@@ -240,7 +240,7 @@ export function ClanChatPanel({ clan, onClanUpdated }: ClanChatPanelProps) {
           </div>
 
           <div className="rounded-lg border border-rose-400/30 bg-slate-950/40 p-3">
-            <div className="max-h-64 overflow-y-auto space-y-2 mb-3">
+            <div className="max-h-64 overflow-y-auto space-y-4 mb-3">
               {messages.length === 0 ? (
                 <div className="text-center py-4 text-rose-200/60 text-sm">
                   Пока пусто

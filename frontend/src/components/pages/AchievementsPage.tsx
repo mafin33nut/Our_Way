@@ -193,15 +193,15 @@ export function AchievementsPage() {
               <Award className="w-5 h-5 text-teal-300" />
               <h2 className="text-slate-100">Достижения</h2>
             </div>
+            <div className="mt-4 flex items-center gap-3 text-sm text-slate-300/70">
+              <CheckCircle2 className="w-4 h-4 text-green-400" />
+              Получено: {unlockedCount} / {allNodes.length}
+            </div>
             <PanelHelp>
               <p>1) Выполняй квесты и повышай уровень, чтобы открыть новые блоки.</p>
               <p>2) Сверяй требования в каждом пункте списка.</p>
               <p>3) Планируй, какие группы достижений закрыть следующими.</p>
             </PanelHelp>
-            <div className="mt-4 flex items-center gap-3 text-sm text-slate-300/70">
-              <CheckCircle2 className="w-4 h-4 text-green-400" />
-              Получено: {unlockedCount} / {allNodes.length}
-            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[1200px]">

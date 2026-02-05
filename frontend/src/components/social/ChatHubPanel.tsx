@@ -266,7 +266,7 @@ export function ChatHubPanel() {
                               ))}
                             </div>
                             <div className="rounded-lg border border-purple-600/30 bg-slate-950/40 p-3">
-                              <div className="max-h-48 overflow-y-auto space-y-[8px] mb-3">
+                              <div className="max-h-48 overflow-y-auto space-y-4 mb-3">
                                 {currentMessages.length === 0 ? (
                                   <div className="text-center py-4 text-purple-200/60 text-sm">
                                     Напишите первое сообщение

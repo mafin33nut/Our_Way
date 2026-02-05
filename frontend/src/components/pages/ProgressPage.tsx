@@ -90,11 +90,6 @@ export function ProgressPage() {
         <div className="w-full max-w-[1400px] flex flex-col items-center gap-10">
           <div className="panel-base panel-purple w-full max-w-[1200px]">
             <div className="panel-caption text-center">Прогресс по квестам</div>
-            <PanelHelp className="text-center">
-              <p>1) Сравни дни с максимальным количеством квестов.</p>
-              <p>2) Проверь распределение времени — где был самый плотный день.</p>
-              <p>3) Используй итоги ниже для корректировки плана.</p>
-            </PanelHelp>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-6">
                 <h3 className="text-slate-100 mb-4">Квесты по дням</h3>
@@ -145,16 +140,21 @@ export function ProgressPage() {
                 <p className="text-lg text-slate-100">{formatMinutes(totalMinutes)}</p>
               </div>
             </div>
+            <PanelHelp className="text-center">
+              <p>1) Сравни дни с максимальным количеством квестов.</p>
+              <p>2) Проверь распределение времени — где был самый плотный день.</p>
+              <p>3) Используй итоги ниже для корректировки плана.</p>
+            </PanelHelp>
           </div>
 
           <div className="w-full max-w-[1200px]">
             <div className="panel-caption text-center">История выполнения</div>
+            <TaskHistoryPanel quests={quests} />
             <PanelHelp className="text-center">
               <p>1) Просмотри недавние завершения по времени.</p>
               <p>2) Отмечай повторяемые задачи — это ваши сильные стороны.</p>
               <p>3) Добавляй новые вызовы, если история стала однообразной.</p>
             </PanelHelp>
-            <TaskHistoryPanel quests={quests} />
           </div>
         </div>
       </div>

@@ -48,11 +48,6 @@ export function LeadersPage() {
                 <Trophy className="w-5 h-5 text-teal-300" />
                 <h2 className="text-slate-100">Лидеры</h2>
               </div>
-              <PanelHelp>
-                <p>1) Следи за топом игроков по уровню.</p>
-                <p>2) Сравни свой прогресс с ближайшими позициями.</p>
-                <p>3) Планируй цели, чтобы подняться выше.</p>
-              </PanelHelp>
               <div className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4 flex-1">
                 <div className="rounded-lg border border-slate-600/30 bg-slate-950/40 overflow-hidden">
                   <div className="max-h-[60vh] overflow-auto">
@@ -96,6 +91,11 @@ export function LeadersPage() {
                   </div>
                 </div>
               </div>
+              <PanelHelp>
+                <p>1) Следи за топом игроков по уровню.</p>
+                <p>2) Сравни свой прогресс с ближайшими позициями.</p>
+                <p>3) Планируй цели, чтобы подняться выше.</p>
+              </PanelHelp>
             </div>
 
             <div className="panel-base panel-teal p-6 flex flex-col">
@@ -103,11 +103,6 @@ export function LeadersPage() {
                 <Users className="w-5 h-5 text-teal-300" />
                 <h2 className="text-slate-100">Лидеры кланов</h2>
               </div>
-              <PanelHelp>
-                <p>1) Оцени вклад каждого клана по общему XP.</p>
-                <p>2) Смотри на лидера — он показывает темп команды.</p>
-                <p>3) Сравни рост клана с соседними позициями.</p>
-              </PanelHelp>
               <div className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4 flex-1">
                 <div className="rounded-lg border border-slate-600/30 bg-slate-950/40 overflow-hidden">
                   <div className="max-h-[60vh] overflow-auto">
@@ -158,6 +153,11 @@ export function LeadersPage() {
                   </div>
                 </div>
               </div>
+              <PanelHelp>
+                <p>1) Оцени вклад каждого клана по общему XP.</p>
+                <p>2) Смотри на лидера — он показывает темп команды.</p>
+                <p>3) Сравни рост клана с соседними позициями.</p>
+              </PanelHelp>
             </div>
         </div>
       </div>

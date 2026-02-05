@@ -18,10 +18,6 @@ export function FriendsList({ friends }: FriendsListProps) {
         <Users className="w-5 h-5 text-purple-400" />
         <h2 className="text-purple-300">Друзья</h2>
       </div>
-      <PanelHelp>
-        <p>1) Смотрите, кто онлайн и сколько квестов выполнено.</p>
-        <p>2) Открывайте профиль для достижений и описания.</p>
-      </PanelHelp>
       <div className="mb-4 p-3 bg-purple-900/20 rounded-lg border border-purple-600/30">
         <p className="text-purple-200/80 text-sm">
           Онлайн: <span className="text-purple-300">{onlineFriends.length}</span> из {friends.length}
@@ -77,6 +73,10 @@ export function FriendsList({ friends }: FriendsListProps) {
           <p className="text-purple-200/40 text-sm">Пока нет друзей</p>
         </div>
       )}
+      <PanelHelp>
+        <p>1) Смотрите, кто онлайн и сколько квестов выполнено.</p>
+        <p>2) Открывайте профиль для достижений и описания.</p>
+      </PanelHelp>
       <FriendProfileModal
         friendId={selectedFriendId}
         onClose={() => setSelectedFriendId(null)}

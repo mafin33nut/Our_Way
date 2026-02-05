@@ -201,11 +201,6 @@ export function ClansPage() {
               <Crown className="w-5 h-5 text-teal-300" />
               <h2 className="text-slate-100">Создать клановый квест</h2>
             </div>
-            <PanelHelp>
-              <p>1) Опишите цель так, чтобы её понял весь клан.</p>
-              <p>2) Укажите лимит участников — квест закроется по достижению лимита.</p>
-              <p>3) После создания пригласите участников в ленте клана.</p>
-            </PanelHelp>
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-4">
               <div className="space-y-3">
                 <input
@@ -262,6 +257,11 @@ export function ClansPage() {
                 {creatingClanQuest ? 'Создание...' : 'Создать'}
               </Button>
             </div>
+            <PanelHelp>
+              <p>1) Опишите цель так, чтобы её понял весь клан.</p>
+              <p>2) Укажите лимит участников — квест закроется по достижению лимита.</p>
+              <p>3) После создания пригласите участников в ленте клана.</p>
+            </PanelHelp>
           </div>
         )}
 

@@ -179,11 +179,6 @@ export function FocusTasksPage() {
                 <Target className="w-5 h-5 text-teal-300" />
                 <h2 className="text-slate-100">Мои направления развития</h2>
               </div>
-              <PanelHelp>
-                <p>1) Выберите направление развития, чтобы квесты ниже группировались.</p>
-                <p>2) Добавьте новое направление, если хотите вести отдельный трек.</p>
-                <p>3) Удаляйте направление только если оно больше не нужно.</p>
-              </PanelHelp>
               <div className="flex gap-3 flex-wrap mb-4">
                 {focuses.map((focus) => (
                   <div
@@ -225,6 +220,11 @@ export function FocusTasksPage() {
                   Добавить
                 </Button>
               </div>
+              <PanelHelp>
+                <p>1) Выберите направление развития, чтобы квесты ниже группировались.</p>
+                <p>2) Добавьте новое направление, если хотите вести отдельный трек.</p>
+                <p>3) Удаляйте направление только если оно больше не нужно.</p>
+              </PanelHelp>
             </div>
 
             <div className="panel-base panel-orange w-full max-w-[1200px]">
@@ -232,11 +232,6 @@ export function FocusTasksPage() {
                 <ClipboardList className="w-5 h-5 text-teal-300" />
                 <h2 className="text-slate-100">Создать квест</h2>
               </div>
-              <PanelHelp>
-                <p>1) Введите название и цель квеста в 1–2 фразы.</p>
-                <p>2) Выберите направление — так квест попадет в нужную колонку ниже.</p>
-                <p>3) Для поэтапных квестов добавьте шаги и сохраните.</p>
-              </PanelHelp>
               <div className="flex flex-wrap gap-2 mb-4">
                 {(['personal', 'clan'] as QuestMode[]).map((mode) => (
                   <button
@@ -433,15 +428,15 @@ export function FocusTasksPage() {
                 )}
               </div>
               {error && <p className="text-sm text-rose-200 mt-3">{error}</p>}
+              <PanelHelp>
+                <p>1) Введите название и цель квеста в 1–2 фразы.</p>
+                <p>2) Выберите направление — так квест попадет в нужную колонку ниже.</p>
+                <p>3) Для поэтапных квестов добавьте шаги и сохраните.</p>
+              </PanelHelp>
             </div>
 
           <div className="panel-base panel-sky w-full max-w-[1200px]">
             <div className="panel-caption text-center">Мои квесты по направлениям</div>
-              <PanelHelp className="text-center">
-                <p>1) Выберите направление — в колонке появятся только его квесты.</p>
-                <p>2) Завершайте квесты — прогресс учитывается в статистике.</p>
-                <p>3) Удаляйте лишние квесты, чтобы оставался только актуальный список.</p>
-              </PanelHelp>
             {loading ? (
               <p className="text-center text-purple-200/60">Загрузка...</p>
             ) : (
@@ -463,6 +458,11 @@ export function FocusTasksPage() {
                 })}
               </div>
             )}
+            <PanelHelp className="text-center">
+              <p>1) Выберите направление — в колонке появятся только его квесты.</p>
+              <p>2) Завершайте квесты — прогресс учитывается в статистике.</p>
+              <p>3) Удаляйте лишние квесты, чтобы оставался только актуальный список.</p>
+            </PanelHelp>
           </div>
           </div>
         </div>

@@ -114,11 +114,11 @@ export function LoginPage() {
             <p className="text-amber-200/60">Командное саморазвитие</p>
           </div>
           {!showForm && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
               <div
-                className="rounded-2xl border-2 p-10 min-h-[320px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
+                className="rounded-2xl border-2 p-4 min-h-[128px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
               >
-                <p className="text-amber-200/80 text-2xl mb-6">
+                <p className="text-amber-200/80 text-lg mb-4">
                   Рады видеть вас снова
                 </p>
                 <Button
@@ -128,15 +128,15 @@ export function LoginPage() {
                     setShowForm(true);
                     setError('');
                   }}
-                  className="w-72 px-10 py-5 text-3xl"
+                  className="w-56 px-6 py-3 text-xl"
                 >
                   Войти
                 </Button>
               </div>
               <div
-                className="rounded-2xl border-2 p-10 min-h-[320px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
+                className="rounded-2xl border-2 p-4 min-h-[128px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
               >
-                <p className="text-amber-200/80 text-2xl mb-6">
+                <p className="text-amber-200/80 text-lg mb-4">
                   Добро пожаловать
                 </p>
                 <Button
@@ -146,7 +146,7 @@ export function LoginPage() {
                     setShowForm(true);
                     setError('');
                   }}
-                  className="w-72 px-10 py-5 text-3xl"
+                  className="w-56 px-6 py-3 text-xl"
                 >
                   Зарегистрироваться
                 </Button>
@@ -154,9 +154,9 @@ export function LoginPage() {
             </div>
           )}
           {showForm && (
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="username" className="block text-sm text-amber-200 mb-2">
+              <label htmlFor="username" className="block text-xs text-amber-200 mb-2">
                 Имя пользователя
               </label>
               <input
@@ -164,14 +164,14 @@ export function LoginPage() {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-950/50 border border-amber-600/30 rounded-lg text-amber-100 placeholder-amber-200/30 focus:outline-none focus:border-amber-500 transition-colors"
+                className="w-full px-3 py-2 bg-slate-950/50 border border-amber-600/30 rounded-lg text-base text-amber-100 placeholder-amber-200/30 focus:outline-none focus:border-amber-500 transition-colors"
                 placeholder="Введите имя пользователя"
                 required
               />
             </div>
             {isRegisterMode && (
               <div>
-                <label htmlFor="email" className="block text-sm text-amber-200 mb-2">
+                <label htmlFor="email" className="block text-xs text-amber-200 mb-2">
                   Email
                 </label>
                 <input
@@ -179,14 +179,14 @@ export function LoginPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-950/50 border border-amber-600/30 rounded-lg text-amber-100 placeholder-amber-200/30 focus:outline-none focus:border-amber-500 transition-colors"
+                  className="w-full px-3 py-2 bg-slate-950/50 border border-amber-600/30 rounded-lg text-base text-amber-100 placeholder-amber-200/30 focus:outline-none focus:border-amber-500 transition-colors"
                   placeholder="Введите email"
                   required
                 />
               </div>
             )}
             <div>
-              <label htmlFor="password" className="block text-sm text-amber-200 mb-2">
+              <label htmlFor="password" className="block text-xs text-amber-200 mb-2">
                 Пароль
               </label>
               <input
@@ -194,14 +194,14 @@ export function LoginPage() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-950/50 border border-amber-600/30 rounded-lg text-amber-100 placeholder-amber-200/30 focus:outline-none focus:border-amber-500 transition-colors"
+                className="w-full px-3 py-2 bg-slate-950/50 border border-amber-600/30 rounded-lg text-base text-amber-100 placeholder-amber-200/30 focus:outline-none focus:border-amber-500 transition-colors"
                 placeholder="Введите пароль"
                 required
               />
             </div>
             {isRegisterMode && (
               <div>
-                <label htmlFor="password2" className="block text-sm text-amber-200 mb-2">
+                <label htmlFor="password2" className="block text-xs text-amber-200 mb-2">
                   Подтвердите пароль
                 </label>
                 <input
@@ -209,7 +209,7 @@ export function LoginPage() {
                   type="password"
                   value={password2}
                   onChange={(e) => setPassword2(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-950/50 border border-amber-600/30 rounded-lg text-amber-100 placeholder-amber-200/30 focus:outline-none focus:border-amber-500 transition-colors"
+                  className="w-full px-3 py-2 bg-slate-950/50 border border-amber-600/30 rounded-lg text-base text-amber-100 placeholder-amber-200/30 focus:outline-none focus:border-amber-500 transition-colors"
                   placeholder="Повторите пароль"
                   required
                 />
@@ -223,7 +223,7 @@ export function LoginPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full px-8 py-4 text-2xl"
+              className="w-full px-6 py-3 text-xl"
               size="lg"
             >
               {isRegisterMode ? (

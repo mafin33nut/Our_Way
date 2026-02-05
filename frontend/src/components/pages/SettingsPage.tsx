@@ -1,19 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Settings, Volume2, VolumeX, Sun, Moon, Eye, EyeOff, Image as ImageIcon, ArrowLeft } from 'lucide-react';
+import { Settings, Volume2, VolumeX, Eye, EyeOff, Image as ImageIcon, ArrowLeft } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useCustomization } from '../../hooks/useCustomization';
 import { BACKGROUND_OPTIONS } from '../../types';
 import { Link } from 'react-router-dom';
 import { PanelHelp } from '../ui/PanelHelp';
 
-function isTheme(value: unknown): value is 'light' | 'dark' {
-  return value === 'light' || value === 'dark';
-}
-
 export function SettingsPage() {
   const { settings, updateSettings, playVictorySound } = useCustomization();
-  const isLight = isTheme(settings.theme) && settings.theme === 'light';
-  const isDark = isTheme(settings.theme) && settings.theme === 'dark';
   const [bgImageLoaded, setBgImageLoaded] = useState(false);
   const backgroundOption = BACKGROUND_OPTIONS.find((bg) => bg.id === settings.background);
   const backgroundUrl = backgroundOption?.url || '';
@@ -77,57 +71,7 @@ export function SettingsPage() {
 
             <div className="p-6 space-y-8">
               <div>
-                <h2 className="mb-4 text-xl text-purple-200">Тема оформления</h2>
-                <PanelHelp>
-                  <p>1) Выберите тему, чтобы сразу увидеть изменения.</p>
-                  <p>2) Проверь читабельность текста на выбранном фоне.</p>
-                </PanelHelp>
-                <div className="grid grid-cols-2 gap-4">
-                  <button
-                    onClick={() => updateSettings({ theme: 'light' })}
-                    className={`p-6 rounded-lg border-2 transition-all ${
-                      isLight
-                        ? 'border-purple-500 bg-purple-900/40 shadow-lg ring-2 ring-purple-400/50'
-                        : 'border-purple-600/30 bg-slate-800/50 hover:border-purple-500/50'
-                    }`}
-                  >
-                    <Sun className={`w-8 h-8 mx-auto mb-3 ${
-                      isLight ? 'text-purple-300' : 'text-purple-400/60'
-                    }`} />
-                    <p className={`text-sm ${
-                      isLight ? 'text-purple-200' : 'text-purple-200/60'
-                    }`}>
-                      Светлая тема
-                    </p>
-                  </button>
-
-                  <button
-                    onClick={() => updateSettings({ theme: 'dark' })}
-                    className={`p-6 rounded-lg border-2 transition-all ${
-                      isDark
-                        ? 'border-purple-500 bg-purple-900/40 shadow-lg ring-2 ring-purple-400/50'
-                        : 'border-purple-600/30 bg-slate-800/50 hover:border-purple-500/50'
-                    }`}
-                  >
-                    <Moon className={`w-8 h-8 mx-auto mb-3 ${
-                      isDark ? 'text-purple-300' : 'text-purple-400/60'
-                    }`} />
-                    <p className={`text-sm ${
-                      isDark ? 'text-purple-200' : 'text-purple-200/60'
-                    }`}>
-                      Темная тема
-                    </p>
-                  </button>
-                </div>
-              </div>
-
-              <div>
                 <h2 className="mb-4 text-xl text-purple-200">Фоновое изображение</h2>
-                <PanelHelp>
-                  <p>1) Выберите готовый фон или загрузите свой.</p>
-                  <p>2) Убедитесь, что панели читаются на фоне.</p>
-                  <p>3) Если фон мешает, отключите его кнопкой ниже.</p>
-                </PanelHelp>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {BACKGROUND_OPTIONS.filter((bg) => bg.id !== 'custom').map((bg) => (
                     <button
@@ -156,14 +100,15 @@ export function SettingsPage() {
                     </button>
                   ))}
                 </div>
+                <PanelHelp>
+                  <p>1) Выберите готовый фон или загрузите свой.</p>
+                  <p>2) Убедитесь, что панели читаются на фоне.</p>
+                  <p>3) Если фон мешает, отключите его кнопкой ниже.</p>
+                </PanelHelp>
               </div>
 
               <div>
                 <h2 className="mb-4 text-xl text-purple-200">Звуковые эффекты</h2>
-                <PanelHelp>
-                  <p>1) Включите звук и проверьте громкость.</p>
-                  <p>2) Отключите, если хотите сосредоточиться без уведомлений.</p>
-                </PanelHelp>
                 <button
                   onClick={() => {
                     updateSettings({ soundEnabled: !settings.soundEnabled });
@@ -186,14 +131,14 @@ export function SettingsPage() {
                     <VolumeX className="text-purple-400/60" />
                   )}
                 </button>
+                <PanelHelp>
+                  <p>1) Включите звук и проверьте громкость.</p>
+                  <p>2) Отключите, если хотите сосредоточиться без уведомлений.</p>
+                </PanelHelp>
               </div>
 
               <div>
                 <h2 className="mb-4 text-xl text-purple-200">Отображение панелей</h2>
-                <PanelHelp>
-                  <p>1) Скрывайте панели, которые не используете регулярно.</p>
-                  <p>2) Включайте важные блоки перед планированием недели.</p>
-                </PanelHelp>
                 <div className="space-y-3">
                   <button
                     onClick={() => updateSettings({ showHelp: !settings.showHelp })}
@@ -258,6 +203,10 @@ export function SettingsPage() {
                     )}
                   </button>
                 </div>
+                <PanelHelp>
+                  <p>1) Скрывайте панели, которые не используете регулярно.</p>
+                  <p>2) Включайте важные блоки перед планированием недели.</p>
+                </PanelHelp>
               </div>
             </div>
           </div>
