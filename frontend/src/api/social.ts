@@ -140,4 +140,7 @@ export const socialAPI = {
     const response = await apiClient.get<Clan[] | { results: Clan[] }>('/api/clans/clans/');
     return unwrapListResponse(response.data);
   },
+  leaveClan: async (clanId: number): Promise<void> => {
+    await apiClient.post(`/api/clans/clans/${clanId}/leave/`);
+  },
 };

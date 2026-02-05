@@ -17,6 +17,8 @@ export function ClanHubPanel() {
   const [joinLinkPassword, setJoinLinkPassword] = useState('');
   const [joinLinkStatus, setJoinLinkStatus] = useState<string | null>(null);
   const [joinLinkLoading, setJoinLinkLoading] = useState(false);
+  const [leaveLoading, setLeaveLoading] = useState(false);
+  const [leaveStatus, setLeaveStatus] = useState<string | null>(null);
   const { settings } = useCustomization();
   const { user } = useAuth();
   const isLight = settings.theme === 'light';
@@ -73,6 +75,22 @@ export function ClanHubPanel() {
     () => clans.find((item) => item.id === selectedClanId) || null,
     [clans, selectedClanId]
   );
+
+  const handleLeaveClan = async () => {
+    if (!selectedClan) return;
+    setLeaveLoading(true);
+    setLeaveStatus(null);
+    try {
+      await socialAPI.leaveClan(selectedClan.id);
+      await loadClans();
+      setLeaveStatus(selectedClan.members?.length === 1 ? 'Клан удален.' : 'Вы покинули клан.');
+    } catch (error: any) {
+      console.error('Failed to leave clan:', error);
+      setLeaveStatus(error?.response?.data?.detail || 'Не удалось выйти из клана.');
+    } finally {
+      setLeaveLoading(false);
+    }
+  };
 
   return (
     <>
@@ -136,21 +154,39 @@ export function ClanHubPanel() {
                       ) : clans.length === 0 ? (
                         <div className="text-sm text-slate-300/70">Вы пока не состоите в кланах.</div>
                       ) : (
-                        <div className="flex flex-wrap gap-2">
-                          {clans.map((clan) => (
-                            <button
-                              key={clan.id}
-                              onClick={() => setSelectedClanId(clan.id)}
-                              className={`rounded-lg border text-xs transition-colors px-6 py-2 ${
-                                selectedClanId === clan.id
-                                  ? 'border-teal-300/60 bg-teal-400/10 text-teal-100'
-                                  : 'border-slate-600/60 text-slate-300/70 hover:border-slate-500/60'
-                              }`}
-                            >
-                              {clan.name}
-                            </button>
-                          ))}
-                        </div>
+                        <>
+                          <div className="flex flex-wrap gap-2">
+                            {clans.map((clan) => (
+                              <button
+                                key={clan.id}
+                                onClick={() => setSelectedClanId(clan.id)}
+                                className={`rounded-lg border text-xs transition-colors px-6 py-2 ${
+                                  selectedClanId === clan.id
+                                    ? 'border-teal-300/60 bg-teal-400/10 text-teal-100'
+                                    : 'border-slate-600/60 text-slate-300/70 hover:border-slate-500/60'
+                                }`}
+                              >
+                                {clan.name}
+                              </button>
+                            ))}
+                          </div>
+                          {selectedClan && (
+                            <div className="mt-4 flex flex-wrap items-center gap-3">
+                              <Button
+                                onClick={handleLeaveClan}
+                                disabled={leaveLoading}
+                                className="bg-slate-800/60 text-slate-200 hover:bg-slate-700/70 border border-slate-600/60"
+                              >
+                                {leaveLoading
+                                  ? 'Обработка...'
+                                  : (selectedClan.members?.length || 0) <= 1
+                                  ? 'Удалить клан'
+                                  : 'Покинуть клан'}
+                              </Button>
+                              {leaveStatus && <span className="text-sm text-slate-300/70">{leaveStatus}</span>}
+                            </div>
+                          )}
+                        </>
                       )}
                     </div>
 

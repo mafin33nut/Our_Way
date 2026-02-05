@@ -4,6 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.utils import timezone
+from django.db.models import Q
 from .models import Clan, ClanMember, ClanQuest, ClanQuestParticipant, ClanJoinRequest, ClanMessage
 from .serializers import (
     ClanSerializer,
@@ -77,6 +78,25 @@ class ClanViewSet(viewsets.ModelViewSet):
         clans = Clan.objects.filter(members__user=request.user).distinct()
         serializer = self.get_serializer(clans, many=True)
         return Response(serializer.data)
+
+    @action(detail=True, methods=['post'])
+    def leave(self, request, pk=None):
+        clan = self.get_object()
+        member = ClanMember.objects.filter(clan=clan, user=request.user).first()
+        if not member:
+            return Response({'detail': 'Вы не состоите в этом клане.'}, status=status.HTTP_400_BAD_REQUEST)
+        member_count = ClanMember.objects.filter(clan=clan).count()
+        if member_count <= 1:
+            clan.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        was_leader = member.role == 'leader'
+        member.delete()
+        if was_leader:
+            new_leader = ClanMember.objects.filter(clan=clan).first()
+            if new_leader and new_leader.role != 'leader':
+                new_leader.role = 'leader'
+                new_leader.save(update_fields=['role'])
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ClanMemberViewSet(viewsets.ModelViewSet): 
     queryset = ClanMember.objects.all() 
@@ -206,7 +226,11 @@ class ClanJoinRequestViewSet(viewsets.ModelViewSet):
             ).exists():
                 return self.queryset.filter(clan_id=clan_id)
             return self.queryset.none()
-        return self.queryset.filter(user=user)
+        return self.queryset.filter(
+            Q(user=user)
+            | Q(clan__created_by=user)
+            | Q(clan__members__user=user, clan__members__role='leader')
+        ).distinct()
 
     def create(self, request, *args, **kwargs):
         clan_id = request.data.get('clan')
