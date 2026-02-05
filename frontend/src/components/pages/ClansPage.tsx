@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Crown, User as UserIcon } from 'lucide-react';
+import { Crown } from 'lucide-react';
 import { clanQuestsAPI } from '../../api/quests';
 import { socialAPI } from '../../api/social';
 import { Clan, ClanQuest } from '../../types';
@@ -8,7 +8,6 @@ import { ClanCreationPanel } from '../social/ClanCreationPanel';
 import { ClanChatPanel } from '../social/ClanChatPanel';
 import { useAuth } from '../../hooks/useAuth';
 import { Loader } from '../ui/Loader';
-import { resolveMediaUrl } from '../../utils/media';
 import { Button } from '../ui/Button';
 import { PanelHelp } from '../ui/PanelHelp';
 
@@ -45,7 +44,7 @@ export function ClansPage() {
       if (clanQuestsRes.status === 'fulfilled') setClanQuests(clanQuestsRes.value || []);
       if (clanList.length > 0) {
         setSelectedClanId((prev) =>
-          prev && clanList.some((clanItem) => clanItem.id === prev) ? prev : clanList[0].id
+          prev && clanList.some((clanItem) => clanItem.id === prev) ? prev : null
         );
       } else {
         setSelectedClanId(null);
@@ -158,11 +157,6 @@ export function ClansPage() {
     () => clans.find((item) => item.id === selectedClanId) || null,
     [clans, selectedClanId]
   );
-  const members = selectedClan?.members
-    ? [...selectedClan.members].sort(
-        (a, b) => (b.level ?? 0) - (a.level ?? 0) || a.username.localeCompare(b.username)
-      )
-    : [];
   const selectedClanQuests = selectedClan
     ? clanQuests.filter((quest) => quest.clan === selectedClan.id)
     : [];
@@ -176,56 +170,52 @@ export function ClansPage() {
       <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1400px] flex flex-col gap-12">
           <div className="panel-caption text-left">Кланы</div>
-          <div className="panel-base panel-rose p-6">
+          <div className="panel-base panel-purple p-6">
             <div className="flex items-center gap-2 mb-4">
               <Crown className="w-5 h-5 text-teal-300" />
               <h2 className="text-slate-100">Мои кланы</h2>
             </div>
-            <div className="rounded-lg border border-slate-600/40 bg-slate-950/40 p-4 mb-4">
+            <div className="rounded-lg border border-slate-600/40 bg-slate-950/40 p-4">
               {clans.length === 0 ? (
                 <p className="text-slate-300/70 text-sm">Вы пока не состоите в кланах.</p>
               ) : (
-                <div className="space-y-2">
-                  {clans.map((clan) => (
-                    <div
-                      key={clan.id}
-                      className="flex items-center justify-between rounded-lg border border-slate-600/40 bg-slate-900/50 px-3 py-2"
-                    >
-                      <div>
-                        <p className="text-slate-100">{clan.name}</p>
-                        <p className="text-xs text-slate-300/70">
-                          Участников: {clan.members?.length || 0}
-                        </p>
-                      </div>
-                      <span className="text-xs text-slate-300/60">ID: {clan.id}</span>
-                    </div>
-                  ))}
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="text-slate-300/80">
+                      <tr>
+                        <th className="px-3 py-2 text-left">Клан</th>
+                        <th className="px-3 py-2 text-left">Участники</th>
+                        <th className="px-3 py-2 text-right">Переключить</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {clans.map((clan) => (
+                        <tr
+                          key={clan.id}
+                          className="border-t border-slate-600/30"
+                        >
+                          <td className="px-3 py-3 text-slate-100">{clan.name}</td>
+                          <td className="px-3 py-3 text-slate-300/70">
+                            {clan.members?.length || 0}
+                          </td>
+                          <td className="px-3 py-3 text-right">
+                            <button
+                              onClick={() => setSelectedClanId(clan.id)}
+                              className={`rounded-lg border text-xs transition-colors px-9 py-2.5 ${
+                                selectedClanId === clan.id
+                                  ? 'border-teal-300/60 bg-teal-400/10 text-teal-100'
+                                  : 'border-slate-600/60 text-slate-300/70 hover:border-slate-500/60'
+                              }`}
+                            >
+                              Переключиться
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               )}
-            </div>
-            <div className="rounded-lg border border-slate-600/40 bg-slate-950/40 p-4">
-              <p className="text-sm text-slate-200 mb-2">Вступить в приватный клан по ссылке</p>
-              <div className="flex flex-col gap-3">
-                <input
-                  value={joinLink}
-                  onChange={(e) => setJoinLink(e.target.value)}
-                  placeholder="Вставьте ссылку или ID клана"
-                  className="w-full rounded-lg border border-slate-600/40 bg-slate-950/50 px-3 py-2 text-slate-100"
-                />
-                <input
-                  value={joinLinkPassword}
-                  onChange={(e) => setJoinLinkPassword(e.target.value)}
-                  placeholder="Пароль (если нужен)"
-                  type="password"
-                  className="w-full rounded-lg border border-slate-600/40 bg-slate-950/50 px-3 py-2 text-slate-100"
-                />
-                <div className="flex items-center justify-between gap-3">
-                  <Button onClick={handleJoinByLink} disabled={joinLinkLoading} className="action-button">
-                    {joinLinkLoading ? 'Отправка...' : 'Отправить запрос'}
-                  </Button>
-                  {joinLinkStatus && <span className="text-sm text-slate-300/70">{joinLinkStatus}</span>}
-                </div>
-              </div>
             </div>
           </div>
           {loadError && (
@@ -234,117 +224,13 @@ export function ClansPage() {
             </div>
           )}
 
-          {clans.length === 0 ? (
+          {clans.length === 0 && (
             <div className="panel-base panel-purple p-6">
               <ClanCreationPanel onClanCreated={handleClanCreated} />
             </div>
-          ) : (
-            <div className="panel-base panel-purple p-6">
-              <div className="flex items-center gap-2 mb-3">
-                <Crown className="w-5 h-5 text-teal-300" />
-                <h2 className="text-slate-100">Ваши кланы</h2>
-              </div>
-              <PanelHelp>
-                <p>1) Выберите клан, чтобы увидеть участников и статистику.</p>
-                <p>2) Следите за XP — он влияет на позицию в рейтинге.</p>
-                <p>3) Создавайте клановые квесты ниже, чтобы ускорить рост.</p>
-              </PanelHelp>
-              {clans.length > 1 && (
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {clans.map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => setSelectedClanId(item.id)}
-                      className={`px-3 py-1.5 rounded-lg border text-xs transition-colors ${
-                        selectedClanId === item.id
-                          ? 'border-teal-300/60 bg-teal-400/10 text-teal-100'
-                          : 'border-slate-600/60 text-slate-300/70 hover:border-slate-500/60'
-                      }`}
-                    >
-                      {item.name}
-                    </button>
-                  ))}
-                </div>
-              )}
-              {selectedClan ? (
-                <>
-                  <div className="space-y-2 text-sm mb-4">
-                    <div className="flex justify-between text-slate-300/80">
-                      <span>Название</span>
-                      <span className="text-slate-100">{selectedClan.name}</span>
-                    </div>
-                    <div className="flex justify-between text-slate-300/80">
-                      <span>Участники</span>
-                      <span className="text-slate-100">{selectedClan.members?.length || 0}</span>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-3">
-                      <p className="text-xs text-slate-300/70">Уровень</p>
-                      <p className="text-lg text-slate-100">{selectedClan.level || 1}</p>
-                    </div>
-                    <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-3">
-                      <p className="text-xs text-slate-300/70">Общий опыт</p>
-                      <p className="text-lg text-slate-100">
-                        {(selectedClan.total_xp || 0).toLocaleString()}
-                      </p>
-                    </div>
-                    <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-3">
-                      <p className="text-xs text-slate-300/70">Участников</p>
-                      <p className="text-lg text-slate-100">{selectedClan.members?.length || 0}</p>
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <p className="text-xs text-slate-300/70 mb-2">Участники</p>
-                    <div className="space-y-2">
-                      {members.length ? (
-                        members.map((member, index) => (
-                          <div
-                            key={member.id}
-                            className="flex items-center justify-between rounded-lg border border-slate-600/40 bg-slate-900/50 px-3 py-2"
-                          >
-                            <div className="flex items-center gap-3 min-w-0">
-                              <span className="text-xs text-slate-300/70 w-5 text-right">
-                                {index + 1}
-                              </span>
-                              {resolveMediaUrl(member.avatar) ? (
-                                <img
-                                  src={resolveMediaUrl(member.avatar) as string}
-                                  alt={member.username}
-                                  className="w-8 h-8 rounded-full object-cover border border-teal-300/60"
-                                />
-                              ) : (
-                                <div className="w-8 h-8 rounded-full bg-slate-800/70 border border-teal-300/60 flex items-center justify-center text-slate-200">
-                                  <UserIcon className="w-4 h-4" />
-                                </div>
-                              )}
-                              <div className="min-w-0">
-                                <p className="text-sm text-slate-200 truncate">{member.username}</p>
-                                <p className="text-xs text-slate-300/60">
-                                  Уровень {member.level}
-                                </p>
-                              </div>
-                            </div>
-                            <span className="text-xs text-slate-300/70">
-                              {member.contribution} XP
-                            </span>
-                          </div>
-                        ))
-                      ) : (
-                        <div className="text-center py-4 text-slate-300/60 text-sm">
-                          Пока нет участников
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <ClanCreationPanel onClanCreated={handleClanCreated} />
-              )}
-            </div>
           )}
 
-          {clans.length > 0 && (
+          {selectedClan && (
             <div className="panel-base panel-teal p-6">
               <div className="flex items-center gap-2 mb-4">
                 <Crown className="w-5 h-5 text-teal-300" />
@@ -355,6 +241,30 @@ export function ClansPage() {
                 <p>2) Найдите кланы по названию и отправьте запрос на вступление.</p>
                 <p>3) После одобрения клан появится в списке выше.</p>
               </PanelHelp>
+              <div className="rounded-lg border border-slate-600/40 bg-slate-950/40 p-4 mt-4">
+                <p className="text-sm text-slate-200 mb-2">Вступить в приватный клан по ссылке</p>
+                <div className="flex flex-col gap-3">
+                  <input
+                    value={joinLink}
+                    onChange={(e) => setJoinLink(e.target.value)}
+                    placeholder="Вставьте ссылку или ID клана"
+                    className="w-full rounded-lg border border-slate-600/40 bg-slate-950/50 px-3 py-2 text-slate-100"
+                  />
+                  <input
+                    value={joinLinkPassword}
+                    onChange={(e) => setJoinLinkPassword(e.target.value)}
+                    placeholder="Пароль (если нужен)"
+                    type="password"
+                    className="w-full rounded-lg border border-slate-600/40 bg-slate-950/50 px-3 py-2 text-slate-100"
+                  />
+                  <div className="flex items-center justify-between gap-3">
+                    <Button onClick={handleJoinByLink} disabled={joinLinkLoading} className="action-button">
+                      {joinLinkLoading ? 'Отправка...' : 'Отправить запрос'}
+                    </Button>
+                    {joinLinkStatus && <span className="text-sm text-slate-300/70">{joinLinkStatus}</span>}
+                  </div>
+                </div>
+              </div>
               <ClanCreationPanel onClanCreated={handleClanCreated} />
             </div>
           )}
