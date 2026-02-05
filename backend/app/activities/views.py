@@ -213,15 +213,20 @@ class QuestViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        if quest.steps.exists() and quest.steps.filter(completed=False).exists():
-            return Response(
-                {'detail': 'Нельзя завершить задание, пока не выполнены все этапы.'},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+        step_bonus = 0
+        if quest.steps.exists():
+            completed_steps = quest.steps.filter(completed=True)
+            for step in completed_steps:
+                step_bonus += {
+                    'easy': 30,
+                    'medium': 50,
+                    'hard': 70,
+                }.get(step.difficulty or 'easy', 30)
+            quest.xp_reward = 100 + step_bonus
 
         quest.completed = True
         quest.completed_at = timezone.now()
-        quest.save()
+        quest.save(update_fields=['completed', 'completed_at', 'xp_reward'])
 
         # начисление очков пользователю (если поля есть)
         user = request.user

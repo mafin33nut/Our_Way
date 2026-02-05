@@ -89,6 +89,30 @@ class ClanMemberViewSet(viewsets.ModelViewSet):
             status=status.HTTP_400_BAD_REQUEST
         )
 
+    def _can_manage(self, clan, user) -> bool:
+        is_creator = clan.created_by == user
+        is_leader = ClanMember.objects.filter(clan=clan, user=user, role='leader').exists()
+        return is_creator or is_leader
+
+    @action(detail=True, methods=['post'])
+    def promote(self, request, pk=None):
+        member = self.get_object()
+        if not self._can_manage(member.clan, request.user):
+            return Response({'detail': 'Только лидер клана может назначать лидеров.'}, status=403)
+        member.role = 'leader'
+        member.save(update_fields=['role'])
+        return Response(self.get_serializer(member).data)
+
+    @action(detail=True, methods=['post'])
+    def remove(self, request, pk=None):
+        member = self.get_object()
+        if not self._can_manage(member.clan, request.user):
+            return Response({'detail': 'Только лидер клана может исключать участников.'}, status=403)
+        if member.clan.created_by_id == member.user_id:
+            return Response({'detail': 'Нельзя исключить создателя клана.'}, status=400)
+        member.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 class CurrentClanView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     

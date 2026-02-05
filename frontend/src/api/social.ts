@@ -95,6 +95,14 @@ export const socialAPI = {
     return unwrapListResponse(response.data);
   },
 
+  promoteClanMember: async (memberId: number): Promise<void> => {
+    await apiClient.post(`/api/clans/members/${memberId}/promote/`);
+  },
+
+  removeClanMember: async (memberId: number): Promise<void> => {
+    await apiClient.post(`/api/clans/members/${memberId}/remove/`);
+  },
+
   sendClanMessage: async (clanId: number, content: string): Promise<ClanMessage> => {
     const response = await apiClient.post<ClanMessage>('/api/clans/messages/', {
       clan: clanId,

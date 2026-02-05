@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Settings, X, Volume2, VolumeX, Sun, Moon, Eye, EyeOff, Image } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useCustomization } from '../../hooks/useCustomization';
@@ -17,13 +17,7 @@ function isTheme(value: unknown): value is 'light' | 'dark' {
 export function CustomizationPanel() {
   const [isOpen, setIsOpen] = useState(false);
   const { settings, updateSettings, playVictorySound } = useCustomization();
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const currentBackground = BACKGROUND_OPTIONS.find(bg => bg.id === settings.background);
-  const customBackgroundUrl = settings.customBackgroundUrl?.trim() || '';
-  const customPreview =
-    settings.background === 'custom' && customBackgroundUrl
-      ? customBackgroundUrl
-      : '';
 
   // Helpers to determine theme safely (using guard)
   const isLight = isTheme(settings.theme) && settings.theme === 'light';
@@ -127,7 +121,7 @@ export function CustomizationPanel() {
                   Фоновое изображение
                 </h3>
                 <div className="grid grid-cols-3 gap-3">
-                  {BACKGROUND_OPTIONS.map((bg) => (
+                  {BACKGROUND_OPTIONS.filter((bg) => bg.id !== 'custom').map((bg) => (
                     <button
                       key={bg.id}
                       onClick={() => updateSettings({ background: bg.id })}
@@ -141,13 +135,7 @@ export function CustomizationPanel() {
                               : 'border-purple-600/30 hover:border-purple-500/50')
                       }`}
                     >
-                      {bg.id === 'custom' && customPreview ? (
-                        <img
-                          src={customPreview}
-                          alt={bg.name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : bg.url ? (
+                      {bg.url ? (
                         <img
                           src={bg.url}
                           alt={bg.name}
@@ -171,46 +159,6 @@ export function CustomizationPanel() {
                       </div>
                     </button>
                   ))}
-                </div>
-                <div className="mt-4 flex flex-wrap items-center gap-3">
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (!file) return;
-                      const reader = new FileReader();
-                      reader.onload = () => {
-                        const result = typeof reader.result === 'string' ? reader.result : '';
-                        updateSettings({
-                          background: 'custom',
-                          customBackgroundUrl: result,
-                        });
-                      };
-                      reader.readAsDataURL(file);
-                      e.currentTarget.value = '';
-                    }}
-                  />
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    Загрузить свой фон
-                  </Button>
-                  {customBackgroundUrl && (
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() =>
-                        updateSettings({ background: 'none', customBackgroundUrl: '' })
-                      }
-                    >
-                      Удалить свой фон
-                    </Button>
-                  )}
                 </div>
               </div>
 

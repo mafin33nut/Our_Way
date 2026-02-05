@@ -40,11 +40,10 @@ export function QuestCard({ quest, onComplete, onDelete, onStepComplete }: Quest
     }
   };
 
-  const allStepsDone = steps.length === 0 || steps.every((step) => step.completed);
   const createdAtMs = Number.isFinite(Date.parse(quest.created_at)) ? Date.parse(quest.created_at) : 0;
   const cooldownMs = 30_000;
   const remainingMs = createdAtMs ? Math.max(0, cooldownMs - (now - createdAtMs)) : 0;
-  const canComplete = allStepsDone && !quest.completed && remainingMs === 0;
+  const canComplete = !quest.completed && remainingMs === 0;
 
   return (
     <div className="group relative ...">
@@ -71,20 +70,18 @@ export function QuestCard({ quest, onComplete, onDelete, onStepComplete }: Quest
         </div>
       )}
       <div className="flex items-center gap-2 mt-3">
-        {steps.length === 0 && (
-          <Button
-            onClick={() => canComplete && onComplete(quest.id)}
-            disabled={!canComplete}
-            size="sm"
-            title={
-              remainingMs > 0
-                ? `Доступно через ${Math.ceil(remainingMs / 1000)} сек.`
-                : 'Завершить'
-            }
-          >
-            Завершить
-          </Button>
-        )}
+        <Button
+          onClick={() => canComplete && onComplete(quest.id)}
+          disabled={!canComplete}
+          size="sm"
+          title={
+            remainingMs > 0
+              ? `Доступно через ${Math.ceil(remainingMs / 1000)} сек.`
+              : 'Завершить'
+          }
+        >
+          Завершить
+        </Button>
         <Button
           onClick={() => onDelete(quest.id)}
           size="sm"

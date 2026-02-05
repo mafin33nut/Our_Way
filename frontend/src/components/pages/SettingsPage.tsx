@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Settings, Volume2, VolumeX, Sun, Moon, Eye, EyeOff, Image as ImageIcon, ArrowLeft } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useCustomization } from '../../hooks/useCustomization';
@@ -15,22 +15,13 @@ export function SettingsPage() {
   const isLight = isTheme(settings.theme) && settings.theme === 'light';
   const isDark = isTheme(settings.theme) && settings.theme === 'dark';
   const [bgImageLoaded, setBgImageLoaded] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
   const backgroundOption = BACKGROUND_OPTIONS.find((bg) => bg.id === settings.background);
-  const backgroundUrl =
-    settings.background === 'custom'
-      ? settings.customBackgroundUrl || ''
-      : backgroundOption?.url || '';
+  const backgroundUrl = backgroundOption?.url || '';
   const hasBackground =
     settings.background &&
     settings.background !== 'none' &&
     backgroundUrl &&
     backgroundUrl.trim() !== '';
-  const customPreview =
-    settings.background === 'custom' && settings.customBackgroundUrl
-      ? settings.customBackgroundUrl
-      : '';
 
   useEffect(() => {
     if (hasBackground && backgroundUrl) {
@@ -138,7 +129,7 @@ export function SettingsPage() {
                   <p>3) Если фон мешает, отключите его кнопкой ниже.</p>
                 </PanelHelp>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {BACKGROUND_OPTIONS.map((bg) => (
+                  {BACKGROUND_OPTIONS.filter((bg) => bg.id !== 'custom').map((bg) => (
                     <button
                       key={bg.id}
                       onClick={() => updateSettings({ background: bg.id })}
@@ -148,13 +139,7 @@ export function SettingsPage() {
                           : 'border-purple-600/30 hover:border-purple-500/50'
                       }`}
                     >
-                      {bg.id === 'custom' && customPreview ? (
-                        <img
-                          src={customPreview}
-                          alt={bg.name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : bg.url ? (
+                      {bg.url ? (
                         <img
                           src={bg.url}
                           alt={bg.name}
@@ -170,40 +155,6 @@ export function SettingsPage() {
                       </div>
                     </button>
                   ))}
-                </div>
-                <div className="mt-4 flex flex-wrap items-center gap-3">
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (!file) return;
-                      const reader = new FileReader();
-                      reader.onload = () => {
-                        const result = typeof reader.result === 'string' ? reader.result : '';
-                        updateSettings({
-                          background: 'custom',
-                          customBackgroundUrl: result,
-                        });
-                      };
-                      reader.readAsDataURL(file);
-                      e.currentTarget.value = '';
-                    }}
-                  />
-                  <Button size="sm" variant="ghost" onClick={() => fileInputRef.current?.click()}>
-                    Добавить свой фон
-                  </Button>
-                  {settings.customBackgroundUrl && (
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => updateSettings({ background: 'none', customBackgroundUrl: '' })}
-                    >
-                      Удалить свой фон
-                    </Button>
-                  )}
                 </div>
               </div>
 

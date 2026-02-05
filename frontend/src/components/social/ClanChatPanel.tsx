@@ -19,6 +19,7 @@ export function ClanChatPanel({ clan, onClanUpdated }: ClanChatPanelProps) {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [actioningRequestId, setActioningRequestId] = useState<number | null>(null);
+  const [actioningMemberId, setActioningMemberId] = useState<number | null>(null);
 
   const isLeader = useMemo(() => {
     const member = clan.members?.find((item) => item.username === user?.username);
@@ -94,6 +95,34 @@ export function ClanChatPanel({ clan, onClanUpdated }: ClanChatPanelProps) {
     }
   };
 
+  const handlePromote = async (memberId: number) => {
+    setActioningMemberId(memberId);
+    setError(null);
+    try {
+      await socialAPI.promoteClanMember(memberId);
+      await onClanUpdated();
+    } catch (err) {
+      console.error('Failed to promote member:', err);
+      setError('Не удалось назначить лидера.');
+    } finally {
+      setActioningMemberId(null);
+    }
+  };
+
+  const handleRemove = async (memberId: number) => {
+    setActioningMemberId(memberId);
+    setError(null);
+    try {
+      await socialAPI.removeClanMember(memberId);
+      await onClanUpdated();
+    } catch (err) {
+      console.error('Failed to remove member:', err);
+      setError('Не удалось исключить участника.');
+    } finally {
+      setActioningMemberId(null);
+    }
+  };
+
   return (
     <div className="panel-base panel-rose p-6">
       <div className="flex items-center gap-2 mb-4">
@@ -111,6 +140,57 @@ export function ClanChatPanel({ clan, onClanUpdated }: ClanChatPanelProps) {
         <div className="text-center py-6 text-rose-200/70">Загрузка...</div>
       ) : (
         <>
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm text-rose-200/80">Участники клана</p>
+              <span className="text-xs text-rose-200/60">{clan.members?.length || 0}</span>
+            </div>
+            <div className="space-y-2 max-h-48 overflow-y-auto">
+              {(clan.members || []).map((member) => {
+                const isSelf = member.username === user?.username;
+                return (
+                  <div
+                    key={member.id}
+                    className="flex items-center justify-between rounded-lg border border-rose-400/30 bg-slate-950/40 px-3 py-2"
+                  >
+                    <div className="min-w-0">
+                      <p className="text-sm text-rose-100 truncate">
+                        {member.username}
+                        {member.role === 'leader' && (
+                          <span className="ml-2 text-xs text-rose-200/60">лидер</span>
+                        )}
+                      </p>
+                      <p className="text-xs text-rose-200/60">Уровень {member.level}</p>
+                    </div>
+                    {isLeader && !isSelf && (
+                      <div className="flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          variant="softAmber"
+                          onClick={() => handlePromote(member.id)}
+                          disabled={actioningMemberId === member.id}
+                        >
+                          {actioningMemberId === member.id ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            'Лидер'
+                          )}
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleRemove(member.id)}
+                          disabled={actioningMemberId === member.id}
+                        >
+                          Исключить
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
               <p className="text-sm text-rose-200/80">Запросы на вступление</p>

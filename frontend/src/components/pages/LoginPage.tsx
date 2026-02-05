@@ -2,7 +2,7 @@ import { useState, FormEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../../components/ui/Button';
-import { LogIn, Shield } from 'lucide-react';
+import { Shield } from 'lucide-react';
 
 export function LoginPage() {
   const [isRegisterMode, setIsRegisterMode] = useState(false);
@@ -232,7 +232,6 @@ export function LoginPage() {
                 </>
               ) : (
                 <>
-                  <LogIn className="w-4 h-4 mr-2" />
                   {loading ? 'Вход...' : 'Войти'}
                 </>
               )}
