@@ -35,9 +35,7 @@ export function WelcomePage() {
               <Sparkles className="w-5 h-5 text-teal-300" />
               <h2 className="text-slate-100">Добро пожаловать, {user.username}!</h2>
             </div>
-            <p className="panel-comment mb-6">
-              Это краткий гид по приложению, чтобы быстрее начать приключение.
-            </p>
+            <p className="panel-comment mb-6">Добро пожаловать</p>
             <PanelHelp>
               <p>1) Пройдите шаги ниже, чтобы начать с правильных настроек.</p>
               <p>2) После этого переходите к квестам и создавайте первые задачи.</p>

@@ -91,7 +91,7 @@ export function ProgressPage() {
           <div className="panel-base panel-purple w-full max-w-[1200px]">
             <div className="panel-caption text-center">Прогресс по квестам</div>
             <div className="panel-comment text-center mb-8">
-              Статистика за последние 7 дней: выполненные квесты и время в них.
+              Прогресс по квестам
             </div>
             <PanelHelp className="text-center">
               <p>1) Сравни дни с максимальным количеством квестов.</p>
@@ -153,7 +153,7 @@ export function ProgressPage() {
           <div className="w-full max-w-[1200px]">
             <div className="panel-caption text-center">История выполнения</div>
             <div className="panel-comment text-center mb-8">
-              Последние завершённые квесты и статистика за день.
+              История выполнения
             </div>
             <PanelHelp className="text-center">
               <p>1) Просмотри недавние завершения по времени.</p>

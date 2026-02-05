@@ -215,8 +215,14 @@ class ClanJoinRequestViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def approve(self, request, pk=None):
         join_request = self.get_object()
-        if join_request.clan.created_by != request.user:
-            return Response({'detail': 'Только создатель клана может одобрить запрос.'}, status=403)
+        is_creator = join_request.clan.created_by == request.user
+        is_leader = ClanMember.objects.filter(
+            clan=join_request.clan,
+            user=request.user,
+            role='leader'
+        ).exists()
+        if not (is_creator or is_leader):
+            return Response({'detail': 'Только лидер клана может одобрить запрос.'}, status=403)
         if join_request.status == ClanJoinRequest.STATUS_APPROVED:
             return Response(self.get_serializer(join_request).data)
         join_request.status = ClanJoinRequest.STATUS_APPROVED
@@ -231,8 +237,14 @@ class ClanJoinRequestViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def reject(self, request, pk=None):
         join_request = self.get_object()
-        if join_request.clan.created_by != request.user:
-            return Response({'detail': 'Только создатель клана может отклонить запрос.'}, status=403)
+        is_creator = join_request.clan.created_by == request.user
+        is_leader = ClanMember.objects.filter(
+            clan=join_request.clan,
+            user=request.user,
+            role='leader'
+        ).exists()
+        if not (is_creator or is_leader):
+            return Response({'detail': 'Только лидер клана может отклонить запрос.'}, status=403)
         join_request.status = ClanJoinRequest.STATUS_REJECTED
         join_request.save(update_fields=['status', 'updated_at'])
         return Response(self.get_serializer(join_request).data)

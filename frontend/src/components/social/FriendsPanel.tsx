@@ -127,18 +127,14 @@ export function FriendsPanel() {
                       friendIds={friends.map((friend) => friend.id)}
                       currentUserId={user.id}
                     />
-                    <div className="panel-comment">
-                      Найдите новых друзей по имени или никнейму.
-                    </div>
+                    <div className="panel-comment">Поиск друзей</div>
                     {loading ? (
                       <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
                         Загрузка списка друзей...
                       </div>
                     ) : (
                       <>
-                        <div className="panel-comment">
-                          Список друзей с быстрым доступом к профилям.
-                        </div>
+                        <div className="panel-comment">Ваши друзья</div>
                         <AllFriendsPanel friends={friends} />
                       </>
                     )}

@@ -136,7 +136,7 @@ export function ClansPage() {
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
       <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1400px] flex flex-col gap-12">
-          <div className="panel-caption text-left">Кланы</div>
+          <div className="panel-caption text-left">Клановые квесты</div>
           <div className="panel-base panel-purple p-6">
             <div className="flex items-center gap-2 mb-4">
               <Crown className="w-5 h-5 text-teal-300" />
@@ -152,14 +152,15 @@ export function ClansPage() {
                       <tr>
                         <th className="px-3 py-2 text-left">Клан</th>
                         <th className="px-3 py-2 text-left">Участники</th>
-                        <th className="px-3 py-2 text-right">Переключить</th>
+                        <th className="px-3 py-2 text-right" />
                       </tr>
                     </thead>
                     <tbody>
                       {clans.map((clan) => (
                         <tr
                           key={clan.id}
-                          className="border-t border-slate-600/30"
+                          className="border-t border-slate-600/30 cursor-pointer"
+                          onClick={() => setSelectedClanId(clan.id)}
                         >
                           <td className="px-3 py-3 text-slate-100">{clan.name}</td>
                           <td className="px-3 py-3 text-slate-300/70">
@@ -167,6 +168,7 @@ export function ClansPage() {
                           </td>
                           <td className="px-3 py-3 text-right">
                             <button
+                              type="button"
                               onClick={() => setSelectedClanId(clan.id)}
                               className={`rounded-lg border text-xs transition-colors px-9 py-2.5 ${
                                 selectedClanId === clan.id

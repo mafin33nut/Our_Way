@@ -5,7 +5,7 @@ import { useCustomization } from '../../hooks/useCustomization';
 const NAV_ITEMS = [
   { to: '/', label: 'Главная', icon: Home },
   { to: '/quests', label: 'Квесты', icon: ListChecks },
-  { to: '/clans', label: 'Кланы', icon: Crown },
+  { to: '/clans', label: 'Клановые квесты', icon: Crown },
   { to: '/leaders', label: 'Лидеры', icon: Trophy },
   { to: '/achievements', label: 'Достижения', icon: Star },
   { to: '/progress', label: 'Прогресс', icon: BarChart2 },

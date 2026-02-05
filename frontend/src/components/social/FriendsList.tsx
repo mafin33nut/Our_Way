@@ -18,9 +18,7 @@ export function FriendsList({ friends }: FriendsListProps) {
         <Users className="w-5 h-5 text-purple-400" />
         <h2 className="text-purple-300">Друзья</h2>
       </div>
-      <p className="panel-comment mb-4">
-        Быстрый доступ к профилям друзей и их текущему прогрессу.
-      </p>
+      <p className="panel-comment mb-4">Друзья</p>
       <PanelHelp>
         <p>1) Смотрите, кто онлайн и сколько квестов выполнено.</p>
         <p>2) Открывайте профиль для достижений и описания.</p>

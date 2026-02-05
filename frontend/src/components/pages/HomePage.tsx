@@ -125,7 +125,7 @@ export function HomePage() {
               <div className="panel-base panel-teal">
               <div className="panel-caption text-left">Профиль героя</div>
               <div className="panel-comment mb-6 min-h-[48px]">
-                Основные характеристики персонажа, уровень и прогресс в квестах.
+                Профиль героя
               </div>
               <PanelHelp>
                 <p>1) Проверь текущий уровень и прогресс до следующего.</p>
@@ -137,7 +137,7 @@ export function HomePage() {
               <div className="mt-8">
                 <div className="panel-caption text-left">Достижения героя</div>
                 <div className="panel-comment mb-6 min-h-[48px]">
-                  Ваши полученные достижения и текущий прогресс.
+                  Достижения героя
                 </div>
                 <PanelHelp>
                   <p>1) Выполняй квесты — открываются новые уровни достижений.</p>
@@ -179,7 +179,7 @@ export function HomePage() {
             <div className="w-full">
               <div className="panel-caption text-left">Текущие квесты</div>
               <div className="panel-comment mb-6">
-                Список активных квестов и выполнение.
+                Текущие квесты
               </div>
               <PanelHelp>
                 <p>1) Выполни квест и нажми «Завершить».</p>
