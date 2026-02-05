@@ -101,12 +101,12 @@ export function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950 flex items-center justify-center px-4 py-6 sm:px-8 sm:py-12">
+    <div className="relative min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950 flex items-center justify-center px-4 py-0 sm:px-8 sm:py-12">
       <div className="absolute left-6 top-6 hidden sm:block">
         <Shield className="w-20 h-20 sm:w-24 sm:h-24 text-amber-400" />
       </div>
       <div className="w-full max-w-2xl">
-        <div className="relative bg-transparent rounded-lg border-0 p-12 sm:p-20 shadow-none text-[200%] text-center">
+        <div className="relative bg-transparent rounded-lg border-0 p-0 sm:p-20 shadow-none text-[200%] text-center">
           <div className="text-center mb-6 sm:mb-8 hidden sm:block">
             <h1 className="text-amber-400 mb-3 sm:mb-2">
               Our way
