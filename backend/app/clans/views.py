@@ -1,11 +1,17 @@
-from rest_framework import viewsets, permissions, status
+from rest_framework import viewsets, permissions, status, serializers
 from datetime import timedelta
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.utils import timezone
-from .models import Clan, ClanMember, ClanQuest, ClanQuestParticipant
-from .serializers import ClanSerializer, ClanMemberSerializer, ClanQuestSerializer
+from .models import Clan, ClanMember, ClanQuest, ClanQuestParticipant, ClanJoinRequest, ClanMessage
+from .serializers import (
+    ClanSerializer,
+    ClanMemberSerializer,
+    ClanQuestSerializer,
+    ClanJoinRequestSerializer,
+    ClanMessageSerializer,
+)
 import random
 
 class ClanViewSet(viewsets.ModelViewSet): 
@@ -77,8 +83,11 @@ class ClanMemberViewSet(viewsets.ModelViewSet):
     serializer_class = ClanMemberSerializer 
     permission_classes = [permissions.IsAuthenticated]
     
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def create(self, request, *args, **kwargs):
+        return Response(
+            {'detail': 'Отправьте запрос на вступление в клан.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 class CurrentClanView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -157,3 +166,96 @@ class ClanQuestViewSet(viewsets.ModelViewSet):
             quest.xp_reward = self._calculate_xp_reward(participant_count)
         quest.save(update_fields=['total_progress', 'completed', 'xp_reward', 'required_progress'])
         return Response(ClanQuestSerializer(quest).data)
+
+
+class ClanJoinRequestViewSet(viewsets.ModelViewSet):
+    queryset = ClanJoinRequest.objects.select_related('clan', 'user')
+    serializer_class = ClanJoinRequestSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        clan_id = self.request.query_params.get('clan')
+        if clan_id:
+            if ClanMember.objects.filter(clan_id=clan_id, user=user).exists() or Clan.objects.filter(
+                id=clan_id, created_by=user
+            ).exists():
+                return self.queryset.filter(clan_id=clan_id)
+            return self.queryset.none()
+        return self.queryset.filter(user=user)
+
+    def create(self, request, *args, **kwargs):
+        clan_id = request.data.get('clan')
+        join_password = request.data.get('join_password')
+        if not clan_id:
+            return Response({'detail': 'Клан обязателен.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            clan = Clan.objects.get(id=clan_id)
+        except Clan.DoesNotExist:
+            return Response({'detail': 'Клан не найден.'}, status=status.HTTP_404_NOT_FOUND)
+        if ClanMember.objects.filter(clan=clan, user=request.user).exists():
+            return Response({'detail': 'Вы уже состоите в клане.'}, status=status.HTTP_400_BAD_REQUEST)
+        if not clan.is_public and not clan.check_join_password(join_password):
+            return Response({'detail': 'Неверный пароль для клана.'}, status=status.HTTP_403_FORBIDDEN)
+
+        join_request, created = ClanJoinRequest.objects.get_or_create(
+            clan=clan,
+            user=request.user,
+            defaults={'status': ClanJoinRequest.STATUS_PENDING},
+        )
+        if not created and join_request.status == ClanJoinRequest.STATUS_APPROVED:
+            return Response({'detail': 'Запрос уже одобрен.'}, status=status.HTTP_400_BAD_REQUEST)
+        if not created and join_request.status == ClanJoinRequest.STATUS_REJECTED:
+            join_request.status = ClanJoinRequest.STATUS_PENDING
+            join_request.save(update_fields=['status', 'updated_at'])
+
+        serializer = self.get_serializer(join_request)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @action(detail=True, methods=['post'])
+    def approve(self, request, pk=None):
+        join_request = self.get_object()
+        if join_request.clan.created_by != request.user:
+            return Response({'detail': 'Только создатель клана может одобрить запрос.'}, status=403)
+        if join_request.status == ClanJoinRequest.STATUS_APPROVED:
+            return Response(self.get_serializer(join_request).data)
+        join_request.status = ClanJoinRequest.STATUS_APPROVED
+        join_request.save(update_fields=['status', 'updated_at'])
+        ClanMember.objects.get_or_create(
+            clan=join_request.clan,
+            user=join_request.user,
+            defaults={'role': 'member'}
+        )
+        return Response(self.get_serializer(join_request).data)
+
+    @action(detail=True, methods=['post'])
+    def reject(self, request, pk=None):
+        join_request = self.get_object()
+        if join_request.clan.created_by != request.user:
+            return Response({'detail': 'Только создатель клана может отклонить запрос.'}, status=403)
+        join_request.status = ClanJoinRequest.STATUS_REJECTED
+        join_request.save(update_fields=['status', 'updated_at'])
+        return Response(self.get_serializer(join_request).data)
+
+
+class ClanMessageViewSet(viewsets.ModelViewSet):
+    queryset = ClanMessage.objects.select_related('clan', 'user')
+    serializer_class = ClanMessageSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        clan_ids = ClanMember.objects.filter(user=user).values_list('clan_id', flat=True)
+        queryset = self.queryset.filter(clan_id__in=clan_ids)
+        clan_id = self.request.query_params.get('clan')
+        if clan_id:
+            queryset = queryset.filter(clan_id=clan_id)
+        return queryset
+
+    def perform_create(self, serializer):
+        clan_id = self.request.data.get('clan')
+        if not clan_id:
+            raise serializers.ValidationError({'clan': 'Клан обязателен.'})
+        if not ClanMember.objects.filter(clan_id=clan_id, user=self.request.user).exists():
+            raise serializers.ValidationError({'detail': 'Вы не состоите в этом клане.'})
+        serializer.save(user=self.request.user)

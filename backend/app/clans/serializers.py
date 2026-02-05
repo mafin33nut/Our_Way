@@ -1,5 +1,5 @@
 from rest_framework import serializers 
-from .models import Clan, ClanMember, ClanQuest, ClanQuestParticipant
+from .models import Clan, ClanMember, ClanQuest, ClanQuestParticipant, ClanJoinRequest, ClanMessage
 from django.db.models import Sum
 
 class ClanMemberSerializer(serializers.ModelSerializer):
@@ -24,11 +24,23 @@ class ClanSerializer(serializers.ModelSerializer):
     level = serializers.SerializerMethodField()
     total_xp = serializers.SerializerMethodField()
     members = ClanMemberSerializer(many=True, read_only=True)
+    join_password = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    requires_password = serializers.SerializerMethodField()
     
     class Meta: 
         model = Clan 
-        fields = ['id', 'name', 'description', 'level', 'total_xp', 'members']
-        read_only_fields = ['id', 'level', 'total_xp', 'members']
+        fields = [
+            'id',
+            'name',
+            'description',
+            'is_public',
+            'join_password',
+            'requires_password',
+            'level',
+            'total_xp',
+            'members',
+        ]
+        read_only_fields = ['id', 'level', 'total_xp', 'members', 'requires_password']
         extra_kwargs = {
             'description': {'required': False, 'allow_blank': True}
         }
@@ -44,6 +56,26 @@ class ClanSerializer(serializers.ModelSerializer):
             ).aggregate(total=Sum('xp_reward'))['total'] or 0
         except Exception as e:
             return 0
+
+    def get_requires_password(self, obj):
+        return not obj.is_public
+
+    def validate(self, attrs):
+        is_public = attrs.get('is_public', True)
+        join_password = attrs.get('join_password', '')
+        if not is_public and not join_password:
+            raise serializers.ValidationError({'join_password': 'Для приватного клана нужен пароль.'})
+        return attrs
+
+    def create(self, validated_data):
+        join_password = validated_data.pop('join_password', '')
+        clan = Clan(**validated_data)
+        if clan.is_public:
+            clan.set_join_password(None)
+        else:
+            clan.set_join_password(join_password)
+        clan.save()
+        return clan
 
 class ClanQuestParticipantSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='user.id', read_only=True)
@@ -80,3 +112,22 @@ class ClanQuestSerializer(serializers.ModelSerializer):
 
     def get_participant_count(self, obj):
         return ClanQuestParticipant.objects.filter(quest=obj).count()
+
+
+class ClanJoinRequestSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+    clan_name = serializers.CharField(source='clan.name', read_only=True)
+
+    class Meta:
+        model = ClanJoinRequest
+        fields = ['id', 'clan', 'clan_name', 'user', 'username', 'status', 'created_at']
+        read_only_fields = ['id', 'user', 'username', 'status', 'created_at', 'clan_name']
+
+
+class ClanMessageSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+
+    class Meta:
+        model = ClanMessage
+        fields = ['id', 'clan', 'user', 'username', 'content', 'created_at']
+        read_only_fields = ['id', 'user', 'username', 'created_at']

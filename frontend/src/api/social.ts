@@ -1,10 +1,12 @@
 import { apiClient, unwrapListResponse } from './client';
-import { Friend, Clan, Activity, User } from '../types';
+import { Friend, Clan, Activity, User, ClanJoinRequest, ClanMessage } from '../types';
 export type { User } from '../types';
 
 export interface ClanCreateData {
   name: string;
   description?: string;
+  is_public?: boolean;
+  join_password?: string;
 }
 
 interface ActivityLog {
@@ -57,8 +59,48 @@ export const socialAPI = {
     return response.data;
   },
 
-  joinClan: async (clanId: number): Promise<void> => {
-    await apiClient.post('/api/clans/members/', { clan: clanId });
+  requestJoinClan: async (clanId: number, joinPassword?: string): Promise<ClanJoinRequest> => {
+    const response = await apiClient.post<ClanJoinRequest>('/api/clans/join-requests/', {
+      clan: clanId,
+      join_password: joinPassword || undefined,
+    });
+    return response.data;
+  },
+
+  getClanJoinRequests: async (clanId: number): Promise<ClanJoinRequest[]> => {
+    const response = await apiClient.get<ClanJoinRequest[] | { results: ClanJoinRequest[] }>(
+      `/api/clans/join-requests/?clan=${clanId}`
+    );
+    return unwrapListResponse(response.data);
+  },
+
+  approveClanJoinRequest: async (requestId: number): Promise<ClanJoinRequest> => {
+    const response = await apiClient.post<ClanJoinRequest>(
+      `/api/clans/join-requests/${requestId}/approve/`
+    );
+    return response.data;
+  },
+
+  rejectClanJoinRequest: async (requestId: number): Promise<ClanJoinRequest> => {
+    const response = await apiClient.post<ClanJoinRequest>(
+      `/api/clans/join-requests/${requestId}/reject/`
+    );
+    return response.data;
+  },
+
+  getClanMessages: async (clanId: number): Promise<ClanMessage[]> => {
+    const response = await apiClient.get<ClanMessage[] | { results: ClanMessage[] }>(
+      `/api/clans/messages/?clan=${clanId}`
+    );
+    return unwrapListResponse(response.data);
+  },
+
+  sendClanMessage: async (clanId: number, content: string): Promise<ClanMessage> => {
+    const response = await apiClient.post<ClanMessage>('/api/clans/messages/', {
+      clan: clanId,
+      content,
+    });
+    return response.data;
   },
 
   searchClans: async (query: string): Promise<Clan[]> => {

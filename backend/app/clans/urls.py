@@ -1,10 +1,19 @@
 from django.urls import path, include 
 from rest_framework.routers import DefaultRouter 
-from .views import ClanViewSet, ClanMemberViewSet, ClanQuestViewSet, CurrentClanView
+from .views import (
+    ClanViewSet,
+    ClanMemberViewSet,
+    ClanQuestViewSet,
+    ClanJoinRequestViewSet,
+    ClanMessageViewSet,
+    CurrentClanView,
+)
 router = DefaultRouter() 
 router.register(r'clans', ClanViewSet, basename='clan') 
 router.register(r'members', ClanMemberViewSet, basename='clan-member') 
 router.register(r'quests', ClanQuestViewSet, basename='clan-quest')
+router.register(r'join-requests', ClanJoinRequestViewSet, basename='clan-join-request')
+router.register(r'messages', ClanMessageViewSet, basename='clan-message')
 urlpatterns = [ 
     path('', include(router.urls)),
     path('clan/', CurrentClanView.as_view(), name='current-clan'),

@@ -111,9 +111,29 @@ export interface ClanMember {
 export interface Clan {
   id: number;
   name: string;
+  description?: string;
+  is_public?: boolean;
+  requires_password?: boolean;
   level: number;
   total_xp: number;
   members: ClanMember[];
+}
+export interface ClanJoinRequest {
+  id: number;
+  clan: number;
+  clan_name?: string;
+  user: number;
+  username?: string;
+  status: 'pending' | 'approved' | 'rejected';
+  created_at: string;
+}
+export interface ClanMessage {
+  id: number;
+  clan: number;
+  user: number;
+  username: string;
+  content: string;
+  created_at: string;
 }
 export interface Activity {
   id: number;

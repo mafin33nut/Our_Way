@@ -5,6 +5,7 @@ import { socialAPI } from '../../api/social';
 import { Clan, ClanQuest } from '../../types';
 import { ClanQuestList } from '../quests/ClanQuestList';
 import { ClanCreationPanel } from '../social/ClanCreationPanel';
+import { ClanChatPanel } from '../social/ClanChatPanel';
 import { useAuth } from '../../hooks/useAuth';
 import { Loader } from '../ui/Loader';
 import { resolveMediaUrl } from '../../utils/media';
@@ -266,12 +267,16 @@ export function ClansPage() {
               </div>
               <div className="panel-guide mb-4">
                 <p>1) Создайте новый клан, если хотите собственное сообщество.</p>
-                <p>2) Найдите кланы по названию и вступайте в несколько.</p>
-                <p>3) После вступления клан появится в списке выше.</p>
+                <p>2) Найдите кланы по названию и отправьте запрос на вступление.</p>
+                <p>3) После одобрения клан появится в списке выше.</p>
               </div>
               <ClanCreationPanel onClanCreated={handleClanCreated} />
             </div>
           )}
+
+        {selectedClan && (
+          <ClanChatPanel clan={selectedClan} onClanUpdated={handleClanCreated} />
+        )}
 
         {selectedClan && (
           <div className="panel-base panel-orange p-6">
