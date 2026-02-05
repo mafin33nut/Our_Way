@@ -7,6 +7,16 @@
   </div>
 
   <div class="ow-admin-section">
+    <div class="ow-panel">
+      <div class="ow-panel-header">Модерация</div>
+      <p class="ow-user-sub">Быстрый доступ к разделам управления.</p>
+      <div class="ow-panel-actions">
+        <a class="ow-button" href="{% url 'admin:moderation' %}">Открыть модерацию</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ow-admin-section">
     {% if app_list %}
       {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
     {% else %}

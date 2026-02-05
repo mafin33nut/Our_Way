@@ -1,0 +1,29 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="ow-admin-section">
+    <div class="ow-panel">
+      <div class="ow-panel-header">Модерация</div>
+      <p class="ow-user-sub">Быстрый доступ к разделам управления.</p>
+    </div>
+  </div>
+
+  <div class="ow-admin-section">
+    <div class="ow-panel ow-panel-table">
+      {% for link in moderation_links %}
+        <div class="ow-panel-row">
+          <div>
+            <div class="ow-user-name">{{ link.title }}</div>
+            <div class="ow-user-sub">{{ link.description }}</div>
+          </div>
+          <div></div>
+          <div></div>
+          <div style="text-align: right;">
+            <a class="ow-button" href="{{ link.url }}">Открыть</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

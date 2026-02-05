@@ -237,6 +237,14 @@ h3 {
       padding: 0.75rem !important;
     }
 
+    .panel-base button,
+    .panel-base .action-button {
+      white-space: normal;
+      text-align: center;
+      line-height: 1.25;
+      height: auto;
+    }
+
     .panel-base h1,
     .panel-base h2,
     .panel-base h3,

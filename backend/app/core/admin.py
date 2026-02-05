@@ -2,7 +2,10 @@ from datetime import timedelta
 
 from django.contrib import admin
 from django.contrib.auth import get_user_model
+from django.urls import path
 from django.utils import timezone
+from django.shortcuts import render
+from django.urls import reverse
 from app.achievements.models import Achievement, UserAchievement
 from app.clans.models import Clan, LeaderboardEntry
 
@@ -84,3 +87,45 @@ class ClanAdmin(admin.ModelAdmin):
 @admin.register(LeaderboardEntry)
 class LeaderboardAdmin(admin.ModelAdmin):
     list_display = ("clan", "score", "rank")
+
+
+def moderation_view(request):
+    context = admin.site.each_context(request)
+    context.update(
+        {
+            "title": "Модерация",
+            "moderation_links": [
+                {
+                    "title": "Пользователи",
+                    "description": "Просмотр, блокировка, удаление.",
+                    "url": reverse("admin:user_user_changelist"),
+                },
+                {
+                    "title": "Кланы",
+                    "description": "Просмотр и удаление кланов.",
+                    "url": reverse("admin:clans_clan_changelist"),
+                },
+                {
+                    "title": "Сообщения кланов",
+                    "description": "Модерация сообщений.",
+                    "url": reverse("admin:clans_clanmessage_changelist"),
+                },
+                {
+                    "title": "Заявки в кланы",
+                    "description": "Просмотр и обработка заявок.",
+                    "url": reverse("admin:clans_clanjoinrequest_changelist"),
+                },
+            ],
+        }
+    )
+    return render(request, "admin/moderation.html", context)
+
+
+def get_admin_urls(urls):
+    custom_urls = [
+        path("moderation/", admin.site.admin_view(moderation_view), name="moderation"),
+    ]
+    return custom_urls + urls
+
+
+admin.site.get_urls = lambda: get_admin_urls(admin.site.get_urls())
