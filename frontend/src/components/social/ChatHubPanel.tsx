@@ -386,11 +386,17 @@ export function ChatHubPanel() {
                                         }`}
                                       >
                                         {showAuthor && (
-                                          <p className="text-[0.5rem] text-purple-200/10">
-                                            {message.senderId === user?.id
-                                              ? user.username
-                                              : selectedFriend?.username || 'Друг'}
-                                          </p>
+                                          <div
+                                            className={`${
+                                              index === 0 ? '' : 'mt-2 pt-2 border-t border-purple-600/30'
+                                            }`}
+                                          >
+                                            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-400/40 text-[0.7rem] text-purple-100">
+                                              {message.senderId === user?.id
+                                                ? user.username
+                                                : selectedFriend?.username || 'Друг'}
+                                            </span>
+                                          </div>
                                         )}
                                         <p className="text-sm">{message.text}</p>
                                       </div>
