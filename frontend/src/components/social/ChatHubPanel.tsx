@@ -292,9 +292,15 @@ export function ChatHubPanel() {
                                       return (
                                         <div key={message.id} className="px-1 py-1 text-purple-200">
                                           {showAuthor && (
-                                            <p className="text-[0.5rem] text-purple-200/10">
-                                              {message.username || 'Участник'}
-                                            </p>
+                                            <div
+                                              className={`${
+                                                index === 0 ? '' : 'mt-2 pt-2 border-t border-purple-600/30'
+                                              }`}
+                                            >
+                                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-400/40 text-sm text-purple-100">
+                                                {message.username || 'Участник'}
+                                              </span>
+                                            </div>
                                           )}
                                           <p className="text-sm">{message.content}</p>
                                         </div>
