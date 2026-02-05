@@ -159,3 +159,11 @@ def ensure_creator_is_leader(sender, instance: Clan, **kwargs):
     if not created and member.role != 'leader':
         member.role = 'leader'
         member.save(update_fields=['role'])
+
+@receiver(post_save, sender=ClanMember)
+def ensure_single_member_leader(sender, instance: ClanMember, created, **kwargs):
+    if not created:
+        return
+    if ClanMember.objects.filter(clan=instance.clan).count() == 1 and instance.role != 'leader':
+        instance.role = 'leader'
+        instance.save(update_fields=['role'])
