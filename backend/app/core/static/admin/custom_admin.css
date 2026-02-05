@@ -94,6 +94,40 @@ input[type="button"] {
   color: var(--ow-text);
 }
 
+.ow-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+  color: var(--ow-text);
+}
+
+.ow-form-row input {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--ow-border);
+  background: rgba(15, 23, 42, 0.6);
+  color: var(--ow-text);
+}
+
+.ow-button {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--ow-text);
+  cursor: pointer;
+}
+
+.ow-error {
+  margin-bottom: 12px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(248, 113, 113, 0.5);
+  background: rgba(127, 29, 29, 0.3);
+  color: #fecaca;
+}
+
 .ow-panel-table {
   display: grid;
   gap: 8px;

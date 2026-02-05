@@ -3,9 +3,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.http import JsonResponse
 from django.urls import include, path
+from app.core.views import register_admin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('admin/register/', register_admin),
     # Auth endpoints (JWT, registration, user info, logout)
     path('api/auth/', include('app.api.auth_urls')),
 

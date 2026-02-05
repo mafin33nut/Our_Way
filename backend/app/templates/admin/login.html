@@ -1,0 +1,56 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block content %}
+  <div class="ow-admin-section">
+    <div class="ow-panel">
+      <div class="ow-panel-header">Вход в админку</div>
+      {% if form.errors %}
+        <div class="ow-error">Неверные данные для входа.</div>
+      {% endif %}
+      <form method="post" action="{% url 'admin:login' %}">
+        {% csrf_token %}
+        <div class="ow-form-row">
+          <label for="id_username">Логин</label>
+          {{ form.username }}
+        </div>
+        <div class="ow-form-row">
+          <label for="id_password">Пароль</label>
+          {{ form.password }}
+        </div>
+        <button type="submit" class="ow-button">Войти</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="ow-admin-section">
+    <div class="ow-panel">
+      <div class="ow-panel-header">Регистрация администратора</div>
+      {% if messages %}
+        {% for message in messages %}
+          <div class="ow-error">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+      <form method="post" action="/admin/register/">
+        {% csrf_token %}
+        <div class="ow-form-row">
+          <label for="id_reg_username">Логин</label>
+          <input id="id_reg_username" name="username" type="text" required>
+        </div>
+        <div class="ow-form-row">
+          <label for="id_reg_email">Email</label>
+          <input id="id_reg_email" name="email" type="email">
+        </div>
+        <div class="ow-form-row">
+          <label for="id_reg_password1">Пароль</label>
+          <input id="id_reg_password1" name="password1" type="password" required>
+        </div>
+        <div class="ow-form-row">
+          <label for="id_reg_password2">Повтор пароля</label>
+          <input id="id_reg_password2" name="password2" type="password" required>
+        </div>
+        <button type="submit" class="ow-button">Создать и войти</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
