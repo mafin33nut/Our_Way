@@ -193,7 +193,6 @@ export function AchievementsPage() {
               <Award className="w-5 h-5 text-teal-300" />
               <h2 className="text-slate-100">Достижения</h2>
             </div>
-            <p className="panel-comment">Достижения</p>
             <PanelHelp>
               <p>1) Выполняй квесты и повышай уровень, чтобы открыть новые блоки.</p>
               <p>2) Сверяй требования в каждом пункте списка.</p>

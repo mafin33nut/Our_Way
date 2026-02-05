@@ -1,5 +1,5 @@
 import { useState, FormEvent, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../../components/ui/Button';
 import { Shield } from 'lucide-react';
@@ -102,17 +102,6 @@ export function LoginPage() {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950 flex items-center justify-center px-4 py-6 sm:px-8 sm:py-12">
-      <div className="absolute right-6 top-6">
-        <Link to="/admin/">
-          <Button
-            variant="ghost"
-            size="md"
-            className="bg-teal-400/20 border border-teal-300/60 text-teal-100 shadow-lg animate-pulse hover:bg-teal-400/30 px-6 py-3 text-lg leading-none"
-          >
-            Вход в админку
-          </Button>
-        </Link>
-      </div>
       <div className="absolute left-6 top-6">
         <Shield className="w-20 h-20 sm:w-24 sm:h-24 text-amber-400" />
       </div>

@@ -90,9 +90,6 @@ export function ProgressPage() {
         <div className="w-full max-w-[1400px] flex flex-col items-center gap-10">
           <div className="panel-base panel-purple w-full max-w-[1200px]">
             <div className="panel-caption text-center">Прогресс по квестам</div>
-            <div className="panel-comment text-center mb-8">
-              Прогресс по квестам
-            </div>
             <PanelHelp className="text-center">
               <p>1) Сравни дни с максимальным количеством квестов.</p>
               <p>2) Проверь распределение времени — где был самый плотный день.</p>
@@ -152,9 +149,6 @@ export function ProgressPage() {
 
           <div className="w-full max-w-[1200px]">
             <div className="panel-caption text-center">История выполнения</div>
-            <div className="panel-comment text-center mb-8">
-              История выполнения
-            </div>
             <PanelHelp className="text-center">
               <p>1) Просмотри недавние завершения по времени.</p>
               <p>2) Отмечай повторяемые задачи — это ваши сильные стороны.</p>
