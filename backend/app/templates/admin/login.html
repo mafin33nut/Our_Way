@@ -20,10 +20,15 @@
         </div>
         <button type="submit" class="ow-button">Войти</button>
       </form>
+      <div class="ow-panel-actions">
+        <button type="button" class="ow-button ow-toggle" id="ow-admin-register-toggle">
+          Регистрация администратора
+        </button>
+      </div>
     </div>
   </div>
 
-  <div class="ow-admin-section">
+  <div class="ow-admin-section ow-hidden" id="ow-admin-register">
     <div class="ow-panel">
       <div class="ow-panel-header">Регистрация администратора</div>
       {% if messages %}
@@ -53,4 +58,16 @@
       </form>
     </div>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const toggle = document.getElementById('ow-admin-register-toggle');
+      const panel = document.getElementById('ow-admin-register');
+      if (toggle && panel) {
+        toggle.addEventListener('click', function () {
+          panel.classList.toggle('ow-hidden');
+        });
+      }
+    });
+  </script>
 {% endblock %}

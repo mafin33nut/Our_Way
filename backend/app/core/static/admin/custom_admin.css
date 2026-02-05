@@ -119,6 +119,19 @@ input[type="button"] {
   cursor: pointer;
 }
 
+.ow-panel-actions {
+  margin-top: 14px;
+}
+
+.ow-toggle {
+  width: 100%;
+  text-align: center;
+}
+
+.ow-hidden {
+  display: none;
+}
+
 .ow-error {
   margin-bottom: 12px;
   padding: 8px 10px;
