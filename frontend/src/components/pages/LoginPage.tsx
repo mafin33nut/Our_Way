@@ -107,15 +107,15 @@ export function LoginPage() {
       </div>
       <div className="w-full max-w-2xl">
         <div className="relative bg-transparent rounded-lg border-0 p-16 sm:p-20 shadow-none text-[200%]">
-          <div className="text-center mb-8">
-            <h1 className="text-amber-400 mb-2">
+          <div className="text-center mb-6 sm:mb-8">
+            <h1 className="text-amber-400 mb-3 sm:mb-2">
               Our way
             </h1>
             <p className="text-amber-200/60">Командное саморазвитие</p>
           </div>
           {!showForm && (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-6 mb-8 sm:mb-6">
                 <div
                   className="rounded-2xl border-2 p-4 min-h-[128px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
                 >

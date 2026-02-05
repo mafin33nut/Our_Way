@@ -121,11 +121,14 @@ def moderation_view(request):
     return render(request, "admin/moderation.html", context)
 
 
-def get_admin_urls(urls):
+_original_get_urls = admin.site.get_urls
+
+
+def get_admin_urls():
     custom_urls = [
         path("moderation/", admin.site.admin_view(moderation_view), name="moderation"),
     ]
-    return custom_urls + urls
+    return custom_urls + _original_get_urls()
 
 
-admin.site.get_urls = lambda: get_admin_urls(admin.site.get_urls())
+admin.site.get_urls = get_admin_urls
