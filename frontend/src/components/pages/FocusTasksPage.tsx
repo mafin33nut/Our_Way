@@ -6,6 +6,7 @@ import { Clan, Quest, UserFocus } from '../../types';
 import { Button } from '../ui/Button';
 import { QuestList } from '../quests/QuestList';
 import { useCustomization } from '../../hooks/useCustomization';
+import { useAuth } from '../../hooks/useAuth';
 import { PanelHelp } from '../ui/PanelHelp';
 
 type TaskType = 'simple' | 'stepwise';
@@ -13,6 +14,7 @@ type TaskDifficulty = 'easy' | 'medium' | 'hard';
 type QuestMode = 'personal' | 'clan';
 
 export function FocusTasksPage() {
+  const { refreshUser } = useAuth();
   const { playVictorySound } = useCustomization();
   const [focuses, setFocuses] = useState<UserFocus[]>([]);
   const [quests, setQuests] = useState<Quest[]>([]);
@@ -152,6 +154,7 @@ export function FocusTasksPage() {
       const updated = await questsAPI.complete(id);
       setQuests((prev) => prev.map((q) => (q.id === id ? updated : q)));
       playVictorySound();
+      await refreshUser();
     } catch (e) {
       setError('Не удалось завершить квест.');
     }
