@@ -11,6 +11,11 @@
 body {
   background: linear-gradient(180deg, #0f172a 0%, #0b1220 50%, #0b0f1a 100%) !important;
   color: var(--ow-text);
+  font-family: "Comfortaa", "Segoe UI", sans-serif;
+}
+
+* {
+  font-family: "Comfortaa", "Segoe UI", sans-serif;
 }
 
 #header {
@@ -32,6 +37,14 @@ body {
 
 #content {
   padding-top: 24px;
+}
+
+#content h1,
+#content h2,
+#content h3,
+#content h4 {
+  color: var(--ow-text);
+  letter-spacing: 0.02em;
 }
 
 .module,
