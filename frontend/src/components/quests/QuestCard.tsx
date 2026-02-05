@@ -86,7 +86,7 @@ export function QuestCard({ quest, onComplete, onDelete, onStepComplete }: Quest
           onClick={() => onDelete(quest.id)}
           size="sm"
           variant="ghost"
-          className="bg-rose-500/70 text-white hover:bg-rose-500/90 border border-rose-400/60"
+          className="bg-slate-800/60 text-slate-200 hover:bg-slate-700/70 border border-slate-600/60"
         >
           Удалить
         </Button>

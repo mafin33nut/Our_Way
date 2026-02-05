@@ -7,7 +7,6 @@ import { QuestList } from '../../components/quests/QuestList';
 import { CharacterProfile } from '../../components/profile/characterProfile';
 import { isToday } from '../../utils/time';
 import { Loader } from '../../components/ui/Loader';
-import { PanelHelp } from '../../components/ui/PanelHelp';
 
 export function HomePage() {
   const { user, refreshUser } = useAuth();
@@ -118,26 +117,16 @@ export function HomePage() {
           <div className={`absolute inset-0 ${bgImageLoaded ? 'bg-slate-900/30' : 'bg-slate-900/70'} backdrop-blur-sm`} />
         </div>
       )}
-      <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
+          <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12 pb-8">
         <div className="w-full max-w-[1200px] mx-auto">
           <div className="flex flex-col items-center gap-12">
             <div className="w-full">
               <div className="panel-base panel-teal">
               <div className="panel-caption text-left">Профиль героя</div>
-              <PanelHelp>
-                <p>1) Проверь текущий уровень и прогресс до следующего.</p>
-                <p>2) Следи за дневной активностью и выполненными квестами.</p>
-                <p>3) Обновляй профиль, если меняешь цели или темп.</p>
-              </PanelHelp>
               <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
 
               <div className="mt-8">
                 <div className="panel-caption text-left">Достижения героя</div>
-                <PanelHelp>
-                  <p>1) Выполняй квесты — открываются новые уровни достижений.</p>
-                  <p>2) Смотри требования рядом с каждым значком.</p>
-                  <p>3) Планируй следующую цель по оставшимся квестам.</p>
-                </PanelHelp>
                 <div className="space-y-3">
                   {achievementSlots
                     .filter((item) => (user.total_quests_completed || 0) >= item.req)
@@ -147,17 +136,19 @@ export function HomePage() {
                         className="flex items-center justify-between rounded-xl border border-slate-600/40 bg-slate-900/50 px-4 py-3"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-lg bg-amber-300/20 border border-amber-300/60 flex items-center justify-center achievement-earned">
+                          <div className="w-12 h-12 rounded-xl bg-amber-300/25 border border-amber-300/60 flex items-center justify-center achievement-earned text-lg">
                             ★
                           </div>
                           <div>
-                            <p className="text-slate-100 text-sm achievement-earned">{item.title}</p>
-                            <p className="text-slate-300/60 text-xs achievement-earned">
+                            <p className="text-slate-100 text-base achievement-earned">{item.title}</p>
+                            <p className="text-slate-300/80 text-sm achievement-earned">
                               Достигнуто: {item.req} квестов
                             </p>
                           </div>
                         </div>
-                        <span className="text-xs achievement-earned">Получено</span>
+                        <span className="text-xs achievement-earned px-3 py-1 rounded-full border border-amber-300/60 bg-amber-300/15">
+                          Получено
+                        </span>
                       </div>
                     ))}
                   {achievementSlots.filter((item) => (user.total_quests_completed || 0) >= item.req).length === 0 && (
@@ -172,11 +163,6 @@ export function HomePage() {
 
             <div className="w-full">
               <div className="panel-caption text-left">Текущие квесты</div>
-              <PanelHelp>
-                <p>1) Выполни квест и нажми «Завершить».</p>
-                <p>2) Удаляй устаревшие квесты, чтобы не засорять список.</p>
-                <p>3) Следи за наградой и сложностью перед стартом.</p>
-              </PanelHelp>
               <QuestList
                 quests={quests}
                 onComplete={handleCompleteQuest}

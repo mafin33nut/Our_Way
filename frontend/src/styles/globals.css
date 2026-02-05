@@ -58,7 +58,7 @@ h3 {
   }
 
   .panel-base {
-    @apply rounded-2xl border-2 border-slate-400/70 ring-1 ring-white/10 bg-gradient-to-b from-slate-800/80 via-slate-800/70 to-slate-900/80 shadow-[0_12px_30px_-18px_rgba(15,23,42,0.9)] backdrop-blur-sm text-white;
+    @apply rounded-2xl border-2 border-slate-400/60 ring-1 ring-white/10 bg-gradient-to-b from-slate-800/85 via-slate-800/75 to-slate-900/85 shadow-[0_16px_36px_-18px_rgba(15,23,42,0.95)] backdrop-blur-sm text-white;
     position: relative;
     padding: 3.5rem !important;
     margin-bottom: 38px;
@@ -131,13 +131,13 @@ h3 {
   }
 
   .panel-base .text-xs {
-    color: rgba(255, 255, 255, 0.67) !important;
-    font-size: calc(0.75rem * 1.25) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: calc(0.75rem * 1.35) !important;
   }
 
   .panel-base .text-sm {
-    color: rgba(255, 255, 255, 0.67) !important;
-    font-size: calc(0.875rem * 1.25) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: calc(0.875rem * 1.35) !important;
   }
 
   .panel-base .text-base {

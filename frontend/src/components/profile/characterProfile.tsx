@@ -28,26 +28,26 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
   const xpPercentage = Math.min((xpInLevel / xpNeeded) * 100, 100);
   return (
     <div className="panel-base panel-teal p-6 min-h-[260px] flex flex-col">
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex items-center gap-4 mb-6">
         {resolveMediaUrl(user.avatar) ? (
           <img
             src={resolveMediaUrl(user.avatar) as string}
             alt={user.username}
-            className="w-14 h-14 rounded-full object-cover border-2 border-teal-300/60"
+            className="w-20 h-20 rounded-full object-cover border-2 border-teal-300/60"
           />
         ) : (
-          <div className="w-14 h-14 rounded-full bg-slate-800/70 border-2 border-teal-300/60 flex items-center justify-center text-slate-200">
-            <UserIcon className="w-6 h-6" />
+          <div className="w-20 h-20 rounded-full bg-slate-800/70 border-2 border-teal-300/60 flex items-center justify-center text-slate-200">
+            <UserIcon className="w-9 h-9" />
           </div>
         )}
         <div className="min-w-0">
           <h2 className="text-slate-100">
             {user.username}
           </h2>
-          <p className="text-slate-300/70 text-sm">
+          <p className="text-slate-200 text-sm">
             Авантюрист {user.level} уровня
           </p>
-          <p className="text-slate-300/60 text-xs truncate">
+          <p className="text-slate-300/80 text-xs truncate">
             {user.bio || 'Добавьте описание в профиле'}
           </p>
         </div>
@@ -69,6 +69,10 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
             className="h-full bg-gradient-to-r from-teal-400 to-cyan-300 transition-all duration-500 rounded-full"
             style={{ width: `${xpPercentage}%` }}
           />
+        </div>
+        <div className="flex justify-between text-xs text-slate-300/80 mt-1">
+          <span>0</span>
+          <span>{xpNeeded}</span>
         </div>
       </div>
       <div className="space-y-3 mt-auto">

@@ -197,7 +197,7 @@ export function FocusTasksPage() {
                     <input
                       type="radio"
                       name="focus"
-                      className="mr-1"
+                      className="mr-1 accent-teal-300"
                       checked={selectedFocusId === focus.id}
                       onChange={() => setSelectedFocusId(focus.id)}
                     />
@@ -206,7 +206,7 @@ export function FocusTasksPage() {
                       type="button"
                       size="sm"
                       variant="ghost"
-                      className="ml-1 bg-rose-500/70 text-white hover:bg-rose-500/90 border border-rose-400/60"
+                      className="ml-1 bg-slate-800/60 text-slate-200 hover:bg-slate-700/70 border border-slate-600/60"
                       onClick={() => handleDeleteFocus(focus.id)}
                     >
                       Удалить
@@ -261,12 +261,12 @@ export function FocusTasksPage() {
                     placeholder="Название квеста"
                     className="w-full rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
                   />
-                  <textarea
+                <textarea
                     value={taskDescription}
                     onChange={(e) => setTaskDescription(e.target.value)}
                     placeholder="Описание"
-                    rows={3}
-                    className="w-full rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
+                  rows={4}
+                  className="w-full min-h-[120px] rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
                   />
                   {questMode === 'personal' ? (
                     <div className="flex items-center gap-3">
@@ -274,7 +274,7 @@ export function FocusTasksPage() {
                       <select
                         value={selectedFocusId ?? ''}
                         onChange={(e) => setSelectedFocusId(e.target.value ? Number(e.target.value) : null)}
-                        className="rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
+                        className="rounded-lg border border-purple-600/30 bg-slate-900/60 px-3 py-2 text-slate-100"
                       >
                         <option value="">Без направления</option>
                         {focuses.map((focus) => (
@@ -326,6 +326,7 @@ export function FocusTasksPage() {
                         type="radio"
                         checked={taskType === 'simple'}
                         onChange={() => setTaskType('simple')}
+                        className="accent-teal-300"
                       />
                       Обычный (100 XP)
                     </label>
@@ -334,6 +335,7 @@ export function FocusTasksPage() {
                         type="radio"
                         checked={taskType === 'stepwise'}
                         onChange={() => setTaskType('stepwise')}
+                        className="accent-teal-300"
                       />
                       Поэтапный (XP по сложности шагов)
                     </label>
@@ -405,9 +407,12 @@ export function FocusTasksPage() {
                   </div>
                 </div>
               )}
-              <div className="mt-6 flex items-center justify-between">
+              <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <Button onClick={handleCreateTask} disabled={!canCreateTask || saving} className="action-button">
+                  {saving ? 'Создание...' : 'Создать квест'}
+                </Button>
                 {questMode === 'personal' ? (
-                  <p className="text-xs text-slate-300/70">
+                  <p className="text-sm text-slate-300/80">
                     {(() => {
                       const baseXp =
                         taskDifficulty === 'hard' ? 200 : taskDifficulty === 'medium' ? 150 : 100;
@@ -422,13 +427,10 @@ export function FocusTasksPage() {
                     })()}
                   </p>
                 ) : (
-                  <p className="text-xs text-slate-300/70">
+                  <p className="text-sm text-slate-300/80">
                     Награда зависит от числа участников (1→30, 2→70, 3→110, 4→150, далее +60)
                   </p>
                 )}
-                <Button onClick={handleCreateTask} disabled={!canCreateTask || saving} className="action-button">
-                  {saving ? 'Создание...' : 'Создать квест'}
-                </Button>
               </div>
               {error && <p className="text-sm text-rose-200 mt-3">{error}</p>}
             </div>

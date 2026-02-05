@@ -160,7 +160,6 @@ export function ClanChatPanel({ clan, onClanUpdated }: ClanChatPanelProps) {
                           <span className="ml-2 text-xs text-rose-200/60">лидер</span>
                         )}
                       </p>
-                      <p className="text-xs text-rose-200/60">Уровень {member.level}</p>
                     </div>
                     {isLeader && !isSelf && (
                       <div className="flex items-center gap-2">
@@ -194,14 +193,12 @@ export function ClanChatPanel({ clan, onClanUpdated }: ClanChatPanelProps) {
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
               <p className="text-sm text-rose-200/80">Запросы на вступление</p>
-              <span className="text-xs text-rose-200/60">
-                {pendingRequests.length} ожидают решения
-              </span>
+              <span className="text-xs text-rose-200/60">Ожидают: {pendingRequests.length}</span>
             </div>
             <div className="space-y-2 max-h-48 overflow-y-auto">
               {pendingRequests.length === 0 ? (
                 <div className="text-center py-4 text-rose-200/60 text-sm">
-                  Нет новых запросов
+                  Пока пусто
                 </div>
               ) : (
                 pendingRequests.map((request) => (
@@ -211,9 +208,6 @@ export function ClanChatPanel({ clan, onClanUpdated }: ClanChatPanelProps) {
                   >
                     <div className="min-w-0">
                       <p className="text-sm text-rose-100 truncate">{request.username || 'Игрок'}</p>
-                      <p className="text-xs text-rose-200/60">
-                        Запрос от {new Date(request.created_at).toLocaleString()}
-                      </p>
                     </div>
                     {isLeader && (
                       <div className="flex items-center gap-2">
@@ -249,7 +243,7 @@ export function ClanChatPanel({ clan, onClanUpdated }: ClanChatPanelProps) {
             <div className="max-h-64 overflow-y-auto space-y-2 mb-3">
               {messages.length === 0 ? (
                 <div className="text-center py-4 text-rose-200/60 text-sm">
-                  Сообщений пока нет
+                  Пока пусто
                 </div>
               ) : (
                 messages.map((message) => (
@@ -275,8 +269,12 @@ export function ClanChatPanel({ clan, onClanUpdated }: ClanChatPanelProps) {
                 placeholder="Напишите сообщение..."
                 className="flex-1 rounded-lg border border-rose-400/30 bg-slate-950/40 px-3 py-2 text-slate-100"
               />
-              <Button onClick={handleSendMessage} disabled={sending || !newMessage.trim()}>
-                {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+              <Button
+                onClick={handleSendMessage}
+                disabled={sending || !newMessage.trim()}
+                className="px-4 py-3"
+              >
+                {sending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
               </Button>
             </div>
           </div>

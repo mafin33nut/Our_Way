@@ -140,7 +140,7 @@ export function ChatHubPanel() {
               aria-label="Закрыть окно чатов"
             />
             <div
-              className={`absolute right-0 top-0 h-full w-full max-w-full sm:max-w-[60vw] ${
+              className={`absolute right-0 top-0 h-full w-full max-w-full sm:max-w-[420px] md:max-w-[520px] lg:max-w-[640px] ${
                 isLight
                   ? 'bg-white border-l border-slate-200'
                   : 'bg-gradient-to-br from-slate-900/95 to-slate-950/95 border-l border-slate-700/60'
@@ -160,7 +160,7 @@ export function ChatHubPanel() {
                 </Button>
               </div>
 
-              <div className="h-[calc(100%-72px)] overflow-y-auto px-[19px] py-[19px] space-y-[19px]">
+              <div className="h-[calc(100%-136px)] overflow-y-auto px-[19px] py-[19px] space-y-[19px]">
                 {!user && (
                   <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
                     Войдите, чтобы пользоваться чатом.
@@ -205,18 +205,23 @@ export function ChatHubPanel() {
                           <div className="text-sm text-slate-300/70">Вы пока не состоите в кланах.</div>
                         ) : (
                           <>
+                            <p className="text-xs text-slate-300/80 mb-2">Выберите клан</p>
                             <div className="flex flex-wrap gap-2 mb-4">
                               {clans.map((clan) => (
                                 <button
                                   key={clan.id}
                                   onClick={() => setSelectedClanId(clan.id)}
-                                  className={`rounded-lg border text-xs transition-colors px-4 py-2 ${
+                                  title={`Клан: ${clan.name}`}
+                                  className={`rounded-lg border text-xs transition-colors px-4 py-2 flex items-center gap-2 ${
                                     selectedClanId === clan.id
                                       ? 'border-teal-300/60 bg-teal-400/10 text-teal-100'
                                       : 'border-slate-600/60 text-slate-300/70 hover:border-slate-500/60'
                                   }`}
                                 >
-                                  {clan.name}
+                                  <span className="w-7 h-7 rounded-full border border-teal-300/50 bg-teal-400/10 flex items-center justify-center text-[0.7rem]">
+                                    {clan.name[0]?.toUpperCase()}
+                                  </span>
+                                  <span>{clan.name}</span>
                                 </button>
                               ))}
                             </div>
@@ -240,18 +245,23 @@ export function ChatHubPanel() {
                           <div className="text-sm text-purple-200/60">Добавьте друзей, чтобы начать чат.</div>
                         ) : (
                           <>
+                            <p className="text-xs text-purple-200/70 mb-2">Выберите друга</p>
                             <div className="flex flex-wrap gap-2 mb-4">
                               {friends.map((friend) => (
                                 <button
                                   key={friend.id}
                                   onClick={() => setSelectedFriendId(friend.id)}
-                                  className={`rounded-lg border text-xs transition-colors px-4 py-2 ${
+                                  title={`Друг: ${friend.username}`}
+                                  className={`rounded-lg border text-xs transition-colors px-4 py-2 flex items-center gap-2 ${
                                     selectedFriendId === friend.id
                                       ? 'border-purple-400/60 bg-purple-500/10 text-purple-100'
                                       : 'border-purple-600/40 text-purple-200/70 hover:border-purple-500/60'
                                   }`}
                                 >
-                                  {friend.username}
+                                  <span className="w-7 h-7 rounded-full border border-purple-400/50 bg-purple-500/10 flex items-center justify-center text-[0.7rem]">
+                                    {friend.username[0]?.toUpperCase()}
+                                  </span>
+                                  <span>{friend.username}</span>
                                 </button>
                               ))}
                             </div>
@@ -288,8 +298,12 @@ export function ChatHubPanel() {
                                   placeholder="Напишите сообщение..."
                                   className="flex-1 rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
                                 />
-                                <Button onClick={handleSendMessage} disabled={!chatDraft.trim() || !selectedFriendId}>
-                                  <Send className="w-4 h-4" />
+                                <Button
+                                  onClick={handleSendMessage}
+                                  disabled={!chatDraft.trim() || !selectedFriendId}
+                                  className="px-4 py-3"
+                                >
+                                  <Send className="w-5 h-5" />
                                 </Button>
                               </div>
                             </div>
@@ -299,6 +313,15 @@ export function ChatHubPanel() {
                     )}
                   </>
                 )}
+              </div>
+              <div
+                className={`flex items-center justify-end px-6 py-4 border-t ${
+                  isLight ? 'border-slate-200' : 'border-slate-700/60'
+                }`}
+              >
+                <Button variant="ghost" onClick={() => setIsOpen(false)}>
+                  Закрыть
+                </Button>
               </div>
             </div>
           </div>,

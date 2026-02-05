@@ -21,15 +21,15 @@ export function Sidebar({ isOpen, onToggleSidebar }: SidebarProps) {
   const isLight = settings.theme === 'light';
   return (
     <aside
-      className={`fixed left-0 top-0 h-screen w-24 border-r backdrop-blur-sm z-60 transition-transform duration-300 ${
+      className={`fixed left-0 top-0 h-screen w-32 border-r backdrop-blur-sm z-60 transition-transform duration-300 ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       } ${isLight ? 'bg-white/90 border-slate-200' : 'bg-slate-900/80 border-slate-700/60'}`}
     >
-      <div className="pt-24 px-3 flex flex-col gap-2">
+      <div className="pt-24 px-4 flex flex-col gap-2">
         <button
           type="button"
           onClick={onToggleSidebar}
-          className={`flex flex-col items-center gap-1 rounded-xl px-2 py-3 text-[11px] transition-colors border ${
+          className={`flex flex-col items-center gap-1 rounded-xl px-3 py-3 text-xs transition-colors border ${
             isLight
               ? 'bg-white/80 border-slate-200 text-slate-700 hover:bg-white'
               : 'bg-slate-800/60 border-slate-700/60 text-slate-200 hover:bg-slate-800/80'
@@ -46,7 +46,7 @@ export function Sidebar({ isOpen, onToggleSidebar }: SidebarProps) {
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                `flex flex-col items-center gap-1 rounded-xl px-2 py-3 text-[11px] transition-colors border ${
+                `flex flex-col items-center gap-1 rounded-xl px-3 py-3 text-xs transition-colors border ${
                   isActive
                     ? 'bg-teal-400/20 text-teal-100 border-teal-300/50'
                     : 'text-slate-300/70 border-transparent hover:border-slate-600/60 hover:text-slate-100'
