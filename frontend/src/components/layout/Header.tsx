@@ -33,7 +33,7 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
           <button
             type="button"
             onClick={onToggleSidebar}
-            className={`inline-flex items-center justify-center w-14 h-14 rounded-xl border transition-colors text-white ${
+            className={`inline-flex items-center justify-center w-16 h-16 rounded-xl border transition-colors text-white ${
               isLight
                 ? 'bg-white/80 border-slate-200 hover:bg-white'
                 : 'bg-slate-800/70 border-slate-700/60 hover:bg-slate-800'
@@ -41,9 +41,9 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
             aria-label={isSidebarOpen ? 'Скрыть боковую панель' : 'Показать боковую панель'}
           >
             {isSidebarOpen ? (
-              <PanelLeftClose className="w-7 h-7" />
+              <PanelLeftClose className="w-8 h-8" />
             ) : (
-              <PanelLeftOpen className="w-7 h-7" />
+              <PanelLeftOpen className="w-8 h-8" />
             )}
           </button>
           {user && (
@@ -79,29 +79,38 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                   </div>
                 </Link>
                 <Link to="/settings" className="shrink-0">
-                  <Button variant="ghost" size="md" className="flex items-center gap-3 whitespace-nowrap text-3xl px-4 py-3">
-                    <Settings className="w-7 h-7" />
+                  <Button
+                    variant="ghost"
+                    size="md"
+                    className="flex items-center justify-center gap-2 whitespace-nowrap text-xl px-4 py-3 w-40 h-16"
+                  >
+                    <Settings className="w-6 h-6" />
                     <span className="hidden sm:inline">Настройки</span>
                   </Button>
                 </Link>
                 <div className="shrink-0">
-                  <div className="text-3xl">
+                  <div className="w-40 h-16 flex items-center justify-center">
                     <FriendsPanel />
                   </div>
                 </div>
                 <div className="shrink-0">
-                  <div className="text-3xl">
+                  <div className="w-40 h-16 flex items-center justify-center">
                     <ClanHubPanel />
                   </div>
                 </div>
                 <div className="shrink-0">
-                  <div className="text-3xl">
+                  <div className="w-40 h-16 flex items-center justify-center">
                     <ChatHubPanel />
                   </div>
                 </div>
               </div>
-              <Button variant="ghost" size="md" onClick={logout} className="flex items-center gap-3 whitespace-nowrap shrink-0 text-3xl px-4 py-3">
-                <LogOut className="w-7 h-7" />
+              <Button
+                variant="ghost"
+                size="md"
+                onClick={logout}
+                className="flex items-center justify-center gap-2 whitespace-nowrap shrink-0 text-xl px-4 py-3 w-40 h-16"
+              >
+                <LogOut className="w-6 h-6" />
                 <span className="hidden sm:inline">Выйти</span>
               </Button>
             </div>
