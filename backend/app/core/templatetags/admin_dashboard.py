@@ -3,6 +3,7 @@ from datetime import timedelta
 from django import template
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
+from django.db.utils import OperationalError, ProgrammingError
 from django.utils import timezone
 
 register = template.Library()
@@ -13,7 +14,10 @@ def user_status_panel():
     User = get_user_model()
     users = list(User.objects.all().order_by("username"))
 
-    from app.activities.models import Quest
+    try:
+        from app.activities.models import Quest
+    except Exception:
+        Quest = None
     try:
         from app.clans.models import ClanQuestParticipant
     except Exception:
@@ -40,16 +44,24 @@ def user_status_panel():
     user_rows = []
 
     for user in users:
-        quests_xp = Quest.objects.filter(user=user, completed=True).aggregate(
-            total=Sum("xp_reward")
-        )["total"] or 0
+        quests_xp = 0
+        if Quest is not None:
+            try:
+                quests_xp = Quest.objects.filter(user=user, completed=True).aggregate(
+                    total=Sum("xp_reward")
+                )["total"] or 0
+            except (OperationalError, ProgrammingError):
+                quests_xp = 0
         clan_xp = 0
         if ClanQuestParticipant is not None:
-            clan_xp = ClanQuestParticipant.objects.filter(
-                user=user,
-                quest__completed=True,
-                contribution__gt=0,
-            ).aggregate(total=Sum("quest__xp_reward"))["total"] or 0
+            try:
+                clan_xp = ClanQuestParticipant.objects.filter(
+                    user=user,
+                    quest__completed=True,
+                    contribution__gt=0,
+                ).aggregate(total=Sum("quest__xp_reward"))["total"] or 0
+            except (OperationalError, ProgrammingError):
+                clan_xp = 0
         total_xp = quests_xp + clan_xp
         is_online = bool(user.last_login and user.last_login >= cutoff)
         user_rows.append(

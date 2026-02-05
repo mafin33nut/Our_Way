@@ -179,18 +179,19 @@ h3 {
 
   @media (max-width: 768px) {
     .panel-base {
-      padding: 2rem !important;
-      font-size: 115%;
+      padding: 1.25rem !important;
+      font-size: 90%;
       width: 100%;
       max-width: calc(100% - 1.5rem);
       margin-left: auto;
       margin-right: 0;
+      margin-bottom: 12px;
     }
 
     .panel-caption {
-      font-size: 1.5rem;
-      line-height: 2rem;
-      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+      line-height: 1.4rem;
+      margin-bottom: 0.75rem;
       text-align: center;
     }
 
@@ -201,6 +202,11 @@ h3 {
       text-align: center;
       margin-left: auto;
       margin-right: auto;
+      font-size: 0.8rem;
+    }
+
+    .min-h-screen {
+      min-height: auto !important;
     }
   }
 

@@ -107,7 +107,7 @@ export function LoginPage() {
           <Button
             variant="ghost"
             size="md"
-            className="bg-teal-400/20 border border-teal-300/60 text-teal-100 shadow-lg animate-pulse hover:bg-teal-400/30"
+            className="bg-teal-400/20 border border-teal-300/60 text-teal-100 shadow-lg animate-pulse hover:bg-teal-400/30 px-6 py-3 text-lg leading-none"
           >
             Вход в админку
           </Button>
@@ -117,7 +117,7 @@ export function LoginPage() {
         <Shield className="w-20 h-20 sm:w-24 sm:h-24 text-amber-400" />
       </div>
       <div className="w-full max-w-2xl">
-        <div className="relative bg-transparent rounded-lg border-0 p-16 sm:p-20 shadow-none">
+        <div className="relative bg-transparent rounded-lg border-0 p-16 sm:p-20 shadow-none text-[150%]">
           <div className="text-center mb-8">
             <h1 className="text-amber-400 mb-2">
               Our way
@@ -139,7 +139,7 @@ export function LoginPage() {
                     setShowForm(true);
                     setError('');
                   }}
-                  className="w-56 action-button"
+                  className="w-56 px-6 py-3 text-lg"
                 >
                   Войти
                 </Button>
@@ -157,7 +157,7 @@ export function LoginPage() {
                     setShowForm(true);
                     setError('');
                   }}
-                  className="w-56 action-button"
+                  className="w-56 px-6 py-3 text-lg"
                 >
                   Зарегистрироваться
                 </Button>
@@ -234,7 +234,7 @@ export function LoginPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full"
+              className="w-full px-6 py-3 text-lg"
               size="lg"
             >
               {isRegisterMode ? (
