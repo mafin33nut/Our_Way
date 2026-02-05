@@ -200,7 +200,7 @@ export function ClanChatPanel({ clan, onClanUpdated }: ClanChatPanelProps) {
           {isLeader && (
             <div className="mb-6">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm text-rose-200/80">Запросы на вступление</p>
+              <p className="text-sm text-rose-200/80">Прием заявок</p>
                 <span className="text-xs text-rose-200/60">Ожидают: {pendingRequests.length}</span>
               </div>
               <div className="space-y-2 max-h-48 overflow-y-auto">
