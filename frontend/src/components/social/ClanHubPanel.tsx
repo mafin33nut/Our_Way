@@ -116,7 +116,7 @@ export function ClanHubPanel() {
               aria-label="Закрыть окно кланов"
             />
             <div
-              className={`absolute right-0 top-0 h-full w-full max-w-full sm:max-w-[60vw] ${
+              className={`absolute right-0 top-0 h-full w-full max-w-full sm:max-w-[52vw] ${
                 isLight
                   ? 'bg-white border-l border-slate-200'
                   : 'bg-gradient-to-br from-slate-900/95 to-slate-950/95 border-l border-slate-700/60'

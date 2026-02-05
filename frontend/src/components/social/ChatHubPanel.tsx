@@ -182,7 +182,7 @@ export function ChatHubPanel() {
               aria-label="Закрыть окно чатов"
             />
             <div
-              className={`absolute right-0 top-0 h-full w-full max-w-full sm:max-w-[420px] md:max-w-[520px] lg:max-w-[640px] ${
+              className={`absolute right-0 top-0 h-full w-full max-w-full sm:max-w-[360px] md:max-w-[450px] lg:max-w-[560px] ${
                 isLight
                   ? 'bg-white border-l border-slate-200'
                   : 'bg-gradient-to-br from-slate-900/95 to-slate-950/95 border-l border-slate-700/60'

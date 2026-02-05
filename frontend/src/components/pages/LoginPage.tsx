@@ -115,7 +115,7 @@ export function LoginPage() {
           </div>
           {!showForm && (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-6 mb-8 sm:mb-6 items-center justify-center place-items-center">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-8 sm:mb-6 items-center justify-center place-items-center -mt-6">
                 <div
                   className="rounded-2xl border-2 p-4 min-h-[128px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
                 >
@@ -129,7 +129,7 @@ export function LoginPage() {
                       setShowForm(true);
                       setError('');
                     }}
-                    className="w-56 px-6 py-3 text-xl"
+                  className="w-44 px-6 py-3 text-xl"
                   >
                     Войти
                   </Button>
@@ -147,7 +147,7 @@ export function LoginPage() {
                       setShowForm(true);
                       setError('');
                     }}
-                    className="w-56 px-6 py-3 text-xl"
+                  className="w-44 px-6 py-3 text-xl"
                   >
                     Зарегистрироваться
                   </Button>
