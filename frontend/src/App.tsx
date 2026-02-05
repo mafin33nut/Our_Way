@@ -37,7 +37,7 @@ function AppLayout({ children }: { children: ReactNode }) {
     <div className="relative min-h-screen">
       <div className="fixed inset-0 z-0 pointer-events-none">
         <video
-          className="w-full h-full object-cover opacity-25"
+          className="w-full h-full object-cover opacity-20 sm:opacity-25"
           autoPlay
           muted
           loop

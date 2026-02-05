@@ -102,18 +102,6 @@ export function LoginPage() {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-slate-800/85 via-slate-900/80 to-slate-950/85 flex items-center justify-center px-4 py-0 sm:px-8 sm:py-12">
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <video
-          className="w-full h-full object-cover opacity-30"
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/neon-background.mp4"
-        >
-          <source src="/neon-background.mp4" type="video/mp4" />
-        </video>
-      </div>
       <div className="absolute left-6 top-6 hidden sm:block">
         <Shield className="w-20 h-20 sm:w-24 sm:h-24 text-amber-400" />
       </div>
@@ -127,7 +115,7 @@ export function LoginPage() {
           </div>
           {!showForm && (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 sm:gap-y-0 sm:gap-x-2 mb-8 sm:mb-6 items-center justify-center place-items-center -mt-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 sm:gap-y-0 sm:gap-x-1 mb-8 sm:mb-6 items-center justify-center place-items-center -mt-6">
                 <div
                   className="rounded-2xl border-2 p-4 min-h-[128px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
                 >

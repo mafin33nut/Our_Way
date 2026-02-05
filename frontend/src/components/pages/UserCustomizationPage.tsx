@@ -36,7 +36,7 @@ export function UserCustomizationPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
-      <div className="min-h-screen flex items-center justify-center px-4 py-6 sm:px-8 sm:py-12">
+      <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1200px]">
           <div className="panel-base panel-purple p-6">
             <div className="flex items-center justify-between mb-6">
@@ -54,46 +54,42 @@ export function UserCustomizationPage() {
               </div>
             </div>
 
-            <div className="space-y-4">
-                <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-4">
-                  <p className="text-xs text-purple-200/60">Email</p>
-                  <p className="text-purple-200">{user.email || '—'}</p>
-                </div>
-                <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-4">
-                  <p className="text-xs text-purple-200/60">Опыт</p>
-                  <p className="text-purple-200">{user.xp} XP</p>
-                </div>
-                <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-4">
-                  <p className="text-xs text-purple-200/60">Следующий уровень</p>
-                  <p className="text-purple-200">{user.xp_to_next_level} XP</p>
-                </div>
-                <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-4">
-                  <p className="text-xs text-purple-200/60">Выполнено квестов</p>
-                  <p className="text-purple-200">{user.total_quests_completed}</p>
-                </div>
-                <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-4">
-                  <p className="text-xs text-purple-200/60">Описание</p>
-                  <textarea
-                    value={bio}
-                    onChange={(e) => setBio(e.target.value)}
-                    rows={4}
-                    className="mt-2 w-full rounded-lg border border-purple-600/30 bg-slate-950/50 p-3 text-purple-100 placeholder-purple-200/30 focus:outline-none focus:border-purple-500 transition-colors"
-                    placeholder="Добавьте короткое описание"
-                  />
-                </div>
-              <div className="flex items-center gap-3">
-                <Button onClick={handleSave} disabled={saving}>
-                  {saving ? 'Сохранение...' : 'Сохранить'}
-                </Button>
-                {status && (
-                  <span className="text-sm text-purple-200/70">{status}</span>
-                )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-4">
+                <p className="text-xs text-purple-200/60">Email</p>
+                <p className="text-purple-200">{user.email || '—'}</p>
+              </div>
+              <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-4">
+                <p className="text-xs text-purple-200/60">Опыт</p>
+                <p className="text-purple-200">{user.xp} XP</p>
+              </div>
+              <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-4">
+                <p className="text-xs text-purple-200/60">Следующий уровень</p>
+                <p className="text-purple-200">{user.xp_to_next_level} XP</p>
+              </div>
+              <div className="rounded-lg border border-purple-600/20 bg-slate-950/40 p-4">
+                <p className="text-xs text-purple-200/60">Выполнено квестов</p>
+                <p className="text-purple-200">{user.total_quests_completed}</p>
               </div>
             </div>
-            <PanelHelp>
-              <p>1) Обновите описание и сохраните изменения.</p>
-              <p>2) Проверьте данные профиля ниже.</p>
-            </PanelHelp>
+
+            <div className="mt-6 rounded-lg border border-purple-600/20 bg-slate-950/40 p-4">
+              <p className="text-xs text-purple-200/60">Описание</p>
+              <textarea
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                rows={4}
+                className="mt-2 w-full rounded-lg border border-purple-600/30 bg-slate-950/50 p-3 text-purple-100 placeholder-purple-200/30 focus:outline-none focus:border-purple-500 transition-colors"
+                placeholder="Добавьте короткое описание"
+              />
+            </div>
+
+            <div className="mt-6 flex items-center gap-3">
+              <Button onClick={handleSave} disabled={saving}>
+                {saving ? 'Сохранение...' : 'Сохранить'}
+              </Button>
+              {status && <span className="text-sm text-purple-200/70">{status}</span>}
+            </div>
           </div>
         </div>
       </div>

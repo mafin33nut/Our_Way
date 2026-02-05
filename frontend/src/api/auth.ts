@@ -46,7 +46,7 @@ export const authAPI = {
   },
 
   getCurrentUser: async (): Promise<User> => {
-    const response = await apiClient.get<User>('/api/auth/user/');
+    const response = await apiClient.get<User>('/api/auth/user/', { timeout: 10000 });
     return response.data;
   },
 
