@@ -176,7 +176,7 @@ export function ClansPage() {
                                   : 'border-slate-600/60 text-slate-300/70 hover:border-slate-500/60'
                               }`}
                             >
-                              Переключиться
+                              Выбрать клан
                             </button>
                           </td>
                         </tr>

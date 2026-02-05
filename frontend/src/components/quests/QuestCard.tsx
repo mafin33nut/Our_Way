@@ -20,7 +20,14 @@ export function QuestCard({ quest, onComplete, onDelete, onStepComplete }: Quest
   const handleCompleteStep = async (stepId: number) => {
     try {
       const updated = await questStepsAPI.complete(stepId);
-      setSteps((prev) => prev.map((s) => (s.id === stepId ? updated : s)));
+      setSteps((prev) => {
+        const nextSteps = prev.map((s) => (s.id === stepId ? updated : s));
+        const allDone = nextSteps.length > 0 && nextSteps.every((step) => step.completed);
+        if (allDone && !quest.completed) {
+          onComplete(quest.id);
+        }
+        return nextSteps;
+      });
       onStepComplete?.(quest.id, stepId);
     } catch (err) {
       console.error('Failed to complete step', err);
@@ -55,13 +62,15 @@ export function QuestCard({ quest, onComplete, onDelete, onStepComplete }: Quest
         </div>
       )}
       <div className="flex items-center gap-2 mt-3">
-        <Button
-          onClick={() => canComplete && onComplete(quest.id)}
-          disabled={!canComplete}
-          size="sm"
-        >
-          Завершить
-        </Button>
+        {steps.length === 0 && (
+          <Button
+            onClick={() => canComplete && onComplete(quest.id)}
+            disabled={!canComplete}
+            size="sm"
+          >
+            Завершить
+          </Button>
+        )}
         <Button
           onClick={() => onDelete(quest.id)}
           size="sm"
