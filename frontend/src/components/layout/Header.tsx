@@ -41,18 +41,18 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
             aria-label={isSidebarOpen ? 'Скрыть боковую панель' : 'Показать боковую панель'}
           >
             {isSidebarOpen ? (
-              <PanelLeftClose className="w-8 h-8" />
+              <PanelLeftClose className="w-7 h-7" />
             ) : (
-              <PanelLeftOpen className="w-8 h-8" />
+              <PanelLeftOpen className="w-7 h-7" />
             )}
           </button>
           {user && (
             <div className="flex-1 rounded-xl border border-slate-700/60 bg-slate-800/70 px-4 py-3 min-w-0">
-              <div className="flex items-center justify-end gap-2 sm:gap-3 flex-wrap sm:flex-nowrap sm:overflow-x-auto">
-                <div className="flex items-center gap-2 sm:gap-3 ml-auto flex-wrap sm:flex-nowrap">
+              <div className="flex items-center justify-end gap-2 sm:gap-3 flex-nowrap overflow-x-auto">
+                <div className="flex items-center gap-2 sm:gap-3 ml-auto flex-nowrap">
                 <Link
                   to="/profile"
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl border transition-colors whitespace-nowrap shrink-0 text-xl sm:text-3xl h-16 ${
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl border transition-colors whitespace-nowrap shrink-0 text-2xl h-16 ${
                     isLight
                       ? 'bg-slate-50 border-slate-200 hover:bg-slate-100'
                       : 'bg-slate-800/50 border-slate-700/50 hover:bg-slate-800/70'
@@ -70,10 +70,10 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                     </div>
                   )}
                   <div className="min-w-0 hidden sm:block">
-                    <p className={`text-xl sm:text-3xl ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                    <p className={`text-2xl ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
                       {user.username}
                     </p>
-                    <p className={`text-base sm:text-xl ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
+                    <p className={`text-lg ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
                       Уровень {user.level} · {user.xp} XP
                     </p>
                   </div>
@@ -82,24 +82,24 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                   <Button
                     variant="ghost"
                     size="md"
-                    className="flex items-center justify-center gap-2 whitespace-nowrap text-base sm:text-xl px-4 py-3 w-28 h-14 sm:w-40 sm:h-16"
+                    className="flex items-center justify-center gap-2 whitespace-nowrap text-xl px-4 py-3 w-44 h-16"
                   >
-                    <Settings className="w-5 h-5 sm:w-6 sm:h-6" />
+                    <Settings className="w-6 h-6" />
                     <span className="hidden sm:inline">Настройки</span>
                   </Button>
                 </Link>
                 <div className="shrink-0">
-                  <div className="w-28 h-14 sm:w-40 sm:h-16 flex items-center justify-center">
+                  <div className="w-44 h-16 flex items-center justify-center">
                     <FriendsPanel />
                   </div>
                 </div>
                 <div className="shrink-0">
-                  <div className="w-28 h-14 sm:w-40 sm:h-16 flex items-center justify-center">
+                  <div className="w-44 h-16 flex items-center justify-center">
                     <ClanHubPanel />
                   </div>
                 </div>
                 <div className="shrink-0">
-                  <div className="w-28 h-14 sm:w-40 sm:h-16 flex items-center justify-center">
+                  <div className="w-44 h-16 flex items-center justify-center">
                     <ChatHubPanel />
                   </div>
                 </div>
@@ -108,9 +108,9 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 variant="ghost"
                 size="md"
                 onClick={logout}
-                className="flex items-center justify-center gap-2 whitespace-nowrap shrink-0 text-base sm:text-xl px-4 py-3 w-28 h-14 sm:w-40 sm:h-16"
+                className="flex items-center justify-center gap-2 whitespace-nowrap shrink-0 text-xl px-4 py-3 w-44 h-16"
               >
-                <LogOut className="w-5 h-5 sm:w-6 sm:h-6" />
+                <LogOut className="w-6 h-6" />
                 <span className="hidden sm:inline">Выйти</span>
               </Button>
             </div>
