@@ -203,32 +203,10 @@ export function ChatHubPanel() {
                           <div className="text-sm text-slate-300/70">Загрузка кланов...</div>
                         ) : clans.length === 0 ? (
                           <div className="text-sm text-slate-300/70">Вы пока не состоите в кланах.</div>
+                        ) : selectedClan ? (
+                          <ClanChatPanel clan={selectedClan} onClanUpdated={loadClans} />
                         ) : (
-                          <>
-                            <p className="text-xs text-slate-300/80 mb-2">Выберите клан</p>
-                            <div className="flex flex-wrap gap-2 mb-4">
-                              {clans.map((clan) => (
-                                <button
-                                  key={clan.id}
-                                  onClick={() => setSelectedClanId(clan.id)}
-                                  title={`Клан: ${clan.name}`}
-                                  className={`rounded-lg border text-xs transition-colors px-4 py-2 flex items-center gap-2 ${
-                                    selectedClanId === clan.id
-                                      ? 'border-teal-300/60 bg-teal-400/10 text-teal-100'
-                                      : 'border-slate-600/60 text-slate-300/70 hover:border-slate-500/60'
-                                  }`}
-                                >
-                                  <span className="w-7 h-7 rounded-full border border-teal-300/50 bg-teal-400/10 flex items-center justify-center text-[0.7rem]">
-                                    {clan.name[0]?.toUpperCase()}
-                                  </span>
-                                  <span>{clan.name}</span>
-                                </button>
-                              ))}
-                            </div>
-                            {selectedClan && (
-                              <ClanChatPanel clan={selectedClan} onClanUpdated={loadClans} />
-                            )}
-                          </>
+                          <div className="text-sm text-slate-300/70">Клан недоступен.</div>
                         )}
                       </div>
                     )}
@@ -275,10 +253,8 @@ export function ChatHubPanel() {
                                   currentMessages.map((message) => (
                                     <div
                                       key={message.id}
-                                      className={`rounded-lg border px-3 py-2 ${
-                                        message.senderId === user?.id
-                                          ? 'border-purple-400/40 bg-purple-500/10 text-purple-100'
-                                          : 'border-purple-600/30 bg-slate-950/40 text-purple-200'
+                                      className={`px-1 py-1 ${
+                                        message.senderId === user?.id ? 'text-purple-100' : 'text-purple-200'
                                       }`}
                                     >
                                       <p className="text-xs text-purple-200/60">

@@ -247,10 +247,7 @@ export function ClanChatPanel({ clan, onClanUpdated }: ClanChatPanelProps) {
                 </div>
               ) : (
                 messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className="rounded-lg border border-rose-400/20 bg-slate-950/30 px-3 py-2"
-                  >
+                  <div key={message.id} className="px-1 py-1">
                     <div className="flex items-center justify-between gap-2">
                       <p className="text-sm text-rose-100 truncate">{message.username}</p>
                       <span className="text-xs text-rose-200/60">
