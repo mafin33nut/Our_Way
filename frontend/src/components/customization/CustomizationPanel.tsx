@@ -250,6 +250,23 @@ export function CustomizationPanel() {
                 </h3>
                 <div className="space-y-2">
                   <button
+                    onClick={() => updateSettings({ showHelp: !settings.showHelp })}
+                    className={`w-full p-3 rounded-lg border transition-all flex items-center justify-between ${
+                      settings.showHelp
+                        ? (isLight ? 'border-amber-300 bg-amber-50' : 'border-purple-600/50 bg-slate-800/50')
+                        : (isLight ? 'border-amber-200 bg-white' : 'border-purple-600/30 bg-slate-950/30')
+                    }`}
+                  >
+                    <span className={isLight ? 'text-amber-900' : 'text-purple-200'}>
+                      Подсказки "Как это работает"
+                    </span>
+                    {settings.showHelp ? (
+                      <Eye className={isLight ? 'text-amber-600' : 'text-purple-400'} />
+                    ) : (
+                      <EyeOff className={isLight ? 'text-amber-400' : 'text-purple-400/60'} />
+                    )}
+                  </button>
+                  <button
                     onClick={() => updateSettings({ showFriends: !settings.showFriends })}
                     className={`w-full p-3 rounded-lg border transition-all flex items-center justify-between ${
                       settings.showFriends

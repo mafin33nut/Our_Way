@@ -1,6 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from './Button';
+import { useCustomization } from '../../hooks/useCustomization';
 
 interface PanelHelpProps {
   children: ReactNode;
@@ -9,6 +10,11 @@ interface PanelHelpProps {
 
 export function PanelHelp({ children, className = '' }: PanelHelpProps) {
   const [open, setOpen] = useState(false);
+  const { settings } = useCustomization();
+
+  if (!settings.showHelp) {
+    return null;
+  }
 
   return (
     <div className={`mt-4 ${className}`}>
@@ -16,7 +22,7 @@ export function PanelHelp({ children, className = '' }: PanelHelpProps) {
         type="button"
         variant="secondary"
         size="sm"
-        className="w-full flex items-center justify-center gap-2"
+        className="w-full max-w-[80%] mx-auto flex items-center justify-center gap-2"
         onClick={() => setOpen((prev) => !prev)}
       >
         {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}

@@ -4,8 +4,6 @@ import { clanQuestsAPI } from '../../api/quests';
 import { socialAPI } from '../../api/social';
 import { Clan, ClanQuest } from '../../types';
 import { ClanQuestList } from '../quests/ClanQuestList';
-import { ClanCreationPanel } from '../social/ClanCreationPanel';
-import { ClanChatPanel } from '../social/ClanChatPanel';
 import { useAuth } from '../../hooks/useAuth';
 import { Loader } from '../ui/Loader';
 import { Button } from '../ui/Button';
@@ -24,10 +22,6 @@ export function ClansPage() {
   const [clanQuestDifficulty, setClanQuestDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
   const [creatingClanQuest, setCreatingClanQuest] = useState(false);
   const [createClanQuestError, setCreateClanQuestError] = useState<string | null>(null);
-  const [joinLink, setJoinLink] = useState('');
-  const [joinLinkPassword, setJoinLinkPassword] = useState('');
-  const [joinLinkStatus, setJoinLinkStatus] = useState<string | null>(null);
-  const [joinLinkLoading, setJoinLinkLoading] = useState(false);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -124,33 +118,6 @@ export function ClansPage() {
     }
   };
 
-  const extractClanIdFromLink = (value: string): number | null => {
-    const match = value.match(/(\d+)/g);
-    if (!match || match.length === 0) return null;
-    const candidate = Number(match[match.length - 1]);
-    return Number.isFinite(candidate) ? candidate : null;
-  };
-
-  const handleJoinByLink = async () => {
-    const clanId = extractClanIdFromLink(joinLink.trim());
-    if (!clanId) {
-      setJoinLinkStatus('Не удалось распознать ID клана в ссылке.');
-      return;
-    }
-    setJoinLinkLoading(true);
-    setJoinLinkStatus(null);
-    try {
-      await socialAPI.requestJoinClan(clanId, joinLinkPassword.trim() || undefined);
-      setJoinLinkStatus('Запрос на вступление отправлен.');
-      setJoinLink('');
-      setJoinLinkPassword('');
-    } catch (error: any) {
-      console.error('Failed to join clan by link:', error);
-      setJoinLinkStatus(error?.response?.data?.detail || 'Не удалось отправить запрос.');
-    } finally {
-      setJoinLinkLoading(false);
-    }
-  };
 
 
   const selectedClan = useMemo(
@@ -224,54 +191,7 @@ export function ClansPage() {
             </div>
           )}
 
-          {clans.length === 0 && (
-            <div className="panel-base panel-purple p-6">
-              <ClanCreationPanel onClanCreated={handleClanCreated} />
-            </div>
-          )}
 
-          {selectedClan && (
-            <div className="panel-base panel-teal p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Crown className="w-5 h-5 text-teal-300" />
-                <h2 className="text-slate-100">Найти или создать клан</h2>
-              </div>
-              <PanelHelp>
-                <p>1) Создайте новый клан, если хотите собственное сообщество.</p>
-                <p>2) Найдите кланы по названию и отправьте запрос на вступление.</p>
-                <p>3) После одобрения клан появится в списке выше.</p>
-              </PanelHelp>
-              <div className="rounded-lg border border-slate-600/40 bg-slate-950/40 p-4 mt-4">
-                <p className="text-sm text-slate-200 mb-2">Вступить в приватный клан по ссылке</p>
-                <div className="flex flex-col gap-3">
-                  <input
-                    value={joinLink}
-                    onChange={(e) => setJoinLink(e.target.value)}
-                    placeholder="Вставьте ссылку или ID клана"
-                    className="w-full rounded-lg border border-slate-600/40 bg-slate-950/50 px-3 py-2 text-slate-100"
-                  />
-                  <input
-                    value={joinLinkPassword}
-                    onChange={(e) => setJoinLinkPassword(e.target.value)}
-                    placeholder="Пароль (если нужен)"
-                    type="password"
-                    className="w-full rounded-lg border border-slate-600/40 bg-slate-950/50 px-3 py-2 text-slate-100"
-                  />
-                  <div className="flex items-center justify-between gap-3">
-                    <Button onClick={handleJoinByLink} disabled={joinLinkLoading} className="action-button">
-                      {joinLinkLoading ? 'Отправка...' : 'Отправить запрос'}
-                    </Button>
-                    {joinLinkStatus && <span className="text-sm text-slate-300/70">{joinLinkStatus}</span>}
-                  </div>
-                </div>
-              </div>
-              <ClanCreationPanel onClanCreated={handleClanCreated} />
-            </div>
-          )}
-
-        {selectedClan && (
-          <ClanChatPanel clan={selectedClan} onClanUpdated={handleClanCreated} />
-        )}
 
         {selectedClan && (
           <div className="panel-base panel-orange p-6">

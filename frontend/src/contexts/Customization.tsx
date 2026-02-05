@@ -13,6 +13,7 @@ const defaultSettings: CustomizationSettings = {
   showFriends: true,
   showActivities: true,
   showClan: true,
+  showHelp: true,
 };
 export const CustomizationContext = createContext<CustomizationContextType | undefined>(undefined);
 interface CustomizationProviderProps {

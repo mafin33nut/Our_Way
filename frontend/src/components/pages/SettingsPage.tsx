@@ -245,6 +245,21 @@ export function SettingsPage() {
                 </PanelHelp>
                 <div className="space-y-3">
                   <button
+                    onClick={() => updateSettings({ showHelp: !settings.showHelp })}
+                    className={`w-full p-4 rounded-lg border-2 transition-all flex items-center justify-between ${
+                      settings.showHelp
+                        ? 'border-purple-500 bg-purple-900/40 ring-2 ring-purple-400/50'
+                        : 'border-purple-600/30 bg-slate-800/50'
+                    }`}
+                  >
+                    <span className="text-purple-200">Подсказки "Как это работает"</span>
+                    {settings.showHelp ? (
+                      <Eye className="text-purple-400" />
+                    ) : (
+                      <EyeOff className="text-purple-400/60" />
+                    )}
+                  </button>
+                  <button
                     onClick={() => updateSettings({ showFriends: !settings.showFriends })}
                     className={`w-full p-4 rounded-lg border-2 transition-all flex items-center justify-between ${
                       settings.showFriends

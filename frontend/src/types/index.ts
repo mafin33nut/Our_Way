@@ -151,6 +151,7 @@ export interface CustomizationSettings {
   showFriends: boolean;
   showActivities: boolean;
   showClan: boolean;
+  showHelp: boolean;
 }
 export const BACKGROUND_OPTIONS = [
   {
