@@ -17,12 +17,12 @@ export function PanelHelp({ children, className = '' }: PanelHelpProps) {
   }
 
   return (
-    <div className={`mt-4 ${className}`}>
+    <div className={`panel-help mt-4 ${className}`}>
       <Button
         type="button"
         variant="secondary"
         size="sm"
-        className="w-full max-w-[520px] min-w-[520px] mx-auto flex items-center justify-center gap-2"
+        className="w-full flex items-center justify-center gap-2"
         onClick={() => setOpen((prev) => !prev)}
       >
         {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}

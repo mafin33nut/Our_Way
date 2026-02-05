@@ -170,6 +170,14 @@ h3 {
     font-family: "Playpen Sans", "Segoe UI", sans-serif;
   }
 
+  .panel-help {
+    width: 100%;
+  }
+
+  .panel-help button {
+    width: 100%;
+  }
+
   .achievement-earned {
     color: #f4b36b !important;
   }
