@@ -4,7 +4,6 @@ import { Button } from '../ui/Button';
 import { useCustomization } from '../../hooks/useCustomization';
 import { BACKGROUND_OPTIONS } from '../../types';
 import { Link } from 'react-router-dom';
-import { PanelHelp } from '../ui/PanelHelp';
 
 export function SettingsPage() {
   const { settings, updateSettings, playVictorySound } = useCustomization();
@@ -100,11 +99,6 @@ export function SettingsPage() {
                     </button>
                   ))}
                 </div>
-                <PanelHelp>
-                  <p>1) Выберите готовый фон или загрузите свой.</p>
-                  <p>2) Убедитесь, что панели читаются на фоне.</p>
-                  <p>3) Если фон мешает, отключите его кнопкой ниже.</p>
-                </PanelHelp>
               </div>
 
               <div>
@@ -131,10 +125,6 @@ export function SettingsPage() {
                     <VolumeX className="text-purple-400/60" />
                   )}
                 </button>
-                <PanelHelp>
-                  <p>1) Включите звук и проверьте громкость.</p>
-                  <p>2) Отключите, если хотите сосредоточиться без уведомлений.</p>
-                </PanelHelp>
               </div>
 
               <div>
@@ -203,10 +193,6 @@ export function SettingsPage() {
                     )}
                   </button>
                 </div>
-                <PanelHelp>
-                  <p>1) Скрывайте панели, которые не используете регулярно.</p>
-                  <p>2) Включайте важные блоки перед планированием недели.</p>
-                </PanelHelp>
               </div>
             </div>
           </div>

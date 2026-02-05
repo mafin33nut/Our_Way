@@ -149,70 +149,74 @@ export function ClanChatPanel({ clan, onClanUpdated }: ClanChatPanelProps) {
               <span className="text-xs text-rose-200/60">{clan.members?.length || 0}</span>
             </div>
             <div className="space-y-2 max-h-48 overflow-y-auto">
-              {(clan.members || []).map((member) => {
-                const isSelf = member.username === user?.username;
-                return (
-                  <div
-                    key={member.id}
-                    className="flex items-center justify-between rounded-lg border border-rose-400/30 bg-slate-950/40 px-3 py-2"
-                  >
-                    <div className="min-w-0">
-                      <p className="text-sm text-rose-100 truncate">
-                        {member.username}
-                        {member.role === 'leader' && (
-                          <span className="ml-2 text-xs text-rose-200/60">лидер</span>
-                        )}
-                      </p>
-                    </div>
-                    {isLeader && !isSelf && (
-                      <div className="flex items-center gap-2">
-                        <Button
-                          size="sm"
-                          variant="softAmber"
-                          onClick={() => handlePromote(member.id)}
-                          disabled={actioningMemberId === member.id}
-                        >
-                          {actioningMemberId === member.id ? (
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                          ) : (
-                            'Лидер'
+              {(clan.members || []).length === 0 ? (
+                <div className="text-center py-4 text-rose-200/60 text-sm">Участников пока нет</div>
+              ) : (
+                (clan.members || []).map((member) => {
+                  const isSelf = member.username === user?.username;
+                  return (
+                    <div
+                      key={member.id}
+                      className="flex items-center justify-between rounded-lg border border-rose-400/30 bg-slate-950/40 px-3 py-2"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-sm text-rose-100 truncate">
+                          {member.username}
+                          {member.role === 'leader' && (
+                            <span className="ml-2 text-xs text-rose-200/60">лидер</span>
                           )}
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => handleRemove(member.id)}
-                          disabled={actioningMemberId === member.id}
-                        >
-                          Исключить
-                        </Button>
+                        </p>
                       </div>
-                    )}
-                  </div>
-                );
-              })}
+                      {isLeader && !isSelf && (
+                        <div className="flex items-center gap-2">
+                          <Button
+                            size="sm"
+                            variant="softAmber"
+                            onClick={() => handlePromote(member.id)}
+                            disabled={actioningMemberId === member.id}
+                          >
+                            {actioningMemberId === member.id ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              'Лидер'
+                            )}
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => handleRemove(member.id)}
+                            disabled={actioningMemberId === member.id}
+                          >
+                            Исключить
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
+              )}
             </div>
           </div>
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-sm text-rose-200/80">Запросы на вступление</p>
-              <span className="text-xs text-rose-200/60">Ожидают: {pendingRequests.length}</span>
-            </div>
-            <div className="space-y-2 max-h-48 overflow-y-auto">
-              {pendingRequests.length === 0 ? (
-                <div className="text-center py-4 text-rose-200/60 text-sm">
-                  Пока пусто
-                </div>
-              ) : (
-                pendingRequests.map((request) => (
-                  <div
-                    key={request.id}
-                    className="flex items-center justify-between rounded-lg border border-rose-400/30 bg-slate-950/40 px-3 py-2"
-                  >
-                    <div className="min-w-0">
-                      <p className="text-sm text-rose-100 truncate">{request.username || 'Игрок'}</p>
-                    </div>
-                    {isLeader && (
+          {isLeader && (
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm text-rose-200/80">Запросы на вступление</p>
+                <span className="text-xs text-rose-200/60">Ожидают: {pendingRequests.length}</span>
+              </div>
+              <div className="space-y-2 max-h-48 overflow-y-auto">
+                {pendingRequests.length === 0 ? (
+                  <div className="text-center py-4 text-rose-200/60 text-sm">
+                    Нет заявок
+                  </div>
+                ) : (
+                  pendingRequests.map((request) => (
+                    <div
+                      key={request.id}
+                      className="flex items-center justify-between rounded-lg border border-rose-400/30 bg-slate-950/40 px-3 py-2"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-sm text-rose-100 truncate">{request.username || 'Игрок'}</p>
+                      </div>
                       <div className="flex items-center gap-2">
                         <Button
                           size="sm"
@@ -235,18 +239,18 @@ export function ClanChatPanel({ clan, onClanUpdated }: ClanChatPanelProps) {
                           <X className="w-4 h-4" />
                         </Button>
                       </div>
-                    )}
-                  </div>
-                ))
-              )}
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="rounded-lg border border-rose-400/30 bg-slate-950/40 p-3">
             <div className="max-h-64 overflow-y-auto space-y-4 mb-3">
               {messages.length === 0 ? (
                 <div className="text-center py-4 text-rose-200/60 text-sm">
-                  Пока пусто
+                  Сообщений пока нет
                 </div>
               ) : (
                 messages.map((message, index) => {

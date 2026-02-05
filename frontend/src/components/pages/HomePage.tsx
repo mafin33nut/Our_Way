@@ -7,6 +7,7 @@ import { QuestList } from '../../components/quests/QuestList';
 import { CharacterProfile } from '../../components/profile/characterProfile';
 import { isToday } from '../../utils/time';
 import { Loader } from '../../components/ui/Loader';
+import { Home } from 'lucide-react';
 
 export function HomePage() {
   const { user, refreshUser } = useAuth();
@@ -119,6 +120,10 @@ export function HomePage() {
       )}
           <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12 pb-8">
         <div className="w-full max-w-[1200px] mx-auto">
+          <div className="flex items-center gap-2 text-slate-100 mb-6">
+            <Home className="w-5 h-5 text-teal-300" />
+            <h2 className="text-slate-100">Главная</h2>
+          </div>
           <div className="flex flex-col items-center gap-12">
             <div className="w-full">
               <div className="panel-base panel-teal">
