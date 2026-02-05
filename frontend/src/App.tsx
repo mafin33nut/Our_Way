@@ -17,6 +17,7 @@ import { WelcomePage } from './components/pages/WelcomePage';
 import { FocusTasksPage } from './components/pages/FocusTasksPage';
 import { ProgressPage } from './components/pages/ProgressPage';
 import { useAuth } from './hooks/useAuth';
+import { useCustomization } from './hooks/useCustomization';
 
 function HomeRoute() {
   const { user } = useAuth();
@@ -28,6 +29,7 @@ function HomeRoute() {
 
 function AppLayout({ children }: { children: ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const { settings } = useCustomization();
   useEffect(() => {
     if (typeof window !== 'undefined' && window.innerWidth <= 768) {
       setIsSidebarOpen(false);
@@ -35,18 +37,20 @@ function AppLayout({ children }: { children: ReactNode }) {
   }, []);
   return (
     <div className="relative min-h-screen">
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <video
-          className="w-full h-full object-cover opacity-20 sm:opacity-25"
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/neon-background.mp4"
-        >
-          <source src="/neon-background.mp4" type="video/mp4" />
-        </video>
-      </div>
+      {settings.background === 'dynamic' && (
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <video
+            className="w-full h-full object-cover opacity-20 sm:opacity-25"
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster="/neon-background.mp4"
+          >
+            <source src="/neon-background.mp4" type="video/mp4" />
+          </video>
+        </div>
+      )}
       <div className="relative z-10">
         <Header
           isSidebarOpen={isSidebarOpen}

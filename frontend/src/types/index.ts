@@ -170,8 +170,8 @@ export const BACKGROUND_OPTIONS = [
     url: '',
   },
   {
-    id: 'none',
-    name: 'Без фона',
+    id: 'dynamic',
+    name: 'Динамичный фон',
     url: '',
   },
 ];

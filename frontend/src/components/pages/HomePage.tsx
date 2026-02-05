@@ -45,7 +45,11 @@ export function HomePage() {
     settings.background === 'custom'
       ? settings.customBackgroundUrl || ''
       : backgroundOption?.url || '';
-  const hasBackground = settings.background && settings.background !== 'none' && backgroundUrl && backgroundUrl.trim() !== '';
+  const hasBackground =
+    settings.background &&
+    settings.background !== 'dynamic' &&
+    backgroundUrl &&
+    backgroundUrl.trim() !== '';
 
   useEffect(() => {
     if (hasBackground && backgroundUrl) {

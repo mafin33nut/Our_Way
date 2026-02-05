@@ -12,7 +12,7 @@ export function SettingsPage() {
   const backgroundUrl = backgroundOption?.url || '';
   const hasBackground =
     settings.background &&
-    settings.background !== 'none' &&
+    settings.background !== 'dynamic' &&
     backgroundUrl &&
     backgroundUrl.trim() !== '';
 

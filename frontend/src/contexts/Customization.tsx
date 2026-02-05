@@ -7,7 +7,7 @@ interface CustomizationContextType {
 }
 const defaultSettings: CustomizationSettings = {
   theme: 'light',
-  background: BACKGROUND_OPTIONS[0].id,
+  background: 'dynamic',
   customBackgroundUrl: '',
   soundEnabled: true,
   showFriends: true,
