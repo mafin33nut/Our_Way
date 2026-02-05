@@ -158,7 +158,7 @@ export function LoginPage() {
                   type="button"
                   variant="ghost"
                   onClick={() => {
-                    window.location.href = '/admin/';
+                    window.location.href = '/admin/login/';
                   }}
                   className="text-sm text-amber-200/70 border border-amber-600/30 hover:border-amber-400"
                 >

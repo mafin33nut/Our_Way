@@ -41,7 +41,7 @@ export function LeadersPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
       <div className="min-h-screen flex items-center justify-center px-4 py-6 sm:px-8 sm:py-12">
-        <div className="w-full max-w-[1600px] mx-auto">
+        <div className="w-full max-w-[1600px] mx-auto -mt-28">
           <div className="flex items-center gap-2 text-slate-100 mb-6">
             <Trophy className="w-5 h-5 text-teal-300" />
             <h2 className="text-slate-100">Лидеры</h2>
