@@ -199,6 +199,9 @@ export function ChatHubPanel() {
                           <Users className="w-5 h-5 text-teal-300" />
                           <h3 className="text-slate-100">Клановые чаты</h3>
                         </div>
+                        <p className="text-xs text-slate-300/70 mb-3">
+                          Быстрые сообщения внутри вашего клана.
+                        </p>
                         {loadingClans ? (
                           <div className="text-sm text-slate-300/70">Загрузка кланов...</div>
                         ) : clans.length === 0 ? (
@@ -217,6 +220,9 @@ export function ChatHubPanel() {
                           <Users className="w-5 h-5 text-purple-400" />
                           <h3 className="text-purple-200">Чат с друзьями</h3>
                         </div>
+                        <p className="text-xs text-purple-200/60 mb-3">
+                          Личные диалоги с друзьями.
+                        </p>
                         {loadingFriends ? (
                           <div className="text-sm text-purple-200/60">Загрузка друзей...</div>
                         ) : friends.length === 0 ? (
@@ -250,21 +256,27 @@ export function ChatHubPanel() {
                                     Напишите первое сообщение
                                   </div>
                                 ) : (
-                                  currentMessages.map((message) => (
-                                    <div
-                                      key={message.id}
-                                      className={`px-1 py-1 ${
-                                        message.senderId === user?.id ? 'text-purple-100' : 'text-purple-200'
-                                      }`}
-                                    >
-                                      <p className="text-xs text-purple-200/60">
-                                        {message.senderId === user?.id
-                                          ? user.username
-                                          : selectedFriend?.username || 'Друг'}
-                                      </p>
-                                      <p className="text-sm">{message.text}</p>
-                                    </div>
-                                  ))
+                                  currentMessages.map((message, index) => {
+                                    const prev = currentMessages[index - 1];
+                                    const showAuthor = !prev || prev.senderId !== message.senderId;
+                                    return (
+                                      <div
+                                        key={message.id}
+                                        className={`px-1 py-1 ${
+                                          message.senderId === user?.id ? 'text-purple-100' : 'text-purple-200'
+                                        }`}
+                                      >
+                                        {showAuthor && (
+                                          <p className="text-[0.5rem] text-purple-200/30">
+                                            {message.senderId === user?.id
+                                              ? user.username
+                                              : selectedFriend?.username || 'Друг'}
+                                          </p>
+                                        )}
+                                        <p className="text-sm">{message.text}</p>
+                                      </div>
+                                    );
+                                  })
                                 )}
                               </div>
                               <div className="flex flex-col sm:flex-row gap-2">

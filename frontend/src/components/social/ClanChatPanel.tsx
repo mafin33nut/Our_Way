@@ -129,6 +129,9 @@ export function ClanChatPanel({ clan, onClanUpdated }: ClanChatPanelProps) {
         <MessageCircle className="w-5 h-5 text-rose-200" />
         <h2 className="text-slate-100">Чат клана</h2>
       </div>
+      <p className="text-xs text-rose-200/60 mb-3">
+        Общий чат и быстрые объявления для участников.
+      </p>
 
       {error && (
         <div className="p-3 rounded-lg border mb-4 bg-rose-900/30 border-rose-400/40">
@@ -246,17 +249,23 @@ export function ClanChatPanel({ clan, onClanUpdated }: ClanChatPanelProps) {
                   Пока пусто
                 </div>
               ) : (
-                messages.map((message) => (
-                  <div key={message.id} className="px-1 py-1">
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="text-sm text-rose-100 truncate">{message.username}</p>
-                      <span className="text-xs text-rose-200/60">
-                        {new Date(message.created_at).toLocaleTimeString()}
-                      </span>
+                messages.map((message, index) => {
+                  const prev = messages[index - 1];
+                  const showAuthor = !prev || prev.username !== message.username;
+                  return (
+                    <div key={message.id} className="px-1 py-1">
+                      {showAuthor && (
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="text-[0.5rem] text-rose-200/30 truncate">{message.username}</p>
+                          <span className="text-[0.5rem] text-rose-200/30">
+                            {new Date(message.created_at).toLocaleTimeString()}
+                          </span>
+                        </div>
+                      )}
+                      <p className="text-sm text-rose-50/90 mt-1">{message.content}</p>
                     </div>
-                    <p className="text-sm text-rose-50/90 mt-1">{message.content}</p>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
             <div className="flex flex-col sm:flex-row gap-2">

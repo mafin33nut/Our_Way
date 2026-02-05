@@ -114,44 +114,58 @@ export function LoginPage() {
             <p className="text-amber-200/60">Командное саморазвитие</p>
           </div>
           {!showForm && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-              <div
-                className="rounded-2xl border-2 p-4 min-h-[128px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
-              >
-                <p className="text-amber-200/80 text-lg mb-4">
-                  Рады видеть вас снова
-                </p>
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                <div
+                  className="rounded-2xl border-2 p-4 min-h-[128px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
+                >
+                  <p className="text-amber-200/80 text-lg mb-4">
+                    Рады видеть вас снова
+                  </p>
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      setIsRegisterMode(false);
+                      setShowForm(true);
+                      setError('');
+                    }}
+                    className="w-56 px-6 py-3 text-xl"
+                  >
+                    Войти
+                  </Button>
+                </div>
+                <div
+                  className="rounded-2xl border-2 p-4 min-h-[128px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
+                >
+                  <p className="text-amber-200/80 text-lg mb-4">
+                    Добро пожаловать
+                  </p>
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      setIsRegisterMode(true);
+                      setShowForm(true);
+                      setError('');
+                    }}
+                    className="w-56 px-6 py-3 text-xl"
+                  >
+                    Зарегистрироваться
+                  </Button>
+                </div>
+              </div>
+              <div className="flex justify-center">
                 <Button
                   type="button"
+                  variant="ghost"
                   onClick={() => {
-                    setIsRegisterMode(false);
-                    setShowForm(true);
-                    setError('');
+                    window.location.href = '/admin/';
                   }}
-                  className="w-56 px-6 py-3 text-xl"
+                  className="text-sm text-amber-200/70 border border-amber-600/30 hover:border-amber-400"
                 >
-                  Войти
+                  Войти как админ
                 </Button>
               </div>
-              <div
-                className="rounded-2xl border-2 p-4 min-h-[128px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
-              >
-                <p className="text-amber-200/80 text-lg mb-4">
-                  Добро пожаловать
-                </p>
-                <Button
-                  type="button"
-                  onClick={() => {
-                    setIsRegisterMode(true);
-                    setShowForm(true);
-                    setError('');
-                  }}
-                  className="w-56 px-6 py-3 text-xl"
-                >
-                  Зарегистрироваться
-                </Button>
-              </div>
-            </div>
+            </>
           )}
           {showForm && (
             <form onSubmit={handleSubmit} className="space-y-4">
