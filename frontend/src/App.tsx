@@ -44,7 +44,7 @@ function AppLayout({ children }: { children: ReactNode }) {
           type="button"
           aria-label="Закрыть боковую панель"
           onClick={() => setIsSidebarOpen(false)}
-          className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm md:hidden"
+          className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm"
         />
       )}
       <Sidebar

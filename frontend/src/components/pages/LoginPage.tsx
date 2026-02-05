@@ -102,20 +102,11 @@ export function LoginPage() {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950 flex items-center justify-center px-4 py-6 sm:px-8 sm:py-12">
-      <div className="absolute left-6 top-6 hidden sm:block">
-        <Shield className="w-20 h-20 sm:w-24 sm:h-24 text-amber-400" />
-      </div>
       <div className="w-full max-w-2xl">
         <div className="relative bg-transparent rounded-lg border-0 p-12 sm:p-20 shadow-none text-[200%] text-center">
-          <div className="text-center mb-6 sm:mb-8">
-            <h1 className="text-amber-400 mb-3 sm:mb-2">
-              Our way
-            </h1>
-            <p className="text-amber-200/60">Командное саморазвитие</p>
-          </div>
           {!showForm && (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-6 mb-8 sm:mb-6 items-center justify-center">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-6 mb-8 sm:mb-6 items-center justify-center place-items-center">
                 <div
                   className="rounded-2xl border-2 p-4 min-h-[128px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
                 >
@@ -152,18 +143,6 @@ export function LoginPage() {
                     Зарегистрироваться
                   </Button>
                 </div>
-              </div>
-              <div className="flex justify-center hidden sm:flex">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={() => {
-                    window.location.href = 'http://localhost:8000/admin/login/?next=/admin/';
-                  }}
-                  className="text-sm text-amber-200/70 border border-amber-600/30 hover:border-amber-400"
-                >
-                  Войти как админ
-                </Button>
               </div>
             </>
           )}

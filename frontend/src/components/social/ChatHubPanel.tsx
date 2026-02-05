@@ -317,6 +317,12 @@ export function ChatHubPanel() {
                                   <input
                                     value={clanChatDraft}
                                     onChange={(e) => setClanChatDraft(e.target.value)}
+                                    onKeyDown={(e) => {
+                                      if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        handleSendClanMessage();
+                                      }
+                                    }}
                                     placeholder="Напишите сообщение..."
                                     className="flex-1 rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
                                     disabled={!isClanMember}
@@ -414,6 +420,12 @@ export function ChatHubPanel() {
                                 <input
                                   value={chatDraft}
                                   onChange={(e) => setChatDraft(e.target.value)}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                      e.preventDefault();
+                                      handleSendMessage();
+                                    }
+                                  }}
                                   placeholder="Напишите сообщение..."
                                   className="flex-1 rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
                                 />
