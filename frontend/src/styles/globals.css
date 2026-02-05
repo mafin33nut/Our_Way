@@ -192,9 +192,13 @@ h3 {
   }
 
   @media (max-width: 768px) {
+    body {
+      font-size: 16px;
+    }
+
     .panel-base {
       padding: 1.25rem !important;
-      font-size: 90%;
+      font-size: 100%;
       width: 100%;
       max-width: 100%;
       margin-left: 0;
@@ -203,8 +207,8 @@ h3 {
     }
 
     .panel-caption {
-      font-size: 1.1rem;
-      line-height: 1.4rem;
+      font-size: 1.25rem;
+      line-height: 1.6rem;
       margin-bottom: 0.75rem;
       text-align: center;
     }
@@ -216,7 +220,29 @@ h3 {
       text-align: center;
       margin-left: auto;
       margin-right: auto;
-      font-size: 0.8rem;
+      font-size: 1rem;
+    }
+
+    .panel-base .text-xs,
+    .panel-base .text-sm,
+    .panel-base .text-base {
+      font-size: 1rem !important;
+      line-height: 1.5;
+    }
+
+    .panel-base .rounded-lg.border,
+    .panel-base .rounded-xl.border {
+      padding: 0.75rem !important;
+    }
+
+    .text-slate-300\/60,
+    .text-slate-300\/70,
+    .text-slate-200\/60,
+    .text-slate-200\/70,
+    .text-purple-200\/60,
+    .text-rose-200\/60,
+    .text-slate-100\/70 {
+      color: rgba(255, 255, 255, 0.85) !important;
     }
 
     .min-h-screen {

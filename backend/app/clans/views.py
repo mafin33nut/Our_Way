@@ -260,16 +260,27 @@ class ClanJoinRequestViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(join_request)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    @staticmethod
+    def _can_manage_request(user, clan) -> bool:
+        if clan.created_by_id == getattr(user, 'id', None):
+            return True
+        if ClanMember.objects.filter(clan=clan, user=user, role='leader').exists():
+            return True
+        only_member = ClanMember.objects.filter(clan=clan).first()
+        return only_member and only_member.user_id == getattr(user, 'id', None)
+
+    def _get_join_request(self, pk):
+        try:
+            return ClanJoinRequest.objects.select_related('clan', 'user').get(pk=pk)
+        except ClanJoinRequest.DoesNotExist:
+            return None
+
     @action(detail=True, methods=['post'])
     def approve(self, request, pk=None):
-        join_request = self.get_object()
-        is_creator = join_request.clan.created_by == request.user
-        is_leader = ClanMember.objects.filter(
-            clan=join_request.clan,
-            user=request.user,
-            role='leader'
-        ).exists()
-        if not (is_creator or is_leader):
+        join_request = self._get_join_request(pk)
+        if not join_request:
+            return Response({'detail': 'Запрос не найден.'}, status=404)
+        if not self._can_manage_request(request.user, join_request.clan):
             return Response({'detail': 'Только лидер клана может одобрить запрос.'}, status=403)
         if join_request.status == ClanJoinRequest.STATUS_APPROVED:
             return Response(self.get_serializer(join_request).data)
@@ -284,14 +295,10 @@ class ClanJoinRequestViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def reject(self, request, pk=None):
-        join_request = self.get_object()
-        is_creator = join_request.clan.created_by == request.user
-        is_leader = ClanMember.objects.filter(
-            clan=join_request.clan,
-            user=request.user,
-            role='leader'
-        ).exists()
-        if not (is_creator or is_leader):
+        join_request = self._get_join_request(pk)
+        if not join_request:
+            return Response({'detail': 'Запрос не найден.'}, status=404)
+        if not self._can_manage_request(request.user, join_request.clan):
             return Response({'detail': 'Только лидер клана может отклонить запрос.'}, status=403)
         join_request.status = ClanJoinRequest.STATUS_REJECTED
         join_request.save(update_fields=['status', 'updated_at'])

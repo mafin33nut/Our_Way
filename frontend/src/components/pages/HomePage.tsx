@@ -124,13 +124,13 @@ export function HomePage() {
             <Home className="w-5 h-5 text-teal-300" />
             <h2 className="text-slate-100">Главная</h2>
           </div>
-          <div className="flex flex-col items-center gap-12">
+          <div className="flex flex-col items-center gap-8 sm:gap-12">
             <div className="w-full">
               <div className="panel-base panel-teal">
               <div className="panel-caption text-left">Профиль героя</div>
               <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
 
-              <div className="mt-8">
+              <div className="mt-6 sm:mt-8">
                 <div className="panel-caption text-left">Достижения героя</div>
                 <div className="space-y-3">
                   {achievementSlots
