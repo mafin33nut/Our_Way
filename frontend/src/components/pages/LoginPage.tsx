@@ -105,56 +105,62 @@ export function LoginPage() {
       <div className="absolute left-6 top-6">
         <Shield className="w-20 h-20 sm:w-24 sm:h-24 text-amber-400" />
       </div>
-      <div className="w-full max-w-md">
-        <div className="relative bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-4 border-amber-600/60 p-10 sm:p-12 shadow-2xl backdrop-blur-sm">
+      <div className="w-full max-w-2xl">
+        <div className="relative bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-4 border-amber-600/60 p-16 sm:p-20 shadow-2xl backdrop-blur-sm">
           <div className="text-center mb-8">
             <h1 className="text-amber-400 mb-2">
               Our way
             </h1>
             <p className="text-amber-200/60">Командное саморазвитие</p>
           </div>
-          <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 ${showForm ? 'mb-8' : ''}`}>
-            <div
-              className={`group rounded-2xl border p-5 sm:p-6 min-h-[136px] flex flex-col items-center justify-center text-center transition-all duration-300 ${
-                !isRegisterMode
-                  ? 'border-amber-400/80 bg-amber-500/10 shadow-lg shadow-amber-500/20'
-                  : 'border-amber-600/30 bg-slate-900/50 hover:border-amber-400/70 hover:bg-amber-500/10'
-              }`}
-            >
-              <p className="text-amber-200/80 text-sm mb-2">Рады видеть вас снова</p>
-              <Button
-                type="button"
-                onClick={() => {
-                  setIsRegisterMode(false);
-                  setShowForm(true);
-                  setError('');
-                }}
-                className="w-44"
+          {!showForm && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
+              <div
+                className={`rounded-2xl border-2 p-8 min-h-[272px] flex flex-col items-center justify-center text-center transition-all duration-300 ${
+                  !isRegisterMode
+                    ? 'border-amber-400 bg-amber-500 shadow-lg shadow-amber-500/30 text-slate-900'
+                    : 'border-amber-600 bg-slate-800'
+                }`}
               >
-                Войти
-              </Button>
-            </div>
-            <div
-              className={`group rounded-2xl border p-5 sm:p-6 min-h-[136px] flex flex-col items-center justify-center text-center transition-all duration-300 ${
-                isRegisterMode
-                  ? 'border-amber-400/80 bg-amber-500/10 shadow-lg shadow-amber-500/20'
-                  : 'border-amber-600/30 bg-slate-900/50 hover:border-amber-400/70 hover:bg-amber-500/10'
-              }`}
-            >
-              <p className="text-amber-200/80 text-sm mb-2">Добро пожаловать</p>
-              <Button
-                type="button"
-                onClick={() => {
-                  setIsRegisterMode(true);
-                  setShowForm(true);
-                  setError('');
-                }}
-                className="w-44"
+                <p className={`${!isRegisterMode ? 'text-slate-900/80' : 'text-amber-200/80'} text-base mb-4`}>
+                  Рады видеть вас снова
+                </p>
+                <Button
+                  type="button"
+                  onClick={() => {
+                    setIsRegisterMode(false);
+                    setShowForm(true);
+                    setError('');
+                  }}
+                  className="w-56 action-button"
+                >
+                  Войти
+                </Button>
+              </div>
+              <div
+                className={`rounded-2xl border-2 p-8 min-h-[272px] flex flex-col items-center justify-center text-center transition-all duration-300 ${
+                  isRegisterMode
+                    ? 'border-amber-400 bg-amber-500 shadow-lg shadow-amber-500/30 text-slate-900'
+                    : 'border-amber-600 bg-slate-800'
+                }`}
               >
-                Зарегистрироваться
-              </Button>
+                <p className={`${isRegisterMode ? 'text-slate-900/80' : 'text-amber-200/80'} text-base mb-4`}>
+                  Добро пожаловать
+                </p>
+                <Button
+                  type="button"
+                  onClick={() => {
+                    setIsRegisterMode(true);
+                    setShowForm(true);
+                    setError('');
+                  }}
+                  className="w-56 action-button"
+                >
+                  Зарегистрироваться
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
           {showForm && (
             <form onSubmit={handleSubmit} className="space-y-6">
             <div>

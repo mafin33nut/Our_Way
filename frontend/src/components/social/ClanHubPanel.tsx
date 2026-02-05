@@ -7,7 +7,6 @@ import { useAuth } from '../../hooks/useAuth';
 import { socialAPI } from '../../api/social';
 import { Clan } from '../../types';
 import { ClanCreationPanel } from './ClanCreationPanel';
-import { ClanChatPanel } from './ClanChatPanel';
 
 export function ClanHubPanel() {
   const [isOpen, setIsOpen] = useState(false);
@@ -154,10 +153,6 @@ export function ClanHubPanel() {
                         </div>
                       )}
                     </div>
-
-                    {selectedClan && (
-                      <ClanChatPanel clan={selectedClan} onClanUpdated={loadClans} />
-                    )}
 
                     <div className="panel-base panel-teal p-6">
                       <div className="flex items-center gap-2 mb-4">
