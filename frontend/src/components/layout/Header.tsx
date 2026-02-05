@@ -80,9 +80,9 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 </Link>
                 <Link to="/settings" className="shrink-0">
                   <Button
-                    variant="orange"
+                    variant="primary"
                     size="md"
-                    className="flex items-center gap-2 whitespace-nowrap sm:text-base sm:px-4 sm:py-3"
+                    className="action-button flex items-center gap-2 whitespace-nowrap sm:text-base sm:px-4 sm:py-3"
                   >
                     <Settings className="w-5 h-5 sm:w-6 sm:h-6" />
                     <span className="hidden sm:inline">Настройки</span>
@@ -99,10 +99,10 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 </div>
               </div>
               <Button
-                variant="orange"
+                variant="primary"
                 size="md"
                 onClick={logout}
-                className="flex items-center gap-2 whitespace-nowrap shrink-0 sm:text-base sm:px-4 sm:py-3"
+                className="action-button flex items-center gap-2 whitespace-nowrap shrink-0 sm:text-base sm:px-4 sm:py-3"
               >
                 <LogOut className="w-5 h-5 sm:w-6 sm:h-6" />
                 <span className="hidden sm:inline">Выйти</span>

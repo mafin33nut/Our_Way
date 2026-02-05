@@ -99,7 +99,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
   return (
     <>
       <Button
-        variant="orange"
+        variant="primary"
         size="md"
         onClick={() => setIsOpen(true)}
         aria-label="Открыть кланы"

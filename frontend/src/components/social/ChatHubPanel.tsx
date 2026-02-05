@@ -165,7 +165,7 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
   return (
     <>
       <Button
-        variant="orange"
+        variant="primary"
         size="md"
         onClick={() => setIsOpen(true)}
         aria-label="Открыть чат"

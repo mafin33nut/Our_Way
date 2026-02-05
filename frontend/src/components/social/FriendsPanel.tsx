@@ -45,7 +45,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
   return (
     <>
       <Button
-        variant="orange"
+        variant="primary"
         size="md"
         onClick={() => setIsOpen(true)}
         aria-label="Открыть друзей"
