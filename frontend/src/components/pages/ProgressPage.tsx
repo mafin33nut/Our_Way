@@ -94,7 +94,7 @@ export function ProgressPage() {
             <h2 className="text-slate-100">Прогресс</h2>
           </div>
           <div className="panel-base panel-purple w-full max-w-[1200px]">
-            <div className="panel-caption text-center">Прогресс по квестам</div>
+            <div className="panel-caption text-left">Прогресс по квестам</div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-6">
                 <h3 className="text-slate-100 mb-4">Квесты по дням</h3>
@@ -153,7 +153,7 @@ export function ProgressPage() {
           </div>
 
           <div className="w-full max-w-[1200px]">
-            <div className="panel-caption text-center">История выполнения</div>
+            <div className="panel-caption text-left">История выполнения</div>
             <TaskHistoryPanel quests={quests} />
             <PanelHelp className="text-center">
               <p>1) Просмотри недавние завершения по времени.</p>

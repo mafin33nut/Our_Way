@@ -132,7 +132,7 @@ export function HomePage() {
 
               <div className="mt-6 sm:mt-8">
                 <div className="panel-caption text-left">Достижения героя</div>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {achievementSlots
                     .filter((item) => (user.total_quests_completed || 0) >= item.req)
                     .map((item) => (

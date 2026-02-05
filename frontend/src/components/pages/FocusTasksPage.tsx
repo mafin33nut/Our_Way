@@ -351,7 +351,7 @@ export function FocusTasksPage() {
             </div>
 
           <div className="panel-base panel-sky w-full max-w-[1200px]">
-            <div className="panel-caption text-center">Мои квесты по направлениям</div>
+            <div className="panel-caption text-left">Мои квесты по направлениям</div>
             {loading ? (
               <p className="text-center text-purple-200/60">Загрузка...</p>
             ) : (
