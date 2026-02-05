@@ -39,6 +39,14 @@ function AppLayout({ children }: { children: ReactNode }) {
         isSidebarOpen={isSidebarOpen}
         onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
       />
+      {isSidebarOpen && (
+        <button
+          type="button"
+          aria-label="Закрыть боковую панель"
+          onClick={() => setIsSidebarOpen(false)}
+          className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm md:hidden"
+        />
+      )}
       <Sidebar
         isOpen={isSidebarOpen}
         onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}

@@ -52,7 +52,7 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 <div className="flex items-center gap-2 sm:gap-3 ml-auto flex-nowrap">
                 <Link
                   to="/profile"
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl border transition-colors whitespace-nowrap shrink-0 text-2xl ${
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl border transition-colors whitespace-nowrap shrink-0 text-3xl ${
                     isLight
                       ? 'bg-slate-50 border-slate-200 hover:bg-slate-100'
                       : 'bg-slate-800/50 border-slate-700/50 hover:bg-slate-800/70'
@@ -70,37 +70,37 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                     </div>
                   )}
                   <div className="min-w-0 hidden sm:block">
-                    <p className={`text-2xl ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                    <p className={`text-3xl ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
                       {user.username}
                     </p>
-                    <p className={`text-lg ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
+                    <p className={`text-xl ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
                       Уровень {user.level} · {user.xp} XP
                     </p>
                   </div>
                 </Link>
                 <Link to="/settings" className="shrink-0">
-                  <Button variant="ghost" size="md" className="flex items-center gap-3 whitespace-nowrap text-2xl px-4 py-3">
+                  <Button variant="ghost" size="md" className="flex items-center gap-3 whitespace-nowrap text-3xl px-4 py-3">
                     <Settings className="w-7 h-7" />
                     <span className="hidden sm:inline">Настройки</span>
                   </Button>
                 </Link>
                 <div className="shrink-0">
-                  <div className="text-2xl">
+                  <div className="text-3xl">
                     <FriendsPanel />
                   </div>
                 </div>
                 <div className="shrink-0">
-                  <div className="text-2xl">
+                  <div className="text-3xl">
                     <ClanHubPanel />
                   </div>
                 </div>
                 <div className="shrink-0">
-                  <div className="text-2xl">
+                  <div className="text-3xl">
                     <ChatHubPanel />
                   </div>
                 </div>
               </div>
-              <Button variant="ghost" size="md" onClick={logout} className="flex items-center gap-3 whitespace-nowrap shrink-0 text-2xl px-4 py-3">
+              <Button variant="ghost" size="md" onClick={logout} className="flex items-center gap-3 whitespace-nowrap shrink-0 text-3xl px-4 py-3">
                 <LogOut className="w-7 h-7" />
                 <span className="hidden sm:inline">Выйти</span>
               </Button>
