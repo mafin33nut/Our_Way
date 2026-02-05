@@ -140,6 +140,16 @@ h3 {
     font-size: calc(0.875rem * 1.35) !important;
   }
 
+  .panel-base .text-slate-300\/60,
+  .panel-base .text-slate-300\/70,
+  .panel-base .text-slate-200\/60,
+  .panel-base .text-slate-200\/70,
+  .panel-base .text-purple-200\/60,
+  .panel-base .text-purple-200\/70,
+  .panel-base .text-rose-200\/60 {
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+
   .panel-base .text-base {
     font-size: calc(1rem * 1.25) !important;
   }

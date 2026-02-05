@@ -118,13 +118,13 @@ export function HomePage() {
           <div className={`absolute inset-0 ${bgImageLoaded ? 'bg-slate-900/30' : 'bg-slate-900/70'} backdrop-blur-sm`} />
         </div>
       )}
-          <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12 pb-8">
+          <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1200px] mx-auto">
           <div className="flex items-center gap-2 text-slate-100 mb-6">
             <Home className="w-5 h-5 text-teal-300" />
             <h2 className="text-slate-100">Главная</h2>
           </div>
-          <div className="flex flex-col items-center gap-8 sm:gap-12">
+          <div className="flex flex-col items-center gap-8 sm:gap-10">
             <div className="w-full">
               <div className="panel-base panel-teal">
               <div className="panel-caption text-left">Профиль героя</div>

@@ -146,7 +146,7 @@ export function FocusTasksPage() {
             <ListChecks className="w-5 h-5 text-teal-300" />
             <h2 className="text-slate-100">Квесты</h2>
           </div>
-          <div className="flex flex-col items-center gap-10">
+          <div className="flex flex-col items-center gap-8 sm:gap-10">
             <div className="panel-base panel-purple w-full max-w-[1200px]">
               <div className="flex items-center gap-2 mb-4">
                 <Target className="w-5 h-5 text-teal-300" />

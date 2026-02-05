@@ -187,7 +187,7 @@ export function AchievementsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
       <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
-        <div className="w-full max-w-[1400px] flex flex-col items-center gap-8">
+        <div className="w-full max-w-[1400px] flex flex-col items-center gap-8 sm:gap-10">
           <div className="w-full max-w-[1000px] flex items-center gap-2 text-slate-100">
             <Award className="w-5 h-5 text-teal-300" />
             <h2 className="text-slate-100">Достижения</h2>

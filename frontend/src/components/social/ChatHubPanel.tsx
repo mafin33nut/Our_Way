@@ -202,7 +202,7 @@ export function ChatHubPanel() {
                 </Button>
               </div>
 
-              <div className="h-[calc(100%-136px)] overflow-y-auto px-[19px] py-[19px] space-y-[19px]">
+              <div className="h-[calc(100%-136px)] overflow-y-auto px-5 py-5 space-y-5">
                 {!user && (
                   <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
                     Войдите, чтобы пользоваться чатом.
