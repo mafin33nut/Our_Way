@@ -1,0 +1,42 @@
+<div class="ow-panel">
+  <div class="ow-panel-header">Пользователи</div>
+  <div class="ow-panel-table">
+    <div class="ow-panel-row ow-panel-row--head">
+      <div>Пользователь</div>
+      <div>Статус</div>
+      <div>Опыт</div>
+      <div>Почта</div>
+    </div>
+    {% for user in users %}
+      <div class="ow-panel-row">
+        <div class="ow-user">
+          <div class="ow-avatar" style="background: {{ user.color }};">
+            {{ user.letter }}
+          </div>
+          <div class="ow-user-meta">
+            <div class="ow-user-name">{{ user.username }}</div>
+            {% if user.last_login %}
+              <div class="ow-user-sub">Последний вход: {{ user.last_login|date:"d.m.Y H:i" }}</div>
+            {% else %}
+              <div class="ow-user-sub">Нет входов</div>
+            {% endif %}
+          </div>
+        </div>
+        <div>
+          <span class="ow-status {% if user.is_online %}ow-status--online{% else %}ow-status--offline{% endif %}">
+            {% if user.is_online %}Онлайн{% else %}Оффлайн{% endif %}
+          </span>
+        </div>
+        <div>{{ user.xp }}</div>
+        <div>{{ user.email|default:"—" }}</div>
+      </div>
+    {% empty %}
+      <div class="ow-panel-row">
+        <div>Нет пользователей</div>
+        <div>—</div>
+        <div>—</div>
+        <div>—</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>

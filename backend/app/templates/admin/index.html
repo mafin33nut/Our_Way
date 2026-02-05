@@ -1,0 +1,16 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls admin_dashboard %}
+
+{% block content %}
+  <div class="ow-admin-section">
+    {% user_status_panel %}
+  </div>
+
+  <div class="ow-admin-section">
+    {% if app_list %}
+      {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+    {% else %}
+      <p>{% translate "You don’t have permission to view or edit anything." %}</p>
+    {% endif %}
+  </div>
+{% endblock %}
