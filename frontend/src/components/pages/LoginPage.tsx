@@ -106,7 +106,7 @@ export function LoginPage() {
         <Shield className="w-20 h-20 sm:w-24 sm:h-24 text-amber-400" />
       </div>
       <div className="w-full max-w-2xl">
-        <div className="relative bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-lg border-4 border-amber-600/60 p-16 sm:p-20 shadow-2xl backdrop-blur-sm">
+        <div className="relative bg-transparent rounded-lg border-0 p-16 sm:p-20 shadow-none">
           <div className="text-center mb-8">
             <h1 className="text-amber-400 mb-2">
               Our way
@@ -116,13 +116,9 @@ export function LoginPage() {
           {!showForm && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
               <div
-                className={`rounded-2xl border-2 p-8 min-h-[272px] flex flex-col items-center justify-center text-center transition-all duration-300 ${
-                  !isRegisterMode
-                    ? 'border-amber-400 bg-amber-500 shadow-lg shadow-amber-500/30 text-slate-900'
-                    : 'border-amber-600 bg-slate-800'
-                }`}
+                className="rounded-2xl border-2 p-8 min-h-[272px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
               >
-                <p className={`${!isRegisterMode ? 'text-slate-900/80' : 'text-amber-200/80'} text-base mb-4`}>
+                <p className="text-amber-200/80 text-base mb-4">
                   Рады видеть вас снова
                 </p>
                 <Button
@@ -138,13 +134,9 @@ export function LoginPage() {
                 </Button>
               </div>
               <div
-                className={`rounded-2xl border-2 p-8 min-h-[272px] flex flex-col items-center justify-center text-center transition-all duration-300 ${
-                  isRegisterMode
-                    ? 'border-amber-400 bg-amber-500 shadow-lg shadow-amber-500/30 text-slate-900'
-                    : 'border-amber-600 bg-slate-800'
-                }`}
+                className="rounded-2xl border-2 p-8 min-h-[272px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
               >
-                <p className={`${isRegisterMode ? 'text-slate-900/80' : 'text-amber-200/80'} text-base mb-4`}>
+                <p className="text-amber-200/80 text-base mb-4">
                   Добро пожаловать
                 </p>
                 <Button

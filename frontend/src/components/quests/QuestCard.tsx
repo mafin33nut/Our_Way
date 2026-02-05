@@ -12,10 +12,16 @@ interface QuestCardProps {
 
 export function QuestCard({ quest, onComplete, onDelete, onStepComplete }: QuestCardProps) {
   const [steps, setSteps] = useState(quest.steps ?? []);
+  const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
     setSteps(quest.steps ?? []);
   }, [quest.steps]);
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleCompleteStep = async (stepId: number) => {
     try {
@@ -35,7 +41,10 @@ export function QuestCard({ quest, onComplete, onDelete, onStepComplete }: Quest
   };
 
   const allStepsDone = steps.length === 0 || steps.every((step) => step.completed);
-  const canComplete = allStepsDone && !quest.completed;
+  const createdAtMs = Number.isFinite(Date.parse(quest.created_at)) ? Date.parse(quest.created_at) : 0;
+  const cooldownMs = 30_000;
+  const remainingMs = createdAtMs ? Math.max(0, cooldownMs - (now - createdAtMs)) : 0;
+  const canComplete = allStepsDone && !quest.completed && remainingMs === 0;
 
   return (
     <div className="group relative ...">
@@ -67,6 +76,11 @@ export function QuestCard({ quest, onComplete, onDelete, onStepComplete }: Quest
             onClick={() => canComplete && onComplete(quest.id)}
             disabled={!canComplete}
             size="sm"
+            title={
+              remainingMs > 0
+                ? `Доступно через ${Math.ceil(remainingMs / 1000)} сек.`
+                : 'Завершить'
+            }
           >
             Завершить
           </Button>
