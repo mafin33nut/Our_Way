@@ -34,27 +34,41 @@ function AppLayout({ children }: { children: ReactNode }) {
     }
   }, []);
   return (
-    <>
-      <Header
-        isSidebarOpen={isSidebarOpen}
-        onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
-      />
-      {isSidebarOpen && (
-        <button
-          type="button"
-          aria-label="Закрыть боковую панель"
-          onClick={() => setIsSidebarOpen(false)}
-          className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm"
-        />
-      )}
-      <Sidebar
-        isOpen={isSidebarOpen}
-        onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
-      />
-      <div className={`${isSidebarOpen ? 'md:ml-28' : ''} px-4 sm:px-6 md:px-8`}>
-        {children}
+    <div className="relative min-h-screen">
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <video
+          className="w-full h-full object-cover opacity-25"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/neon-background.mp4"
+        >
+          <source src="/neon-background.mp4" type="video/mp4" />
+        </video>
       </div>
-    </>
+      <div className="relative z-10">
+        <Header
+          isSidebarOpen={isSidebarOpen}
+          onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
+        />
+        {isSidebarOpen && (
+          <button
+            type="button"
+            aria-label="Закрыть боковую панель"
+            onClick={() => setIsSidebarOpen(false)}
+            className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm"
+          />
+        )}
+        <Sidebar
+          isOpen={isSidebarOpen}
+          onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
+        />
+        <div className={`${isSidebarOpen ? 'md:ml-28' : ''} px-4 sm:px-6 md:px-8`}>
+          {children}
+        </div>
+      </div>
+    </div>
   );
 }
 

@@ -101,11 +101,23 @@ export function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950 flex items-center justify-center px-4 py-0 sm:px-8 sm:py-12">
+    <div className="relative min-h-screen bg-gradient-to-b from-slate-800/85 via-slate-900/80 to-slate-950/85 flex items-center justify-center px-4 py-0 sm:px-8 sm:py-12">
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <video
+          className="w-full h-full object-cover opacity-30"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/neon-background.mp4"
+        >
+          <source src="/neon-background.mp4" type="video/mp4" />
+        </video>
+      </div>
       <div className="absolute left-6 top-6 hidden sm:block">
         <Shield className="w-20 h-20 sm:w-24 sm:h-24 text-amber-400" />
       </div>
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-2xl relative z-10">
         <div className="relative bg-transparent rounded-lg border-0 p-0 sm:p-20 shadow-none text-[200%] text-center">
           <div className="text-center mb-6 sm:mb-8 hidden sm:block">
             <h1 className="text-amber-400 mb-3 sm:mb-2">
