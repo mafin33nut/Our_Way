@@ -14,6 +14,7 @@ export const authAPI = {
           password: credentials.password,
         },
         {
+          timeout: 10000,
           headers: {
             'Content-Type': 'application/json',
           },
