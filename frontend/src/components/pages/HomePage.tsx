@@ -138,7 +138,7 @@ export function HomePage() {
                     .map((item) => (
                       <div
                         key={item.id}
-                        className="flex items-center justify-between rounded-xl border border-slate-600/40 bg-slate-900/50 px-4 py-3"
+                        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-xl border border-slate-600/40 bg-slate-900/50 px-4 py-3"
                       >
                         <div className="flex items-center gap-3">
                           <div className="w-12 h-12 rounded-xl bg-amber-300/25 border border-amber-300/60 flex items-center justify-center achievement-earned text-lg">
@@ -151,7 +151,7 @@ export function HomePage() {
                             </p>
                           </div>
                         </div>
-                        <span className="text-xs achievement-earned px-3 py-1 rounded-full border border-amber-300/60 bg-amber-300/15">
+                        <span className="text-xs achievement-earned px-3 py-1 rounded-full border border-amber-300/60 bg-amber-300/15 self-start sm:self-auto">
                           Получено
                         </span>
                       </div>
