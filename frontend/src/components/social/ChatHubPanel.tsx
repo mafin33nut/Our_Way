@@ -267,7 +267,7 @@ export function ChatHubPanel() {
                                         }`}
                                       >
                                         {showAuthor && (
-                                          <p className="text-[0.5rem] text-purple-200/30">
+                                          <p className="text-[0.5rem] text-purple-200/10">
                                             {message.senderId === user?.id
                                               ? user.username
                                               : selectedFriend?.username || 'Друг'}

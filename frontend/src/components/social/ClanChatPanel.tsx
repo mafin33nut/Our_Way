@@ -256,8 +256,8 @@ export function ClanChatPanel({ clan, onClanUpdated }: ClanChatPanelProps) {
                     <div key={message.id} className="px-1 py-1">
                       {showAuthor && (
                         <div className="flex items-center justify-between gap-2">
-                          <p className="text-[0.5rem] text-rose-200/30 truncate">{message.username}</p>
-                          <span className="text-[0.5rem] text-rose-200/30">
+                          <p className="text-[0.5rem] text-rose-200/10 truncate">{message.username}</p>
+                          <span className="text-[0.5rem] text-rose-200/10">
                             {new Date(message.created_at).toLocaleTimeString()}
                           </span>
                         </div>
