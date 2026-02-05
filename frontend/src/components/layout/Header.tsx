@@ -33,7 +33,7 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
           <button
             type="button"
             onClick={onToggleSidebar}
-            className={`inline-flex items-center justify-center w-10 h-10 rounded-lg border transition-colors text-white ${
+            className={`inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl border transition-colors text-white ${
               isLight
                 ? 'bg-white/80 border-slate-200 hover:bg-white'
                 : 'bg-slate-800/70 border-slate-700/60 hover:bg-slate-800'
@@ -41,9 +41,9 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
             aria-label={isSidebarOpen ? 'Скрыть боковую панель' : 'Показать боковую панель'}
           >
             {isSidebarOpen ? (
-              <PanelLeftClose className="w-5 h-5" />
+              <PanelLeftClose className="w-5 h-5 sm:w-6 sm:h-6" />
             ) : (
-              <PanelLeftOpen className="w-5 h-5" />
+              <PanelLeftOpen className="w-5 h-5 sm:w-6 sm:h-6" />
             )}
           </button>
           {user && (
@@ -52,7 +52,7 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 <div className="flex items-center gap-2 sm:gap-3 ml-auto flex-nowrap">
                 <Link
                   to="/profile"
-                  className={`flex items-center gap-3 px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl border transition-colors whitespace-nowrap shrink-0 sm:h-16 sm:text-xl ${
+                  className={`flex items-center gap-3 px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl border transition-colors whitespace-nowrap shrink-0 sm:text-base ${
                     isLight
                       ? 'bg-slate-50 border-slate-200 hover:bg-slate-100'
                       : 'bg-slate-800/50 border-slate-700/50 hover:bg-slate-800/70'
@@ -70,10 +70,10 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                     </div>
                   )}
                   <div className="min-w-0 hidden sm:block">
-                    <p className={`text-sm ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                    <p className={`text-base ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
                       {user.username}
                     </p>
-                    <p className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
+                    <p className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
                       Уровень {user.level} · {user.xp} XP
                     </p>
                   </div>
@@ -82,35 +82,29 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                   <Button
                     variant="ghost"
                     size="md"
-                    className="flex items-center gap-2 whitespace-nowrap sm:w-40 sm:h-16 sm:justify-center sm:text-xl"
+                    className="flex items-center gap-2 whitespace-nowrap sm:text-base sm:px-4 sm:py-3"
                   >
-                    <Settings className="w-5 h-5" />
+                    <Settings className="w-5 h-5 sm:w-6 sm:h-6" />
                     <span className="hidden sm:inline">Настройки</span>
                   </Button>
                 </Link>
                 <div className="shrink-0">
-                  <div className="sm:w-40 sm:h-16 sm:flex sm:items-center sm:justify-center">
-                    <FriendsPanel />
-                  </div>
+                  <FriendsPanel />
                 </div>
                 <div className="shrink-0">
-                  <div className="sm:w-40 sm:h-16 sm:flex sm:items-center sm:justify-center">
-                    <ClanHubPanel />
-                  </div>
+                  <ClanHubPanel />
                 </div>
                 <div className="shrink-0">
-                  <div className="sm:w-40 sm:h-16 sm:flex sm:items-center sm:justify-center">
-                    <ChatHubPanel />
-                  </div>
+                  <ChatHubPanel />
                 </div>
               </div>
               <Button
                 variant="ghost"
                 size="md"
                 onClick={logout}
-                className="flex items-center gap-2 whitespace-nowrap shrink-0 sm:w-40 sm:h-16 sm:justify-center sm:text-xl"
+                className="flex items-center gap-2 whitespace-nowrap shrink-0 sm:text-base sm:px-4 sm:py-3"
               >
-                <LogOut className="w-5 h-5" />
+                <LogOut className="w-5 h-5 sm:w-6 sm:h-6" />
                 <span className="hidden sm:inline">Выйти</span>
               </Button>
             </div>
