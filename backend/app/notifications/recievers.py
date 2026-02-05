@@ -31,7 +31,7 @@ def activity_deadline_notification(sender, instance: Activity, created, **kwargs
         except Exception:
             pass
 
-# FocusMission reminders
+# Direction mission reminders
 @receiver(post_save, sender=FocusMission)
 def focus_mission_deadline_notification(sender, instance: FocusMission, created, **kwargs):
     if instance.due_date:

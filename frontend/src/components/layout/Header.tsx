@@ -6,6 +6,7 @@ import { Button } from '../ui/Button';
 import { resolveMediaUrl } from '../../utils/media';
 import { FriendsPanel } from '../social/FriendsPanel';
 import { ClanHubPanel } from '../social/ClanHubPanel';
+import { ChatHubPanel } from '../social/ChatHubPanel';
 type HeaderProps = {
   isSidebarOpen: boolean;
   onToggleSidebar: () => void;
@@ -88,6 +89,9 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 </div>
                 <div className="shrink-0">
                   <ClanHubPanel />
+                </div>
+                <div className="shrink-0">
+                  <ChatHubPanel />
                 </div>
               </div>
               <Button variant="ghost" size="md" onClick={logout} className="flex items-center gap-2 whitespace-nowrap shrink-0">

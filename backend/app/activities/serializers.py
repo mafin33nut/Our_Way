@@ -61,8 +61,8 @@ QUEST_TRANSLATIONS = {
         'Составьте план и выпишите первые три шага.',
     ),
     '30 minutes of deep work on one complex task': (
-        '30 минут глубокого фокуса на одной сложной задаче',
-        'Сфокусируйтесь без отвлечений в течение 30 минут.',
+        '30 минут глубокой концентрации на одной сложной задаче',
+        'Сконцентрируйтесь без отвлечений в течение 30 минут.',
     ),
     'Update your resume/LinkedIn profile (add your latest achievement)': (
         'Обновить резюме/профиль LinkedIn (добавить последнее достижение)',
@@ -183,7 +183,7 @@ QUEST_TRANSLATIONS = {
         'Прочитать мотивационную статью и выписать 5 выводов',
         'Запишите пять главных идей.',
     ),
-    'Prepare and deliver a 5-minute mini-speech on a chosen topic, focusing on structure and content': (
+    'Prepare and deliver a 5-minute mini-speech on a chosen topic, concentrating on structure and content': (
         'Подготовить и провести 5‑минутную мини‑речь по теме (структура и содержание)',
         'Сделайте план речи и произнесите её.',
     ),

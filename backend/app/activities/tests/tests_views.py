@@ -10,7 +10,7 @@ def test_create_activity(self):
 
 def test_start_stop_timer(self):
     # create activity
-    act = Activity.objects.create(title='Focus session', owner=self.user, category=self.cat)
+act = Activity.objects.create(title='Direction session', owner=self.user, category=self.cat)
     start_url = reverse('activity-timer-list') + 'start/'
     resp = self.client.post(start_url, {'activity': act.id}, format='json')
     self.assertIn(resp.status_code, (200, 201))

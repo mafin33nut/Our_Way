@@ -83,7 +83,7 @@ export function FocusTasksPage() {
       setFocuses((prev) => [...prev, created]);
       setNewFocusName('');
     } catch (e) {
-      setError('Не удалось создать фокус.');
+      setError('Не удалось создать направление развития.');
     }
   };
 
@@ -95,7 +95,7 @@ export function FocusTasksPage() {
         setSelectedFocusId(null);
       }
     } catch (e) {
-      setError('Не удалось удалить фокус.');
+      setError('Не удалось удалить направление развития.');
     }
   };
 
@@ -174,12 +174,12 @@ export function FocusTasksPage() {
             <div className="panel-base panel-purple w-full max-w-[1200px]">
               <div className="flex items-center gap-2 mb-4">
                 <Target className="w-5 h-5 text-teal-300" />
-                <h2 className="text-slate-100">Мои фокусы</h2>
+                <h2 className="text-slate-100">Мои направления развития</h2>
               </div>
               <PanelHelp>
-                <p>1) Выберите фокус, чтобы квесты ниже автоматически группировались.</p>
-                <p>2) Добавьте новый фокус, если хотите вести отдельный трек.</p>
-                <p>3) Удаляйте фокус только если он больше не нужен.</p>
+                <p>1) Выберите направление развития, чтобы квесты ниже группировались.</p>
+                <p>2) Добавьте новое направление, если хотите вести отдельный трек.</p>
+                <p>3) Удаляйте направление только если оно больше не нужно.</p>
               </PanelHelp>
               <div className="flex gap-3 flex-wrap mb-4">
                 {focuses.map((focus) => (
@@ -215,7 +215,7 @@ export function FocusTasksPage() {
                 <input
                   value={newFocusName}
                   onChange={(e) => setNewFocusName(e.target.value)}
-                  placeholder="Новый фокус"
+                  placeholder="Новое направление"
                   className="flex-1 rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
                 />
                 <Button onClick={handleAddFocus} size="sm" className="action-button">
@@ -231,7 +231,7 @@ export function FocusTasksPage() {
               </div>
               <PanelHelp>
                 <p>1) Введите название и цель квеста в 1–2 фразы.</p>
-                <p>2) Выберите фокус — так квест попадет в нужную колонку ниже.</p>
+                <p>2) Выберите направление — так квест попадет в нужную колонку ниже.</p>
                 <p>3) Для поэтапных квестов добавьте шаги и сохраните.</p>
               </PanelHelp>
               <div className="flex flex-wrap gap-2 mb-4">
@@ -267,13 +267,13 @@ export function FocusTasksPage() {
                   />
                   {questMode === 'personal' ? (
                     <div className="flex items-center gap-3">
-                      <label className="text-purple-200/80 text-sm">Фокус:</label>
+                      <label className="text-purple-200/80 text-sm">Направление:</label>
                       <select
                         value={selectedFocusId ?? ''}
                         onChange={(e) => setSelectedFocusId(e.target.value ? Number(e.target.value) : null)}
                         className="rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
                       >
-                        <option value="">Без фокуса</option>
+                        <option value="">Без направления</option>
                         {focuses.map((focus) => (
                           <option key={focus.id} value={focus.id}>
                             {focus.name}
@@ -431,9 +431,9 @@ export function FocusTasksPage() {
             </div>
 
           <div className="panel-base panel-sky w-full max-w-[1200px]">
-            <div className="panel-caption text-center">Мои квесты по фокусам</div>
+            <div className="panel-caption text-center">Мои квесты по направлениям</div>
               <PanelHelp className="text-center">
-                <p>1) Выберите фокус — в колонке появятся только его квесты.</p>
+                <p>1) Выберите направление — в колонке появятся только его квесты.</p>
                 <p>2) Завершайте квесты — прогресс учитывается в статистике.</p>
                 <p>3) Удаляйте лишние квесты, чтобы оставался только актуальный список.</p>
               </PanelHelp>
@@ -441,7 +441,7 @@ export function FocusTasksPage() {
               <p className="text-center text-purple-200/60">Загрузка...</p>
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {[...focuses, { id: 0, name: 'Без фокуса', created_at: '' }].map((focus) => {
+                {[...focuses, { id: 0, name: 'Без направления', created_at: '' }].map((focus) => {
                   const focusQuests =
                     focus.id === 0
                       ? quests.filter((q) => !q.focuses || q.focuses.length === 0)

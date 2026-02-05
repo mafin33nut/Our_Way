@@ -74,7 +74,7 @@ export function FocusSelector({ currentFocus, onSelectFocus, loading }: FocusSel
       </div>
       
       <p className="text-sm mb-6 text-purple-200/60">
-        Приложение сгенерирует персональные квесты на основе выбранного фокуса
+        Приложение сгенерирует персональные квесты на основе выбранного направления
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
         {FOCUS_AREAS.map((area) => {
@@ -121,7 +121,7 @@ export function FocusSelector({ currentFocus, onSelectFocus, loading }: FocusSel
       </Button>
       {currentFocus && (
         <p className="text-center text-sm mt-3 text-purple-200/40">
-          Текущий фокус: {FOCUS_AREAS.find(a => a.id === currentFocus)?.name}
+          Текущее направление: {FOCUS_AREAS.find(a => a.id === currentFocus)?.name}
         </p>
       )}
     </div>
