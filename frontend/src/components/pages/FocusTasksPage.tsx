@@ -12,7 +12,8 @@ type TaskType = 'simple' | 'stepwise';
 type TaskDifficulty = 'easy' | 'medium' | 'hard';
 export function FocusTasksPage() {
   const { refreshUser } = useAuth();
-  const { playVictorySound } = useCustomization();
+  const { playVictorySound, settings } = useCustomization();
+  const isDynamic = settings.background === 'dynamic';
   const [focuses, setFocuses] = useState<UserFocus[]>([]);
   const [quests, setQuests] = useState<Quest[]>([]);
   const [loading, setLoading] = useState(true);
@@ -139,7 +140,7 @@ export function FocusTasksPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
+    <div className={`min-h-screen ${isDynamic ? 'bg-transparent' : 'bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950'}`}>
       <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1400px]">
           <div className="flex items-center gap-2 text-slate-100 mb-6">

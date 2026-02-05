@@ -45,6 +45,7 @@ export function HomePage() {
     settings.background === 'custom'
       ? settings.customBackgroundUrl || ''
       : backgroundOption?.url || '';
+  const isDynamic = settings.background === 'dynamic';
   const hasBackground =
     settings.background &&
     settings.background !== 'dynamic' &&
@@ -103,8 +104,8 @@ export function HomePage() {
 
   return (
     <div
-      className={`min-h-screen relative bg-slate-950 ${
-        hasBackground ? '' : 'bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950'
+      className={`min-h-screen relative ${isDynamic ? 'bg-transparent' : 'bg-slate-950'} ${
+        isDynamic || hasBackground ? '' : 'bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950'
       }`}
     >
       {hasBackground && (

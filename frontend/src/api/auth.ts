@@ -14,7 +14,7 @@ export const authAPI = {
           password: credentials.password,
         },
         {
-          timeout: 10000,
+          timeout: 20000,
           headers: {
             'Content-Type': 'application/json',
           },
@@ -46,7 +46,7 @@ export const authAPI = {
   },
 
   getCurrentUser: async (): Promise<User> => {
-    const response = await apiClient.get<User>('/api/auth/user/', { timeout: 10000 });
+    const response = await apiClient.get<User>('/api/auth/user/', { timeout: 20000 });
     return response.data;
   },
 

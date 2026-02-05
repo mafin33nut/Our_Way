@@ -1,6 +1,7 @@
 import { Award, CheckCircle2, Lock } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { PanelHelp } from '../ui/PanelHelp';
+import { useCustomization } from '../../hooks/useCustomization';
 
 type Requirement = {
   quests?: number;
@@ -172,6 +173,8 @@ function requirementText(req: Requirement) {
 }
 
 export function AchievementsPage() {
+  const { settings } = useCustomization();
+  const isDynamic = settings.background === 'dynamic';
   const { user } = useAuth();
   if (!user) {
     return null;
@@ -185,7 +188,7 @@ export function AchievementsPage() {
   const unlockedCount = allNodes.filter((n) => isUnlocked(n, stats)).length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
+    <div className={`min-h-screen ${isDynamic ? 'bg-transparent' : 'bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950'}`}>
       <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1400px] flex flex-col items-center gap-8 sm:gap-10">
           <div className="w-full max-w-[1000px] flex items-center gap-2 text-slate-100">

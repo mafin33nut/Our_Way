@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 export function SettingsPage() {
   const { settings, updateSettings, playVictorySound } = useCustomization();
+  const isDynamic = settings.background === 'dynamic';
   const [bgImageLoaded, setBgImageLoaded] = useState(false);
   const backgroundOption = BACKGROUND_OPTIONS.find((bg) => bg.id === settings.background);
   const backgroundUrl = backgroundOption?.url || '';
@@ -29,8 +30,8 @@ export function SettingsPage() {
 
   return (
     <div
-      className={`min-h-screen relative bg-slate-950 ${
-        hasBackground ? '' : 'bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950'
+      className={`min-h-screen relative ${isDynamic ? 'bg-transparent' : 'bg-slate-950'} ${
+        isDynamic || hasBackground ? '' : 'bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950'
       }`}
     >
       {hasBackground && (

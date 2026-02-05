@@ -5,9 +5,12 @@ import { useAuth } from '../../hooks/useAuth';
 import { authAPI } from '../../api/auth';
 import { Button } from '../ui/Button';
 import { PanelHelp } from '../ui/PanelHelp';
+import { useCustomization } from '../../hooks/useCustomization';
 
 export function UserCustomizationPage() {
   const { user, refreshUser } = useAuth();
+  const { settings } = useCustomization();
+  const isDynamic = settings.background === 'dynamic';
   const [bio, setBio] = useState(user?.bio ?? '');
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
@@ -35,7 +38,7 @@ export function UserCustomizationPage() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
+    <div className={`min-h-screen ${isDynamic ? 'bg-transparent' : 'bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950'}`}>
       <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1200px]">
           <div className="panel-base panel-purple p-6">

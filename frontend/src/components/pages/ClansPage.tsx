@@ -5,12 +5,15 @@ import { socialAPI } from '../../api/social';
 import { Clan, ClanQuest } from '../../types';
 import { ClanQuestList } from '../quests/ClanQuestList';
 import { useAuth } from '../../hooks/useAuth';
+import { useCustomization } from '../../hooks/useCustomization';
 import { Loader } from '../ui/Loader';
 import { Button } from '../ui/Button';
 import { PanelHelp } from '../ui/PanelHelp';
 
 export function ClansPage() {
   const { user, refreshUser } = useAuth();
+  const { settings } = useCustomization();
+  const isDynamic = settings.background === 'dynamic';
   const [clans, setClans] = useState<Clan[]>([]);
   const [selectedClanId, setSelectedClanId] = useState<number | null>(null);
   const [clanQuests, setClanQuests] = useState<ClanQuest[]>([]);
@@ -133,7 +136,7 @@ export function ClansPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
+    <div className={`min-h-screen ${isDynamic ? 'bg-transparent' : 'bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950'}`}>
       <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1400px] flex flex-col gap-8 sm:gap-10">
           <div className="flex items-center gap-2 text-slate-100">

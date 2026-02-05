@@ -5,6 +5,7 @@ import { TaskHistoryPanel } from '../quests/TaskHistoryPanel';
 import { Loader } from '../ui/Loader';
 import { PanelHelp } from '../ui/PanelHelp';
 import { BarChart2 } from 'lucide-react';
+import { useCustomization } from '../../hooks/useCustomization';
 
 type DayBucket = {
   key: string;
@@ -29,6 +30,8 @@ const formatMinutes = (minutes: number) => {
 };
 
 export function ProgressPage() {
+  const { settings } = useCustomization();
+  const isDynamic = settings.background === 'dynamic';
   const [quests, setQuests] = useState<Quest[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -86,7 +89,7 @@ export function ProgressPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950">
+    <div className={`min-h-screen ${isDynamic ? 'bg-transparent' : 'bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950'}`}>
       <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1400px] flex flex-col items-center gap-8 sm:gap-10">
           <div className="w-full max-w-[1200px] flex items-center gap-2 text-slate-100">
