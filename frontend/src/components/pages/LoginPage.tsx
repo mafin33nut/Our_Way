@@ -116,9 +116,9 @@ export function LoginPage() {
           {!showForm && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
               <div
-                className="rounded-2xl border-2 p-8 min-h-[272px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
+                className="rounded-2xl border-2 p-10 min-h-[320px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
               >
-                <p className="text-amber-200/80 text-base mb-4">
+                <p className="text-amber-200/80 text-2xl mb-6">
                   Рады видеть вас снова
                 </p>
                 <Button
@@ -128,15 +128,15 @@ export function LoginPage() {
                     setShowForm(true);
                     setError('');
                   }}
-                  className="w-64 px-8 py-4 text-2xl"
+                  className="w-72 px-10 py-5 text-3xl"
                 >
                   Войти
                 </Button>
               </div>
               <div
-                className="rounded-2xl border-2 p-8 min-h-[272px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
+                className="rounded-2xl border-2 p-10 min-h-[320px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
               >
-                <p className="text-amber-200/80 text-base mb-4">
+                <p className="text-amber-200/80 text-2xl mb-6">
                   Добро пожаловать
                 </p>
                 <Button
@@ -146,7 +146,7 @@ export function LoginPage() {
                     setShowForm(true);
                     setError('');
                   }}
-                  className="w-64 px-8 py-4 text-2xl"
+                  className="w-72 px-10 py-5 text-3xl"
                 >
                   Зарегистрироваться
                 </Button>

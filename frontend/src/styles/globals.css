@@ -176,6 +176,7 @@ h3 {
 
   .panel-help button {
     width: 100%;
+    display: block;
   }
 
   .achievement-earned {
@@ -195,8 +196,8 @@ h3 {
       padding: 1.25rem !important;
       font-size: 90%;
       width: 100%;
-      max-width: calc(100% - 1.5rem);
-      margin-left: auto;
+      max-width: 100%;
+      margin-left: 0;
       margin-right: 0;
       margin-bottom: 12px;
     }
