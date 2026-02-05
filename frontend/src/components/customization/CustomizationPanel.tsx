@@ -40,16 +40,16 @@ export function CustomizationPanel() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div className={`w-full max-w-2xl rounded-lg shadow-2xl ${
             isLight
-              ? 'bg-white border-2 border-amber-300'
-              : 'bg-gradient-to-br from-slate-800/95 to-slate-900/95 border-2 border-purple-600/50'
+              ? 'bg-white border-2 border-slate-200'
+              : 'bg-gradient-to-br from-slate-800/95 to-slate-900/95 border-2 border-teal-400/40'
           }`}>
             {/* Header */}
             <div className={`flex items-center justify-between p-6 border-b ${
-              isLight ? 'border-amber-200' : 'border-purple-600/30'
+              isLight ? 'border-slate-200' : 'border-teal-400/30'
             }`}>
               <div className="flex items-center gap-2">
-                <Settings className={`w-5 h-5 ${isLight ? 'text-amber-600' : 'text-purple-400'}`} />
-                <h2 className={isLight ? 'text-amber-900' : 'text-purple-300'}>
+                <Settings className={`w-5 h-5 ${isLight ? 'text-slate-700' : 'text-teal-200'}`} />
+                <h2 className={isLight ? 'text-slate-900' : 'text-slate-100'}>
                   Настройки интерфейса
                 </h2>
               </div>
@@ -57,8 +57,8 @@ export function CustomizationPanel() {
                 onClick={() => setIsOpen(false)}
                 className={`p-2 rounded-lg transition-colors ${
                   isLight
-                    ? 'hover:bg-amber-100 text-amber-600'
-                    : 'hover:bg-slate-700 text-purple-400'
+                    ? 'hover:bg-slate-100 text-slate-700'
+                    : 'hover:bg-slate-700 text-teal-200'
                 }`}
               >
                 <X className="w-5 h-5" />
@@ -69,7 +69,7 @@ export function CustomizationPanel() {
             <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
               {/* Theme Toggle */}
               <div>
-                <h3 className={`mb-3 ${isLight ? 'text-amber-800' : 'text-purple-200'}`}>
+                <h3 className={`mb-3 ${isLight ? 'text-slate-800' : 'text-teal-100'}`}>
                   Тема оформления
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
@@ -77,17 +77,17 @@ export function CustomizationPanel() {
                     onClick={() => updateSettings({ theme: 'light' })}
                     className={`p-4 rounded-lg border-2 transition-all ${
                       isLight
-                        ? 'border-amber-500 bg-amber-50 shadow-lg'
+                        ? 'border-slate-400 bg-slate-50 shadow-lg'
                         : (isTheme(settings.theme) && settings.theme === 'light')
-                          ? 'border-amber-200 bg-amber-50/50 hover:border-amber-400'
-                          : 'border-purple-600/30 bg-slate-800/50 hover:border-purple-500/50'
+                          ? 'border-slate-200 bg-slate-50/50 hover:border-slate-300'
+                          : 'border-teal-400/30 bg-slate-800/50 hover:border-teal-300/60'
                     }`}
                   >
                     <Sun className={`w-6 h-6 mx-auto mb-2 ${
-                      isLight ? 'text-amber-600' : 'text-amber-400/60'
+                      isLight ? 'text-slate-700' : 'text-slate-400/60'
                     }`} />
                     <p className={`text-sm ${
-                      isLight ? 'text-amber-900' : 'text-amber-200/60'
+                      isLight ? 'text-slate-900' : 'text-slate-200/60'
                     }`}>
                       Светлая тема
                     </p>
@@ -97,17 +97,17 @@ export function CustomizationPanel() {
                     onClick={() => updateSettings({ theme: 'dark' })}
                     className={`p-4 rounded-lg border-2 transition-all ${
                       isDark
-                        ? 'border-purple-500 bg-purple-900/40 shadow-lg'
+                        ? 'border-teal-300/60 bg-teal-400/10 shadow-lg'
                         : isLight
-                        ? 'border-amber-200 bg-white hover:border-amber-400'
-                        : 'border-purple-600/30 bg-slate-950/30 hover:border-purple-500/50'
+                        ? 'border-slate-200 bg-white hover:border-slate-300'
+                        : 'border-teal-400/30 bg-slate-950/30 hover:border-teal-300/60'
                     }`}
                   >
                     <Moon className={`w-6 h-6 mx-auto mb-2 ${
-                      isDark ? 'text-purple-300' : 'text-purple-400/60'
+                      isDark ? 'text-teal-200' : 'text-teal-200/60'
                     }`} />
                     <p className={`text-sm ${
-                      isDark ? 'text-purple-200' : 'text-purple-200/60'
+                      isDark ? 'text-slate-100' : 'text-slate-200/60'
                     }`}>
                       Темная тема
                     </p>
@@ -117,7 +117,7 @@ export function CustomizationPanel() {
 
               {/* Background Selection */}
               <div>
-                <h3 className={`mb-3 ${isLight ? 'text-amber-800' : 'text-purple-200'}`}>
+                <h3 className={`mb-3 ${isLight ? 'text-slate-800' : 'text-teal-100'}`}>
                   Фоновое изображение
                 </h3>
                 <div className="grid grid-cols-3 gap-3">
@@ -128,11 +128,11 @@ export function CustomizationPanel() {
                       className={`relative aspect-video rounded-lg border-2 overflow-hidden transition-all ${
                         settings.background === bg.id
                           ? (isLight
-                              ? 'border-amber-500 ring-2 ring-amber-300'
-                              : 'border-purple-500 ring-2 ring-purple-400/50')
+                              ? 'border-slate-400 ring-2 ring-slate-300'
+                              : 'border-teal-300/60 ring-2 ring-teal-300/40')
                           : (isLight
-                              ? 'border-amber-200 hover:border-amber-400'
-                              : 'border-purple-600/30 hover:border-purple-500/50')
+                              ? 'border-slate-200 hover:border-slate-300'
+                              : 'border-teal-400/30 hover:border-teal-300/60')
                       }`}
                     >
                       {bg.url ? (
@@ -143,17 +143,17 @@ export function CustomizationPanel() {
                         />
                       ) : (
                         <div className={`w-full h-full flex items-center justify-center ${
-                          isLight ? 'bg-amber-50' : 'bg-slate-800'
+                          isLight ? 'bg-slate-50' : 'bg-slate-800'
                         }`}>
                           <Image className={`w-8 h-8 ${
-                            isLight ? 'text-amber-400' : 'text-purple-400/40'
+                            isLight ? 'text-slate-400' : 'text-teal-200/60'
                           }`} />
                         </div>
                       )}
                       <div className={`absolute bottom-0 left-0 right-0 p-2 text-xs text-center ${
                         isLight
-                          ? 'bg-white/90 text-amber-900'
-                          : 'bg-black/60 text-white'
+                          ? 'bg-white/90 text-slate-900'
+                          : 'bg-black/60 text-slate-100'
                       }`}>
                         {bg.name}
                       </div>
@@ -164,7 +164,7 @@ export function CustomizationPanel() {
 
               {/* Sound Toggle */}
               <div>
-                <h3 className={`mb-3 ${isLight ? 'text-amber-800' : 'text-purple-200'}`}>
+                <h3 className={`mb-3 ${isLight ? 'text-slate-800' : 'text-teal-100'}`}>
                   Звуковые эффекты
                 </h3>
                 <button
@@ -176,24 +176,24 @@ export function CustomizationPanel() {
                   }}
                   className={`w-full p-4 rounded-lg border-2 transition-all flex items-center justify-between ${
                     settings.soundEnabled
-                      ? (isLight ? 'border-amber-500 bg-amber-50' : 'border-purple-500 bg-purple-900/40')
-                      : (isLight ? 'border-amber-200 bg-white' : 'border-purple-600/30 bg-slate-950/30')
+                      ? (isLight ? 'border-slate-400 bg-slate-50' : 'border-teal-300/60 bg-teal-400/10')
+                      : (isLight ? 'border-slate-200 bg-white' : 'border-teal-400/30 bg-slate-950/30')
                   }`}
                 >
-                  <span className={isLight ? 'text-amber-900' : 'text-purple-200'}>
+                  <span className={isLight ? 'text-slate-900' : 'text-slate-100'}>
                     {settings.soundEnabled ? 'Звук включен' : 'Звук выключен'}
                   </span>
                   {settings.soundEnabled ? (
-                    <Volume2 className={isLight ? 'text-amber-600' : 'text-purple-400'} />
+                    <Volume2 className={isLight ? 'text-slate-700' : 'text-teal-200'} />
                   ) : (
-                    <VolumeX className={isLight ? 'text-amber-400' : 'text-purple-400/60'} />
+                    <VolumeX className={isLight ? 'text-slate-500' : 'text-teal-200/60'} />
                   )}
                 </button>
               </div>
 
               {/* Visibility Settings */}
               <div>
-                <h3 className={`mb-3 ${isLight ? 'text-amber-800' : 'text-purple-200'}`}>
+                <h3 className={`mb-3 ${isLight ? 'text-slate-800' : 'text-teal-100'}`}>
                   Отображение панелей
                 </h3>
                 <div className="space-y-2">
@@ -201,34 +201,34 @@ export function CustomizationPanel() {
                     onClick={() => updateSettings({ showHelp: !settings.showHelp })}
                     className={`w-full p-3 rounded-lg border transition-all flex items-center justify-between ${
                       settings.showHelp
-                        ? (isLight ? 'border-amber-300 bg-amber-50' : 'border-purple-600/50 bg-slate-800/50')
-                        : (isLight ? 'border-amber-200 bg-white' : 'border-purple-600/30 bg-slate-950/30')
+                        ? (isLight ? 'border-slate-300 bg-slate-50' : 'border-teal-300/60 bg-slate-800/50')
+                        : (isLight ? 'border-slate-200 bg-white' : 'border-teal-400/30 bg-slate-950/30')
                     }`}
                   >
-                    <span className={isLight ? 'text-amber-900' : 'text-purple-200'}>
+                    <span className={isLight ? 'text-slate-900' : 'text-slate-100'}>
                       Подсказки "Как это работает"
                     </span>
                     {settings.showHelp ? (
-                      <Eye className={isLight ? 'text-amber-600' : 'text-purple-400'} />
+                      <Eye className={isLight ? 'text-slate-700' : 'text-teal-200'} />
                     ) : (
-                      <EyeOff className={isLight ? 'text-amber-400' : 'text-purple-400/60'} />
+                      <EyeOff className={isLight ? 'text-slate-500' : 'text-teal-200/60'} />
                     )}
                   </button>
                   <button
                     onClick={() => updateSettings({ showFriends: !settings.showFriends })}
                     className={`w-full p-3 rounded-lg border transition-all flex items-center justify-between ${
                       settings.showFriends
-                        ? (isLight ? 'border-amber-300 bg-amber-50' : 'border-purple-600/50 bg-slate-800/50')
-                        : (isLight ? 'border-amber-200 bg-white' : 'border-purple-600/30 bg-slate-950/30')
+                        ? (isLight ? 'border-slate-300 bg-slate-50' : 'border-teal-300/60 bg-slate-800/50')
+                        : (isLight ? 'border-slate-200 bg-white' : 'border-teal-400/30 bg-slate-950/30')
                     }`}
                   >
-                    <span className={isLight ? 'text-amber-900' : 'text-purple-200'}>
+                    <span className={isLight ? 'text-slate-900' : 'text-slate-100'}>
                       Панель друзей
                     </span>
                     {settings.showFriends ? (
-                      <Eye className={isLight ? 'text-amber-600' : 'text-purple-400'} />
+                      <Eye className={isLight ? 'text-slate-700' : 'text-teal-200'} />
                     ) : (
-                      <EyeOff className={isLight ? 'text-amber-400' : 'text-purple-400/60'} />
+                      <EyeOff className={isLight ? 'text-slate-500' : 'text-teal-200/60'} />
                     )}
                   </button>
 
@@ -236,17 +236,17 @@ export function CustomizationPanel() {
                     onClick={() => updateSettings({ showActivities: !settings.showActivities })}
                     className={`w-full p-3 rounded-lg border transition-all flex items-center justify-between ${
                       settings.showActivities
-                        ? (isLight ? 'border-amber-300 bg-amber-50' : 'border-purple-600/50 bg-slate-800/50')
-                        : (isLight ? 'border-amber-200 bg-white' : 'border-purple-600/30 bg-slate-950/30')
+                        ? (isLight ? 'border-slate-300 bg-slate-50' : 'border-teal-300/60 bg-slate-800/50')
+                        : (isLight ? 'border-slate-200 bg-white' : 'border-teal-400/30 bg-slate-950/30')
                     }`}
                   >
-                    <span className={isLight ? 'text-amber-900' : 'text-purple-200'}>
+                    <span className={isLight ? 'text-slate-900' : 'text-slate-100'}>
                       Лента активности
                     </span>
                     {settings.showActivities ? (
-                      <Eye className={isLight ? 'text-amber-600' : 'text-purple-400'} />
+                      <Eye className={isLight ? 'text-slate-700' : 'text-teal-200'} />
                     ) : (
-                      <EyeOff className={isLight ? 'text-amber-400' : 'text-purple-400/60'} />
+                      <EyeOff className={isLight ? 'text-slate-500' : 'text-teal-200/60'} />
                     )}
                   </button>
 
@@ -254,17 +254,17 @@ export function CustomizationPanel() {
                     onClick={() => updateSettings({ showClan: !settings.showClan })}
                     className={`w-full p-3 rounded-lg border transition-all flex items-center justify-between ${
                       settings.showClan
-                        ? (isLight ? 'border-amber-300 bg-amber-50' : 'border-purple-600/50 bg-slate-800/50')
-                        : (isLight ? 'border-amber-200 bg-white' : 'border-purple-600/30 bg-slate-950/30')
+                        ? (isLight ? 'border-slate-300 bg-slate-50' : 'border-teal-300/60 bg-slate-800/50')
+                        : (isLight ? 'border-slate-200 bg-white' : 'border-teal-400/30 bg-slate-950/30')
                     }`}
                   >
-                    <span className={isLight ? 'text-amber-900' : 'text-purple-200'}>
+                    <span className={isLight ? 'text-slate-900' : 'text-slate-100'}>
                       Информация о клане
                     </span>
                     {settings.showClan ? (
-                      <Eye className={isLight ? 'text-amber-600' : 'text-purple-400'} />
+                      <Eye className={isLight ? 'text-slate-700' : 'text-teal-200'} />
                     ) : (
-                      <EyeOff className={isLight ? 'text-amber-400' : 'text-purple-400/60'} />
+                      <EyeOff className={isLight ? 'text-slate-500' : 'text-teal-200/60'} />
                     )}
                   </button>
                 </div>
@@ -272,7 +272,7 @@ export function CustomizationPanel() {
             </div>
 
             {/* Footer */}
-            <div className={`p-4 border-t ${isLight ? 'border-amber-200' : 'border-purple-600/30'}`}>
+            <div className={`p-4 border-t ${isLight ? 'border-slate-200' : 'border-teal-400/30'}`}>
               <Button onClick={() => setIsOpen(false)} className="w-full">
                 Применить настройки
               </Button>
