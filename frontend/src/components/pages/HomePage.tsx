@@ -7,6 +7,7 @@ import { QuestList } from '../../components/quests/QuestList';
 import { CharacterProfile } from '../../components/profile/characterProfile';
 import { isToday } from '../../utils/time';
 import { Loader } from '../../components/ui/Loader';
+import { PanelHelp } from '../../components/ui/PanelHelp';
 
 export function HomePage() {
   const { user, refreshUser } = useAuth();
@@ -126,11 +127,11 @@ export function HomePage() {
               <div className="panel-comment mb-6 min-h-[48px]">
                 Основные характеристики персонажа, уровень и прогресс в квестах.
               </div>
-              <div className="panel-guide mb-4">
+              <PanelHelp>
                 <p>1) Проверь текущий уровень и прогресс до следующего.</p>
                 <p>2) Следи за дневной активностью и выполненными квестами.</p>
                 <p>3) Обновляй профиль, если меняешь цели или темп.</p>
-              </div>
+              </PanelHelp>
               <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
 
               <div className="mt-8">
@@ -138,11 +139,11 @@ export function HomePage() {
                 <div className="panel-comment mb-6 min-h-[48px]">
                   Ваши полученные достижения и текущий прогресс.
                 </div>
-                <div className="panel-guide mb-4">
+                <PanelHelp>
                   <p>1) Выполняй квесты — открываются новые уровни достижений.</p>
                   <p>2) Смотри требования рядом с каждым значком.</p>
                   <p>3) Планируй следующую цель по оставшимся квестам.</p>
-                </div>
+                </PanelHelp>
                 <div className="space-y-3">
                   {achievementSlots
                     .filter((item) => (user.total_quests_completed || 0) >= item.req)
@@ -180,11 +181,11 @@ export function HomePage() {
               <div className="panel-comment mb-6">
                 Список активных квестов и выполнение.
               </div>
-              <div className="panel-guide mb-4">
+              <PanelHelp>
                 <p>1) Выполни квест и нажми «Завершить».</p>
                 <p>2) Удаляй устаревшие квесты, чтобы не засорять список.</p>
                 <p>3) Следи за наградой и сложностью перед стартом.</p>
-              </div>
+              </PanelHelp>
               <QuestList
                 quests={quests}
                 onComplete={handleCompleteQuest}

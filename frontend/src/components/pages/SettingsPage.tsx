@@ -4,6 +4,7 @@ import { Button } from '../ui/Button';
 import { useCustomization } from '../../hooks/useCustomization';
 import { BACKGROUND_OPTIONS } from '../../types';
 import { Link } from 'react-router-dom';
+import { PanelHelp } from '../ui/PanelHelp';
 
 function isTheme(value: unknown): value is 'light' | 'dark' {
   return value === 'light' || value === 'dark';
@@ -86,10 +87,10 @@ export function SettingsPage() {
             <div className="p-6 space-y-8">
               <div>
                 <h2 className="mb-4 text-xl text-purple-200">Тема оформления</h2>
-                <div className="panel-guide mb-4">
+                <PanelHelp>
                   <p>1) Выберите тему, чтобы сразу увидеть изменения.</p>
                   <p>2) Проверь читабельность текста на выбранном фоне.</p>
-                </div>
+                </PanelHelp>
                 <div className="grid grid-cols-2 gap-4">
                   <button
                     onClick={() => updateSettings({ theme: 'light' })}
@@ -131,11 +132,11 @@ export function SettingsPage() {
 
               <div>
                 <h2 className="mb-4 text-xl text-purple-200">Фоновое изображение</h2>
-                <div className="panel-guide mb-4">
+                <PanelHelp>
                   <p>1) Выберите готовый фон или загрузите свой.</p>
                   <p>2) Убедитесь, что панели читаются на фоне.</p>
                   <p>3) Если фон мешает, отключите его кнопкой ниже.</p>
-                </div>
+                </PanelHelp>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {BACKGROUND_OPTIONS.map((bg) => (
                     <button
@@ -208,10 +209,10 @@ export function SettingsPage() {
 
               <div>
                 <h2 className="mb-4 text-xl text-purple-200">Звуковые эффекты</h2>
-                <div className="panel-guide mb-4">
+                <PanelHelp>
                   <p>1) Включите звук и проверьте громкость.</p>
                   <p>2) Отключите, если хотите сосредоточиться без уведомлений.</p>
-                </div>
+                </PanelHelp>
                 <button
                   onClick={() => {
                     updateSettings({ soundEnabled: !settings.soundEnabled });
@@ -238,10 +239,10 @@ export function SettingsPage() {
 
               <div>
                 <h2 className="mb-4 text-xl text-purple-200">Отображение панелей</h2>
-                <div className="panel-guide mb-4">
+                <PanelHelp>
                   <p>1) Скрывайте панели, которые не используете регулярно.</p>
                   <p>2) Включайте важные блоки перед планированием недели.</p>
-                </div>
+                </PanelHelp>
                 <div className="space-y-3">
                   <button
                     onClick={() => updateSettings({ showFriends: !settings.showFriends })}

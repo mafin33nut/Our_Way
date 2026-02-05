@@ -10,6 +10,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { Loader } from '../ui/Loader';
 import { resolveMediaUrl } from '../../utils/media';
 import { Button } from '../ui/Button';
+import { PanelHelp } from '../ui/PanelHelp';
 
 export function ClansPage() {
   const { user, refreshUser } = useAuth();
@@ -159,11 +160,11 @@ export function ClansPage() {
                 <Crown className="w-5 h-5 text-teal-300" />
                 <h2 className="text-slate-100">Ваши кланы</h2>
               </div>
-              <div className="panel-guide mb-4">
+              <PanelHelp>
                 <p>1) Выберите клан, чтобы увидеть участников и статистику.</p>
                 <p>2) Следите за XP — он влияет на позицию в рейтинге.</p>
                 <p>3) Создавайте клановые квесты ниже, чтобы ускорить рост.</p>
-              </div>
+              </PanelHelp>
               {clans.length > 1 && (
                 <div className="flex flex-wrap gap-2 mb-4">
                   {clans.map((item) => (
@@ -265,11 +266,11 @@ export function ClansPage() {
                 <Crown className="w-5 h-5 text-teal-300" />
                 <h2 className="text-slate-100">Найти или создать клан</h2>
               </div>
-              <div className="panel-guide mb-4">
+              <PanelHelp>
                 <p>1) Создайте новый клан, если хотите собственное сообщество.</p>
                 <p>2) Найдите кланы по названию и отправьте запрос на вступление.</p>
                 <p>3) После одобрения клан появится в списке выше.</p>
-              </div>
+              </PanelHelp>
               <ClanCreationPanel onClanCreated={handleClanCreated} />
             </div>
           )}
@@ -284,11 +285,11 @@ export function ClansPage() {
               <Crown className="w-5 h-5 text-teal-300" />
               <h2 className="text-slate-100">Создать клановый квест</h2>
             </div>
-            <div className="panel-guide mb-4">
+            <PanelHelp>
               <p>1) Опишите цель так, чтобы её понял весь клан.</p>
               <p>2) Укажите лимит участников — квест закроется по достижению лимита.</p>
               <p>3) После создания пригласите участников в ленте клана.</p>
-            </div>
+            </PanelHelp>
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-4">
               <div className="space-y-3">
                 <input

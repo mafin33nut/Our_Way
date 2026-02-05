@@ -6,6 +6,7 @@ import { Clan, Quest, UserFocus } from '../../types';
 import { Button } from '../ui/Button';
 import { QuestList } from '../quests/QuestList';
 import { useCustomization } from '../../hooks/useCustomization';
+import { PanelHelp } from '../ui/PanelHelp';
 
 type TaskType = 'simple' | 'stepwise';
 type TaskDifficulty = 'easy' | 'medium' | 'hard';
@@ -175,11 +176,11 @@ export function FocusTasksPage() {
                 <Target className="w-5 h-5 text-teal-300" />
                 <h2 className="text-slate-100">Мои фокусы</h2>
               </div>
-              <div className="panel-guide mb-4">
+              <PanelHelp>
                 <p>1) Выберите фокус, чтобы квесты ниже автоматически группировались.</p>
                 <p>2) Добавьте новый фокус, если хотите вести отдельный трек.</p>
                 <p>3) Удаляйте фокус только если он больше не нужен.</p>
-              </div>
+              </PanelHelp>
               <div className="flex gap-3 flex-wrap mb-4">
                 {focuses.map((focus) => (
                   <div
@@ -228,11 +229,11 @@ export function FocusTasksPage() {
                 <ClipboardList className="w-5 h-5 text-teal-300" />
                 <h2 className="text-slate-100">Создать квест</h2>
               </div>
-              <div className="panel-guide mb-4">
+              <PanelHelp>
                 <p>1) Введите название и цель квеста в 1–2 фразы.</p>
                 <p>2) Выберите фокус — так квест попадет в нужную колонку ниже.</p>
                 <p>3) Для поэтапных квестов добавьте шаги и сохраните.</p>
-              </div>
+              </PanelHelp>
               <div className="flex flex-wrap gap-2 mb-4">
                 {(['personal', 'clan'] as QuestMode[]).map((mode) => (
                   <button
@@ -431,11 +432,11 @@ export function FocusTasksPage() {
 
           <div className="panel-base panel-sky w-full max-w-[1200px]">
             <div className="panel-caption text-center">Мои квесты по фокусам</div>
-              <div className="panel-guide text-center mb-6">
+              <PanelHelp className="text-center">
                 <p>1) Выберите фокус — в колонке появятся только его квесты.</p>
                 <p>2) Завершайте квесты — прогресс учитывается в статистике.</p>
                 <p>3) Удаляйте лишние квесты, чтобы оставался только актуальный список.</p>
-              </div>
+              </PanelHelp>
             {loading ? (
               <p className="text-center text-purple-200/60">Загрузка...</p>
             ) : (

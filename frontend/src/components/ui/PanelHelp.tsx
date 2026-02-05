@@ -1,0 +1,28 @@
+import { ReactNode, useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { Button } from './Button';
+
+interface PanelHelpProps {
+  children: ReactNode;
+  className?: string;
+}
+
+export function PanelHelp({ children, className = '' }: PanelHelpProps) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className={`mt-4 ${className}`}>
+      <Button
+        type="button"
+        variant="secondary"
+        size="sm"
+        className="w-full flex items-center justify-center gap-2"
+        onClick={() => setOpen((prev) => !prev)}
+      >
+        {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+        Как это работает
+      </Button>
+      {open && <div className="panel-guide mt-3">{children}</div>}
+    </div>
+  );
+}

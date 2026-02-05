@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Trophy, Users } from 'lucide-react';
 import { socialAPI } from '../../api/social';
 import { Clan, User } from '../../types';
+import { PanelHelp } from '../ui/PanelHelp';
 
 export function LeadersPage() {
   const [leaders, setLeaders] = useState<User[]>([]);
@@ -47,11 +48,11 @@ export function LeadersPage() {
                 <Trophy className="w-5 h-5 text-teal-300" />
                 <h2 className="text-slate-100">Лидеры</h2>
               </div>
-              <div className="panel-guide mb-4">
+              <PanelHelp>
                 <p>1) Следи за топом игроков по уровню.</p>
                 <p>2) Сравни свой прогресс с ближайшими позициями.</p>
                 <p>3) Планируй цели, чтобы подняться выше.</p>
-              </div>
+              </PanelHelp>
               <div className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4 flex-1">
                 <div className="rounded-lg border border-slate-600/30 bg-slate-950/40 overflow-hidden">
                   <div className="max-h-[60vh] overflow-auto">
@@ -102,11 +103,11 @@ export function LeadersPage() {
                 <Users className="w-5 h-5 text-teal-300" />
                 <h2 className="text-slate-100">Лидеры кланов</h2>
               </div>
-              <div className="panel-guide mb-4">
+              <PanelHelp>
                 <p>1) Оцени вклад каждого клана по общему XP.</p>
                 <p>2) Смотри на лидера — он показывает темп команды.</p>
                 <p>3) Сравни рост клана с соседними позициями.</p>
-              </div>
+              </PanelHelp>
               <div className="rounded-xl border border-slate-600/40 bg-slate-900/50 p-4 flex-1">
                 <div className="rounded-lg border border-slate-600/30 bg-slate-950/40 overflow-hidden">
                   <div className="max-h-[60vh] overflow-auto">

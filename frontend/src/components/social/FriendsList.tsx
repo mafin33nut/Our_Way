@@ -4,6 +4,7 @@ import { Users, Circle, User as UserIcon } from 'lucide-react';
 import { resolveMediaUrl } from '../../utils/media';
 import { Button } from '../ui/Button';
 import { FriendProfileModal } from './FriendProfileModal';
+import { PanelHelp } from '../ui/PanelHelp';
 interface FriendsListProps {
   friends: Friend[];
 }
@@ -20,10 +21,10 @@ export function FriendsList({ friends }: FriendsListProps) {
       <p className="panel-comment mb-4">
         Быстрый доступ к профилям друзей и их текущему прогрессу.
       </p>
-      <div className="panel-guide mb-4">
+      <PanelHelp>
         <p>1) Смотрите, кто онлайн и сколько квестов выполнено.</p>
         <p>2) Открывайте профиль для достижений и описания.</p>
-      </div>
+      </PanelHelp>
       <div className="mb-4 p-3 bg-purple-900/20 rounded-lg border border-purple-600/30">
         <p className="text-purple-200/80 text-sm">
           Онлайн: <span className="text-purple-300">{onlineFriends.length}</span> из {friends.length}

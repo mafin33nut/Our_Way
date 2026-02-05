@@ -3,6 +3,7 @@ import { questsAPI } from '../../api/quests';
 import { Quest } from '../../types';
 import { TaskHistoryPanel } from '../quests/TaskHistoryPanel';
 import { Loader } from '../ui/Loader';
+import { PanelHelp } from '../ui/PanelHelp';
 
 type DayBucket = {
   key: string;
@@ -92,11 +93,11 @@ export function ProgressPage() {
             <div className="panel-comment text-center mb-8">
               Статистика за последние 7 дней: выполненные квесты и время в них.
             </div>
-            <div className="panel-guide text-center mb-6">
+            <PanelHelp className="text-center">
               <p>1) Сравни дни с максимальным количеством квестов.</p>
               <p>2) Проверь распределение времени — где был самый плотный день.</p>
               <p>3) Используй итоги ниже для корректировки плана.</p>
-            </div>
+            </PanelHelp>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-6">
                 <h3 className="text-slate-100 mb-4">Квесты по дням</h3>
@@ -154,11 +155,11 @@ export function ProgressPage() {
             <div className="panel-comment text-center mb-8">
               Последние завершённые квесты и статистика за день.
             </div>
-            <div className="panel-guide text-center mb-6">
+            <PanelHelp className="text-center">
               <p>1) Просмотри недавние завершения по времени.</p>
               <p>2) Отмечай повторяемые задачи — это ваши сильные стороны.</p>
               <p>3) Добавляй новые вызовы, если история стала однообразной.</p>
-            </div>
+            </PanelHelp>
             <TaskHistoryPanel quests={quests} />
           </div>
         </div>
