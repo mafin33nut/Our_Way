@@ -146,3 +146,16 @@ from django.dispatch import receiver
 def ensure_leaderboard_entry(sender, instance: Clan, created, **kwargs):
     if created:
         LeaderboardEntry.objects.get_or_create(clan=instance)
+
+@receiver(post_save, sender=Clan)
+def ensure_creator_is_leader(sender, instance: Clan, **kwargs):
+    if not instance.created_by_id:
+        return
+    member, created = ClanMember.objects.get_or_create(
+        clan=instance,
+        user_id=instance.created_by_id,
+        defaults={'role': 'leader'},
+    )
+    if not created and member.role != 'leader':
+        member.role = 'leader'
+        member.save(update_fields=['role'])
