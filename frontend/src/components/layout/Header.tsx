@@ -80,7 +80,7 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 </Link>
                 <Link to="/settings" className="shrink-0">
                   <Button
-                    variant="ghost"
+                    variant="orange"
                     size="md"
                     className="flex items-center gap-2 whitespace-nowrap sm:text-base sm:px-4 sm:py-3"
                   >
@@ -89,17 +89,17 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                   </Button>
                 </Link>
                 <div className="shrink-0">
-                  <FriendsPanel />
+                  <FriendsPanel className="action-button" />
                 </div>
                 <div className="shrink-0">
-                  <ClanHubPanel />
+                  <ClanHubPanel className="action-button" />
                 </div>
                 <div className="shrink-0">
-                  <ChatHubPanel />
+                  <ChatHubPanel className="action-button" />
                 </div>
               </div>
               <Button
-                variant="ghost"
+                variant="orange"
                 size="md"
                 onClick={logout}
                 className="flex items-center gap-2 whitespace-nowrap shrink-0 sm:text-base sm:px-4 sm:py-3"

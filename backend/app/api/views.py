@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework_simplejwt.tokens import RefreshToken
 from app.user.serializers import UserSerializer
 from django.utils import timezone
+from threading import Thread
 from app.notifications.services import send_notification_to_user
 
 User = get_user_model()
@@ -37,13 +38,18 @@ class UserView(APIView):
         try:
             today = timezone.localdate()
             if request.user.last_daily_login_email != today:
-                send_notification_to_user(
-                    request.user,
-                    subject='Добро пожаловать обратно в Our_Way',
-                    body='Вы вошли в Our_Way. Желаем продуктивного дня!',
-                )
                 request.user.last_daily_login_email = today
                 request.user.save(update_fields=['last_daily_login_email'])
+                def _send_login_note():
+                    try:
+                        send_notification_to_user(
+                            request.user,
+                            subject='Добро пожаловать обратно в Our_Way',
+                            body='Вы вошли в Our_Way. Желаем продуктивного дня!',
+                        )
+                    except Exception:
+                        pass
+                Thread(target=_send_login_note, daemon=True).start()
         except Exception:
             pass
         serializer = UserSerializer(request.user)

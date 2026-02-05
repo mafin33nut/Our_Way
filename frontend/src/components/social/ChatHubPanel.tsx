@@ -10,7 +10,11 @@ import { ClanChatPanel } from './ClanChatPanel';
 
 type ChatTab = 'clans' | 'friends';
 
-export function ChatHubPanel() {
+type ChatHubPanelProps = {
+  className?: string;
+};
+
+export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<ChatTab>('clans');
   const [clans, setClans] = useState<Clan[]>([]);
@@ -161,11 +165,11 @@ export function ChatHubPanel() {
   return (
     <>
       <Button
-        variant="ghost"
+        variant="orange"
         size="md"
         onClick={() => setIsOpen(true)}
         aria-label="Открыть чат"
-        className="flex items-center gap-2"
+        className={`flex items-center gap-2 ${className}`}
       >
         <MessageCircle className="w-5 h-5" />
         <span className="hidden sm:inline">Чат</span>

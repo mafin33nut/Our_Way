@@ -9,7 +9,11 @@ import { FriendSearchPanel } from './FriendSearchPanel';
 import { AllFriendsPanel } from './AllFriendsPanel';
 import { Friend } from '../../types';
 
-export function FriendsPanel() {
+type FriendsPanelProps = {
+  className?: string;
+};
+
+export function FriendsPanel({ className = '' }: FriendsPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [friends, setFriends] = useState<Friend[]>([]);
   const [loading, setLoading] = useState(false);
@@ -41,11 +45,11 @@ export function FriendsPanel() {
   return (
     <>
       <Button
-        variant="ghost"
+        variant="orange"
         size="md"
         onClick={() => setIsOpen(true)}
         aria-label="Открыть друзей"
-        className="flex items-center gap-2"
+        className={`flex items-center gap-2 ${className}`}
       >
         <Users className="w-5 h-5" />
         <span className="hidden sm:inline">Друзья</span>

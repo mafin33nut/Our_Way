@@ -8,7 +8,11 @@ import { socialAPI } from '../../api/social';
 import { Clan } from '../../types';
 import { ClanCreationPanel } from './ClanCreationPanel';
 
-export function ClanHubPanel() {
+type ClanHubPanelProps = {
+  className?: string;
+};
+
+export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [clans, setClans] = useState<Clan[]>([]);
   const [loading, setLoading] = useState(false);
@@ -95,11 +99,11 @@ export function ClanHubPanel() {
   return (
     <>
       <Button
-        variant="ghost"
+        variant="orange"
         size="md"
         onClick={() => setIsOpen(true)}
         aria-label="Открыть кланы"
-        className="flex items-center gap-2"
+        className={`flex items-center gap-2 ${className}`}
       >
         <Crown className="w-5 h-5" />
         <span className="hidden sm:inline">Кланы</span>
