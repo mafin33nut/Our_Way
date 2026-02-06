@@ -54,11 +54,30 @@ def fix_postgres(database_url: str) -> None:
 
                 cur.execute(
                     "SELECT 1 FROM django_migrations WHERE app=%s AND name=%s",
+                    ("auth", "0011_update_proxy_permissions"),
+                )
+                auth_0011_applied = cur.fetchone() is not None
+
+                cur.execute(
+                    "SELECT 1 FROM django_migrations WHERE app=%s AND name=%s",
                     ("auth", "0012_alter_user_first_name_max_length"),
                 )
-                auth_applied = cur.fetchone() is not None
+                auth_0012_applied = cur.fetchone() is not None
 
-                if user_applied and not auth_applied:
+                if auth_0012_applied and not auth_0011_applied:
+                    cur.execute(
+                        "INSERT INTO django_migrations(app, name, applied) VALUES (%s, %s, NOW())",
+                        ("auth", "0011_update_proxy_permissions"),
+                    )
+                    log("Inserted missing auth.0011 migration to fix history.")
+
+                if user_applied and not auth_0012_applied:
+                    if not auth_0011_applied:
+                        cur.execute(
+                            "INSERT INTO django_migrations(app, name, applied) VALUES (%s, %s, NOW())",
+                            ("auth", "0011_update_proxy_permissions"),
+                        )
+                        log("Inserted missing auth.0011 migration to fix history.")
                     cur.execute(
                         "INSERT INTO django_migrations(app, name, applied) VALUES (%s, %s, NOW())",
                         ("auth", "0012_alter_user_first_name_max_length"),
@@ -100,11 +119,32 @@ def fix_sqlite(db_path: str) -> None:
 
         cur.execute(
             "SELECT 1 FROM django_migrations WHERE app=? AND name=?",
+            ("auth", "0011_update_proxy_permissions"),
+        )
+        auth_0011_applied = cur.fetchone() is not None
+
+        cur.execute(
+            "SELECT 1 FROM django_migrations WHERE app=? AND name=?",
             ("auth", "0012_alter_user_first_name_max_length"),
         )
-        auth_applied = cur.fetchone() is not None
+        auth_0012_applied = cur.fetchone() is not None
 
-        if user_applied and not auth_applied:
+        if auth_0012_applied and not auth_0011_applied:
+            cur.execute(
+                "INSERT INTO django_migrations(app, name, applied) VALUES(?, ?, datetime('now'))",
+                ("auth", "0011_update_proxy_permissions"),
+            )
+            conn.commit()
+            log("Inserted missing auth.0011 migration to fix history.")
+
+        if user_applied and not auth_0012_applied:
+            if not auth_0011_applied:
+                cur.execute(
+                    "INSERT INTO django_migrations(app, name, applied) VALUES(?, ?, datetime('now'))",
+                    ("auth", "0011_update_proxy_permissions"),
+                )
+                conn.commit()
+                log("Inserted missing auth.0011 migration to fix history.")
             cur.execute(
                 "INSERT INTO django_migrations(app, name, applied) VALUES(?, ?, datetime('now'))",
                 ("auth", "0012_alter_user_first_name_max_length"),
