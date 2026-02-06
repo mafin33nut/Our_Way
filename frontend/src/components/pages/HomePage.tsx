@@ -10,8 +10,8 @@ import { Loader } from '../../components/ui/Loader';
 import { Home } from 'lucide-react';
 
 export function HomePage() {
-  const { user, refreshUser } = useAuth();
-  const { settings, playVictorySound } = useCustomization();
+  const { user } = useAuth();
+  const { settings } = useCustomization();
   const [quests, setQuests] = useState<Quest[]>([]);
   const [focuses, setFocuses] = useState<UserFocus[]>([]);
   const [loading, setLoading] = useState(true);
@@ -73,8 +73,6 @@ export function HomePage() {
     try {
       const updatedQuest = await questsAPI.complete(id);
       setQuests((prev) => prev.map((q) => (q.id === id ? updatedQuest : q)));
-      playVictorySound();
-      await refreshUser();
     } catch (error) {
       console.error('Failed to complete quest:', error);
     }
@@ -129,7 +127,7 @@ export function HomePage() {
           <div className={`absolute inset-0 ${bgImageLoaded ? 'bg-slate-900/30' : 'bg-slate-900/70'} backdrop-blur-sm`} />
         </div>
       )}
-          <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
+      <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1200px] mx-auto">
           <div className="flex items-center gap-2 text-slate-100 mb-6">
             <Home className="w-5 h-5 text-teal-300" />
@@ -190,13 +188,18 @@ export function HomePage() {
                           focus.id === 0
                             ? quests.filter((q) => !q.focuses || q.focuses.length === 0)
                             : quests.filter((q) => q.focuses?.some((f) => f.id === focus.id));
-                        if (focusQuests.length === 0) {
-                          return null;
-                        }
                         return (
                           <div key={focus.id} className="rounded-lg border border-purple-700/30 bg-slate-950/40 p-4">
                             <h3 className="text-purple-200 mb-3">{focus.name}</h3>
-                            <QuestList quests={focusQuests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} />
+                            {focusQuests.length === 0 ? (
+                              <p className="text-sm text-purple-200/60">Пока нет квестов</p>
+                            ) : (
+                              <QuestList
+                                quests={focusQuests}
+                                onComplete={handleCompleteQuest}
+                                onDelete={handleDeleteQuest}
+                              />
+                            )}
                           </div>
                         );
                       })}
@@ -205,19 +208,6 @@ export function HomePage() {
                 </div>
               </div>
             </div>
-
-            <div className="w-full">
-              <div className="panel-caption text-left">Текущие квесты</div>
-              <QuestList
-                quests={quests}
-                onComplete={handleCompleteQuest}
-                onDelete={handleDeleteQuest}
-              />
-            </div>
-          </div>
-
-          <div className="mt-10 text-center text-slate-200/80 font-indie text-2xl">
-            С каждым шагом твоя история становится сильнее — продолжай путь!
           </div>
         </div>
       </div>

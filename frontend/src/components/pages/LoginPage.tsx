@@ -101,12 +101,12 @@ export function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-slate-800/85 via-slate-900/80 to-slate-950/85 flex items-center justify-center px-4 py-0 sm:px-8 sm:py-12">
+    <div className="relative min-h-[100svh] bg-gradient-to-b from-slate-800/85 via-slate-900/80 to-slate-950/85 flex items-start sm:items-center justify-center px-4 py-10 sm:px-8 sm:py-12">
       <div className="absolute left-6 top-6 hidden sm:block">
         <Shield className="w-20 h-20 sm:w-24 sm:h-24 text-amber-400" />
       </div>
       <div className="w-full max-w-2xl relative z-10">
-        <div className="relative bg-transparent rounded-lg border-0 p-0 sm:p-20 shadow-none text-[200%] text-center">
+        <div className="relative bg-transparent rounded-lg border-0 p-0 sm:p-20 shadow-none text-[160%] sm:text-[200%] text-center">
           <div className="text-center mb-6 sm:mb-8 hidden sm:block">
             <h1 className="text-amber-400 mb-3 sm:mb-2">
               Our way
@@ -117,7 +117,7 @@ export function LoginPage() {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 sm:gap-y-0 sm:gap-x-1 mb-8 sm:mb-6 items-center justify-center place-items-center -mt-6">
                 <div
-                  className="rounded-2xl border-2 p-4 min-h-[128px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
+                  className="rounded-2xl p-5 min-h-[140px] w-full max-w-[280px] sm:max-w-none flex flex-col items-center justify-center text-center transition-all duration-300 bg-slate-800/70 text-slate-100 shadow-[0_0_24px_rgba(15,23,42,0.65)] ring-1 ring-white/10 backdrop-blur-sm hover:bg-amber-200/80 hover:text-slate-900 hover:ring-amber-300/60 hover:shadow-[0_0_42px_rgba(251,191,36,0.45)]"
                 >
                   <p className="text-amber-200/80 text-lg mb-4">
                     Рады видеть вас снова
@@ -129,13 +129,13 @@ export function LoginPage() {
                       setShowForm(true);
                       setError('');
                     }}
-                  className="w-44 px-6 py-3 text-xl"
+                    className="w-64 px-6 py-3 text-lg sm:text-xl"
                   >
                     Войти
                   </Button>
                 </div>
                 <div
-                  className="rounded-2xl border-2 p-4 min-h-[128px] flex flex-col items-center justify-center text-center transition-all duration-300 border-amber-600 bg-slate-800 hover:border-amber-400 hover:bg-amber-500 hover:text-slate-900"
+                  className="rounded-2xl p-5 min-h-[140px] w-full max-w-[280px] sm:max-w-none flex flex-col items-center justify-center text-center transition-all duration-300 bg-slate-800/70 text-slate-100 shadow-[0_0_24px_rgba(15,23,42,0.65)] ring-1 ring-white/10 backdrop-blur-sm hover:bg-amber-200/80 hover:text-slate-900 hover:ring-amber-300/60 hover:shadow-[0_0_42px_rgba(251,191,36,0.45)]"
                 >
                   <p className="text-amber-200/80 text-lg mb-4">
                     Добро пожаловать
@@ -147,7 +147,7 @@ export function LoginPage() {
                       setShowForm(true);
                       setError('');
                     }}
-                  className="w-44 px-6 py-3 text-xl"
+                    className="w-64 px-6 py-3 text-lg sm:text-xl"
                   >
                     Зарегистрироваться
                   </Button>

@@ -103,9 +103,9 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
         size="md"
         onClick={() => setIsOpen(true)}
         aria-label="Открыть кланы"
-        className={`flex items-center gap-2 ${className}`}
+        className={`flex items-center gap-2 sm:flex-col sm:gap-2 sm:px-4 sm:py-3 sm:text-base sm:rounded-xl sm:border sm:border-slate-600/60 sm:bg-slate-800/50 sm:hover:bg-slate-800/80 ${className}`}
       >
-        <Crown className="w-5 h-5" />
+        <Crown className="w-5 h-5 sm:hidden" />
         <span className="hidden sm:inline">Кланы</span>
       </Button>
 
@@ -205,20 +205,22 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                           <input
                             value={joinLink}
                             onChange={(e) => setJoinLink(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleJoinByLink()}
                             placeholder="Вставьте ссылку или ID клана"
                             className="w-full rounded-lg border border-slate-600/40 bg-slate-950/50 px-3 py-2 text-slate-100"
                           />
                           <input
                             value={joinLinkPassword}
                             onChange={(e) => setJoinLinkPassword(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleJoinByLink()}
                             placeholder="Пароль (если нужен)"
                             type="password"
                             className="w-full rounded-lg border border-slate-600/40 bg-slate-950/50 px-3 py-2 text-slate-100"
                           />
                           <div className="flex items-center justify-between gap-3">
-                            <Button onClick={handleJoinByLink} disabled={joinLinkLoading} className="action-button">
-                              {joinLinkLoading ? 'Отправка...' : 'Отправить запрос'}
-                            </Button>
+                            <span className="text-xs text-slate-300/70">
+                              {joinLinkLoading ? 'Отправка запроса...' : 'Нажмите Enter, чтобы отправить запрос'}
+                            </span>
                             {joinLinkStatus && <span className="text-sm text-slate-300/70">{joinLinkStatus}</span>}
                           </div>
                         </div>

@@ -351,6 +351,40 @@ export function FocusTasksPage() {
               </PanelHelp>
             </div>
 
+          <div className="panel-base panel-sky w-full max-w-[1200px]">
+            <div className="panel-caption text-center">Мои квесты по направлениям</div>
+            {loading ? (
+              <p className="text-center text-purple-200/60">Загрузка...</p>
+            ) : (
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {[...focuses, { id: 0, name: 'Без направления', created_at: '' }].map((focus) => {
+                  const focusQuests =
+                    focus.id === 0
+                      ? quests.filter((q) => !q.focuses || q.focuses.length === 0)
+                      : quests.filter((q) => q.focuses?.some((f) => f.id === focus.id));
+                  return (
+                    <div key={focus.id} className="rounded-lg border border-purple-700/30 bg-slate-950/40 p-4">
+                      <h3 className="text-purple-200 mb-3">{focus.name}</h3>
+                      {focusQuests.length === 0 ? (
+                        <p className="text-sm text-purple-200/60">Пока нет квестов</p>
+                      ) : (
+                        <QuestList
+                          quests={focusQuests}
+                          onComplete={handleCompleteQuest}
+                          onDelete={handleDeleteQuest}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            <PanelHelp className="text-center">
+              <p>1) Выберите направление — в колонке появятся только его квесты.</p>
+              <p>2) Завершайте квесты — прогресс учитывается в статистике.</p>
+              <p>3) Удаляйте лишние квесты, чтобы оставался только актуальный список.</p>
+            </PanelHelp>
+          </div>
           </div>
         </div>
       </div>
