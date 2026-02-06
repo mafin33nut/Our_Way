@@ -3,6 +3,28 @@ import sys
 import time
 from urllib.parse import urlparse
 
+AUTH_CHAIN = [
+    "0001_initial",
+    "0002_alter_permission_name_max_length",
+    "0003_alter_user_email_max_length",
+    "0004_alter_user_username_opts",
+    "0005_alter_user_last_login_null",
+    "0006_require_contenttypes_0002",
+    "0007_alter_validators_add_error_messages",
+    "0008_alter_user_username_max_length",
+    "0009_alter_user_last_name_max_length",
+    "0010_alter_group_name_max_length",
+    "0011_update_proxy_permissions",
+    "0012_alter_user_first_name_max_length",
+]
+
+CONTENTTYPES_CHAIN = [
+    "0001_initial",
+    "0002_remove_content_type_name",
+]
+
+AUTH_REQUIRES_CONTENTTYPES_FROM = "0006_require_contenttypes_0002"
+
 
 def env_bool(name: str, default: str = "False") -> bool:
     return os.getenv(name, default).strip().lower() in ("1", "true", "yes", "on")
@@ -28,6 +50,55 @@ def build_database_url() -> str | None:
     return f"postgres://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
 
 
+def _max_index(applied: set[tuple[str, str]], app: str, chain: list[str]) -> int | None:
+    indices = [idx for idx, name in enumerate(chain) if (app, name) in applied]
+    return max(indices) if indices else None
+
+
+def _ensure_chain_postgres(
+    cur,
+    applied: set[tuple[str, str]],
+    app: str,
+    chain: list[str],
+    max_index: int | None,
+) -> None:
+    if max_index is None:
+        return
+    for idx in range(max_index + 1):
+        name = chain[idx]
+        key = (app, name)
+        if key in applied:
+            continue
+        cur.execute(
+            "INSERT INTO django_migrations(app, name, applied) VALUES (%s, %s, NOW())",
+            (app, name),
+        )
+        applied.add(key)
+        log(f"Inserted missing {app}.{name} migration to fix history.")
+
+
+def _ensure_chain_sqlite(
+    cur,
+    applied: set[tuple[str, str]],
+    app: str,
+    chain: list[str],
+    max_index: int | None,
+) -> None:
+    if max_index is None:
+        return
+    for idx in range(max_index + 1):
+        name = chain[idx]
+        key = (app, name)
+        if key in applied:
+            continue
+        cur.execute(
+            "INSERT INTO django_migrations(app, name, applied) VALUES(?, ?, datetime('now'))",
+            (app, name),
+        )
+        applied.add(key)
+        log(f"Inserted missing {app}.{name} migration to fix history.")
+
+
 def fix_postgres(database_url: str) -> None:
     try:
         import psycopg2
@@ -46,43 +117,23 @@ def fix_postgres(database_url: str) -> None:
                     log("django_migrations table not found; skipping.")
                     return
 
-                cur.execute(
-                    "SELECT 1 FROM django_migrations WHERE app=%s AND name=%s",
-                    ("user", "0001_initial"),
-                )
-                user_applied = cur.fetchone() is not None
+                cur.execute("SELECT app, name FROM django_migrations")
+                applied = {(row[0], row[1]) for row in cur.fetchall()}
 
-                cur.execute(
-                    "SELECT 1 FROM django_migrations WHERE app=%s AND name=%s",
-                    ("auth", "0011_update_proxy_permissions"),
-                )
-                auth_0011_applied = cur.fetchone() is not None
+                user_applied = ("user", "0001_initial") in applied
 
-                cur.execute(
-                    "SELECT 1 FROM django_migrations WHERE app=%s AND name=%s",
-                    ("auth", "0012_alter_user_first_name_max_length"),
-                )
-                auth_0012_applied = cur.fetchone() is not None
+                auth_max = _max_index(applied, "auth", AUTH_CHAIN)
+                if auth_max is None and user_applied:
+                    auth_max = len(AUTH_CHAIN) - 1
 
-                if auth_0012_applied and not auth_0011_applied:
-                    cur.execute(
-                        "INSERT INTO django_migrations(app, name, applied) VALUES (%s, %s, NOW())",
-                        ("auth", "0011_update_proxy_permissions"),
-                    )
-                    log("Inserted missing auth.0011 migration to fix history.")
+                contenttypes_max = _max_index(applied, "contenttypes", CONTENTTYPES_CHAIN)
+                if contenttypes_max is None and auth_max is not None:
+                    auth_requires_idx = AUTH_CHAIN.index(AUTH_REQUIRES_CONTENTTYPES_FROM)
+                    if auth_max >= auth_requires_idx:
+                        contenttypes_max = len(CONTENTTYPES_CHAIN) - 1
 
-                if user_applied and not auth_0012_applied:
-                    if not auth_0011_applied:
-                        cur.execute(
-                            "INSERT INTO django_migrations(app, name, applied) VALUES (%s, %s, NOW())",
-                            ("auth", "0011_update_proxy_permissions"),
-                        )
-                        log("Inserted missing auth.0011 migration to fix history.")
-                    cur.execute(
-                        "INSERT INTO django_migrations(app, name, applied) VALUES (%s, %s, NOW())",
-                        ("auth", "0012_alter_user_first_name_max_length"),
-                    )
-                    log("Inserted missing auth.0012 migration to fix history.")
+                _ensure_chain_postgres(cur, applied, "contenttypes", CONTENTTYPES_CHAIN, contenttypes_max)
+                _ensure_chain_postgres(cur, applied, "auth", AUTH_CHAIN, auth_max)
             conn.close()
             return
         except Exception as exc:
@@ -110,47 +161,24 @@ def fix_sqlite(db_path: str) -> None:
         )
         if cur.fetchone() is None:
             return
+        cur.execute("SELECT app, name FROM django_migrations")
+        applied = {(row[0], row[1]) for row in cur.fetchall()}
 
-        cur.execute(
-            "SELECT 1 FROM django_migrations WHERE app=? AND name=?",
-            ("user", "0001_initial"),
-        )
-        user_applied = cur.fetchone() is not None
+        user_applied = ("user", "0001_initial") in applied
 
-        cur.execute(
-            "SELECT 1 FROM django_migrations WHERE app=? AND name=?",
-            ("auth", "0011_update_proxy_permissions"),
-        )
-        auth_0011_applied = cur.fetchone() is not None
+        auth_max = _max_index(applied, "auth", AUTH_CHAIN)
+        if auth_max is None and user_applied:
+            auth_max = len(AUTH_CHAIN) - 1
 
-        cur.execute(
-            "SELECT 1 FROM django_migrations WHERE app=? AND name=?",
-            ("auth", "0012_alter_user_first_name_max_length"),
-        )
-        auth_0012_applied = cur.fetchone() is not None
+        contenttypes_max = _max_index(applied, "contenttypes", CONTENTTYPES_CHAIN)
+        if contenttypes_max is None and auth_max is not None:
+            auth_requires_idx = AUTH_CHAIN.index(AUTH_REQUIRES_CONTENTTYPES_FROM)
+            if auth_max >= auth_requires_idx:
+                contenttypes_max = len(CONTENTTYPES_CHAIN) - 1
 
-        if auth_0012_applied and not auth_0011_applied:
-            cur.execute(
-                "INSERT INTO django_migrations(app, name, applied) VALUES(?, ?, datetime('now'))",
-                ("auth", "0011_update_proxy_permissions"),
-            )
-            conn.commit()
-            log("Inserted missing auth.0011 migration to fix history.")
-
-        if user_applied and not auth_0012_applied:
-            if not auth_0011_applied:
-                cur.execute(
-                    "INSERT INTO django_migrations(app, name, applied) VALUES(?, ?, datetime('now'))",
-                    ("auth", "0011_update_proxy_permissions"),
-                )
-                conn.commit()
-                log("Inserted missing auth.0011 migration to fix history.")
-            cur.execute(
-                "INSERT INTO django_migrations(app, name, applied) VALUES(?, ?, datetime('now'))",
-                ("auth", "0012_alter_user_first_name_max_length"),
-            )
-            conn.commit()
-            log("Inserted missing auth.0012 migration to fix history.")
+        _ensure_chain_sqlite(cur, applied, "contenttypes", CONTENTTYPES_CHAIN, contenttypes_max)
+        _ensure_chain_sqlite(cur, applied, "auth", AUTH_CHAIN, auth_max)
+        conn.commit()
     except Exception as exc:
         log(f"Failed to fix migration history in SQLite: {exc}")
     finally:
