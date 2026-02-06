@@ -13,8 +13,6 @@ services:
     build:
       context: .
       dockerfile: frontend/Dockerfile.prod
-      args:
-        VITE_API_URL: https://our-way.jkproduction.pro:8000
     ports:
       - "21771:80"
     depends_on:
