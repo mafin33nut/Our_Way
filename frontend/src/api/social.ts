@@ -1,5 +1,5 @@
 import { apiClient, unwrapListResponse } from './client';
-import { Friend, Clan, Activity, User, ClanJoinRequest, ClanMessage } from '../types';
+import { Friend, Clan, Activity, User, ClanJoinRequest, ClanMessage, FriendRequest } from '../types';
 export type { User } from '../types';
 
 export interface ClanCreateData {
@@ -39,6 +39,30 @@ export const socialAPI = {
 
   addFriend: async (userId: number): Promise<void> => {
     await apiClient.post(`/api/friends/`, { user_id: userId });
+  },
+
+  getFriendRequests: async (params?: {
+    direction?: 'incoming' | 'outgoing' | 'all';
+    status?: 'pending' | 'accepted' | 'rejected';
+  }): Promise<FriendRequest[]> => {
+    const query = new URLSearchParams();
+    if (params?.direction) query.set('direction', params.direction);
+    if (params?.status) query.set('status', params.status);
+    const suffix = query.toString() ? `?${query.toString()}` : '';
+    const response = await apiClient.get<FriendRequest[] | { results: FriendRequest[] }>(
+      `/api/friend-requests/${suffix}`
+    );
+    return unwrapListResponse(response.data);
+  },
+
+  approveFriendRequest: async (requestId: number): Promise<FriendRequest> => {
+    const response = await apiClient.post<FriendRequest>(`/api/friend-requests/${requestId}/approve/`);
+    return response.data;
+  },
+
+  rejectFriendRequest: async (requestId: number): Promise<FriendRequest> => {
+    const response = await apiClient.post<FriendRequest>(`/api/friend-requests/${requestId}/reject/`);
+    return response.data;
   },
 
   getClan: async (): Promise<Clan | null> => {

@@ -5,8 +5,7 @@ import { Button } from '../ui/Button';
 import { useCustomization } from '../../hooks/useCustomization';
 import { useAuth } from '../../hooks/useAuth';
 import { socialAPI } from '../../api/social';
-import { Clan, Friend, ClanMessage } from '../../types';
-import { ClanChatPanel } from './ClanChatPanel';
+import { Clan, Friend, ClanMessage, ClanJoinRequest } from '../../types';
 
 type ChatTab = 'clans' | 'friends';
 
@@ -30,6 +29,9 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
   >({});
   const [clanChatMessages, setClanChatMessages] = useState<Record<number, ClanMessage[]>>({});
   const [loadingClanMessages, setLoadingClanMessages] = useState(false);
+  const [clanJoinRequests, setClanJoinRequests] = useState<Record<number, ClanJoinRequest[]>>({});
+  const [loadingJoinRequests, setLoadingJoinRequests] = useState(false);
+  const [actioningJoinRequestId, setActioningJoinRequestId] = useState<number | null>(null);
   const { settings } = useCustomization();
   const { user } = useAuth();
   const isLight = settings.theme === 'light';
@@ -84,6 +86,12 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
     return (selectedClan.members || []).some((member) => member.username === user.username);
   }, [selectedClan, user]);
 
+  const isClanLeader = useMemo(() => {
+    if (!user || !selectedClan) return false;
+    const me = (selectedClan.members || []).find((member) => member.username === user.username);
+    return me?.role === 'leader';
+  }, [selectedClan, user]);
+
   const getChatKey = (userId: number, friendId: number) => {
     const [a, b] = userId < friendId ? [userId, friendId] : [friendId, userId];
     return `friend_chat_${a}_${b}`;
@@ -127,6 +135,49 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
       loadClanMessages();
     }
   }, [selectedClanId, loadClanMessages]);
+
+  const loadClanJoinRequests = useCallback(async () => {
+    if (!selectedClanId) return;
+    if (!isClanLeader) {
+      setClanJoinRequests((prev) => ({ ...prev, [selectedClanId]: [] }));
+      return;
+    }
+    setLoadingJoinRequests(true);
+    try {
+      const list = await socialAPI.getClanJoinRequests(selectedClanId).catch(() => []);
+      setClanJoinRequests((prev) => ({ ...prev, [selectedClanId]: list || [] }));
+    } finally {
+      setLoadingJoinRequests(false);
+    }
+  }, [selectedClanId, isClanLeader]);
+
+  useEffect(() => {
+    if (selectedClanId) {
+      loadClanJoinRequests();
+    }
+  }, [selectedClanId, loadClanJoinRequests]);
+
+  const handleApproveJoinRequest = async (requestId: number) => {
+    if (!selectedClanId) return;
+    setActioningJoinRequestId(requestId);
+    try {
+      await socialAPI.approveClanJoinRequest(requestId);
+      await Promise.all([loadClans(), loadClanJoinRequests()]);
+    } finally {
+      setActioningJoinRequestId(null);
+    }
+  };
+
+  const handleRejectJoinRequest = async (requestId: number) => {
+    if (!selectedClanId) return;
+    setActioningJoinRequestId(requestId);
+    try {
+      await socialAPI.rejectClanJoinRequest(requestId);
+      await loadClanJoinRequests();
+    } finally {
+      setActioningJoinRequestId(null);
+    }
+  };
 
   const handleSendMessage = () => {
     if (!user || !selectedFriendId || !chatDraft.trim()) return;
@@ -206,14 +257,14 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
                 </Button>
               </div>
 
-              <div className="h-[calc(100%-136px)] overflow-y-auto px-5 py-5 space-y-5">
-                {!user && (
-                  <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
-                    Войдите, чтобы пользоваться чатом.
-                  </div>
-                )}
-                {user && (
-                  <>
+              <div className="h-[calc(100%-72px)] flex flex-col">
+                <div className="px-5 pt-5">
+                  {!user && (
+                    <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
+                      Войдите, чтобы пользоваться чатом.
+                    </div>
+                  )}
+                  {user && (
                     <div className="flex items-center justify-center gap-4">
                       <button
                         type="button"
@@ -238,16 +289,21 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
                         Друзья
                       </button>
                     </div>
+                  )}
+                </div>
 
+                {user && (
+                  <div className="flex-1 overflow-hidden px-5 pb-5 pt-5">
                     {activeTab === 'clans' && (
-                      <div className="panel-base panel-teal p-6 w-full">
-                        <div className="flex items-center gap-2 mb-4">
+                      <div className="panel-base panel-flat p-0 h-full flex flex-col">
+                        <div className="flex items-center gap-2 mb-3">
                           <Users className="w-5 h-5 text-teal-300" />
                           <h3 className="text-slate-100">Клановые чаты</h3>
                         </div>
-                        <p className="text-xs text-slate-300/70 mb-3">
-                          Быстрые сообщения внутри вашего клана.
+                        <p className="text-xs text-slate-300/70 mb-4">
+                          Сообщения внутри вашего клана. Ввод всегда снизу, без видимых границ чата.
                         </p>
+
                         {loadingClans ? (
                           <div className="text-sm text-slate-300/70">Загрузка кланов...</div>
                         ) : clans.length === 0 ? (
@@ -274,74 +330,120 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
                                 </button>
                               ))}
                             </div>
-                            <div className="panel-base panel-rose p-6 w-full mb-6">
-                              <div className="flex items-center gap-2 mb-4">
-                                <Users className="w-5 h-5 text-purple-400" />
-                                <h3 className="text-purple-200">Чат клана</h3>
-                              </div>
-                              <div className="rounded-lg border border-purple-600/30 bg-slate-950/40 p-3">
-                                <div className="max-h-48 overflow-y-auto space-y-4 mb-3">
-                                  {loadingClanMessages ? (
-                                    <div className="text-center py-4 text-purple-200/60 text-sm">
-                                      Загрузка сообщений...
-                                    </div>
-                                  ) : (clanChatMessages[selectedClanId] || []).length === 0 ? (
-                                    <div className="text-center py-4 text-purple-200/60 text-sm">
-                                      Напишите первое сообщение
-                                    </div>
+
+                            <div className="flex-1 overflow-hidden flex flex-col gap-3">
+                              {isClanLeader && (
+                                <div className="space-y-2">
+                                  <p className="text-xs text-purple-200/70">Заявки в клан</p>
+                                  {loadingJoinRequests ? (
+                                    <div className="text-xs text-purple-200/60">Загрузка заявок...</div>
+                                  ) : (clanJoinRequests[selectedClanId] || []).filter((r) => r.status === 'pending')
+                                      .length === 0 ? (
+                                    <div className="text-xs text-purple-200/60">Нет заявок</div>
                                   ) : (
-                                    (clanChatMessages[selectedClanId] || []).map((message, index) => {
-                                      const prev = (clanChatMessages[selectedClanId] || [])[index - 1];
-                                      const showAuthor = !prev || prev.user !== message.user;
-                                      return (
-                                        <div key={message.id} className="px-1 py-1 text-purple-200">
+                                    <div className="space-y-2">
+                                      {(clanJoinRequests[selectedClanId] || [])
+                                        .filter((r) => r.status === 'pending')
+                                        .map((request) => (
+                                          <div
+                                            key={request.id}
+                                            className="flex items-center justify-between gap-3 rounded-xl bg-slate-950/25 px-4 py-3"
+                                          >
+                                            <div className="min-w-0">
+                                              <p className="text-sm text-purple-100 truncate">
+                                                {request.username || 'Игрок'}
+                                              </p>
+                                              <p className="text-xs text-purple-200/60">Хочет вступить в клан</p>
+                                            </div>
+                                            <div className="flex items-center gap-2 shrink-0">
+                                              <Button
+                                                size="sm"
+                                                onClick={() => handleApproveJoinRequest(request.id)}
+                                                disabled={actioningJoinRequestId === request.id}
+                                              >
+                                                Принять
+                                              </Button>
+                                              <Button
+                                                size="sm"
+                                                variant="ghost"
+                                                onClick={() => handleRejectJoinRequest(request.id)}
+                                                disabled={actioningJoinRequestId === request.id}
+                                              >
+                                                Отклонить
+                                              </Button>
+                                            </div>
+                                          </div>
+                                        ))}
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+
+                              <div className="flex-1 overflow-y-auto space-y-3 pr-1">
+                                {loadingClanMessages ? (
+                                  <div className="text-center py-4 text-purple-200/60 text-sm">
+                                    Загрузка сообщений...
+                                  </div>
+                                ) : (clanChatMessages[selectedClanId] || []).length === 0 ? (
+                                  <div className="text-center py-4 text-purple-200/60 text-sm">
+                                    Напишите первое сообщение
+                                  </div>
+                                ) : (
+                                  (clanChatMessages[selectedClanId] || []).map((message, index) => {
+                                    const prev = (clanChatMessages[selectedClanId] || [])[index - 1];
+                                    const showAuthor = !prev || prev.user !== message.user;
+                                    return (
+                                      <div
+                                        key={message.id}
+                                        className={`flex ${
+                                          message.user === user?.id ? 'justify-end' : 'justify-start'
+                                        }`}
+                                      >
+                                        <div className="max-w-[85%] px-4 py-3 rounded-2xl bg-slate-950/20 text-purple-100">
                                           {showAuthor && (
-                                            <div
-                                              className={`${
-                                                index === 0 ? '' : 'mt-2 pt-2 border-t border-purple-600/30'
-                                              }`}
-                                            >
-                                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-400/40 text-sm text-purple-100">
+                                            <div className="mb-1">
+                                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-purple-500/15 text-xs text-purple-100">
                                                 {message.username || 'Участник'}
                                               </span>
                                             </div>
                                           )}
-                                          <p className="text-sm">{message.content}</p>
+                                          <p className="text-sm leading-snug whitespace-pre-wrap">{message.content}</p>
                                         </div>
-                                      );
-                                    })
-                                  )}
-                                </div>
-                                {!isClanMember && (
-                                  <p className="text-xs text-purple-200/60 mb-2">
-                                    Писать могут только участники клана.
-                                  </p>
+                                      </div>
+                                    );
+                                  })
                                 )}
-                                <div className="flex flex-col sm:flex-row gap-2">
-                                  <input
-                                    value={clanChatDraft}
-                                    onChange={(e) => setClanChatDraft(e.target.value)}
-                                    onKeyDown={(e) => {
-                                      if (e.key === 'Enter') {
-                                        e.preventDefault();
-                                        handleSendClanMessage();
-                                      }
-                                    }}
-                                    placeholder="Напишите сообщение..."
-                                    className="flex-1 rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
-                                    disabled={!isClanMember}
-                                  />
-                                  <Button
-                                    onClick={handleSendClanMessage}
-                                    disabled={!clanChatDraft.trim() || !isClanMember}
-                                    className="px-4 py-3"
-                                  >
-                                    <Send className="w-5 h-5" />
-                                  </Button>
-                                </div>
+                              </div>
+
+                              {!isClanMember && (
+                                <p className="text-xs text-purple-200/60">
+                                  Писать могут только участники клана.
+                                </p>
+                              )}
+
+                              <div className="flex flex-col sm:flex-row gap-2">
+                                <input
+                                  value={clanChatDraft}
+                                  onChange={(e) => setClanChatDraft(e.target.value)}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                      e.preventDefault();
+                                      handleSendClanMessage();
+                                    }
+                                  }}
+                                  placeholder="Напишите сообщение..."
+                                  className="flex-1 rounded-xl border border-purple-600/25 bg-slate-950/30 px-4 py-3 text-purple-100"
+                                  disabled={!isClanMember}
+                                />
+                                <Button
+                                  onClick={handleSendClanMessage}
+                                  disabled={!clanChatDraft.trim() || !isClanMember}
+                                  className="px-4 py-3"
+                                >
+                                  <Send className="w-5 h-5" />
+                                </Button>
                               </div>
                             </div>
-                            <ClanChatPanel clan={selectedClan} onClanUpdated={loadClans} />
                           </>
                         ) : (
                           <div className="text-sm text-slate-300/70">Клан недоступен.</div>
@@ -350,22 +452,23 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
                     )}
 
                     {activeTab === 'friends' && (
-                      <div className="panel-base panel-rose p-6 w-full">
-                        <div className="flex items-center gap-2 mb-4">
+                      <div className="panel-base panel-flat p-0 h-full flex flex-col">
+                        <div className="flex items-center gap-2 mb-3">
                           <Users className="w-5 h-5 text-purple-400" />
                           <h3 className="text-purple-200">Чат с друзьями</h3>
                         </div>
-                        <p className="text-xs text-purple-200/60 mb-3">
-                          Личные диалоги с друзьями.
+                        <p className="text-xs text-purple-200/60 mb-4">
+                          Личные диалоги. Ваши сообщения справа, сообщения собеседника слева.
                         </p>
+
                         {loadingFriends ? (
                           <div className="text-sm text-purple-200/60">Загрузка друзей...</div>
                         ) : friends.length === 0 ? (
                           <div className="text-sm text-purple-200/60">Добавьте друзей, чтобы начать чат.</div>
                         ) : (
-                          <>
-                            <p className="text-xs text-purple-200/70 mb-2">Выберите друга</p>
-                            <div className="flex flex-wrap gap-2 mb-4">
+                          <div className="flex-1 overflow-hidden flex flex-col gap-3">
+                            <p className="text-xs text-purple-200/70">Выберите друга</p>
+                            <div className="flex flex-wrap gap-2">
                               {friends.map((friend) => (
                                 <button
                                   key={friend.id}
@@ -384,42 +487,35 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
                                 </button>
                               ))}
                             </div>
-                            <div className="rounded-lg border border-purple-600/30 bg-slate-950/40 p-3">
-                              <div className="max-h-48 overflow-y-auto space-y-4 mb-3">
+
+                            <div className="flex-1 overflow-hidden flex flex-col gap-3">
+                              <div className="flex-1 overflow-y-auto space-y-3 pr-1">
                                 {currentMessages.length === 0 ? (
                                   <div className="text-center py-4 text-purple-200/60 text-sm">
                                     Напишите первое сообщение
                                   </div>
                                 ) : (
-                                  currentMessages.map((message, index) => {
-                                    const prev = currentMessages[index - 1];
-                                    const showAuthor = !prev || prev.senderId !== message.senderId;
-                                    return (
+                                  currentMessages.map((message) => (
+                                    <div
+                                      key={message.id}
+                                      className={`flex ${
+                                        message.senderId === user?.id ? 'justify-end' : 'justify-start'
+                                      }`}
+                                    >
                                       <div
-                                        key={message.id}
-                                        className={`px-1 py-1 ${
-                                          message.senderId === user?.id ? 'text-purple-100' : 'text-purple-200'
+                                        className={`max-w-[85%] px-4 py-3 rounded-2xl ${
+                                          message.senderId === user?.id
+                                            ? 'bg-purple-500/15 text-purple-50'
+                                            : 'bg-slate-950/20 text-purple-100'
                                         }`}
                                       >
-                                        {showAuthor && (
-                                          <div
-                                            className={`${
-                                              index === 0 ? '' : 'mt-2 pt-2 border-t border-purple-600/30'
-                                            }`}
-                                          >
-                                            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-400/40 text-sm text-purple-100">
-                                              {message.senderId === user?.id
-                                                ? user.username
-                                                : selectedFriend?.username || 'Друг'}
-                                            </span>
-                                          </div>
-                                        )}
-                                        <p className="text-sm">{message.text}</p>
+                                        <p className="text-sm leading-snug whitespace-pre-wrap">{message.text}</p>
                                       </div>
-                                    );
-                                  })
+                                    </div>
+                                  ))
                                 )}
                               </div>
+
                               <div className="flex flex-col sm:flex-row gap-2">
                                 <input
                                   value={chatDraft}
@@ -431,7 +527,7 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
                                     }
                                   }}
                                   placeholder="Напишите сообщение..."
-                                  className="flex-1 rounded-lg border border-purple-600/30 bg-slate-950/50 px-3 py-2 text-purple-100"
+                                  className="flex-1 rounded-xl border border-purple-600/25 bg-slate-950/30 px-4 py-3 text-purple-100"
                                 />
                                 <Button
                                   onClick={handleSendMessage}
@@ -442,21 +538,12 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
                                 </Button>
                               </div>
                             </div>
-                          </>
+                          </div>
                         )}
                       </div>
                     )}
-                  </>
+                  </div>
                 )}
-              </div>
-              <div
-                className={`flex items-center justify-end px-6 py-4 border-t ${
-                  isLight ? 'border-slate-200' : 'border-slate-700/60'
-                }`}
-              >
-                <Button variant="ghost" onClick={() => setIsOpen(false)}>
-                  Закрыть
-                </Button>
               </div>
             </div>
           </div>,

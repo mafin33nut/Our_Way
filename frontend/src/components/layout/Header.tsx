@@ -7,6 +7,7 @@ import { resolveMediaUrl } from '../../utils/media';
 import { FriendsPanel } from '../social/FriendsPanel';
 import { ClanHubPanel } from '../social/ClanHubPanel';
 import { ChatHubPanel } from '../social/ChatHubPanel';
+import { LeadersPanel } from '../social/LeadersPanel';
 type HeaderProps = {
   isSidebarOpen: boolean;
   onToggleSidebar: () => void;
@@ -51,7 +52,7 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
               <div className="flex items-center justify-end gap-2 sm:gap-3 flex-nowrap overflow-x-auto">
                 <div className="flex items-center gap-2 sm:gap-3 ml-auto flex-nowrap">
                 <Link
-                  to="/profile"
+                  to="/settings"
                   className={`flex items-center gap-3 px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl border transition-colors whitespace-nowrap shrink-0 sm:text-base ${
                     isLight
                       ? 'bg-slate-50 border-slate-200 hover:bg-slate-100'
@@ -90,6 +91,9 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 </Link>
                 <div className="shrink-0">
                   <FriendsPanel className="action-button" />
+                </div>
+                <div className="shrink-0">
+                  <LeadersPanel className="action-button" />
                 </div>
                 <div className="shrink-0">
                   <ClanHubPanel className="action-button" />

@@ -1,7 +1,9 @@
+import json
+
 from django.db import models
 from rest_framework import serializers
 
-from .models import User
+from .models import FriendRequest, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -17,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id', 'username', 'email', 'first_name', 'last_name',
-            'bio', 'avatar', 'has_seen_welcome', 'level', 'xp', 'xp_to_next_level',
+            'bio', 'avatar', 'has_seen_welcome', 'pinned_achievements', 'level', 'xp', 'xp_to_next_level',
             'total_quests_completed', 'current_focus',
             'password', 'password2',
         ]
@@ -89,6 +91,13 @@ class UserSerializer(serializers.ModelSerializer):
         if p or p2:
             if p != p2:
                 raise serializers.ValidationError("Passwords do not match.")
+
+        pinned = attrs.get('pinned_achievements')
+        if isinstance(pinned, str):
+            try:
+                attrs['pinned_achievements'] = json.loads(pinned)
+            except Exception:
+                raise serializers.ValidationError({'pinned_achievements': 'Invalid JSON.'})
         return attrs
 
     def create(self, validated_data):
@@ -111,3 +120,29 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+
+class FriendRequestSerializer(serializers.ModelSerializer):
+    from_user_username = serializers.CharField(source='from_user.username', read_only=True)
+    to_user_username = serializers.CharField(source='to_user.username', read_only=True)
+
+    class Meta:
+        model = FriendRequest
+        fields = [
+            'id',
+            'from_user',
+            'from_user_username',
+            'to_user',
+            'to_user_username',
+            'status',
+            'created_at',
+            'decided_at',
+        ]
+        read_only_fields = [
+            'id',
+            'from_user',
+            'from_user_username',
+            'status',
+            'created_at',
+            'decided_at',
+        ]

@@ -9,15 +9,9 @@ import { Sidebar } from './components/layout/Sidebar';
 import { LoginPage } from './components/pages/LoginPage';
 import { HomePage } from './components/pages/HomePage';
 import { SettingsPage } from './components/pages/SettingsPage';
-import { ClansPage } from './components/pages/ClansPage';
-import { LeadersPage } from './components/pages/LeadersPage';
 import { AchievementsPage } from './components/pages/AchievementsPage';
-import { UserCustomizationPage } from './components/pages/UserCustomizationPage';
 import { WelcomePage } from './components/pages/WelcomePage';
-import { FocusTasksPage } from './components/pages/FocusTasksPage';
-import { ProgressPage } from './components/pages/ProgressPage';
 import { useAuth } from './hooks/useAuth';
-import { useCustomization } from './hooks/useCustomization';
 
 function HomeRoute() {
   const { user } = useAuth();
@@ -29,7 +23,6 @@ function HomeRoute() {
 
 function AppLayout({ children }: { children: ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const { settings } = useCustomization();
   useEffect(() => {
     if (typeof window !== 'undefined' && window.innerWidth <= 768) {
       setIsSidebarOpen(false);
@@ -37,20 +30,6 @@ function AppLayout({ children }: { children: ReactNode }) {
   }, []);
   return (
     <div className="relative min-h-screen">
-      {settings.background === 'dynamic' && (
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <video
-            className="w-full h-full object-cover opacity-20 sm:opacity-25"
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster="/neon-background.mp4"
-          >
-            <source src="/neon-background.mp4" type="video/mp4" />
-          </video>
-        </div>
-      )}
       <div className="relative z-10">
         <Header
           isSidebarOpen={isSidebarOpen}
@@ -103,17 +82,6 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route path="/focus" element={<Navigate to="/quests" replace />} />
-            <Route
-              path="/quests"
-              element={
-                <PrivateRoute>
-                  <AppLayout>
-                    <FocusTasksPage />
-                  </AppLayout>
-                </PrivateRoute>
-              }
-            />
             <Route
               path="/settings"
               element={
@@ -125,51 +93,11 @@ function App() {
               }
             />
             <Route
-              path="/clans"
-              element={
-                <PrivateRoute>
-                  <AppLayout>
-                    <ClansPage />
-                  </AppLayout>
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/leaders"
-              element={
-                <PrivateRoute>
-                  <AppLayout>
-                    <LeadersPage />
-                  </AppLayout>
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/progress"
-              element={
-                <PrivateRoute>
-                  <AppLayout>
-                    <ProgressPage />
-                  </AppLayout>
-                </PrivateRoute>
-              }
-            />
-            <Route
               path="/achievements"
               element={
                 <PrivateRoute>
                   <AppLayout>
                     <AchievementsPage />
-                  </AppLayout>
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <PrivateRoute>
-                  <AppLayout>
-                    <UserCustomizationPage />
                   </AppLayout>
                 </PrivateRoute>
               }

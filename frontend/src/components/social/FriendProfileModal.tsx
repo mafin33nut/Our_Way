@@ -76,7 +76,7 @@ export function FriendProfileModal({ friendId, onClose }: FriendProfileModalProp
         aria-label="Закрыть профиль друга"
       />
       <div className="absolute left-1/2 top-1/2 w-[92vw] max-w-[720px] -translate-x-1/2 -translate-y-1/2">
-        <div className="panel-base panel-teal">
+        <div className="panel-base panel-teal p-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <Trophy className="w-5 h-5 text-teal-300" />

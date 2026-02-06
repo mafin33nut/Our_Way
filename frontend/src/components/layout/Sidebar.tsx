@@ -1,14 +1,10 @@
 import { NavLink } from 'react-router-dom';
-import { Home, ListChecks, Crown, Trophy, Star, BarChart2, PanelLeftClose } from 'lucide-react';
+import { Home, Star, PanelLeftClose } from 'lucide-react';
 import { useCustomization } from '../../hooks/useCustomization';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Главная', icon: Home },
-  { to: '/quests', label: 'Квесты', icon: ListChecks },
-  { to: '/clans', label: 'Клановые квесты', icon: Crown },
-  { to: '/leaders', label: 'Лидеры', icon: Trophy },
   { to: '/achievements', label: 'Достижения', icon: Star },
-  { to: '/progress', label: 'Прогресс', icon: BarChart2 },
 ];
 
 type SidebarProps = {

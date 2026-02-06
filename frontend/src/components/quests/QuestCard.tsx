@@ -44,20 +44,26 @@ export function QuestCard({ quest, onComplete, onDelete, onStepComplete }: Quest
   const cooldownMs = 30_000;
   const remainingMs = createdAtMs ? Math.max(0, cooldownMs - (now - createdAtMs)) : 0;
   const canComplete = !quest.completed && remainingMs === 0;
+  const remainingSeconds = remainingMs > 0 ? Math.ceil(remainingMs / 1000) : 0;
 
   return (
-    <div className="group relative ...">
-      <div className="flex items-start gap-2">
+    <div className="rounded-2xl bg-slate-950/30 px-4 py-3">
+      <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h3 className="text-white/90 text-sm font-semibold truncate">{quest.title}</h3>
-          {quest.description && <p className="text-xs text-white/50 mt-1">{quest.description}</p>}
+          <h3 className="text-slate-100 text-sm font-semibold truncate">{quest.title}</h3>
+          {quest.description && <p className="text-xs text-slate-300/70 mt-1">{quest.description}</p>}
         </div>
+        {quest.completed && (
+          <span className="text-xs px-3 py-1 rounded-full bg-teal-400/15 text-teal-100 shrink-0">
+            Выполнено
+          </span>
+        )}
       </div>
       {steps.length > 0 && (
         <div className="mt-3 space-y-2">
           {steps.map((step) => (
             <div key={step.id} className="flex items-center justify-between gap-2 text-sm">
-              <span className={step.completed ? 'text-purple-200/50 line-through' : 'text-purple-200'}>
+              <span className={step.completed ? 'text-slate-300/60 line-through' : 'text-slate-100'}>
                 {step.title}
               </span>
               {!step.completed && (
@@ -69,25 +75,14 @@ export function QuestCard({ quest, onComplete, onDelete, onStepComplete }: Quest
           ))}
         </div>
       )}
-      <div className="flex items-center gap-2 mt-3">
-        <Button
-          onClick={() => canComplete && onComplete(quest.id)}
-          disabled={!canComplete}
-          size="sm"
-          title={
-            remainingMs > 0
-              ? `Доступно через ${Math.ceil(remainingMs / 1000)} сек.`
-              : 'Завершить'
-          }
-        >
+      {!quest.completed && remainingSeconds > 0 && (
+        <p className="mt-3 text-xs text-slate-300/70">Доступно через {remainingSeconds} сек.</p>
+      )}
+      <div className="flex flex-wrap items-center gap-2 mt-3">
+        <Button onClick={() => canComplete && onComplete(quest.id)} disabled={!canComplete} size="sm">
           Завершить
         </Button>
-        <Button
-          onClick={() => onDelete(quest.id)}
-          size="sm"
-          variant="ghost"
-          className="bg-slate-800/60 text-slate-200 hover:bg-slate-700/70 border border-slate-600/60"
-        >
+        <Button onClick={() => onDelete(quest.id)} size="sm" variant="ghost" className="bg-slate-950/25">
           Удалить
         </Button>
       </div>

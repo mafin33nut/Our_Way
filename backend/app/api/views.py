@@ -1,3 +1,5 @@
+import re
+
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -18,10 +20,39 @@ class RegisterView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
+        username = (data.get('username') or '').strip()
         password = data.pop('password', None)
         password2 = data.pop('password2', None)
+
+        if not username:
+            return Response({'username': ['Username is required']}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Enforce case-insensitive uniqueness for usernames.
+        if User.objects.filter(username__iexact=username).exists():
+            return Response({'username': ['A user with that username already exists.']}, status=status.HTTP_400_BAD_REQUEST)
+
         if password != password2:
             return Response({'detail': 'Passwords do not match'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not password:
+            return Response({'password': ['Password is required']}, status=status.HTTP_400_BAD_REQUEST)
+
+        if len(password) < 8:
+            return Response({'password': ['Password must be at least 8 characters long.']}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Password must contain only English letters and digits, with at least
+        # one lowercase letter, one uppercase letter, and one digit.
+        if not re.fullmatch(r'[A-Za-z0-9]+', password):
+            return Response({'password': ['Password must contain only English letters and digits.']}, status=status.HTTP_400_BAD_REQUEST)
+        if not re.search(r'[a-z]', password):
+            return Response({'password': ['Password must contain at least one lowercase letter.']}, status=status.HTTP_400_BAD_REQUEST)
+        if not re.search(r'[A-Z]', password):
+            return Response({'password': ['Password must contain at least one uppercase letter.']}, status=status.HTTP_400_BAD_REQUEST)
+        if not re.search(r'[0-9]', password):
+            return Response({'password': ['Password must contain at least one digit.']}, status=status.HTTP_400_BAD_REQUEST)
+
+        data['username'] = username
+
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()

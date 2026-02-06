@@ -3,14 +3,11 @@ import { Sparkles, Trophy, User as UserIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../ui/Button';
 import { resolveMediaUrl } from '../../utils/media';
-import { useCustomization } from '../../hooks/useCustomization';
 interface CharacterProfileProps {
   user: User;
   questsCompletedToday: number;
 }
 export function CharacterProfile({ user, questsCompletedToday }: CharacterProfileProps) {
-  const { settings } = useCustomization();
-  const isLight = settings.theme === 'light';
   const nextThreshold = (() => {
     if (user.level <= 1) return 50;
     if (user.level === 2) return 150;
@@ -27,7 +24,7 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
   const xpNeeded = Math.max(nextThreshold - prevThreshold, 1);
   const xpPercentage = Math.min((xpInLevel / xpNeeded) * 100, 100);
   return (
-    <div className="panel-base panel-teal p-6 min-h-[260px] flex flex-col">
+    <div className="min-h-[260px] flex flex-col">
       <div className="flex items-center gap-4 mb-6">
         {resolveMediaUrl(user.avatar) ? (
           <img
@@ -48,7 +45,7 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
             Авантюрист {user.level} уровня
           </p>
           <p className="text-slate-300/80 text-xs truncate">
-            {user.bio || 'Добавьте описание в профиле'}
+            {user.bio || 'Добавьте описание в настройках'}
           </p>
         </div>
       </div>

@@ -1,21 +1,59 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { Home, Plus, X } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
 import { focusesAPI, questsAPI } from '../../api/quests';
-import { Quest, BACKGROUND_OPTIONS, UserFocus } from '../../types';
-import { QuestList } from '../../components/quests/QuestList';
-import { CharacterProfile } from '../../components/profile/characterProfile';
+import { Quest, UserFocus } from '../../types';
 import { isToday } from '../../utils/time';
-import { Loader } from '../../components/ui/Loader';
-import { Home } from 'lucide-react';
+import { Loader } from '../ui/Loader';
+import { Button } from '../ui/Button';
+import { CharacterProfile } from '../profile/characterProfile';
+import { TaskHistoryPanel } from '../quests/TaskHistoryPanel';
+import { QuestCard } from '../quests/QuestCard';
+
+type TaskType = 'simple' | 'stepwise';
+type TaskDifficulty = 'easy' | 'medium' | 'hard';
+
+type AchievementSlot = {
+  id: string;
+  title: string;
+  req: number;
+};
+
+const ACHIEVEMENT_SLOTS: AchievementSlot[] = [
+  { id: 'a1', title: 'Новичок', req: 1 },
+  { id: 'a2', title: 'Боец', req: 5 },
+  { id: 'a3', title: 'Солдат', req: 10 },
+  { id: 'a4', title: 'Легенда', req: 20 },
+  { id: 'a5', title: 'Герой', req: 30 },
+  { id: 'a6', title: 'Мастер', req: 40 },
+  { id: 'a7', title: 'Титан', req: 50 },
+  { id: 'a8', title: 'Вершина', req: 75 },
+];
 
 export function HomePage() {
-  const { user } = useAuth();
-  const { settings } = useCustomization();
+  const { user, refreshUser } = useAuth();
+  const { playVictorySound } = useCustomization();
+
   const [quests, setQuests] = useState<Quest[]>([]);
   const [focuses, setFocuses] = useState<UserFocus[]>([]);
   const [loading, setLoading] = useState(true);
-  const [bgImageLoaded, setBgImageLoaded] = useState(false);
+
+  const [newFocusName, setNewFocusName] = useState('');
+  const [selectedFocusId, setSelectedFocusId] = useState<number | null>(null);
+  const [focusError, setFocusError] = useState<string | null>(null);
+
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [taskTitle, setTaskTitle] = useState('');
+  const [taskDescription, setTaskDescription] = useState('');
+  const [taskType, setTaskType] = useState<TaskType>('simple');
+  const [taskDifficulty, setTaskDifficulty] = useState<TaskDifficulty>('easy');
+  const [steps, setSteps] = useState<Array<{ title: string; difficulty: TaskDifficulty }>>([
+    { title: '', difficulty: 'easy' },
+  ]);
+  const [savingTask, setSavingTask] = useState(false);
+  const [taskError, setTaskError] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -39,40 +77,66 @@ export function HomePage() {
     loadData();
   }, [loadData]);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setLoading(false);
-    }, 10000);
-    return () => clearTimeout(timeout);
-  }, []);
+  const questsCompletedToday = useMemo(
+    () => quests.filter((q) => q.completed && q.completed_at && isToday(q.completed_at)).length,
+    [quests]
+  );
 
-  const backgroundOption = BACKGROUND_OPTIONS.find((bg) => bg.id === settings.background);
-  const backgroundUrl =
-    settings.background === 'custom'
-      ? settings.customBackgroundUrl || ''
-      : backgroundOption?.url || '';
-  const isDynamic = settings.background === 'dynamic';
-  const hasBackground =
-    settings.background &&
-    settings.background !== 'dynamic' &&
-    backgroundUrl &&
-    backgroundUrl.trim() !== '';
+  const unlockedAchievements = useMemo(() => {
+    const total = user?.total_quests_completed || 0;
+    return ACHIEVEMENT_SLOTS.filter((slot) => total >= slot.req);
+  }, [user?.total_quests_completed]);
 
-  useEffect(() => {
-    if (hasBackground && backgroundUrl) {
-      const img = new window.Image();
-      img.onload = () => setBgImageLoaded(true);
-      img.onerror = () => setBgImageLoaded(false);
-      img.src = backgroundUrl;
-    } else {
-      setBgImageLoaded(false);
+  const pinnedAchievements = useMemo(() => {
+    const pinnedIds = user?.pinned_achievements || [];
+    const pinnedUnlocked = unlockedAchievements.filter((slot) => pinnedIds.includes(slot.id));
+    if (pinnedUnlocked.length > 0) {
+      return pinnedUnlocked.slice(0, 3);
     }
-  }, [hasBackground, backgroundUrl]);
+    return unlockedAchievements.slice(0, 3);
+  }, [unlockedAchievements, user?.pinned_achievements]);
+
+  const canCreateTask = useMemo(() => {
+    if (!taskTitle.trim()) return false;
+    if (taskType === 'stepwise') {
+      return steps.some((s) => s.title.trim());
+    }
+    return true;
+  }, [taskTitle, taskType, steps]);
+
+  const handleAddFocus = async () => {
+    if (!newFocusName.trim()) return;
+    setFocusError(null);
+    try {
+      const created = await focusesAPI.create(newFocusName.trim());
+      setFocuses((prev) => [...prev, created]);
+      setNewFocusName('');
+    } catch (err) {
+      console.error('Failed to create focus:', err);
+      setFocusError('Не удалось создать направление.');
+    }
+  };
+
+  const handleDeleteFocus = async (id: number) => {
+    setFocusError(null);
+    try {
+      await focusesAPI.delete(id);
+      setFocuses((prev) => prev.filter((f) => f.id !== id));
+      if (selectedFocusId === id) {
+        setSelectedFocusId(null);
+      }
+    } catch (err) {
+      console.error('Failed to delete focus:', err);
+      setFocusError('Не удалось удалить направление.');
+    }
+  };
 
   const handleCompleteQuest = async (id: number) => {
     try {
       const updatedQuest = await questsAPI.complete(id);
       setQuests((prev) => prev.map((q) => (q.id === id ? updatedQuest : q)));
+      playVictorySound();
+      await refreshUser();
     } catch (error) {
       console.error('Failed to complete quest:', error);
     }
@@ -87,17 +151,48 @@ export function HomePage() {
     }
   };
 
-  const questsCompletedToday = quests.filter((q) => q.completed && q.completed_at && isToday(q.completed_at)).length;
-  const achievementSlots = [
-    { id: 'a1', title: 'Новичок', req: 1 },
-    { id: 'a2', title: 'Боец', req: 5 },
-    { id: 'a3', title: 'Солдат', req: 10 },
-    { id: 'a4', title: 'Легенда', req: 20 },
-    { id: 'a5', title: 'Герой', req: 30 },
-    { id: 'a6', title: 'Мастер', req: 40 },
-    { id: 'a7', title: 'Титан', req: 50 },
-    { id: 'a8', title: 'Вершина', req: 75 },
-  ];
+  const handleCreateTask = async () => {
+    if (!canCreateTask) return;
+    setSavingTask(true);
+    setTaskError(null);
+    try {
+      const payload = {
+        title: taskTitle.trim(),
+        description: taskDescription.trim(),
+        difficulty: taskDifficulty,
+        focus_ids: selectedFocusId ? [selectedFocusId] : [],
+        steps:
+          taskType === 'stepwise'
+            ? steps
+                .map((step, idx) => ({
+                  title: step.title.trim(),
+                  difficulty: step.difficulty,
+                  order: idx,
+                }))
+                .filter((step) => step.title)
+            : [],
+      };
+      const created = await questsAPI.create(payload);
+      setQuests((prev) => [created, ...prev]);
+      setTaskTitle('');
+      setTaskDescription('');
+      setSteps([{ title: '', difficulty: 'easy' }]);
+      setTaskType('simple');
+      setTaskDifficulty('easy');
+      setIsCreateOpen(false);
+    } catch (error: any) {
+      console.error('Failed to create quest:', error);
+      setTaskError(error?.response?.data?.detail || 'Не удалось создать квест.');
+    } finally {
+      setSavingTask(false);
+    }
+  };
+
+  const focusCards: Array<UserFocus & { id: number }> = useMemo(
+    () => [...focuses, { id: 0, name: 'Без направления', created_at: '' }],
+    [focuses]
+  );
+
   if (!user) {
     return <Loader />;
   }
@@ -107,110 +202,343 @@ export function HomePage() {
   }
 
   return (
-    <div
-      className={`min-h-screen relative ${isDynamic ? 'bg-transparent' : 'bg-slate-950'} ${
-        isDynamic || hasBackground ? '' : 'bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950'
-      }`}
-    >
-      {hasBackground && (
-        <div
-          key={`bg-${settings.background}-${backgroundUrl}`}
-          className="fixed inset-0 z-0"
-          style={{
-            backgroundColor: 'rgb(2 6 23)',
-            backgroundImage: backgroundUrl ? `url(${backgroundUrl})` : undefined,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundAttachment: 'fixed',
-          }}
-        >
-          <div className={`absolute inset-0 ${bgImageLoaded ? 'bg-slate-900/30' : 'bg-slate-900/70'} backdrop-blur-sm`} />
-        </div>
-      )}
-      <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
-        <div className="w-full max-w-[1200px] mx-auto">
+    <div className="min-h-screen">
+      <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
+        <div className="w-full max-w-[1800px] mx-auto">
           <div className="flex items-center gap-2 text-slate-100 mb-6">
             <Home className="w-5 h-5 text-teal-300" />
             <h2 className="text-slate-100">Главная</h2>
           </div>
-          <div className="flex flex-col items-center gap-8 sm:gap-10">
-            <div className="w-full grid grid-cols-1 xl:grid-cols-[minmax(0,520px)_minmax(0,1fr)] gap-8">
-              <div className="w-full">
-                <div className="panel-base panel-teal">
-                  <div className="panel-caption text-left">Профиль героя</div>
-                  <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
 
-                  <div className="mt-6 sm:mt-8">
-                    <div className="panel-caption text-left">Достижения героя</div>
-                    <div className="space-y-4">
-                      {achievementSlots
-                        .filter((item) => (user.total_quests_completed || 0) >= item.req)
-                        .map((item) => (
-                          <div
-                            key={item.id}
-                            className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-xl border border-slate-600/40 bg-slate-900/50 px-4 py-3"
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className="w-12 h-12 rounded-xl bg-amber-300/25 border border-amber-300/60 flex items-center justify-center achievement-earned text-lg">
-                                ★
-                              </div>
-                              <div>
-                                <p className="text-slate-100 text-base achievement-earned">{item.title}</p>
-                                <p className="text-slate-300/80 text-sm achievement-earned">
-                                  Достигнуто: {item.req} квестов
-                                </p>
-                              </div>
-                            </div>
-                            <span className="text-xs achievement-earned px-3 py-1 rounded-full border border-amber-300/60 bg-amber-300/15 self-start sm:self-auto">
-                              Получено
-                            </span>
-                          </div>
-                        ))}
-                      {achievementSlots.filter((item) => (user.total_quests_completed || 0) >= item.req).length === 0 && (
-                        <div className="text-center text-slate-300/60 text-sm py-6">
-                          Пока нет полученных достижений
-                        </div>
-                      )}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 place-items-stretch">
+            <div className="panel-base panel-teal p-6 lg:min-h-[336px] flex flex-col">
+              <div className="panel-caption text-left">Панель героя</div>
+              <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
+              <div className="mt-6">
+                <p className="text-xs text-slate-300/70 mb-3">Закрепленные достижения</p>
+                {pinnedAchievements.length === 0 ? (
+                  <div className="text-sm text-slate-300/70">Пока нет достижений</div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {pinnedAchievements.map((slot) => (
+                      <div key={slot.id} className="rounded-xl bg-slate-950/35 px-4 py-3">
+                        <p className="text-sm text-slate-100 achievement-earned">{slot.title}</p>
+                        <p className="text-xs text-slate-300/70 achievement-earned">
+                          Квестов: {slot.req}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <p className="text-xs text-slate-300/60 mt-2">
+                  Закрепление доступно на странице достижений.
+                </p>
+              </div>
+            </div>
+
+            <div className="panel-base panel-orange p-6 lg:min-h-[336px] flex flex-col">
+              <div className="panel-caption text-left">Направления</div>
+              <div className="space-y-3">
+                <p className="text-xs text-slate-300/70">
+                  Управляйте направлениями и выбирайте направление для создания квеста.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {focuses.map((focus) => (
+                    <div
+                      key={focus.id}
+                      className={`px-3 py-2 rounded-xl bg-slate-950/30 shadow-[0_10px_22px_-16px_rgba(0,0,0,0.7)] backdrop-blur-sm transition-all ${
+                        selectedFocusId === focus.id
+                          ? 'ring-2 ring-amber-300/50'
+                          : 'hover:ring-2 hover:ring-white/10'
+                      }`}
+                      style={{ borderRadius: '18px' }}
+                    >
+                      <label className="flex items-center gap-2">
+                        <input
+                          type="radio"
+                          name="focus"
+                          className="accent-teal-300"
+                          checked={selectedFocusId === focus.id}
+                          onChange={() => setSelectedFocusId(focus.id)}
+                        />
+                        <span className="text-sm text-slate-100">{focus.name}</span>
+                      </label>
+                      <div className="mt-2">
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="ghost"
+                          className="w-full bg-slate-950/30"
+                          onClick={() => handleDeleteFocus(focus.id)}
+                        >
+                          Удалить
+                        </Button>
+                      </div>
                     </div>
+                  ))}
+                  {focuses.length === 0 && (
+                    <div className="text-sm text-slate-300/70">Пока нет направлений.</div>
+                  )}
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-2 mt-2">
+                  <input
+                    value={newFocusName}
+                    onChange={(e) => setNewFocusName(e.target.value)}
+                    placeholder="Новое направление"
+                    className="flex-1 rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                  />
+                  <Button onClick={handleAddFocus} size="sm" className="action-button">
+                    Добавить
+                  </Button>
+                </div>
+                {focusError && <p className="text-sm text-rose-200">{focusError}</p>}
+
+                <div className="mt-4">
+                  <p className="text-xs text-slate-300/70 mb-2">Выбранное направление</p>
+                  <div className="rounded-xl bg-slate-950/30 px-4 py-3">
+                    <p className="text-sm text-slate-100">
+                      {selectedFocusId
+                        ? focuses.find((f) => f.id === selectedFocusId)?.name || '—'
+                        : 'Без направления'}
+                    </p>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="w-full">
-                <div className="panel-base panel-sky w-full">
-                  <div className="panel-caption text-left">Мои квесты по направлениям</div>
-                  {loading ? (
-                    <p className="text-center text-purple-200/60">Загрузка...</p>
-                  ) : (
-                    <div className="grid grid-cols-1 gap-6">
-                      {[...focuses, { id: 0, name: 'Без направления', created_at: '' }].map((focus) => {
-                        const focusQuests =
-                          focus.id === 0
-                            ? quests.filter((q) => !q.focuses || q.focuses.length === 0)
-                            : quests.filter((q) => q.focuses?.some((f) => f.id === focus.id));
-                        return (
-                          <div key={focus.id} className="rounded-lg border border-purple-700/30 bg-slate-950/40 p-4">
-                            <h3 className="text-purple-200 mb-3">{focus.name}</h3>
-                            {focusQuests.length === 0 ? (
-                              <p className="text-sm text-purple-200/60">Пока нет квестов</p>
-                            ) : (
-                              <QuestList
-                                quests={focusQuests}
-                                onComplete={handleCompleteQuest}
-                                onDelete={handleDeleteQuest}
-                              />
-                            )}
-                          </div>
-                        );
-                      })}
+            <div className="panel-base panel-purple p-6 lg:min-h-[336px] flex flex-col">
+              <div className="panel-caption text-left">История</div>
+              <TaskHistoryPanel quests={quests} />
+            </div>
+
+            <div className="panel-base panel-sky p-6 lg:col-span-3">
+              <div className="panel-caption text-left">Квесты по направлениям</div>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                {focusCards.map((focus) => {
+                  const focusQuests =
+                    focus.id === 0
+                      ? quests.filter((q) => !q.focuses || q.focuses.length === 0)
+                      : quests.filter((q) => q.focuses?.some((f) => f.id === focus.id));
+
+                  const active = focusQuests.filter((q) => !q.completed);
+                  const completedToday = focusQuests.filter((q) => q.completed && q.completed_at && isToday(q.completed_at));
+
+                  return (
+                    <div
+                      key={focus.id}
+                      className="rounded-2xl bg-slate-950/25 px-5 py-4 shadow-[0_14px_32px_-24px_rgba(0,0,0,0.75)]"
+                    >
+                      <div className="flex items-center justify-between gap-3 mb-3">
+                        <h3 className="text-slate-100 truncate">{focus.name}</h3>
+                        <span className="text-xs text-slate-300/70 shrink-0">
+                          {active.length} активн.
+                        </span>
+                      </div>
+
+                      {active.length === 0 && completedToday.length === 0 ? (
+                        <p className="text-sm text-slate-300/60">Пока нет квестов</p>
+                      ) : (
+                        <div className="space-y-3">
+                          {active.map((quest) => (
+                            <QuestCard
+                              key={quest.id}
+                              quest={quest}
+                              onComplete={handleCompleteQuest}
+                              onDelete={handleDeleteQuest}
+                            />
+                          ))}
+                          {completedToday.length > 0 && (
+                            <div className="pt-3 border-t border-slate-600/25 space-y-3">
+                              <p className="text-xs text-slate-300/70">Выполнено сегодня</p>
+                              {completedToday.map((quest) => (
+                                <QuestCard
+                                  key={quest.id}
+                                  quest={quest}
+                                  onComplete={handleCompleteQuest}
+                                  onDelete={handleDeleteQuest}
+                                />
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-6 flex justify-center">
+                <Button onClick={() => setIsCreateOpen(true)} size="lg" className="action-button">
+                  Добавить задания
+                </Button>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {isCreateOpen &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <div className="fixed inset-0 z-[90] flex items-center justify-center px-4 py-8">
+            <button
+              type="button"
+              className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
+              aria-label="Закрыть окно создания квеста"
+              onClick={() => setIsCreateOpen(false)}
+            />
+            <div className="relative w-full max-w-[920px]">
+              <div className="panel-base panel-orange p-6">
+                <div className="flex items-center justify-between gap-3 mb-4">
+                  <div className="flex items-center gap-2">
+                    <Plus className="w-5 h-5 text-teal-300" />
+                    <h2 className="text-slate-100">Создать квест</h2>
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={() => setIsCreateOpen(false)}>
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-6">
+                  <div className="space-y-4">
+                    <input
+                      value={taskTitle}
+                      onChange={(e) => setTaskTitle(e.target.value)}
+                      placeholder="Название квеста"
+                      className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                    />
+                    <textarea
+                      value={taskDescription}
+                      onChange={(e) => setTaskDescription(e.target.value)}
+                      placeholder="Описание"
+                      rows={4}
+                      className="w-full min-h-[120px] rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                    />
+                    <div className="flex items-center gap-3">
+                      <label className="text-sm text-slate-200/80">Направление:</label>
+                      <select
+                        value={selectedFocusId ?? ''}
+                        onChange={(e) => setSelectedFocusId(e.target.value ? Number(e.target.value) : null)}
+                        className="rounded-xl border border-slate-600/30 bg-slate-950/40 px-3 py-3 text-slate-100"
+                      >
+                        <option value="">Без направления</option>
+                        {focuses.map((focus) => (
+                          <option key={focus.id} value={focus.id}>
+                            {focus.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl bg-slate-950/25 p-5 space-y-3">
+                    <p className="text-sm text-slate-200/80">Тип квеста</p>
+                    <label className="text-sm text-slate-200/80 flex items-center gap-2">
+                      <input
+                        type="radio"
+                        checked={taskType === 'simple'}
+                        onChange={() => setTaskType('simple')}
+                        className="accent-teal-300"
+                      />
+                      Обычный
+                    </label>
+                    <label className="text-sm text-slate-200/80 flex items-center gap-2">
+                      <input
+                        type="radio"
+                        checked={taskType === 'stepwise'}
+                        onChange={() => setTaskType('stepwise')}
+                        className="accent-teal-300"
+                      />
+                      Поэтапный
+                    </label>
+
+                    <div className="pt-2">
+                      <label className="text-sm text-slate-200/80 block mb-2">Сложность</label>
+                      <select
+                        value={taskDifficulty}
+                        onChange={(e) => setTaskDifficulty(e.target.value as TaskDifficulty)}
+                        className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-3 py-3 text-slate-100"
+                      >
+                        <option value="easy">Легкая</option>
+                        <option value="medium">Средняя</option>
+                        <option value="hard">Сложная</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                {taskType === 'stepwise' && (
+                  <div className="mt-6 space-y-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-sm text-slate-200/80">Шаги квеста</p>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setSteps((prev) => [...prev, { title: '', difficulty: 'easy' }])}
+                      >
+                        <Plus className="w-4 h-4 mr-2" />
+                        Добавить шаг
+                      </Button>
+                    </div>
+                    <div className="space-y-2">
+                      {steps.map((step, idx) => (
+                        <div key={idx} className="flex flex-col sm:flex-row gap-2">
+                          <input
+                            value={step.title}
+                            onChange={(e) => {
+                              const copy = [...steps];
+                              copy[idx] = { ...copy[idx], title: e.target.value };
+                              setSteps(copy);
+                            }}
+                            placeholder={`Шаг ${idx + 1}`}
+                            className="flex-1 rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                          />
+                          <select
+                            value={step.difficulty}
+                            onChange={(e) => {
+                              const copy = [...steps];
+                              copy[idx] = { ...copy[idx], difficulty: e.target.value as TaskDifficulty };
+                              setSteps(copy);
+                            }}
+                            className="sm:w-48 rounded-xl border border-slate-600/30 bg-slate-950/40 px-3 py-3 text-slate-100"
+                          >
+                            <option value="easy">Легкая</option>
+                            <option value="medium">Средняя</option>
+                            <option value="hard">Сложная</option>
+                          </select>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setSteps((prev) => prev.filter((_, i) => i !== idx))}
+                          >
+                            Удалить
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {taskError && <p className="text-sm text-rose-200 mt-4">{taskError}</p>}
+
+                <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <Button onClick={handleCreateTask} disabled={!canCreateTask || savingTask} className="action-button">
+                    {savingTask ? 'Создание...' : 'Создать квест'}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setIsCreateOpen(false)}
+                    className="bg-slate-950/25"
+                  >
+                    Закрыть
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

@@ -7,7 +7,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { socialAPI } from '../../api/social';
 import { FriendSearchPanel } from './FriendSearchPanel';
 import { AllFriendsPanel } from './AllFriendsPanel';
-import { Friend } from '../../types';
+import { Friend, FriendRequest } from '../../types';
 
 type FriendsPanelProps = {
   className?: string;
@@ -16,7 +16,10 @@ type FriendsPanelProps = {
 export function FriendsPanel({ className = '' }: FriendsPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [friends, setFriends] = useState<Friend[]>([]);
+  const [requests, setRequests] = useState<FriendRequest[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingRequests, setLoadingRequests] = useState(false);
+  const [actioningRequestId, setActioningRequestId] = useState<number | null>(null);
   const { settings } = useCustomization();
   const { user } = useAuth();
 
@@ -35,11 +38,45 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
     }
   }, [user]);
 
+  const loadRequests = useCallback(async () => {
+    if (!user) return;
+    setLoadingRequests(true);
+    try {
+      const list = await socialAPI
+        .getFriendRequests({ direction: 'incoming', status: 'pending' })
+        .catch(() => []);
+      setRequests(list || []);
+    } finally {
+      setLoadingRequests(false);
+    }
+  }, [user]);
+
   useEffect(() => {
     if (isOpen) {
       loadFriends();
+      loadRequests();
     }
-  }, [isOpen, loadFriends]);
+  }, [isOpen, loadFriends, loadRequests]);
+
+  const handleApprove = async (requestId: number) => {
+    setActioningRequestId(requestId);
+    try {
+      await socialAPI.approveFriendRequest(requestId);
+      await Promise.all([loadFriends(), loadRequests()]);
+    } finally {
+      setActioningRequestId(null);
+    }
+  };
+
+  const handleReject = async (requestId: number) => {
+    setActioningRequestId(requestId);
+    try {
+      await socialAPI.rejectFriendRequest(requestId);
+      await loadRequests();
+    } finally {
+      setActioningRequestId(null);
+    }
+  };
 
 
   return (
@@ -94,8 +131,50 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                 )}
                 {user && (
                   <>
+                    <div className="panel-base panel-purple p-6">
+                      <div className="panel-caption text-left">Заявки в друзья</div>
+                      {loadingRequests ? (
+                        <div className="text-sm text-slate-300/70">Загрузка заявок...</div>
+                      ) : requests.length === 0 ? (
+                        <div className="text-sm text-slate-300/70">Нет входящих заявок.</div>
+                      ) : (
+                        <div className="space-y-2">
+                          {requests.map((req) => (
+                            <div
+                              key={req.id}
+                              className="flex items-center justify-between gap-3 rounded-xl bg-slate-950/40 px-4 py-3"
+                            >
+                              <div className="min-w-0">
+                                <p className="text-slate-100 truncate">{req.from_user_username}</p>
+                                <p className="text-xs text-slate-300/70">Хочет добавить вас в друзья</p>
+                              </div>
+                              <div className="flex items-center gap-2 shrink-0">
+                                <Button
+                                  size="sm"
+                                  onClick={() => handleApprove(req.id)}
+                                  disabled={actioningRequestId === req.id}
+                                >
+                                  Принять
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => handleReject(req.id)}
+                                  disabled={actioningRequestId === req.id}
+                                >
+                                  Отклонить
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                     <FriendSearchPanel
-                      onFriendAdded={loadFriends}
+                      onFriendAdded={async () => {
+                        await loadFriends();
+                        await loadRequests();
+                      }}
                       friendIds={friends.map((friend) => friend.id)}
                       currentUserId={user.id}
                     />
