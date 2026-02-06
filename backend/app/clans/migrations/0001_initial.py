@@ -32,8 +32,6 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(blank=True)),
                 ('difficulty', models.CharField(choices=[('epic', 'Epic'), ('legendary', 'Legendary')], default='epic', max_length=20)),
                 ('xp_reward', models.PositiveIntegerField(default=20)),
-                ('required_progress', models.PositiveIntegerField(default=100)),
-                ('total_progress', models.PositiveIntegerField(default=0)),
                 ('completed', models.BooleanField(default=False)),
                 ('expires_at', models.DateTimeField(blank=True, null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
