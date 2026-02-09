@@ -225,7 +225,6 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                     Войдите, чтобы управлять кланами.
                   </div>
                 ) : (
-<<<<<<< HEAD
                   <div className="space-y-6">
                     {/* Панель: Ваши кланы */}
                     <div
@@ -487,27 +486,6 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                         </div>
                       </>
                     )}
-=======
-                  <div
-                    className={
-                      isLight
-                        ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-6'
-                        : 'panel-base panel-teal p-6'
-                    }
-                  >
-                    {/* Заголовок панели */}
-                    <div className="flex items-center gap-2 mb-4">
-                      <Crown className="w-5 h-5 text-teal-300" />
-                      <h2 className={isLight ? 'text-slate-900' : 'text-slate-100'}>
-                        Найти / вступить / создать клан
-                      </h2>
-                    </div>
-
-                    <div className="space-y-6">
-                      {/* Ваши кланы */}
-                      {/* ... остальной код как выше ... */}
-                    </div>
->>>>>>> 34cbbeecc01ab075194bae9c5b03904d9787ec1c
                   </div>
                 )}
               </div>
