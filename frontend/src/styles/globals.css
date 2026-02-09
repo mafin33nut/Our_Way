@@ -172,6 +172,10 @@ h3 {
     /* Убираем "прыгучесть" кнопок внутри панелей */
     transition: none;
     margin: 0.15rem 0.25rem;
+    /* Чёрная кнопка с белым текстом только внутри панелей */
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid #000000 !important;
   }
 
   :root[data-theme='light'] .panel-base .text-slate-300\/60,
@@ -377,23 +381,6 @@ h3 {
   body,
   body * {
     color: #000000 !important;
-  }
-
-  /* Все кнопки — чёрные, а текст в них — белый, без эффектов наведения */
-  button {
-    background-color: #000000 !important;
-    color: #ffffff !important;
-    border: 1px solid #000000 !important;
-    box-shadow: none !important;
-    transition: none !important;
-  }
-
-  button:hover,
-  button:focus {
-    background-color: #000000 !important;
-    color: #ffffff !important;
-    box-shadow: none !important;
-    transform: none !important;
   }
 }
 
