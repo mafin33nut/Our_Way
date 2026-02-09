@@ -358,6 +358,31 @@ h3 {
   .ow-theme-light .panel-base:hover {
     box-shadow: 0 24px 56px -24px rgba(15, 23, 42, 0.32);
   }
+
+  /* Uniform inner padding for inner boxes in panels */
+  .panel-base .rounded-lg.border,
+  .panel-base .rounded-xl.border,
+  .panel-base .rounded-2xl.border {
+    padding: 1rem !important;
+  }
+
+  /* Light theme: turn dark slate panel content backgrounds into shades of white */
+  .ow-theme-light .panel-base [class*="bg-slate-9"] {
+    background-color: #ffffff !important;
+  }
+
+  /* Remove purple accents globally, replace with teal/neutral tones */
+  [class*="text-purple-"] {
+    color: #0f172a !important; /* dark neutral text */
+  }
+
+  [class*="bg-purple-"] {
+    background-color: #e0f2fe !important; /* light teal-like background */
+  }
+
+  [class*="border-purple-"] {
+    border-color: #38bdf8 !important; /* teal border */
+  }
 }
 
 @keyframes ow-bg-shift {
