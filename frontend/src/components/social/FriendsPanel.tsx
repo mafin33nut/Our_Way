@@ -106,17 +106,31 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
               onClick={() => setIsOpen(false)}
               aria-label="Закрыть окно друзей"
             />
-            <div className="absolute right-0 top-0 h-full w-full max-w-full sm:max-w-[50vw] bg-white border-l border-slate-200">
-              <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+            <div
+              className={`absolute right-0 top-0 h-full w-full max-w-full sm:max-w-[50vw] ${
+                isLight
+                  ? 'bg-gradient-to-b from-white to-slate-50 border-l border-slate-200'
+                  : 'bg-gradient-to-br from-slate-900/95 to-slate-950/95 border-l border-slate-700/60'
+              }`}
+            >
+              <div
+                className={`flex items-center justify-between px-6 py-4 border-b ${
+                  isLight ? 'border-slate-200 bg-white/90 backdrop-blur' : 'border-slate-700/60'
+                }`}
+              >
                 <div className="flex items-center gap-2">
-                  <Users className="text-slate-800" />
-                  <h2 className="text-slate-900">Друзья</h2>
+                  <Users className={isLight ? 'text-slate-800' : 'text-teal-200'} />
+                  <h2 className={isLight ? 'text-slate-900' : 'text-slate-100'}>Друзья</h2>
                 </div>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsOpen(false)}
-                  className="bg-black text-white hover:bg-slate-900 border border-black [&_*]:text-white"
+                  className={
+                    isLight
+                      ? 'border border-slate-300 bg-white text-slate-700 hover:text-slate-900'
+                      : ''
+                  }
                 >
                   <X className="w-4 h-4" />
                 </Button>
@@ -129,9 +143,15 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                 {user && (
                   <>
                     <div
-                      className="rounded-2xl bg-white border border-slate-200 shadow-xl p-6"
+                      className={`rounded-2xl border p-6 ${
+                        isLight
+                          ? 'bg-white/95 border-slate-200 shadow-[0_18px_42px_-28px_rgba(15,23,42,0.4)] backdrop-blur'
+                          : 'panel-base panel-purple'
+                      }`}
                     >
-                      <div className="text-slate-900 font-medium mb-4">Заявки в друзья</div>
+                      <div className={isLight ? 'text-slate-900 font-medium mb-4' : 'panel-caption text-left'}>
+                        Заявки в друзья
+                      </div>
                       {loadingRequests ? (
                         <div className="text-sm text-slate-600">Загрузка заявок...</div>
                       ) : requests.length === 0 ? (
@@ -141,7 +161,9 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                           {requests.map((req) => (
                             <div
                               key={req.id}
-                              className="flex items-center justify-between gap-3 rounded-xl px-4 py-3 bg-slate-50 border border-slate-200"
+                              className={`flex items-center justify-between gap-3 rounded-xl px-4 py-3 ${
+                                isLight ? 'bg-slate-50 border border-slate-200' : 'bg-slate-950/40 border border-slate-700/40'
+                              }`}
                             >
                               <div className="min-w-0">
                                 <p className="text-slate-900 truncate">{req.from_user_username}</p>
@@ -152,7 +174,11 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                                   size="md"
                                   onClick={() => handleApprove(req.id)}
                                   disabled={actioningRequestId === req.id}
-                                  className="px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black"
+                                  className={
+                                    isLight
+                                      ? 'px-5 py-3 rounded-xl text-base bg-slate-900 text-white hover:bg-slate-800 border border-slate-900'
+                                      : 'px-5 py-3 rounded-xl text-base action-button'
+                                  }
                                 >
                                   Принять
                                 </Button>
@@ -161,7 +187,11 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                                   variant="ghost"
                                   onClick={() => handleReject(req.id)}
                                   disabled={actioningRequestId === req.id}
-                                  className="px-5 py-3 rounded-xl text-base border border-slate-300 text-slate-700 hover:text-slate-900 hover:border-slate-400"
+                                  className={
+                                    isLight
+                                      ? 'px-5 py-3 rounded-xl text-base border border-slate-300 text-slate-700 hover:text-slate-900 hover:border-slate-400'
+                                      : ''
+                                  }
                                 >
                                   Отклонить
                                 </Button>
@@ -179,12 +209,16 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                       friendIds={friends.map((friend) => friend.id)}
                       currentUserId={user.id}
                     />
-                    <div className="text-sm font-medium text-slate-700">Поиск друзей</div>
+                    <div className={isLight ? 'text-sm font-medium text-slate-700' : 'panel-comment'}>
+                      Поиск друзей
+                    </div>
                     {loading ? (
                       <div className="text-sm text-slate-600">Загрузка списка друзей...</div>
                     ) : (
                       <>
-                        <div className="text-sm font-medium text-slate-700">Ваши друзья</div>
+                        <div className={isLight ? 'text-sm font-medium text-slate-700' : 'panel-comment'}>
+                          Ваши друзья
+                        </div>
                         <AllFriendsPanel friends={friends} />
                       </>
                     )}
