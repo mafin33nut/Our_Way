@@ -19,20 +19,25 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
   const [clans, setClans] = useState<Clan[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedClanId, setSelectedClanId] = useState<number | null>(null);
+
   const [joinLink, setJoinLink] = useState('');
   const [joinLinkPassword, setJoinLinkPassword] = useState('');
   const [joinLinkStatus, setJoinLinkStatus] = useState<string | null>(null);
   const [joinLinkLoading, setJoinLinkLoading] = useState(false);
+
   const [leaveLoading, setLeaveLoading] = useState(false);
   const [leaveStatus, setLeaveStatus] = useState<string | null>(null);
+
   const [clanQuests, setClanQuests] = useState<ClanQuest[]>([]);
   const [loadingClanQuests, setLoadingClanQuests] = useState(false);
   const [clanQuestTitle, setClanQuestTitle] = useState('');
   const [clanQuestDescription, setClanQuestDescription] = useState('');
   const [clanQuestMaxParticipants, setClanQuestMaxParticipants] = useState(2);
-  const [clanQuestDifficulty, setClanQuestDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
+  const [clanQuestDifficulty, setClanQuestDifficulty] =
+    useState<'easy' | 'medium' | 'hard'>('easy');
   const [creatingClanQuest, setCreatingClanQuest] = useState(false);
   const [clanQuestStatus, setClanQuestStatus] = useState<string | null>(null);
+
   const { settings } = useCustomization();
   const { user } = useAuth();
   const isLight = settings.theme === 'light';
@@ -44,7 +49,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
       const list = await socialAPI.getMyClans().catch(() => []);
       setClans(list || []);
       setSelectedClanId((prev) =>
-        prev && list.some((item) => item.id === prev) ? prev : list[0]?.id ?? null
+        prev && list.some((item) => item.id === prev) ? prev : list[0]?.id ?? null,
       );
     } finally {
       setLoading(false);
@@ -52,18 +57,17 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
   }, [user]);
 
   useEffect(() => {
-    if (isOpen) {
-      loadClans();
-      (async () => {
-        setLoadingClanQuests(true);
-        try {
-          const list = await clanQuestsAPI.getAll().catch(() => []);
-          setClanQuests(list || []);
-        } finally {
-          setLoadingClanQuests(false);
-        }
-      })();
-    }
+    if (!isOpen) return;
+    loadClans();
+    (async () => {
+      setLoadingClanQuests(true);
+      try {
+        const list = await clanQuestsAPI.getAll().catch(() => []);
+        setClanQuests(list || []);
+      } finally {
+        setLoadingClanQuests(false);
+      }
+    })();
   }, [isOpen, loadClans]);
 
   const extractClanIdFromLink = (value: string): number | null => {
@@ -96,7 +100,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
 
   const selectedClan = useMemo(
     () => clans.find((item) => item.id === selectedClanId) || null,
-    [clans, selectedClanId]
+    [clans, selectedClanId],
   );
 
   const selectedClanQuests = useMemo(() => {
@@ -156,7 +160,9 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
     try {
       await socialAPI.leaveClan(selectedClan.id);
       await loadClans();
-      setLeaveStatus(selectedClan.members?.length === 1 ? 'Клан удален.' : 'Вы покинули клан.');
+      setLeaveStatus(
+        selectedClan.members?.length === 1 ? 'Клан удален.' : 'Вы покинули клан.',
+      );
     } catch (error: any) {
       console.error('Failed to leave clan:', error);
       setLeaveStatus(error?.response?.data?.detail || 'Не удалось выйти из клана.');
@@ -205,8 +211,8 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <Crown className={`${isLight ? 'text-slate-800' : 'text-teal-200'}`} />
-                  <h2 className={`${isLight ? 'text-slate-900' : 'text-slate-100'}`}>Кланы</h2>
+                  <Crown className={isLight ? 'text-slate-800' : 'text-teal-200'} />
+                  <h2 className={isLight ? 'text-slate-900' : 'text-slate-100'}>Кланы</h2>
                 </div>
                 <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)}>
                   <X className="w-4 h-4" />
@@ -215,10 +221,11 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
 
               <div className="h-[calc(100%-72px)] overflow-y-auto px-[28px] py-[28px] space-y-[19px]">
                 {!user ? (
-                  <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
+                  <div className={isLight ? 'text-sm text-slate-600' : 'text-sm text-slate-300/70'}>
                     Войдите, чтобы управлять кланами.
                   </div>
                 ) : (
+<<<<<<< HEAD
                   <div className="space-y-6">
                     {/* Панель: Ваши кланы */}
                     <div
@@ -480,12 +487,33 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                         </div>
                       </>
                     )}
+=======
+                  <div
+                    className={
+                      isLight
+                        ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-6'
+                        : 'panel-base panel-teal p-6'
+                    }
+                  >
+                    {/* Заголовок панели */}
+                    <div className="flex items-center gap-2 mb-4">
+                      <Crown className="w-5 h-5 text-teal-300" />
+                      <h2 className={isLight ? 'text-slate-900' : 'text-slate-100'}>
+                        Найти / вступить / создать клан
+                      </h2>
+                    </div>
+
+                    <div className="space-y-6">
+                      {/* Ваши кланы */}
+                      {/* ... остальной код как выше ... */}
+                    </div>
+>>>>>>> 34cbbeecc01ab075194bae9c5b03904d9787ec1c
                   </div>
                 )}
               </div>
             </div>
           </div>,
-          document.body
+          document.body,
         )}
     </>
   );
