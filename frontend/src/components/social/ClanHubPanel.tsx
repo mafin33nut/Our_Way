@@ -361,7 +361,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                     >
                       <div className="flex items-center gap-2 mb-4">
                         <Crown className="w-5 h-5 text-teal-300" />
-                        <h2 className="text-slate-100">Найти / создать кланы</h2>
+                        <h2 className={isLight ? 'text-slate-900' : 'text-slate-100'}>Найти / создать кланы</h2>
                       </div>
                       <div
                         className={`rounded-lg border p-4 mb-4 ${

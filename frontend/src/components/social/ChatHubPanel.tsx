@@ -275,8 +275,12 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
                         onClick={() => setActiveTab('clans')}
                         className={`px-8 py-3 rounded-lg border text-base transition-colors min-w-[200px] ${
                           activeTab === 'clans'
-                            ? 'border-teal-300/60 bg-teal-400/10 text-teal-100'
-                            : 'border-slate-600/60 text-slate-300/70 hover:border-slate-500/60'
+                            ? isLight
+                              ? 'border-slate-900 bg-slate-900 text-white'
+                              : 'border-teal-300/60 bg-teal-400/10 text-teal-100'
+                            : isLight
+                              ? 'border-slate-300 text-slate-700 hover:border-slate-400'
+                              : 'border-slate-600/60 text-slate-300/70 hover:border-slate-500/60'
                         }`}
                       >
                         Кланы
@@ -286,8 +290,12 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
                         onClick={() => setActiveTab('friends')}
                         className={`px-8 py-3 rounded-lg border text-base transition-colors min-w-[200px] ${
                           activeTab === 'friends'
-                            ? 'border-purple-400/60 bg-purple-500/10 text-purple-100'
-                            : 'border-slate-600/60 text-slate-300/70 hover:border-slate-500/60'
+                            ? isLight
+                              ? 'border-slate-900 bg-slate-900 text-white'
+                              : 'border-purple-400/60 bg-purple-500/10 text-purple-100'
+                            : isLight
+                              ? 'border-slate-300 text-slate-700 hover:border-slate-400'
+                              : 'border-slate-600/60 text-slate-300/70 hover:border-slate-500/60'
                         }`}
                       >
                         Друзья
