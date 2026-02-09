@@ -16,7 +16,7 @@ export function Button({
   const isLight = settings.theme === 'light';
 
   const baseStyles =
-    'rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium leading-snug font-sans transform-gpu';
+    'ow-button rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium leading-snug font-sans transform-gpu';
 
   const variantStyles = {
     primary: isLight

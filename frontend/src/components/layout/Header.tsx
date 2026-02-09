@@ -53,24 +53,24 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 variant="ghost"
                 size="md"
                 onClick={() => navigate('/settings')}
-                className={`hidden sm:inline-flex items-center gap-2 border-0 rounded-lg px-4 py-2 text-sm ${
+                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-none shadow-none hover:bg-transparent ${
                   isLight ? 'text-slate-900' : 'text-slate-100'
                 }`}
               >
                 <span>Настройки</span>
               </Button>
               <FriendsPanel
-                className={`hidden sm:inline-flex items-center gap-2 border-0 rounded-lg px-4 py-2 text-sm ${
+                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-none shadow-none hover:bg-transparent ${
                   isLight ? 'text-slate-900' : 'text-slate-100'
                 }`}
               />
               <ClanHubPanel
-                className={`hidden sm:inline-flex items-center gap-2 border-0 rounded-lg px-4 py-2 text-sm ${
+                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-none shadow-none hover:bg-transparent ${
                   isLight ? 'text-slate-900' : 'text-slate-100'
                 }`}
               />
               <ChatHubPanel
-                className={`hidden sm:inline-flex items-center gap-2 border-0 rounded-lg px-4 py-2 text-sm ${
+                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-none shadow-none hover:bg-transparent ${
                   isLight ? 'text-slate-900' : 'text-slate-100'
                 }`}
               />
@@ -78,7 +78,7 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 variant="ghost"
                 size="md"
                 onClick={logout}
-                className={`hidden sm:inline-flex items-center gap-2 whitespace-nowrap border-0 rounded-lg px-4 py-2 text-sm ${
+                className={`hidden sm:inline-flex items-center gap-2 whitespace-nowrap px-0 py-0 text-sm bg-transparent border-none shadow-none hover:bg-transparent ${
                   isLight ? 'text-slate-900' : 'text-slate-100'
                 }`}
               >
