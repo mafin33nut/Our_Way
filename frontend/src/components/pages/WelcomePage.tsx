@@ -3,7 +3,6 @@ import { Sparkles, ShieldCheck, ListChecks } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { authAPI } from '../../api/auth';
 import { Button } from '../ui/Button';
-import { PanelHelp } from '../ui/PanelHelp';
 
 export function WelcomePage() {
   const { user, refreshUser } = useAuth();
@@ -78,11 +77,6 @@ export function WelcomePage() {
                 </p>
               </div>
             </div>
-            <PanelHelp>
-              <p>1) Пройдите шаги ниже — так вы быстрее настроите приложение под себя.</p>
-              <p>2) После этого переходите к квестам и начинайте прокачку.</p>
-            </PanelHelp>
-
             <div className="mt-8 flex justify-end">
               <Button onClick={handleContinue} size="lg">
                 Перейти к приложению

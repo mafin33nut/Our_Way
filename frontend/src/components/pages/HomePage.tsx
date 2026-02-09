@@ -32,6 +32,45 @@ const ACHIEVEMENT_SLOTS: AchievementSlot[] = [
   { id: 'a8', title: 'Вершина', req: 75 },
 ];
 
+type FaqItem = {
+  id: string;
+  question: string;
+  answer: string;
+};
+
+const FAQ_ITEMS: FaqItem[] = [
+  {
+    id: 'directions',
+    question: 'Как работать с направлениями и квестами?',
+    answer:
+      'Создайте направления в блоке «Направления», выберите одно из них и создавайте квесты через кнопку «Добавить задания». Квесты можно делать обычными или поэтапными со списком шагов.',
+  },
+  {
+    id: 'clans',
+    question: 'Как работают кланы и клановые квесты?',
+    answer:
+      'В окне кланов вы можете вступать по ссылке, создавать свои кланы и запускать клановые квесты с лимитом участников и сложностью. Вклад каждого участника учитывается в общем прогрессе.',
+  },
+  {
+    id: 'achievements',
+    question: 'Как получить и закрепить достижения?',
+    answer:
+      'Достижения открываются автоматически по количеству выполненных квестов. На странице достижений можно закрепить до трёх достижений, чтобы они отображались в панели героя.',
+  },
+  {
+    id: 'friends',
+    question: 'Что можно делать с друзьями?',
+    answer:
+      'Список друзей показывает, кто сейчас онлайн и сколько квестов они сделали. Через профиль друга можно смотреть его уровень и активность.',
+  },
+  {
+    id: 'settings',
+    question: 'Что можно настроить в профиле и интерфейсе?',
+    answer:
+      'В настройках профиля меняются аватар и описание. В блоке интерфейса выбирается тема (тёмная или светлая) и настраиваются звуковые эффекты.',
+  },
+];
+
 export function HomePage() {
   const { user, refreshUser } = useAuth();
   const { playVictorySound } = useCustomization();
@@ -192,6 +231,8 @@ export function HomePage() {
     () => [...focuses, { id: 0, name: 'Без направления', created_at: '' }],
     [focuses]
   );
+
+  const [openFaqId, setOpenFaqId] = useState<string | null>(null);
 
   if (!user) {
     return <Loader />;
@@ -372,6 +413,30 @@ export function HomePage() {
                 <Button onClick={() => setIsCreateOpen(true)} size="lg" className="action-button">
                   Добавить задания
                 </Button>
+              </div>
+            </div>
+
+            <div className="panel-base panel-orange p-6 lg:col-span-3">
+              <div className="panel-caption text-left">Вопросы и ответы</div>
+              <div className="space-y-3">
+                {FAQ_ITEMS.map((item) => {
+                  const isOpen = openFaqId === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => setOpenFaqId((prev) => (prev === item.id ? null : item.id))}
+                      className="w-full text-left rounded-2xl border border-slate-600/40 bg-slate-950/30 px-4 py-3 transition-colors hover:border-teal-300/50"
+                    >
+                      <p className="text-sm text-slate-100">{item.question}</p>
+                      {isOpen && (
+                        <p className="mt-2 text-xs text-slate-300/80">
+                          {item.answer}
+                        </p>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>

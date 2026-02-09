@@ -358,15 +358,6 @@ h3 {
   .ow-theme-light .panel-base:hover {
     box-shadow: 0 24px 56px -24px rgba(15, 23, 42, 0.32);
   }
-
-  .ow-theme-light .panel-base * {
-    color: #020617 !important;
-  }
-
-  .ow-theme-light .panel-caption,
-  .ow-theme-light .panel-comment {
-    color: #020617 !important;
-  }
 }
 
 @keyframes ow-bg-shift {

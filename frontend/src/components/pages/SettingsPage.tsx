@@ -5,7 +5,6 @@ import { useCustomization } from '../../hooks/useCustomization';
 import { useAuth } from '../../hooks/useAuth';
 import { authAPI } from '../../api/auth';
 import { Button } from '../ui/Button';
-import { PanelHelp } from '../ui/PanelHelp';
 import { resolveMediaUrl } from '../../utils/media';
 
 export function SettingsPage() {
@@ -185,24 +184,7 @@ export function SettingsPage() {
                     </button>
                   </div>
 
-                  <div>
-                    <p className="text-sm text-slate-200/80 mb-3">Подсказки</p>
-                    <button
-                      type="button"
-                      onClick={() => updateSettings({ showHelp: !settings.showHelp })}
-                      className={`w-full rounded-2xl px-5 py-4 bg-slate-950/25 transition-all flex items-center justify-between ${
-                        settings.showHelp ? 'ring-2 ring-teal-300/40' : 'hover:ring-2 hover:ring-white/10'
-                      }`}
-                    >
-                      <span className="text-slate-100">Показывать “Как это работает”</span>
-                      <span className="text-xs text-slate-300/70">
-                        {settings.showHelp ? 'Вкл' : 'Выкл'}
-                      </span>
-                    </button>
-                    <PanelHelp>
-                      <p>Подсказки отображаются под основными панелями и помогают ориентироваться по шагам.</p>
-                    </PanelHelp>
-                  </div>
+                  <div />
                 </div>
               </div>
             </div>

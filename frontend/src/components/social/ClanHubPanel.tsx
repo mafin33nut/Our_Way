@@ -217,7 +217,13 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                 )}
                 {user && (
                   <>
-                    <div className="panel-base panel-purple">
+                    <div
+                      className={
+                        isLight
+                          ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-6'
+                          : 'panel-base panel-purple p-6'
+                      }
+                    >
                       <div className="flex items-center gap-2 mb-4">
                         <Crown className="w-5 h-5 text-teal-300" />
                         <h2 className="text-slate-100">Ваши кланы</h2>
@@ -342,20 +348,36 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                       )}
                     </div>
 
-                    <div className="panel-base panel-teal">
+                    <div
+                      className={
+                        isLight
+                          ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-6'
+                          : 'panel-base panel-teal p-6'
+                      }
+                    >
                       <div className="flex items-center gap-2 mb-4">
                         <Crown className="w-5 h-5 text-teal-300" />
                         <h2 className="text-slate-100">Найти / создать кланы</h2>
                       </div>
-                      <div className="rounded-lg border border-slate-600/40 bg-slate-950/40 p-4 mb-4">
-                        <p className="text-sm text-slate-200 mb-2">Вступить в приватный клан по ссылке</p>
+                      <div
+                        className={`rounded-lg border p-4 mb-4 ${
+                          isLight ? 'border-slate-200 bg-slate-50' : 'border-slate-600/40 bg-slate-950/40'
+                        }`}
+                      >
+                        <p className={`text-sm ${isLight ? 'text-slate-800' : 'text-slate-200'} mb-2`}>
+                          Вступить в приватный клан по ссылке
+                        </p>
                         <div className="flex flex-col gap-3">
                           <input
                             value={joinLink}
                             onChange={(e) => setJoinLink(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && handleJoinByLink()}
                             placeholder="Вставьте ссылку или ID клана"
-                            className="w-full rounded-lg border border-slate-600/40 bg-slate-950/50 px-3 py-2 text-slate-100"
+                            className={`w-full rounded-lg border px-3 py-2 ${
+                              isLight
+                                ? 'border-slate-300 bg-white text-slate-900'
+                                : 'border-slate-600/40 bg-slate-950/50 text-slate-100'
+                            }`}
                           />
                           <input
                             value={joinLinkPassword}
@@ -363,13 +385,21 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                             onKeyDown={(e) => e.key === 'Enter' && handleJoinByLink()}
                             placeholder="Пароль (если нужен)"
                             type="password"
-                            className="w-full rounded-lg border border-slate-600/40 bg-slate-950/50 px-3 py-2 text-slate-100"
+                            className={`w-full rounded-lg border px-3 py-2 ${
+                              isLight
+                                ? 'border-slate-300 bg-white text-slate-900'
+                                : 'border-slate-600/40 bg-slate-950/50 text-slate-100'
+                            }`}
                           />
                           <div className="flex items-center justify-between gap-3">
-                            <span className="text-xs text-slate-300/70">
+                            <span className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-300/70'}`}>
                               {joinLinkLoading ? 'Отправка запроса...' : 'Нажмите Enter, чтобы отправить запрос'}
                             </span>
-                            {joinLinkStatus && <span className="text-sm text-slate-300/70">{joinLinkStatus}</span>}
+                            {joinLinkStatus && (
+                              <span className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
+                                {joinLinkStatus}
+                              </span>
+                            )}
                           </div>
                         </div>
                       </div>

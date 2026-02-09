@@ -3,7 +3,6 @@ import { Award, CheckCircle2, Lock, Pin, PinOff } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { authAPI } from '../../api/auth';
 import { Button } from '../ui/Button';
-import { PanelHelp } from '../ui/PanelHelp';
 
 type AchievementSlot = {
   id: string;
@@ -87,11 +86,6 @@ export function AchievementsPage() {
                 <p className="text-sm text-slate-100">{status}</p>
               </div>
             )}
-            <PanelHelp>
-              <p>1) Выполняйте квесты, чтобы открывать достижения.</p>
-              <p>2) Закрепите до {MAX_PINS} достижений, чтобы они отображались в профиле.</p>
-              <p>3) Закрепление доступно только для полученных достижений.</p>
-            </PanelHelp>
           </div>
 
           <div className="panel-base panel-purple p-6 w-full">

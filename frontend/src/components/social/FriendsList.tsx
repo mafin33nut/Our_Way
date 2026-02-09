@@ -4,7 +4,6 @@ import { Users, Circle, User as UserIcon } from 'lucide-react';
 import { resolveMediaUrl } from '../../utils/media';
 import { Button } from '../ui/Button';
 import { FriendProfileModal } from './FriendProfileModal';
-import { PanelHelp } from '../ui/PanelHelp';
 interface FriendsListProps {
   friends: Friend[];
 }
@@ -73,10 +72,6 @@ export function FriendsList({ friends }: FriendsListProps) {
           <p className="text-purple-200/40 text-sm">Пока нет друзей</p>
         </div>
       )}
-      <PanelHelp>
-        <p>1) Смотрите, кто онлайн и сколько квестов выполнено.</p>
-        <p>2) Открывайте профиль для достижений и описания.</p>
-      </PanelHelp>
       <FriendProfileModal
         friendId={selectedFriendId}
         onClose={() => setSelectedFriendId(null)}
