@@ -140,13 +140,20 @@ export function LoginPage() {
       <div className="pointer-events-none absolute -bottom-24 -right-24 h-[520px] w-[520px] rounded-full bg-purple-500/20 blur-3xl" />
 
       <div className="w-full max-w-[1100px] relative z-10">
-        <div className="flex items-center justify-between gap-4 mb-8">
+        <div className="flex items-center justify-between gap-4 mb-10">
           <div className="flex items-center gap-3">
             <Shield className="w-10 h-10 text-teal-300" />
             <div className="min-w-0">
               <h1 className={`text-2xl sm:text-3xl leading-tight ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
                 Our way
               </h1>
+              <p
+                className={`mt-2 text-sm sm:text-base ${
+                  isLight ? 'text-slate-600' : 'text-slate-300/80'
+                }`}
+              >
+                Единая точка входа: выберите, войти в существующий профиль или создать новый аккаунт.
+              </p>
             </div>
           </div>
           {mode !== 'select' && (
@@ -175,11 +182,11 @@ export function LoginPage() {
                 }`}
               >
                 <p
-                  className={`text-sm transition-colors ${
+                  className={`text-sm leading-relaxed transition-colors ${
                     isLight ? 'text-slate-600 group-hover:text-slate-700' : 'text-slate-300/70 group-hover:text-slate-700'
                   }`}
                 >
-                  Рады видеть вас снова
+                  Рады видеть вас снова.
                 </p>
                 <h2
                   className={`mt-2 text-xl sm:text-2xl transition-colors group-hover:text-slate-900 ${
@@ -189,11 +196,11 @@ export function LoginPage() {
                   Войти в аккаунт
                 </h2>
                 <p
-                  className={`mt-3 text-sm transition-colors ${
+                  className={`mt-4 text-sm leading-relaxed transition-colors ${
                     isLight ? 'text-slate-600 group-hover:text-slate-700' : 'text-slate-300/70 group-hover:text-slate-700'
                   }`}
                 >
-                  Продолжайте выполнять квесты и отслеживать прогресс по направлениям.
+                  Продолжайте выполнять квесты, отслеживать прогресс по направлениям и открывать достижения.
                 </p>
                 <div className="mt-6">
                   <Button
@@ -219,11 +226,11 @@ export function LoginPage() {
                 }`}
               >
                 <p
-                  className={`text-sm transition-colors ${
+                  className={`text-sm leading-relaxed transition-colors ${
                     isLight ? 'text-slate-600 group-hover:text-slate-700' : 'text-slate-300/70 group-hover:text-slate-700'
                   }`}
                 >
-                  Добро пожаловать
+                  Добро пожаловать.
                 </p>
                 <h2
                   className={`mt-2 text-xl sm:text-2xl transition-colors group-hover:text-slate-900 ${
@@ -233,7 +240,7 @@ export function LoginPage() {
                   Создать аккаунт
                 </h2>
                 <p
-                  className={`mt-3 text-sm transition-colors ${
+                  className={`mt-4 text-sm leading-relaxed transition-colors ${
                     isLight ? 'text-slate-600 group-hover:text-slate-700' : 'text-slate-300/70 group-hover:text-slate-700'
                   }`}
                 >
@@ -260,11 +267,16 @@ export function LoginPage() {
 
         {mode !== 'select' && (
           <div className="panel-base panel-purple p-6 sm:p-8 max-w-[820px] mx-auto">
-            <div className="panel-caption text-left">
+            <div className="panel-caption text-left mb-2">
               {mode === 'register' ? 'Новый аккаунт' : 'Вход в аккаунт'}
             </div>
+            <p className="panel-comment mb-6">
+              {mode === 'register'
+                ? 'Заполните поля ниже, чтобы создать учётную запись. Мы используем только необходимые данные.'
+                : 'Введите имя пользователя и пароль, чтобы продолжить работу с вашими квестами.'}
+            </p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label htmlFor="username" className="block text-xs text-slate-300/70 mb-2">
                   Имя пользователя
@@ -312,7 +324,7 @@ export function LoginPage() {
                     required
                   />
                   {mode === 'register' && (
-                    <p className="text-xs text-slate-300/60 mt-2">
+                    <p className="mt-3 text-xs leading-relaxed text-slate-300/60">
                       Минимум 8 символов. Только латиница и цифры. Обязательно: A-Z, a-z и 0-9.
                     </p>
                   )}

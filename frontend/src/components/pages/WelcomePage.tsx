@@ -28,12 +28,12 @@ export function WelcomePage() {
     <div className="min-h-screen">
       <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1200px]">
-          <div className="panel-base panel-purple p-10">
+          <div className="panel-base panel-purple p-8 sm:p-10">
             <div className="flex items-center gap-2 mb-4">
               <Sparkles className="w-5 h-5 text-teal-300" />
               <h2 className="text-slate-100">Добро пожаловать, {user.username}!</h2>
             </div>
-            <p className="panel-comment mb-6">Гид по старту</p>
+            <p className="panel-comment mb-6">Короткий гид по старту в Our Way.</p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
               <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-4">
@@ -41,7 +41,7 @@ export function WelcomePage() {
                   <ShieldCheck className="w-5 h-5 text-teal-300" />
                   <p className="text-slate-200">Шаг 1: Направление развития</p>
                 </div>
-                <p className="text-slate-300/70 text-sm">
+                <p className="text-slate-300/70 text-sm leading-relaxed">
                   В разделе квестов выберите направление развития и получите первые задачи.
                   Если нужно — создайте своё направление вручную.
                 </p>
@@ -51,7 +51,7 @@ export function WelcomePage() {
                   <ListChecks className="w-5 h-5 text-teal-300" />
                   <p className="text-slate-200">Шаг 2: Первые квесты</p>
                 </div>
-                <p className="text-slate-300/70 text-sm">
+                <p className="text-slate-300/70 text-sm leading-relaxed">
                   Создайте 1–2 квеста и добавьте шаги, если цель сложная.
                   Завершайте их, чтобы видеть прогресс и получать XP.
                 </p>
@@ -61,7 +61,7 @@ export function WelcomePage() {
                   <Sparkles className="w-5 h-5 text-teal-300" />
                   <p className="text-slate-200">Шаг 3: Кланы и чат</p>
                 </div>
-                <p className="text-slate-300/70 text-sm">
+                <p className="text-slate-300/70 text-sm leading-relaxed">
                   Найдите клан, отправьте запрос и общайтесь в чате.
                   Клановые квесты дают командный темп и дополнительный рост.
                 </p>
@@ -71,7 +71,7 @@ export function WelcomePage() {
                   <ShieldCheck className="w-5 h-5 text-teal-300" />
                   <p className="text-slate-200">Шаг 4: Настройки</p>
                 </div>
-                <p className="text-slate-300/70 text-sm">
+                <p className="text-slate-300/70 text-sm leading-relaxed">
                   Проверьте тему и звук в настройках, чтобы интерфейс был комфортным.
                   Подсказки можно отключить там же.
                 </p>
