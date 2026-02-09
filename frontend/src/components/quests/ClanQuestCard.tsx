@@ -37,10 +37,10 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
   };
   return (
     <div
-      className={`bg-slate-900/50 rounded-xl border p-6 transition-all ${
+      className={`bg-teal-950/40 rounded-xl border p-6 transition-all ${
         quest.completed
-          ? 'border-slate-600/40 opacity-80'
-          : 'border-teal-300/60 shadow-lg shadow-teal-400/10 ring-1 ring-teal-300/60 ring-offset-2 ring-offset-slate-900'
+          ? 'border-teal-600/40 opacity-80'
+          : 'border-teal-300/60 shadow-lg shadow-teal-400/10 ring-1 ring-teal-300/60 ring-offset-2 ring-offset-teal-950'
       }`}
     >
       {/* Header */}
@@ -48,7 +48,7 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
             <Crown className="w-5 h-5 text-teal-300" />
-            <span className="text-xs px-2 py-1 rounded bg-slate-800/60 text-slate-200">
+            <span className="text-xs px-2 py-1 rounded bg-teal-800/50 text-teal-100">
               {difficultyLabel}
             </span>
           </div>
@@ -70,7 +70,7 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
           <span>Участники</span>
           <span>{participantCount} / {maxParticipants}</span>
         </div>
-        <div className="w-full h-4 bg-slate-950/50 rounded-full overflow-hidden border border-slate-600/40">
+        <div className="w-full h-4 bg-teal-950/50 rounded-full overflow-hidden border border-teal-600/40">
           <div
             className="h-full transition-all duration-500 bg-gradient-to-r from-teal-400 to-cyan-300"
             style={{ width: `${Math.min(progressPercentage, 100)}%` }}
@@ -86,10 +86,10 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
           {safeParticipants.slice(0, 6).map((participant) => (
             <div
               key={participant.id}
-              className={`flex items-center justify-between p-2 rounded bg-slate-800/50 border ${
+              className={`flex items-center justify-between p-2 rounded bg-teal-900/40 border ${
                 participant.username === currentUsername
                   ? 'border-teal-300/60'
-                  : 'border-slate-700/50'
+                  : 'border-teal-700/50'
               }`}
             >
               <div>
@@ -106,7 +106,7 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
         )}
       </div>
       {getDaysLeft() !== null && (
-        <div className="flex items-center gap-2 mb-4 p-3 bg-slate-800/50 rounded border border-slate-600/40">
+        <div className="flex items-center gap-2 mb-4 p-3 bg-teal-900/40 rounded border border-teal-600/40">
           <Clock className="w-4 h-4 text-teal-300" />
           <span className="text-sm text-slate-300/80">
             Осталось дней: <span className="text-teal-200">{getDaysLeft()}</span>
@@ -118,7 +118,8 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
           <Button
             onClick={handleContribute}
             disabled={isContributing || hasJoined || isFull}
-            className="flex-1"
+            size="md"
+            className="flex-1 px-5 py-3 rounded-xl text-base"
           >
             {isContributing ? 'Отправка...' : hasJoined ? 'Вы участвуете' : isFull ? 'Набор завершён' : 'Участвовать'}
           </Button>

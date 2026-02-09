@@ -102,8 +102,8 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
     <div
       className={
         isLight
-          ? 'rounded-2xl border border-slate-200 bg-white shadow-xl p-6'
-          : 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-2xl border border-slate-600/50 p-6 shadow-2xl backdrop-blur-sm ring-1 ring-teal-300/40 ring-offset-2 ring-offset-slate-900'
+          ? 'rounded-2xl border border-teal-200/80 bg-white shadow-xl p-6'
+          : 'bg-gradient-to-br from-teal-900/80 to-slate-900/90 rounded-2xl border border-teal-600/50 p-6 shadow-2xl backdrop-blur-sm ring-1 ring-teal-300/40 ring-offset-2 ring-offset-slate-900'
       }
     >
       <div className="flex items-center gap-2 mb-4">
@@ -111,7 +111,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
         <h2 className={isLight ? 'text-slate-900' : 'text-slate-100'}>Клан</h2>
       </div>
 
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-3 mb-4">
         <button
           onClick={() => {
             setMode('create');
@@ -120,14 +120,14 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
             setSearchResults([]);
             setRequestedClanIds([]);
           }}
-          className={`flex-1 py-2 px-4 rounded-lg text-sm transition-colors border ${
+          className={`flex-1 py-3 px-5 rounded-xl text-sm font-medium transition-colors border ${
             mode === 'create'
               ? isLight
-                ? 'bg-slate-900 text-white border-slate-900'
-                : 'bg-slate-800/60 text-teal-100 border-teal-300/50'
+                ? 'bg-teal-600 text-white border-teal-600'
+                : 'bg-teal-500/40 text-teal-100 border-teal-300/50'
               : isLight
-                ? 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
-                : 'bg-slate-950/40 text-slate-300/70 border-slate-700/60 hover:bg-slate-950/60'
+                ? 'bg-white text-teal-800 border-teal-200 hover:bg-teal-50'
+                : 'bg-teal-950/40 text-teal-200/80 border-teal-600/50 hover:bg-teal-950/60'
           }`}
         >
           Создать
@@ -143,14 +143,14 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
             setJoinPasswords({});
             setRequestedClanIds([]);
           }}
-          className={`flex-1 py-2 px-4 rounded-lg text-sm transition-colors border ${
+          className={`flex-1 py-3 px-5 rounded-xl text-sm font-medium transition-colors border ${
             mode === 'join'
               ? isLight
-                ? 'bg-slate-900 text-white border-slate-900'
-                : 'bg-slate-800/60 text-teal-100 border-teal-300/50'
+                ? 'bg-teal-600 text-white border-teal-600'
+                : 'bg-teal-500/40 text-teal-100 border-teal-300/50'
               : isLight
-                ? 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
-                : 'bg-slate-950/40 text-slate-300/70 border-slate-700/60 hover:bg-slate-950/60'
+                ? 'bg-white text-teal-800 border-teal-200 hover:bg-teal-50'
+                : 'bg-teal-950/40 text-teal-200/80 border-teal-600/50 hover:bg-teal-950/60'
           }`}
         >
           Вступить
@@ -182,10 +182,10 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
               value={clanName}
               onChange={(e) => setClanName(e.target.value)}
               placeholder="Введите название"
-              className={`w-full px-4 py-2 rounded-lg border focus:outline-none transition-colors ${
+              className={`w-full px-4 py-3 rounded-xl border text-base focus:outline-none transition-colors ${
                 isLight
-                  ? 'bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-teal-400'
-                  : 'bg-slate-950/50 border-slate-600/40 text-slate-100 placeholder-slate-400/40 focus:border-teal-300'
+                  ? 'bg-white border-teal-300 text-slate-900 placeholder-slate-400 focus:border-teal-400'
+                  : 'bg-teal-950/40 border-teal-600/40 text-slate-100 placeholder-slate-400/40 focus:border-teal-300'
               }`}
             />
           </div>
@@ -200,16 +200,16 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
               onChange={(e) => setClanDescription(e.target.value)}
               placeholder="Введите описание клана"
               rows={3}
-              className={`w-full px-4 py-2 rounded-lg border focus:outline-none transition-colors resize-none ${
+              className={`w-full px-4 py-3 rounded-xl border text-base focus:outline-none transition-colors resize-none ${
                 isLight
-                  ? 'bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-teal-400'
-                  : 'bg-slate-950/50 border-slate-600/40 text-slate-100 placeholder-slate-400/40 focus:border-teal-300'
+                  ? 'bg-white border-teal-300 text-slate-900 placeholder-slate-400 focus:border-teal-400'
+                  : 'bg-teal-950/40 border-teal-600/40 text-slate-100 placeholder-slate-400/40 focus:border-teal-300'
               }`}
             />
           </div>
           <div
-            className={`rounded-lg border p-3 ${
-              isLight ? 'border-slate-200 bg-slate-50' : 'border-slate-600/40 bg-slate-950/40'
+            className={`rounded-xl border p-4 ${
+              isLight ? 'border-teal-200 bg-teal-50/50' : 'border-teal-600/40 bg-teal-950/30'
             }`}
           >
             <p className={`text-sm mb-2 ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>Доступ</p>
@@ -217,14 +217,14 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
               <button
                 type="button"
                 onClick={() => setIsPublic(true)}
-                className={`flex-1 py-2 px-4 rounded-lg text-sm transition-colors border ${
+                className={`flex-1 py-3 px-4 rounded-xl text-sm font-medium transition-colors border ${
                   isPublic
                     ? isLight
-                      ? 'bg-slate-900 text-white border-slate-900'
-                      : 'bg-slate-800/60 text-teal-100 border-teal-300/50'
+                      ? 'bg-teal-600 text-white border-teal-600'
+                      : 'bg-teal-500/40 text-teal-100 border-teal-300/50'
                     : isLight
-                      ? 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
-                      : 'bg-slate-950/40 text-slate-300/70 border-slate-700/60 hover:bg-slate-950/60'
+                      ? 'bg-white text-teal-800 border-teal-200 hover:bg-teal-50'
+                      : 'bg-teal-950/40 text-teal-200/80 border-teal-600/50 hover:bg-teal-950/60'
                 }`}
               >
                 Публичный
@@ -232,14 +232,14 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
               <button
                 type="button"
                 onClick={() => setIsPublic(false)}
-                className={`flex-1 py-2 px-4 rounded-lg text-sm transition-colors border ${
+                className={`flex-1 py-3 px-4 rounded-xl text-sm font-medium transition-colors border ${
                   !isPublic
                     ? isLight
-                      ? 'bg-slate-900 text-white border-slate-900'
-                      : 'bg-slate-800/60 text-teal-100 border-teal-300/50'
+                      ? 'bg-teal-600 text-white border-teal-600'
+                      : 'bg-teal-500/40 text-teal-100 border-teal-300/50'
                     : isLight
-                      ? 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
-                      : 'bg-slate-950/40 text-slate-300/70 border-slate-700/60 hover:bg-slate-950/60'
+                      ? 'bg-white text-teal-800 border-teal-200 hover:bg-teal-50'
+                      : 'bg-teal-950/40 text-teal-200/80 border-teal-600/50 hover:bg-teal-950/60'
                 }`}
               >
                 Приватный
@@ -259,8 +259,8 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
                   placeholder="Введите пароль"
                   className={`w-full px-4 py-2 rounded-lg border focus:outline-none transition-colors ${
                     isLight
-                      ? 'bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-teal-400'
-                      : 'bg-slate-950/50 border-slate-600/40 text-slate-100 placeholder-slate-400/40 focus:border-teal-300'
+                  ? 'bg-white border-teal-300 text-slate-900 placeholder-slate-400 focus:border-teal-400'
+                  : 'bg-teal-950/40 border-teal-600/40 text-slate-100 placeholder-slate-400/40 focus:border-teal-300'
                   }`}
                 />
               </div>
@@ -296,8 +296,8 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
                 placeholder="Введите название клана"
                 className={`w-full px-4 py-2 rounded-lg border focus:outline-none transition-colors ${
                   isLight
-                    ? 'bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-teal-400'
-                    : 'bg-slate-950/50 border-slate-600/40 text-slate-100 placeholder-slate-400/40 focus:border-teal-300'
+                  ? 'bg-white border-teal-300 text-slate-900 placeholder-slate-400 focus:border-teal-400'
+                  : 'bg-teal-950/40 border-teal-600/40 text-slate-100 placeholder-slate-400/40 focus:border-teal-300'
                 }`}
               />
             </div>
@@ -319,8 +319,8 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
                     key={clan.id}
                     className={`flex items-center justify-between p-3 rounded-lg border transition-colors ${
                       isLight
-                        ? 'bg-white border-slate-200 hover:border-slate-300'
-                        : 'bg-slate-950/40 border-purple-600/20 hover:border-purple-500/50'
+                        ? 'bg-white border-teal-200 hover:border-teal-300'
+                        : 'bg-teal-950/30 border-teal-600/30 hover:border-teal-500/50'
                     }`}
                   >
                   <div className="flex items-center gap-2">
@@ -366,8 +366,8 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
                           placeholder="Пароль"
                           className={`w-44 pl-9 pr-3 py-2 rounded-lg border focus:outline-none transition-colors ${
                             isLight
-                              ? 'bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-teal-400'
-                              : 'bg-slate-950/50 border-slate-600/40 text-slate-100 placeholder-slate-400/40 focus:border-teal-300'
+                  ? 'bg-white border-teal-300 text-slate-900 placeholder-slate-400 focus:border-teal-400'
+                  : 'bg-teal-950/40 border-teal-600/40 text-slate-100 placeholder-slate-400/40 focus:border-teal-300'
                           }`}
                         />
                       </div>
