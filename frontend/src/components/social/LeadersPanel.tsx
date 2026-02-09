@@ -49,7 +49,7 @@ export function LeadersPanel({ className = '' }: LeadersPanelProps) {
         aria-label="Открыть лидеров"
         className={`flex items-center gap-2 sm:flex-col sm:gap-2 sm:px-4 sm:py-3 sm:text-base sm:rounded-xl sm:border ${
           isLight
-            ? 'sm:border-slate-300 sm:bg-white sm:hover:bg-slate-50 text-slate-900'
+            ? 'sm:border-black sm:bg-black sm:hover:bg-slate-900 text-white'
             : 'sm:border-slate-600/60 sm:bg-slate-800/50 sm:hover:bg-slate-800/80 text-white'
         } ${className}`}
       >
@@ -89,7 +89,7 @@ export function LeadersPanel({ className = '' }: LeadersPanelProps) {
                   onClick={() => setIsOpen(false)}
                   className={
                     isLight
-                      ? 'border border-slate-300 bg-white text-slate-700 hover:text-slate-900'
+                      ? 'border border-black bg-black text-white hover:bg-slate-900 [&_*]:text-white'
                       : ''
                   }
                 >

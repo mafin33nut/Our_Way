@@ -88,7 +88,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
         aria-label="Открыть друзей"
         className={`flex items-center gap-2 sm:flex-col sm:gap-2 sm:px-4 sm:py-3 sm:text-base sm:rounded-xl sm:border ${
           isLight
-            ? 'sm:border-slate-200 sm:bg-white/90 sm:hover:bg-slate-100 text-slate-900'
+            ? 'sm:border-black sm:bg-black sm:hover:bg-slate-900 text-white'
             : 'sm:border-slate-600/60 sm:bg-slate-800/50 sm:hover:bg-slate-800/80 text-white'
         } ${className}`}
       >
@@ -128,7 +128,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                   onClick={() => setIsOpen(false)}
                   className={
                     isLight
-                      ? 'border border-slate-300 bg-white text-slate-700 hover:text-slate-900'
+                      ? 'border border-black bg-black text-white hover:bg-slate-900 [&_*]:text-white'
                       : ''
                   }
                 >
@@ -189,7 +189,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                                   disabled={actioningRequestId === req.id}
                                   className={
                                     isLight
-                                      ? 'px-5 py-3 rounded-xl text-base border border-slate-300 text-slate-700 hover:text-slate-900 hover:border-slate-400'
+                                      ? 'px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black [&_*]:text-white'
                                       : ''
                                   }
                                 >
