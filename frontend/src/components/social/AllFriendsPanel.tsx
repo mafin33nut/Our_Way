@@ -18,7 +18,7 @@ export function AllFriendsPanel({ friends }: AllFriendsPanelProps) {
     <div
       className={
         isLight
-          ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-6'
+          ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-7 mb-[38px] last:mb-0'
           : 'panel-base panel-purple p-6'
       }
     >

@@ -142,7 +142,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                 )}
                 {user && (
                   <>
-                    <div className={`rounded-2xl border p-6 ${isLight ? 'bg-white border-slate-200 shadow-xl' : 'panel-base panel-purple'}`}>
+                    <div className={`rounded-2xl border ${isLight ? 'bg-white border-slate-200 shadow-xl p-7 mb-[38px] last:mb-0' : 'panel-base panel-purple'}`}>
                       <div className={isLight ? 'text-slate-900 font-medium mb-4' : 'panel-caption text-left'}>
                         Заявки в друзья
                       </div>

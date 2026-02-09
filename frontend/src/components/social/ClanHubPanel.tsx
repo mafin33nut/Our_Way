@@ -236,7 +236,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                 ) : (
                   <div className="space-y-[19px]">
                     {/* Панель: Ваши кланы */}
-                    <div className={`rounded-2xl border p-6 ${isLight ? 'bg-white border-slate-200 shadow-xl' : 'panel-base panel-teal'}`}>
+                    <div className={`rounded-2xl border ${isLight ? 'bg-white border-slate-200 shadow-xl p-7 mb-[38px] last:mb-0' : 'panel-base panel-teal'}`}>
                       <div className="flex items-center gap-2 mb-4">
                         <Crown className={`w-5 h-5 ${isLight ? 'text-slate-800' : 'text-teal-300'}`} />
                         <h3 className={isLight ? 'text-slate-900' : 'text-slate-100'}>Ваши кланы</h3>
@@ -298,7 +298,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                     </div>
 
                     {/* Панель: Вступить по ссылке */}
-                    <div className={`rounded-2xl border p-6 ${isLight ? 'bg-white border-slate-200 shadow-xl' : 'panel-base panel-teal'}`}>
+                    <div className={`rounded-2xl border ${isLight ? 'bg-white border-slate-200 shadow-xl p-7 mb-[38px] last:mb-0' : 'panel-base panel-teal'}`}>
                       <h3 className={`text-base font-medium mb-3 ${isLight ? 'text-slate-900' : 'text-slate-200/90'}`}>
                         Вступить в приватный клан по ссылке
                       </h3>
@@ -356,7 +356,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                     </div>
 
                     {/* Панель: Создать новый клан */}
-                    <div className={`rounded-2xl border p-6 ${isLight ? 'bg-white border-slate-200 shadow-xl' : 'panel-base panel-teal'}`}>
+                    <div className={`rounded-2xl border ${isLight ? 'bg-white border-slate-200 shadow-xl p-7 mb-[38px] last:mb-0' : 'panel-base panel-teal'}`}>
                       <h3 className={`text-base font-medium mb-4 ${isLight ? 'text-slate-900' : 'text-slate-200/90'}`}>Создать новый клан</h3>
                       <ClanCreationPanel onClanCreated={loadClans} />
                     </div>
@@ -364,7 +364,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                     {/* Панель: Клановые квесты + Создать клановый квест (только при выбранном клане) */}
                     {selectedClan && (
                       <>
-                        <div className={`rounded-2xl border p-6 ${isLight ? 'bg-white border-slate-200 shadow-md' : 'panel-base panel-orange'}`}>
+                        <div className={`rounded-2xl border ${isLight ? 'bg-white border-slate-200 shadow-md p-7 mb-[38px] last:mb-0' : 'panel-base panel-orange'}`}>
                           <div className={isLight ? 'text-slate-900 font-medium mb-4 text-base' : 'panel-caption text-left'}>Клановые квесты</div>
                           {loadingClanQuests ? (
                             <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>Загрузка квестов...</div>
@@ -378,7 +378,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                           )}
                         </div>
 
-                        <div className={`rounded-2xl border p-6 ${isLight ? 'bg-white border-slate-200 shadow-md' : 'panel-base panel-teal'}`}>
+                        <div className={`rounded-2xl border ${isLight ? 'bg-white border-slate-200 shadow-md p-7 mb-[38px] last:mb-0' : 'panel-base panel-teal'}`}>
                           <div className={isLight ? 'text-slate-900 font-medium mb-4 text-base' : 'panel-caption text-left'}>Создать клановый квест</div>
                           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-4">
                             <div className="space-y-3">
