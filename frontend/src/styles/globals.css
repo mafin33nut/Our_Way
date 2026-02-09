@@ -262,6 +262,11 @@ h3 {
     color: var(--ow-panel-muted) !important;
   }
 
+  .panel-base .action-button,
+  .panel-base .action-button * {
+    color: #ffffff !important;
+  }
+
   .panel-base button:hover,
   .panel-base .action-button:hover {
     transform: translateY(-2px) scale(1.02);

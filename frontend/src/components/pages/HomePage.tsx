@@ -352,7 +352,7 @@ export function HomePage() {
                   <Button
                     onClick={handleAddFocus}
                     size="sm"
-                    className="action-button text-white"
+                    className="action-button bg-black text-white"
                   >
                     Добавить
                   </Button>

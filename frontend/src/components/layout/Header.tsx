@@ -78,8 +78,8 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 variant="ghost"
                 size="md"
                 onClick={logout}
-                className={`hidden sm:inline-flex items-center gap-2 whitespace-nowrap px-0 py-0 text-sm bg-transparent border-none shadow-none hover:bg-transparent ${
-                  isLight ? 'text-slate-900' : 'text-slate-100'
+                className={`hidden sm:inline-flex items-center gap-2 whitespace-nowrap px-0 py-0 text-sm bg-transparent border-0 shadow-none hover:bg-transparent ${
+                  isLight ? 'text-slate-900' : 'text-white'
                 }`}
               >
                 <LogOut className="w-5 h-5" />
