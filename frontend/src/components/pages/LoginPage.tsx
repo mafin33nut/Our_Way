@@ -175,7 +175,7 @@ export function LoginPage() {
         {mode === 'select' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="group relative rounded-3xl p-6">
-              <div className="absolute -inset-10 rounded-[2.5rem] bg-gradient-to-br from-teal-300/30 via-sky-300/15 to-purple-400/20 blur-2xl opacity-40 transition-opacity group-hover:opacity-70" />
+              <div className="absolute -inset-10 rounded-[2.5rem] bg-gradient-to-br from-amber-300/30 via-rose-200/15 to-purple-300/20 blur-2xl opacity-40 transition-opacity group-hover:opacity-70" />
               <div
                 className={`relative rounded-3xl backdrop-blur-md shadow-[0_22px_60px_-32px_rgba(0,0,0,0.85)] p-7 sm:p-8 transition-colors ${
                   isLight ? 'bg-white/80 group-hover:bg-white' : 'bg-slate-900/55 group-hover:bg-slate-100/85'

@@ -31,18 +31,18 @@
 }
 
 :root[data-theme='light'] {
-  /* Светлая тема: более «воздушный» фон и мягкий серый */
-  --ow-body-bg: radial-gradient(circle at 0 0, #e0f2fe 0, #f8fafc 26%, #eef2ff 52%, #e5e7eb 100%);
+  /* Светлая тема: без синих оттенков, теплый нейтральный фон */
+  --ow-body-bg: radial-gradient(circle at 0 0, #fef3c7 0, #f9fafb 26%, #f5f3ff 52%, #e5e7eb 100%);
   --ow-body-fg: #020617;
 
   --ow-panel-bg: linear-gradient(
     145deg,
-    rgba(255, 255, 255, 0.96) 0%,
-    rgba(248, 250, 252, 0.96) 35%,
-    rgba(239, 246, 255, 0.98) 100%
+    rgba(255, 255, 255, 0.98) 0%,
+    rgba(250, 250, 249, 0.98) 40%,
+    rgba(255, 247, 237, 0.98) 100%
   );
   --ow-panel-text: #020617;
-  --ow-panel-muted: rgba(30, 64, 175, 0.78);
+  --ow-panel-muted: rgba(87, 83, 78, 0.9);
 }
 body {
   font-family: "Play", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -165,7 +165,7 @@ h3 {
   }
 
   .panel-sky {
-    @apply border-sky-400/40;
+    @apply border-purple-400/40;
   }
 
   .panel-lime {
