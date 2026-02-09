@@ -99,16 +99,10 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
   };
 
   return (
-    <div
-      className={
-        isLight
-          ? 'rounded-2xl border border-emerald-200/80 bg-white shadow-xl p-6'
-          : 'bg-gradient-to-br from-teal-900/80 to-slate-900/90 rounded-2xl border border-teal-600/50 p-6 shadow-2xl backdrop-blur-sm ring-1 ring-teal-300/40 ring-offset-2 ring-offset-slate-900'
-      }
-    >
+    <div className="rounded-2xl border border-slate-200 bg-white shadow-xl p-6">
       <div className="flex items-center gap-2 mb-4">
-        <Crown className="w-5 h-5 text-emerald-400" />
-        <h2 className={isLight ? 'text-slate-900' : 'text-slate-100'}>Клан</h2>
+        <Crown className="w-5 h-5 text-slate-800" />
+        <h2 className="text-slate-900">Клан</h2>
       </div>
 
       <div className="flex gap-3 mb-4">
@@ -122,12 +116,8 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
           }}
           className={`flex-1 py-3 px-5 rounded-xl text-sm font-medium transition-colors border ${
             mode === 'create'
-              ? isLight
-                ? 'bg-emerald-600 text-white border-emerald-600'
-                : 'bg-teal-500/40 text-teal-100 border-teal-300/50'
-              : isLight
-                ? 'bg-white text-emerald-800 border-emerald-200 hover:bg-emerald-50'
-                : 'bg-teal-950/40 text-teal-200/80 border-teal-600/50 hover:bg-teal-950/60'
+              ? 'bg-black text-white border-black'
+              : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-50'
           }`}
         >
           Создать
@@ -145,12 +135,8 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
           }}
           className={`flex-1 py-3 px-5 rounded-xl text-sm font-medium transition-colors border ${
             mode === 'join'
-              ? isLight
-                ? 'bg-emerald-600 text-white border-emerald-600'
-                : 'bg-teal-500/40 text-teal-100 border-teal-300/50'
-              : isLight
-                ? 'bg-white text-emerald-800 border-emerald-200 hover:bg-emerald-50'
-                : 'bg-teal-950/40 text-teal-200/80 border-teal-600/50 hover:bg-teal-950/60'
+              ? 'bg-black text-white border-black'
+              : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-50'
           }`}
         >
           Вступить
@@ -158,23 +144,15 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
       </div>
 
       {error && (
-        <div
-          className={
-            isLight
-              ? 'p-3 rounded-lg border mb-4 bg-rose-50 border-rose-200'
-              : 'p-3 rounded-lg border mb-4 bg-rose-900/30 border-rose-400/40'
-          }
-        >
-          <p className={isLight ? 'text-sm text-rose-700' : 'text-sm text-rose-200'}>{error}</p>
+        <div className="p-3 rounded-lg border mb-4 bg-rose-50 border-rose-200">
+          <p className="text-sm text-rose-700">{error}</p>
         </div>
       )}
 
       {mode === 'create' ? (
         <div className="space-y-4">
           <div>
-            <label
-              className={`block text-sm mb-2 ${isLight ? 'text-slate-800' : 'text-slate-200'}`}
-            >
+            <label className="block text-sm mb-2 text-slate-800">
               Название клана
             </label>
             <input
@@ -182,17 +160,11 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
               value={clanName}
               onChange={(e) => setClanName(e.target.value)}
               placeholder="Введите название"
-              className={`w-full px-4 py-3 rounded-xl border text-base focus:outline-none transition-colors ${
-                isLight
-                  ? 'bg-white border-emerald-300 text-slate-900 placeholder-slate-400 focus:border-emerald-400'
-                  : 'bg-teal-950/40 border-teal-600/40 text-slate-100 placeholder-slate-400/40 focus:border-teal-300'
-              }`}
+              className="w-full px-4 py-3 rounded-xl border text-base focus:outline-none transition-colors bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-slate-400"
             />
           </div>
           <div>
-            <label
-              className={`block text-sm mb-2 ${isLight ? 'text-slate-800' : 'text-slate-200'}`}
-            >
+            <label className="block text-sm mb-2 text-slate-800">
               Описание (необязательно)
             </label>
             <textarea
@@ -200,31 +172,21 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
               onChange={(e) => setClanDescription(e.target.value)}
               placeholder="Введите описание клана"
               rows={3}
-              className={`w-full px-4 py-3 rounded-xl border text-base focus:outline-none transition-colors resize-none ${
-                isLight
-                  ? 'bg-white border-emerald-300 text-slate-900 placeholder-slate-400 focus:border-emerald-400'
-                  : 'bg-teal-950/40 border-teal-600/40 text-slate-100 placeholder-slate-400/40 focus:border-teal-300'
-              }`}
+              className="w-full px-4 py-3 rounded-xl border text-base focus:outline-none transition-colors resize-none bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-slate-400"
             />
           </div>
           <div
-            className={`rounded-xl border p-4 ${
-              isLight ? 'border-emerald-200 bg-emerald-50/50' : 'border-teal-600/40 bg-teal-950/30'
-            }`}
+            className="rounded-xl border p-4 border-slate-200 bg-slate-50"
           >
-            <p className={`text-sm mb-2 ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>Доступ</p>
+            <p className="text-sm mb-2 text-slate-800">Доступ</p>
             <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => setIsPublic(true)}
                 className={`flex-1 py-3 px-4 rounded-xl text-sm font-medium transition-colors border ${
                   isPublic
-                    ? isLight
-                      ? 'bg-emerald-600 text-white border-emerald-600'
-                      : 'bg-teal-500/40 text-teal-100 border-teal-300/50'
-                    : isLight
-                      ? 'bg-white text-emerald-800 border-emerald-200 hover:bg-emerald-50'
-                      : 'bg-teal-950/40 text-teal-200/80 border-teal-600/50 hover:bg-teal-950/60'
+                    ? 'bg-black text-white border-black'
+                    : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-50'
                 }`}
               >
                 Публичный
@@ -234,12 +196,8 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
                 onClick={() => setIsPublic(false)}
                 className={`flex-1 py-3 px-4 rounded-xl text-sm font-medium transition-colors border ${
                   !isPublic
-                    ? isLight
-                      ? 'bg-emerald-600 text-white border-emerald-600'
-                      : 'bg-teal-500/40 text-teal-100 border-teal-300/50'
-                    : isLight
-                      ? 'bg-white text-emerald-800 border-emerald-200 hover:bg-emerald-50'
-                      : 'bg-teal-950/40 text-teal-200/80 border-teal-600/50 hover:bg-teal-950/60'
+                    ? 'bg-black text-white border-black'
+                    : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-50'
                 }`}
               >
                 Приватный
@@ -247,9 +205,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
             </div>
             {!isPublic && (
               <div className="mt-3">
-                <label
-                  className={`block text-sm mb-2 ${isLight ? 'text-slate-800' : 'text-slate-200'}`}
-                >
+                <label className="block text-sm mb-2 text-slate-800">
                   Пароль для вступления
                 </label>
                 <input
@@ -257,11 +213,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
                   value={joinPassword}
                   onChange={(e) => setJoinPassword(e.target.value)}
                   placeholder="Введите пароль"
-                  className={`w-full px-4 py-2 rounded-lg border focus:outline-none transition-colors ${
-                    isLight
-                  ? 'bg-white border-emerald-300 text-slate-900 placeholder-slate-400 focus:border-emerald-400'
-                  : 'bg-teal-950/40 border-teal-600/40 text-slate-100 placeholder-slate-400/40 focus:border-teal-300'
-                  }`}
+                  className="w-full px-4 py-2 rounded-lg border focus:outline-none transition-colors bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-slate-400"
                 />
               </div>
             )}
@@ -269,7 +221,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
           <Button
             onClick={handleCreateClan}
             disabled={creating || !clanName.trim()}
-            className="w-full action-button"
+            className="w-full bg-black text-white hover:bg-slate-900 border border-black px-5 py-3 rounded-xl text-base"
           >
             {creating ? (
               <>
@@ -286,7 +238,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
         </div>
       ) : (
         <div className="space-y-4">
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <div className="flex-1 relative">
               <input
                 type="text"
@@ -294,17 +246,14 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearchClans()}
                 placeholder="Введите название клана"
-                className={`w-full px-4 py-2 rounded-lg border focus:outline-none transition-colors ${
-                  isLight
-                  ? 'bg-white border-emerald-300 text-slate-900 placeholder-slate-400 focus:border-emerald-400'
-                  : 'bg-teal-950/40 border-teal-600/40 text-slate-100 placeholder-slate-400/40 focus:border-teal-300'
-                }`}
+                className="w-full px-4 py-3 rounded-xl border text-base focus:outline-none transition-colors bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-slate-400"
               />
             </div>
             <Button
               onClick={handleSearchClans}
               disabled={searching}
-              size="sm"
+              size="md"
+              className="px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black"
             >
               {searching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
             </Button>
@@ -317,34 +266,20 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
                 return (
                   <div
                     key={clan.id}
-                    className={`flex items-center justify-between p-3 rounded-lg border transition-colors ${
-                      isLight
-                        ? 'bg-white border-emerald-200 hover:border-emerald-300'
-                        : 'bg-teal-950/30 border-teal-600/30 hover:border-teal-500/50'
-                    }`}
+                    className="flex items-center justify-between p-4 rounded-xl border transition-colors bg-white border-slate-200 hover:border-slate-300"
                   >
                   <div className="flex items-center gap-2">
                     <Shield
-                      className={`w-4 h-4 ${
-                        isLight ? 'text-slate-700' : 'text-purple-400'
-                      }`}
+                      className="w-4 h-4 text-slate-700"
                     />
                     <div>
-                      <p className={isLight ? 'text-slate-900' : 'text-purple-200'}>
+                      <p className="text-slate-900">
                         {clan.name}
                       </p>
-                      <p
-                        className={`text-xs ${
-                          isLight ? 'text-slate-500' : 'text-purple-200/60'
-                        }`}
-                      >
+                      <p className="text-xs text-slate-500">
                         {clan.members.length} участников • Уровень {clan.level}
                       </p>
-                      <p
-                        className={`text-xs ${
-                          isLight ? 'text-slate-500' : 'text-purple-200/60'
-                        }`}
-                      >
+                      <p className="text-xs text-slate-500">
                         {clanIsPublic ? 'Публичный' : 'Приватный'}
                       </p>
                     </div>
@@ -353,9 +288,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
                     {!clanIsPublic && (
                       <div className="relative">
                         <Lock
-                          className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 ${
-                            isLight ? 'text-slate-500' : 'text-purple-300'
-                          }`}
+                          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"
                         />
                         <input
                           type="password"
@@ -364,11 +297,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
                             setJoinPasswords((prev) => ({ ...prev, [clan.id]: e.target.value }))
                           }
                           placeholder="Пароль"
-                          className={`w-44 pl-9 pr-3 py-2 rounded-lg border focus:outline-none transition-colors ${
-                            isLight
-                              ? 'bg-white border-emerald-300 text-slate-900 placeholder-slate-400 focus:border-emerald-400'
-                              : 'bg-teal-950/40 border-teal-600/40 text-slate-100 placeholder-slate-400/40 focus:border-teal-300'
-                          }`}
+                          className="w-44 pl-9 pr-3 py-2 rounded-lg border focus:outline-none transition-colors bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-slate-400"
                         />
                       </div>
                     )}
@@ -380,7 +309,8 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
                         })
                       }
                       disabled={requesting === clan.id || requestedClanIds.includes(clan.id)}
-                      size="sm"
+                      size="md"
+                      className="px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black"
                     >
                       {requesting === clan.id ? (
                         <Loader2 className="w-4 h-4 animate-spin" />
@@ -399,9 +329,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
 
           {searchQuery && searchResults.length === 0 && !searching && (
             <div className="text-center py-4">
-              <p className={isLight ? 'text-sm text-slate-500' : 'text-sm text-purple-200/60'}>
-                Кланы не найдены
-              </p>
+              <p className="text-sm text-slate-500">Кланы не найдены</p>
             </div>
           )}
         </div>

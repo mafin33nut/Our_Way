@@ -2,7 +2,6 @@ import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { Shield, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { useCustomization } from '../../hooks/useCustomization';
 import { Button } from '../ui/Button';
 
 type AuthMode = 'select' | 'login' | 'register';
@@ -76,9 +75,7 @@ export function LoginPage() {
   const [error, setError] = useState<string | null>(null);
 
   const { user, login, register } = useAuth();
-  const { settings } = useCustomization();
   const navigate = useNavigate();
-  const isLight = settings.theme === 'light';
 
   useEffect(() => {
     if (user) {
@@ -135,23 +132,19 @@ export function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-[100svh] flex items-center justify-center px-4 py-10 overflow-hidden">
-      <div className="pointer-events-none absolute -top-24 -left-24 h-[420px] w-[420px] rounded-full bg-teal-400/20 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -right-24 h-[520px] w-[520px] rounded-full bg-purple-500/20 blur-3xl" />
+    <div className="relative min-h-[100svh] flex items-center justify-center px-4 py-10 overflow-hidden bg-slate-50">
+      <div className="pointer-events-none absolute -top-24 -left-24 h-[420px] w-[420px] rounded-full bg-slate-200/50 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -right-24 h-[520px] w-[520px] rounded-full bg-slate-300/40 blur-3xl" />
 
       <div className="w-full max-w-[1100px] relative z-10">
         <div className="flex items-center justify-between gap-4 mb-10">
           <div className="flex items-center gap-3">
-            <Shield className="w-10 h-10 text-teal-300" />
+            <Shield className="w-10 h-10 text-slate-800" />
             <div className="min-w-0">
-              <h1 className={`text-2xl sm:text-3xl leading-tight ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+              <h1 className="text-2xl sm:text-3xl leading-tight text-slate-900">
                 Our way
               </h1>
-              <p
-                className={`mt-2 text-sm sm:text-base ${
-                  isLight ? 'text-slate-600' : 'text-slate-300/80'
-                }`}
-              >
+              <p className="mt-2 text-sm sm:text-base text-slate-600">
                 Единая точка входа: выберите, войти в существующий профиль или создать новый аккаунт.
               </p>
             </div>
@@ -164,7 +157,7 @@ export function LoginPage() {
                 setMode('select');
                 setError(null);
               }}
-              className="bg-slate-950/20"
+              className="bg-white border border-slate-200 text-slate-700 hover:text-slate-900"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Назад
@@ -175,30 +168,21 @@ export function LoginPage() {
         {mode === 'select' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="group relative rounded-3xl p-6">
-              <div className="absolute -inset-10 rounded-[2.5rem] bg-gradient-to-br from-amber-300/30 via-rose-200/15 to-purple-300/20 blur-2xl opacity-40 transition-opacity group-hover:opacity-70" />
               <div
-                className={`relative rounded-3xl backdrop-blur-md shadow-[0_22px_60px_-32px_rgba(0,0,0,0.85)] p-7 sm:p-8 transition-colors ${
-                  isLight ? 'bg-white/80 group-hover:bg-white' : 'bg-slate-900/55 group-hover:bg-slate-100/85'
-                }`}
+                className="relative rounded-3xl bg-white border border-slate-200 shadow-lg p-7 sm:p-8"
               >
                 <p
-                  className={`text-sm leading-relaxed transition-colors ${
-                    isLight ? 'text-slate-600 group-hover:text-slate-700' : 'text-slate-300/70 group-hover:text-slate-700'
-                  }`}
+                  className="text-sm leading-relaxed text-slate-600"
                 >
                   Рады видеть вас снова.
                 </p>
                 <h2
-                  className={`mt-2 text-xl sm:text-2xl transition-colors group-hover:text-slate-900 ${
-                    isLight ? 'text-slate-900' : 'text-slate-100'
-                  }`}
+                  className="mt-2 text-xl sm:text-2xl text-slate-900"
                 >
                   Войти в аккаунт
                 </h2>
                 <p
-                  className={`mt-4 text-sm leading-relaxed transition-colors ${
-                    isLight ? 'text-slate-600 group-hover:text-slate-700' : 'text-slate-300/70 group-hover:text-slate-700'
-                  }`}
+                  className="mt-4 text-sm leading-relaxed text-slate-600"
                 >
                   Продолжайте выполнять квесты, отслеживать прогресс по направлениям и открывать достижения.
                 </p>
@@ -210,7 +194,7 @@ export function LoginPage() {
                       setMode('login');
                       setError(null);
                     }}
-                    className="w-full"
+                    className="w-full bg-black text-white hover:bg-slate-900 border border-black"
                   >
                     Войти
                   </Button>
@@ -219,30 +203,21 @@ export function LoginPage() {
             </div>
 
             <div className="group relative rounded-3xl p-6">
-              <div className="absolute -inset-10 rounded-[2.5rem] bg-gradient-to-br from-purple-400/30 via-fuchsia-300/15 to-amber-300/20 blur-2xl opacity-40 transition-opacity group-hover:opacity-70" />
               <div
-                className={`relative rounded-3xl backdrop-blur-md shadow-[0_22px_60px_-32px_rgba(0,0,0,0.85)] p-7 sm:p-8 transition-colors ${
-                  isLight ? 'bg-white/80 group-hover:bg-white' : 'bg-slate-900/55 group-hover:bg-slate-100/85'
-                }`}
+                className="relative rounded-3xl bg-white border border-slate-200 shadow-lg p-7 sm:p-8"
               >
                 <p
-                  className={`text-sm leading-relaxed transition-colors ${
-                    isLight ? 'text-slate-600 group-hover:text-slate-700' : 'text-slate-300/70 group-hover:text-slate-700'
-                  }`}
+                  className="text-sm leading-relaxed text-slate-600"
                 >
                   Добро пожаловать.
                 </p>
                 <h2
-                  className={`mt-2 text-xl sm:text-2xl transition-colors group-hover:text-slate-900 ${
-                    isLight ? 'text-slate-900' : 'text-slate-100'
-                  }`}
+                  className="mt-2 text-xl sm:text-2xl text-slate-900"
                 >
                   Создать аккаунт
                 </h2>
                 <p
-                  className={`mt-4 text-sm leading-relaxed transition-colors ${
-                    isLight ? 'text-slate-600 group-hover:text-slate-700' : 'text-slate-300/70 group-hover:text-slate-700'
-                  }`}
+                  className="mt-4 text-sm leading-relaxed text-slate-600"
                 >
                   Имя пользователя должно быть уникальным. Пароль: латиница и цифры, минимум 8, с
                   заглавной буквой.
@@ -255,7 +230,7 @@ export function LoginPage() {
                       setMode('register');
                       setError(null);
                     }}
-                    className="w-full !bg-purple-400/80 hover:!bg-purple-400 !border-purple-300/60"
+                    className="w-full bg-black text-white hover:bg-slate-900 border border-black"
                   >
                     Зарегистрироваться
                   </Button>
@@ -266,11 +241,11 @@ export function LoginPage() {
         )}
 
         {mode !== 'select' && (
-          <div className="panel-base panel-purple p-6 sm:p-8 max-w-[820px] mx-auto">
-            <div className="panel-caption text-left mb-2">
+          <div className="rounded-2xl bg-white border border-slate-200 shadow-xl p-6 sm:p-8 max-w-[820px] mx-auto">
+            <div className="text-slate-900 font-medium mb-2">
               {mode === 'register' ? 'Новый аккаунт' : 'Вход в аккаунт'}
             </div>
-            <p className="panel-comment mb-6">
+            <p className="text-sm text-slate-600 mb-6">
               {mode === 'register'
                 ? 'Заполните поля ниже, чтобы создать учётную запись. Мы используем только необходимые данные.'
                 : 'Введите имя пользователя и пароль, чтобы продолжить работу с вашими квестами.'}
@@ -278,7 +253,7 @@ export function LoginPage() {
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label htmlFor="username" className="block text-xs text-slate-300/70 mb-2">
+                <label htmlFor="username" className="block text-xs text-slate-700 mb-2">
                   Имя пользователя
                 </label>
                 <input
@@ -287,14 +262,14 @@ export function LoginPage() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Введите имя пользователя"
-                  className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900"
                   required
                 />
               </div>
 
               {mode === 'register' && (
                 <div>
-                  <label htmlFor="email" className="block text-xs text-slate-300/70 mb-2">
+                  <label htmlFor="email" className="block text-xs text-slate-700 mb-2">
                     Email
                   </label>
                   <input
@@ -303,7 +278,7 @@ export function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Введите email"
-                    className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                    className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900"
                     required
                   />
                 </div>
@@ -311,7 +286,7 @@ export function LoginPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="password" className="block text-xs text-slate-300/70 mb-2">
+                  <label htmlFor="password" className="block text-xs text-slate-700 mb-2">
                     Пароль
                   </label>
                   <input
@@ -320,11 +295,11 @@ export function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Введите пароль"
-                    className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                    className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900"
                     required
                   />
                   {mode === 'register' && (
-                    <p className="mt-3 text-xs leading-relaxed text-slate-300/60">
+                    <p className="mt-3 text-xs leading-relaxed text-slate-500">
                       Минимум 8 символов. Только латиница и цифры. Обязательно: A-Z, a-z и 0-9.
                     </p>
                   )}
@@ -332,7 +307,7 @@ export function LoginPage() {
 
                 {mode === 'register' && (
                   <div>
-                    <label htmlFor="password2" className="block text-xs text-slate-300/70 mb-2">
+                    <label htmlFor="password2" className="block text-xs text-slate-700 mb-2">
                       Подтверждение
                     </label>
                     <input
@@ -341,7 +316,7 @@ export function LoginPage() {
                       value={password2}
                       onChange={(e) => setPassword2(e.target.value)}
                       placeholder="Повторите пароль"
-                      className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                      className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900"
                       required
                     />
                   </div>
@@ -349,13 +324,13 @@ export function LoginPage() {
               </div>
 
               {error && (
-                <div className="rounded-xl bg-rose-900/25 border border-rose-500/30 px-4 py-3">
-                  <p className="text-sm text-rose-200">{error}</p>
+                <div className="rounded-xl bg-rose-50 border border-rose-200 px-4 py-3">
+                  <p className="text-sm text-rose-700">{error}</p>
                 </div>
               )}
 
               <div className="pt-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <Button type="submit" size="lg" disabled={loading} className="action-button">
+                <Button type="submit" size="lg" disabled={loading} className="bg-black text-white hover:bg-slate-900 border border-black">
                   {mode === 'register'
                     ? loading
                       ? 'Регистрация...'
@@ -372,7 +347,7 @@ export function LoginPage() {
                     setMode('select');
                     setError(null);
                   }}
-                  className="bg-slate-950/20"
+                  className="bg-white border border-slate-200 text-slate-700 hover:text-slate-900"
                 >
                   Назад к выбору
                 </Button>

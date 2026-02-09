@@ -200,53 +200,45 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
             />
             <div
               className={`absolute right-0 top-0 h-full w-full max-w-full sm:max-w-[52vw] ${
-                isLight
-                  ? 'bg-white border-l border-slate-200'
-                  : 'bg-gradient-to-br from-slate-900/95 to-slate-950/95 border-l border-slate-700/60'
+                isLight ? 'bg-white border-l border-slate-200' : 'bg-white border-l border-slate-200'
               }`}
             >
-              <div
-                className={`flex items-center justify-between px-6 py-4 border-b ${
-                  isLight ? 'border-slate-200' : 'border-slate-700/60'
-                }`}
-              >
+              <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
                 <div className="flex items-center gap-2">
-                  <Crown className={isLight ? 'text-slate-800' : 'text-teal-200'} />
-                  <h2 className={isLight ? 'text-slate-900' : 'text-slate-100'}>Кланы</h2>
+                  <Crown className="text-slate-800" />
+                  <h2 className="text-slate-900">Кланы</h2>
                 </div>
-                <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsOpen(false)}
+                  className="bg-black text-white hover:bg-slate-900 border border-black [&_*]:text-white"
+                >
                   <X className="w-4 h-4" />
                 </Button>
               </div>
 
-              <div
-                className="h-[calc(100%-72px)] overflow-y-auto space-y-8"
-                style={{ padding: '0.7cm' }}
-              >
+              <div className="h-[calc(100%-72px)] overflow-y-auto px-8 sm:px-10 py-8 sm:py-10 space-y-8">
                 {!user ? (
-                  <div className={isLight ? 'text-sm text-emerald-800' : 'text-sm text-slate-300/70'}>
+                  <div className="text-sm text-slate-600">
                     Войдите, чтобы управлять кланами.
                   </div>
                 ) : (
                   <div className="space-y-8">
                     {/* Панель: Ваши кланы */}
                     <div
-                      className={
-                        isLight
-                          ? 'rounded-2xl bg-white border border-emerald-200/80 shadow-xl p-8'
-                          : 'panel-base panel-teal p-8'
-                      }
+                      className="rounded-2xl bg-white border border-slate-200 shadow-xl p-8"
                     >
                       <div className="flex items-center gap-2 mb-6">
-                        <Crown className={`w-5 h-5 ${isLight ? 'text-emerald-600' : 'text-teal-300'}`} />
-                        <h3 className={isLight ? 'text-slate-900' : 'text-slate-100'}>Ваши кланы</h3>
+                        <Crown className="w-5 h-5 text-slate-800" />
+                        <h3 className="text-slate-900">Ваши кланы</h3>
                       </div>
                       {loading ? (
-                        <div className={`text-sm ${isLight ? 'text-emerald-700' : 'text-slate-300/70'}`}>
+                        <div className="text-sm text-slate-600">
                           Загрузка списка кланов...
                         </div>
                       ) : clans.length === 0 ? (
-                        <div className={`text-sm ${isLight ? 'text-emerald-700' : 'text-slate-300/70'}`}>
+                        <div className="text-sm text-slate-600">
                           Вы пока не состоите в кланах.
                         </div>
                       ) : (
@@ -258,12 +250,8 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                                 onClick={() => setSelectedClanId(clan.id)}
                                 className={`rounded-xl border text-sm font-medium transition-colors px-6 py-3 ${
                                   selectedClanId === clan.id
-                                    ? isLight
-                                      ? 'border-emerald-500 bg-emerald-100/80 text-emerald-800'
-                                      : 'border-teal-300/60 bg-teal-400/20 text-teal-100'
-                                    : isLight
-                                      ? 'border-emerald-200 text-emerald-800 hover:border-emerald-400 hover:bg-emerald-50'
-                                      : 'border-teal-600/50 text-teal-200/90 hover:border-teal-500/60 hover:bg-teal-500/10'
+                                    ? 'border-black bg-black text-white'
+                                    : 'border-slate-300 text-slate-800 hover:border-slate-400 hover:bg-slate-50'
                                 }`}
                               >
                                 {clan.name}
@@ -276,11 +264,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                                 onClick={handleLeaveClan}
                                 disabled={leaveLoading}
                                 size="md"
-                                className={
-                                  isLight
-                                    ? 'px-5 py-3 rounded-xl text-base bg-emerald-600 text-white hover:bg-emerald-700 border-0'
-                                    : 'px-5 py-3 rounded-xl text-base bg-teal-500/30 text-teal-100 hover:bg-teal-500/50 border border-teal-400/50'
-                                }
+                                className="px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black"
                               >
                                 {leaveLoading
                                   ? 'Обработка...'
@@ -289,9 +273,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                                     : 'Покинуть клан'}
                               </Button>
                               {leaveStatus && (
-                                <span className={`text-sm ${isLight ? 'text-emerald-700' : 'text-slate-300/70'}`}>
-                                  {leaveStatus}
-                                </span>
+                                <span className="text-sm text-slate-600">{leaveStatus}</span>
                               )}
                             </div>
                           )}
@@ -301,18 +283,14 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
 
                     {/* Панель: Вступить по ссылке */}
                     <div
-                      className={
-                        isLight
-                          ? 'rounded-2xl bg-white border border-emerald-200/80 shadow-xl p-8'
-                          : 'panel-base panel-teal p-8'
-                      }
+                      className="rounded-2xl bg-white border border-slate-200 shadow-xl p-8"
                     >
-                      <h3 className={`text-base font-medium mb-4 ${isLight ? 'text-slate-900' : 'text-slate-200/90'}`}>
+                      <h3 className="text-base font-medium mb-4 text-slate-900">
                         Вступить в приватный клан по ссылке
                       </h3>
                       <div
                         className={`rounded-xl border p-5 ${
-                          isLight ? 'border-emerald-200 bg-emerald-50/50' : 'border-teal-600/40 bg-teal-950/30'
+                          'border-slate-200 bg-slate-50'
                         }`}
                       >
                         <div className="flex flex-col gap-4">
@@ -322,9 +300,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                             onKeyDown={(e) => e.key === 'Enter' && handleJoinByLink()}
                             placeholder="Вставьте ссылку или ID клана"
                             className={`w-full rounded-xl border px-4 py-3 text-base ${
-                              isLight
-                                ? 'border-emerald-300 bg-white text-slate-900'
-                                : 'border-teal-600/40 bg-teal-950/40 text-slate-100'
+                              'border-slate-300 bg-white text-slate-900'
                             }`}
                           />
                           <input
@@ -334,19 +310,15 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                             placeholder="Пароль (если нужен)"
                             type="password"
                             className={`w-full rounded-xl border px-4 py-3 text-base ${
-                              isLight
-                                ? 'border-emerald-300 bg-white text-slate-900'
-                                : 'border-teal-600/40 bg-teal-950/40 text-slate-100'
+                              'border-slate-300 bg-white text-slate-900'
                             }`}
                           />
                           <div className="flex items-center justify-between gap-3 flex-wrap">
-                            <span className={`text-sm ${isLight ? 'text-emerald-700' : 'text-slate-300/70'}`}>
+                            <span className="text-sm text-slate-600">
                               {joinLinkLoading ? 'Отправка запроса...' : 'Нажмите Enter, чтобы отправить запрос'}
                             </span>
                             {joinLinkStatus && (
-                              <span className={`text-sm ${isLight ? 'text-emerald-700' : 'text-slate-300/70'}`}>
-                                {joinLinkStatus}
-                              </span>
+                              <span className="text-sm text-slate-600">{joinLinkStatus}</span>
                             )}
                           </div>
                         </div>
@@ -355,7 +327,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                         onClick={handleJoinByLink}
                         disabled={joinLinkLoading}
                         size="md"
-                        className={`mt-4 px-5 py-3 rounded-xl text-base ${isLight ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'action-button'}`}
+                        className="mt-4 px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black"
                       >
                         {joinLinkLoading ? 'Отправка...' : 'Отправить запрос'}
                       </Button>
@@ -363,15 +335,9 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
 
                     {/* Панель: Создать новый клан */}
                     <div
-                      className={
-                        isLight
-                          ? 'rounded-2xl bg-white border border-emerald-200/80 shadow-xl p-8'
-                          : 'panel-base panel-teal p-8'
-                      }
+                      className="rounded-2xl bg-white border border-slate-200 shadow-xl p-8"
                     >
-                      <h3 className={`text-base font-medium mb-6 ${isLight ? 'text-slate-900' : 'text-slate-200/90'}`}>
-                        Создать новый клан
-                      </h3>
+                      <h3 className="text-base font-medium mb-6 text-slate-900">Создать новый клан</h3>
                       <ClanCreationPanel onClanCreated={loadClans} />
                     </div>
 
@@ -379,19 +345,11 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                     {selectedClan && (
                       <>
                         <div
-                          className={
-                            isLight
-                              ? 'rounded-2xl bg-white border border-amber-200/80 shadow-md p-8'
-                              : 'panel-base panel-orange p-8'
-                          }
+                          className="rounded-2xl bg-white border border-slate-200 shadow-md p-8"
                         >
-                          <div className={isLight ? 'text-slate-900 font-medium mb-6 text-base' : 'panel-caption text-left'}>
-                            Клановые квесты
-                          </div>
+                          <div className="text-slate-900 font-medium mb-6 text-base">Клановые квесты</div>
                           {loadingClanQuests ? (
-                            <div className={`text-sm ${isLight ? 'text-amber-800' : 'text-slate-300/70'}`}>
-                              Загрузка квестов...
-                            </div>
+                            <div className="text-sm text-slate-600">Загрузка квестов...</div>
                           ) : (
                             <ClanQuestList
                               quests={selectedClanQuests}
@@ -403,15 +361,9 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                         </div>
 
                         <div
-                          className={
-                            isLight
-                              ? 'rounded-2xl bg-white border border-emerald-200/80 shadow-md p-8'
-                              : 'panel-base panel-teal p-8'
-                          }
+                          className="rounded-2xl bg-white border border-slate-200 shadow-md p-8"
                         >
-                          <div className={isLight ? 'text-slate-900 font-medium mb-6 text-base' : 'panel-caption text-left'}>
-                            Создать клановый квест
-                          </div>
+                          <div className="text-slate-900 font-medium mb-6 text-base">Создать клановый квест</div>
                           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-6">
                             <div className="space-y-4">
                               <input
@@ -419,9 +371,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                                 onChange={(e) => setClanQuestTitle(e.target.value)}
                                 placeholder="Название квеста"
                                 className={`w-full rounded-xl border px-4 py-3 text-base ${
-                                  isLight
-                                    ? 'border-emerald-300 bg-white text-slate-900'
-                                    : 'border-teal-600/30 bg-teal-950/30 text-slate-100'
+                                  'border-slate-300 bg-white text-slate-900'
                                 }`}
                               />
                               <textarea
@@ -430,30 +380,24 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                                 placeholder="Описание"
                                 rows={3}
                                 className={`w-full rounded-xl border px-4 py-3 text-base ${
-                                  isLight
-                                    ? 'border-emerald-300 bg-white text-slate-900'
-                                    : 'border-teal-600/30 bg-teal-950/30 text-slate-100'
+                                  'border-slate-300 bg-white text-slate-900'
                                 }`}
                               />
                             </div>
                             <div
                               className={`rounded-xl border p-5 space-y-4 ${
-                                isLight
-                                  ? 'border-emerald-200 bg-emerald-50/50'
-                                  : 'border-teal-600/30 bg-teal-950/25'
+                                'border-slate-200 bg-slate-50'
                               }`}
                             >
                               <label className="text-sm flex flex-col gap-2">
-                                <span className={isLight ? 'text-slate-800' : 'text-slate-200/80'}>Сложность</span>
+                                <span className="text-slate-800">Сложность</span>
                                 <select
                                   value={clanQuestDifficulty}
                                   onChange={(e) =>
                                     setClanQuestDifficulty(e.target.value as 'easy' | 'medium' | 'hard')
                                   }
                                   className={`rounded-xl border px-4 py-3 text-base w-full ${
-                                    isLight
-                                      ? 'border-emerald-300 bg-white text-slate-900'
-                                      : 'border-teal-600/30 bg-teal-950/40 text-slate-100'
+                                    'border-slate-300 bg-white text-slate-900'
                                   }`}
                                 >
                                   <option value="easy">Легкая</option>
@@ -462,9 +406,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                                 </select>
                               </label>
                               <label className="text-sm flex items-center justify-between gap-3">
-                                <span className={isLight ? 'text-slate-800' : 'text-slate-200/80'}>
-                                  Макс. участников
-                                </span>
+                                <span className="text-slate-800">Макс. участников</span>
                                 <input
                                   type="number"
                                   min={1}
@@ -473,9 +415,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                                     setClanQuestMaxParticipants(Math.max(1, Number(e.target.value) || 1))
                                   }
                                   className={`w-28 rounded-xl border px-4 py-3 text-base ${
-                                    isLight
-                                      ? 'border-emerald-300 bg-white text-slate-900'
-                                      : 'border-teal-600/30 bg-teal-950/40 text-slate-100'
+                                    'border-slate-300 bg-white text-slate-900'
                                   }`}
                                 />
                               </label>
@@ -483,15 +423,13 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                           </div>
                           <div className="mt-6 flex items-center justify-between gap-4 flex-wrap">
                             {clanQuestStatus && (
-                              <span className={isLight ? 'text-sm text-emerald-700' : 'text-sm text-slate-200/70'}>
-                                {clanQuestStatus}
-                              </span>
+                              <span className="text-sm text-slate-600">{clanQuestStatus}</span>
                             )}
                             <Button
                               onClick={handleCreateClanQuest}
                               disabled={creatingClanQuest || !clanQuestTitle.trim()}
                               size="md"
-                              className={`px-5 py-3 rounded-xl text-base ${isLight ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'action-button'}`}
+                              className="px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black"
                             >
                               {creatingClanQuest ? 'Создание...' : 'Создать'}
                             </Button>

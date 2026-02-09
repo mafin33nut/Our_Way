@@ -106,86 +106,62 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
               onClick={() => setIsOpen(false)}
               aria-label="Закрыть окно друзей"
             />
-            <div
-              className={`absolute right-0 top-0 h-full w-full max-w-full sm:max-w-[50vw] ${
-                isLight
-                  ? 'bg-white border-l border-slate-200'
-                  : 'bg-gradient-to-br from-slate-900/95 to-slate-950/95 border-l border-slate-700/60'
-              }`}
-            >
-              <div
-                className={`flex items-center justify-between px-6 py-4 border-b ${
-                  isLight ? 'border-slate-200' : 'border-slate-700/60'
-                }`}
-              >
+            <div className="absolute right-0 top-0 h-full w-full max-w-full sm:max-w-[50vw] bg-white border-l border-slate-200">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
                 <div className="flex items-center gap-2">
-                  <Users className={`${isLight ? 'text-slate-800' : 'text-teal-200'}`} />
-                  <h2 className={`${isLight ? 'text-slate-900' : 'text-slate-100'}`}>Друзья</h2>
+                  <Users className="text-slate-800" />
+                  <h2 className="text-slate-900">Друзья</h2>
                 </div>
-                <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsOpen(false)}
+                  className="bg-black text-white hover:bg-slate-900 border border-black [&_*]:text-white"
+                >
                   <X className="w-4 h-4" />
                 </Button>
               </div>
 
-              <div
-                className="h-[calc(100%-72px)] overflow-y-auto space-y-[19px]"
-                style={{ padding: '0.7cm' }}
-              >
+              <div className="h-[calc(100%-72px)] overflow-y-auto px-8 sm:px-10 py-8 sm:py-10 space-y-8">
                 {!user && (
-                  <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
-                    Войдите, чтобы управлять друзьями.
-                  </div>
+                  <div className="text-sm text-slate-600">Войдите, чтобы управлять друзьями.</div>
                 )}
                 {user && (
                   <>
                     <div
-                      className={
-                        isLight
-                          ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-8'
-                          : 'panel-base panel-purple p-8'
-                      }
+                      className="rounded-2xl bg-white border border-slate-200 shadow-xl p-8"
                     >
-                      <div className={isLight ? 'text-slate-800 font-medium mb-4' : 'panel-caption text-left'}>
-                        Заявки в друзья
-                      </div>
+                      <div className="text-slate-900 font-medium mb-4">Заявки в друзья</div>
                       {loadingRequests ? (
-                        <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
-                          Загрузка заявок...
-                        </div>
+                        <div className="text-sm text-slate-600">Загрузка заявок...</div>
                       ) : requests.length === 0 ? (
-                        <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
-                          Нет входящих заявок.
-                        </div>
+                        <div className="text-sm text-slate-600">Нет входящих заявок.</div>
                       ) : (
                         <div className="space-y-2">
                           {requests.map((req) => (
                             <div
                               key={req.id}
-                              className={`flex items-center justify-between gap-3 rounded-xl px-5 py-4 ${
-                                isLight ? 'bg-slate-50 border border-slate-200' : 'bg-slate-950/40'
-                              }`}
+                              className="flex items-center justify-between gap-3 rounded-xl px-5 py-4 bg-slate-50 border border-slate-200"
                             >
                               <div className="min-w-0">
-                                <p className={isLight ? 'text-slate-900 truncate' : 'text-slate-100 truncate'}>
-                                  {req.from_user_username}
-                                </p>
-                                <p className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
-                                  Хочет добавить вас в друзья
-                                </p>
+                                <p className="text-slate-900 truncate">{req.from_user_username}</p>
+                                <p className="text-xs text-slate-600">Хочет добавить вас в друзья</p>
                               </div>
                               <div className="flex items-center gap-2 shrink-0">
                                 <Button
-                                  size="sm"
+                                  size="md"
                                   onClick={() => handleApprove(req.id)}
                                   disabled={actioningRequestId === req.id}
+                                  className="px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black"
                                 >
                                   Принять
                                 </Button>
                                 <Button
-                                  size="sm"
+                                  size="md"
                                   variant="ghost"
                                   onClick={() => handleReject(req.id)}
                                   disabled={actioningRequestId === req.id}
+                                  className="px-5 py-3 rounded-xl text-base border border-slate-300 text-slate-700 hover:text-slate-900 hover:border-slate-400"
                                 >
                                   Отклонить
                                 </Button>
@@ -202,21 +178,14 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                       }}
                       friendIds={friends.map((friend) => friend.id)}
                       currentUserId={user.id}
-                      isLight={isLight}
                     />
-                    <div className={isLight ? 'text-sm font-medium text-slate-700' : 'panel-comment'}>
-                      Поиск друзей
-                    </div>
+                    <div className="text-sm font-medium text-slate-700">Поиск друзей</div>
                     {loading ? (
-                      <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
-                        Загрузка списка друзей...
-                      </div>
+                      <div className="text-sm text-slate-600">Загрузка списка друзей...</div>
                     ) : (
                       <>
-                        <div className={isLight ? 'text-sm font-medium text-slate-700' : 'panel-comment'}>
-                          Ваши друзья
-                        </div>
-                        <AllFriendsPanel friends={friends} isLight={isLight} />
+                        <div className="text-sm font-medium text-slate-700">Ваши друзья</div>
+                        <AllFriendsPanel friends={friends} />
                       </>
                     )}
                   </>
