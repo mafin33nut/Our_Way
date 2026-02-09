@@ -7,7 +7,7 @@ import { resolveMediaUrl } from '../../utils/media';
 import { FriendsPanel } from '../social/FriendsPanel';
 import { ClanHubPanel } from '../social/ClanHubPanel';
 import { ChatHubPanel } from '../social/ChatHubPanel';
-import { LeadersPanel } from '../social/LeadersPanel';
+
 type HeaderProps = {
   isSidebarOpen: boolean;
   onToggleSidebar: () => void;
@@ -17,12 +17,11 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
   const { user, logout } = useAuth();
   const { settings } = useCustomization();
   const isLight = settings.theme === 'light';
+
   return (
     <div
       className={`border-b sticky top-0 z-50 backdrop-blur-sm ${
-        isLight
-          ? 'bg-white/90 border-slate-200 shadow-sm'
-          : 'bg-slate-900/70 border-slate-700/50'
+        isLight ? 'bg-white/90 border-slate-200 shadow-sm' : 'bg-slate-900/70 border-slate-700/50'
       }`}
     >
       <div
@@ -47,97 +46,83 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
               <PanelLeftOpen className="w-5 h-5 sm:w-6 sm:h-6" />
             )}
           </button>
+
           {user && (
             <div className="flex-1 rounded-xl border border-slate-700/60 bg-slate-800/70 px-4 py-3 min-w-0">
               <div className="flex items-center justify-end gap-3 sm:gap-5 flex-nowrap overflow-x-auto">
                 <div className="flex items-center gap-3 sm:gap-5 ml-auto flex-nowrap">
-                <Link
-<<<<<<< HEAD
-                  to="/profile"
-                  className={`flex items-center gap-3 px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl transition-colors whitespace-nowrap shrink-0 sm:text-base shadow-sm ${
-=======
-                  to="/settings"
-                  className={`flex items-center gap-3 px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl border transition-colors whitespace-nowrap shrink-0 sm:text-base ${
->>>>>>> 7d5d50b69d2952ea275d05782d711d2549c59957
-                    isLight
-                      ? 'bg-slate-100 hover:bg-slate-200 text-slate-900'
-                      : 'bg-slate-800/70 hover:bg-slate-700 text-slate-100'
+                  <Link
+                    to="/profile"
+                    className={`flex items-center gap-3 px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl transition-colors whitespace-nowrap shrink-0 sm:text-base shadow-sm ${
+                      isLight
+                        ? 'bg-slate-100 hover:bg-slate-200 text-slate-900'
+                        : 'bg-slate-800/70 hover:bg-slate-700 text-slate-100'
+                    }`}
+                  >
+                    {resolveMediaUrl(user.avatar) ? (
+                      <img
+                        src={resolveMediaUrl(user.avatar) as string}
+                        alt={user.username}
+                        className="w-8 h-8 rounded-full object-cover border border-teal-300/60"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-slate-700/70 border border-teal-300/60 flex items-center justify-center text-xs text-slate-100">
+                        {user.username.slice(0, 1).toUpperCase()}
+                      </div>
+                    )}
+                    <div className="min-w-0 hidden sm:block">
+                      <p className={`text-base ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                        {user.username}
+                      </p>
+                      <p className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
+                        Уровень {user.level} · {user.xp} XP
+                      </p>
+                    </div>
+                  </Link>
+
+                  <Link to="/settings" className="shrink-0">
+                    <Button
+                      variant="ghost"
+                      size="md"
+                      className={`action-button flex items-center gap-2 whitespace-nowrap sm:text-base sm:px-4 sm:py-3 border-0 ${
+                        isLight ? 'text-slate-900' : 'text-slate-100'
+                      }`}
+                    >
+                      <Settings className="w-5 h-5 sm:hidden" />
+                      <span className="hidden sm:inline">Настройки</span>
+                    </Button>
+                  </Link>
+
+                  <div className="shrink-0">
+                    <FriendsPanel className={`action-button ${isLight ? 'text-slate-900' : 'text-slate-100'}`} />
+                  </div>
+                  <div className="shrink-0">
+                    <ClanHubPanel className={`action-button ${isLight ? 'text-slate-900' : 'text-slate-100'}`} />
+                  </div>
+                  <div className="shrink-0">
+                    <ChatHubPanel className={`action-button ${isLight ? 'text-slate-900' : 'text-slate-100'}`} />
+                  </div>
+                </div>
+
+                <Button
+                  variant="ghost"
+                  size="md"
+                  onClick={logout}
+                  className={`action-button flex items-center gap-2 whitespace-nowrap shrink-0 sm:text-base sm:px-4 sm:py-3 border-0 ${
+                    isLight ? 'text-slate-900' : 'text-slate-100'
                   }`}
                 >
-                  {resolveMediaUrl(user.avatar) ? (
-                    <img
-                      src={resolveMediaUrl(user.avatar) as string}
-                      alt={user.username}
-                      className="w-8 h-8 rounded-full object-cover border border-teal-300/60"
-                    />
-                  ) : (
-                    <div className="w-8 h-8 rounded-full bg-slate-700/70 border border-teal-300/60 flex items-center justify-center text-xs text-slate-100">
-                      {user.username.slice(0, 1).toUpperCase()}
-                    </div>
-                  )}
-                  <div className="min-w-0 hidden sm:block">
-                    <p className={`text-base ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                      {user.username}
-                    </p>
-                    <p className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
-                      Уровень {user.level} · {user.xp} XP
-                    </p>
-                  </div>
-                </Link>
-                <Link to="/settings" className="shrink-0">
-                  <Button
-                    variant="ghost"
-                    size="md"
-<<<<<<< HEAD
-                    className={`action-button flex items-center gap-2 whitespace-nowrap sm:text-base sm:px-4 sm:py-3 border-0 ${
-                      isLight ? 'text-slate-900' : 'text-slate-100'
-                    }`}
-=======
-                    className="action-button flex items-center gap-2 whitespace-nowrap sm:flex-col sm:gap-2 sm:px-4 sm:py-3 sm:text-base sm:rounded-xl sm:border sm:border-slate-600/60 sm:bg-slate-800/50 sm:hover:bg-slate-800/80"
->>>>>>> 7d5d50b69d2952ea275d05782d711d2549c59957
-                  >
-                    <Settings className="w-5 h-5 sm:hidden" />
-                    <span className="hidden sm:inline">Настройки</span>
-                  </Button>
-                </Link>
-                <div className="shrink-0">
-                  <FriendsPanel className={`action-button ${isLight ? 'text-slate-900' : 'text-slate-100'}`} />
-                </div>
-                <div className="shrink-0">
-<<<<<<< HEAD
-                  <ClanHubPanel className={`action-button ${isLight ? 'text-slate-900' : 'text-slate-100'}`} />
-=======
-                  <LeadersPanel className="action-button" />
-                </div>
-                <div className="shrink-0">
-                  <ClanHubPanel className="action-button" />
->>>>>>> 7d5d50b69d2952ea275d05782d711d2549c59957
-                </div>
-                <div className="shrink-0">
-                  <ChatHubPanel className={`action-button ${isLight ? 'text-slate-900' : 'text-slate-100'}`} />
-                </div>
+                  <LogOut className="w-5 h-5 sm:hidden" />
+                  <span className="hidden sm:inline">Выйти</span>
+                </Button>
               </div>
-              <Button
-                variant="ghost"
-                size="md"
-                onClick={logout}
-<<<<<<< HEAD
-                className={`action-button flex items-center gap-2 whitespace-nowrap shrink-0 sm:text-base sm:px-4 sm:py-3 border-0 ${
-                  isLight ? 'text-slate-900' : 'text-slate-100'
-                }`}
-=======
-                className="action-button flex items-center gap-2 whitespace-nowrap shrink-0 sm:flex-col sm:gap-2 sm:px-4 sm:py-3 sm:text-base sm:rounded-xl sm:border sm:border-slate-600/60 sm:bg-slate-800/50 sm:hover:bg-slate-800/80"
->>>>>>> 7d5d50b69d2952ea275d05782d711d2549c59957
-              >
-                <LogOut className="w-5 h-5 sm:hidden" />
-                <span className="hidden sm:inline">Выйти</span>
-              </Button>
             </div>
-          </div>
           )}
+
           {!user && <div className="flex-1" />}
         </div>
       </div>
     </div>
   );
 }
+

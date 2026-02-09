@@ -78,7 +78,6 @@ h3 {
   }
 
   .panel-base {
-<<<<<<< HEAD
     @apply rounded-2xl border-0 ring-0 bg-gradient-to-b from-slate-800/85 via-slate-800/75 to-slate-900/85 shadow-[0_18px_42px_-20px_rgba(15,23,42,0.98)] backdrop-blur-sm text-white;
     position: relative;
     /* ~0.7cm внутренний отступ при базовом размере шрифта */
@@ -88,14 +87,6 @@ h3 {
     font-size: 125%;
     line-height: 1.6;
     box-shadow: 0 18px 42px -20px rgba(15, 23, 42, 0.98), 0 0 28px rgba(56, 189, 248, 0.14);
-=======
-    @apply rounded-2xl border border-slate-700/40 ring-0 shadow-[0_16px_36px_-18px_rgba(15,23,42,0.95)] backdrop-blur-sm;
-    position: relative;
-    font-family: "Play", "Segoe UI", sans-serif;
-    color: var(--ow-panel-text);
-    background: var(--ow-panel-bg);
-    box-shadow: 0 16px 36px -18px rgba(15, 23, 42, 0.55), 0 0 18px rgba(56, 189, 248, 0.08);
->>>>>>> 7d5d50b69d2952ea275d05782d711d2549c59957
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   }
 
@@ -104,15 +95,9 @@ h3 {
     font-family: "Play", "Segoe UI", sans-serif;
   }
   .panel-base:hover {
-<<<<<<< HEAD
     transform: translateY(-6px) scale(1.01);
     box-shadow: 0 28px 60px -22px rgba(15, 23, 42, 1), 0 0 40px rgba(56, 189, 248, 0.22);
     border-color: rgba(15, 23, 42, 0.95);
-=======
-    transform: translateY(-2px);
-    box-shadow: 0 20px 44px -18px rgba(15, 23, 42, 0.6), 0 0 28px rgba(56, 189, 248, 0.12);
-    border-color: rgba(148, 163, 184, 0.35);
->>>>>>> 7d5d50b69d2952ea275d05782d711d2549c59957
   }
 
   .panel-base .w-full {
@@ -178,30 +163,12 @@ h3 {
     box-shadow: 0 18px 40px -22px rgba(15, 23, 42, 0.25), 0 0 18px rgba(124, 58, 237, 0.1);
   }
 
-<<<<<<< HEAD
   .panel-base button {
     font-size: 171% !important;
     padding: 0.9rem 1.45rem !important;
     line-height: 1.2;
     transition: transform 0.18s ease, box-shadow 0.18s ease;
     margin: 0.15rem 0.25rem;
-=======
-  :root[data-theme='light'] .panel-base:hover {
-    border-color: rgba(124, 58, 237, 0.28);
-    box-shadow: 0 22px 48px -22px rgba(15, 23, 42, 0.28), 0 0 22px rgba(124, 58, 237, 0.14);
-  }
-
-  :root[data-theme='light'] .panel-base .text-slate-100,
-  :root[data-theme='light'] .panel-base .text-slate-200,
-  :root[data-theme='light'] .panel-base .text-slate-300,
-  :root[data-theme='light'] .panel-base .text-purple-50,
-  :root[data-theme='light'] .panel-base .text-purple-100,
-  :root[data-theme='light'] .panel-base .text-purple-200,
-  :root[data-theme='light'] .panel-base .text-teal-100,
-  :root[data-theme='light'] .panel-base .text-teal-200,
-  :root[data-theme='light'] .panel-base .text-rose-200 {
-    color: var(--ow-panel-text) !important;
->>>>>>> 7d5d50b69d2952ea275d05782d711d2549c59957
   }
 
   :root[data-theme='light'] .panel-base .text-slate-300\/60,
@@ -215,19 +182,10 @@ h3 {
     color: var(--ow-panel-muted) !important;
   }
 
-<<<<<<< HEAD
   .panel-base button:hover,
   .panel-base .action-button:hover {
     transform: translateY(-2px) scale(1.02);
     box-shadow: 0 10px 24px rgba(15, 23, 42, 0.55);
-=======
-  :root[data-theme='light'] .panel-base input,
-  :root[data-theme='light'] .panel-base textarea,
-  :root[data-theme='light'] .panel-base select {
-    background: rgba(15, 23, 42, 0.06) !important;
-    border-color: rgba(124, 58, 237, 0.24) !important;
-    color: var(--ow-panel-text) !important;
->>>>>>> 7d5d50b69d2952ea275d05782d711d2549c59957
   }
 
   :root[data-theme='light'] .panel-base input::placeholder,
@@ -235,7 +193,6 @@ h3 {
     color: rgba(15, 23, 42, 0.45) !important;
   }
 
-<<<<<<< HEAD
   .panel-base .rounded-lg.border:hover,
   .panel-base .rounded-xl.border:hover {
     transform: translateY(-2px) scale(1.01);
@@ -293,10 +250,6 @@ h3 {
     color: rgba(255, 255, 255, 0.67) !important;
     font-size: calc(0.875rem * 1.5) !important;
     font-family: "Play", "Segoe UI", sans-serif;
-=======
-  :root[data-theme='light'] .achievement-earned {
-    color: #6d28d9 !important;
->>>>>>> 7d5d50b69d2952ea275d05782d711d2549c59957
   }
 
   .panel-help {

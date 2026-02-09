@@ -135,18 +135,6 @@ export function LoginPage() {
   };
 
   return (
-<<<<<<< HEAD
-    <div className="relative min-h-screen bg-gradient-to-b from-slate-800/85 via-slate-900/80 to-slate-950/85 flex items-center justify-center px-4 py-0 sm:px-8 sm:py-12">
-      <div className="absolute left-6 top-6 hidden sm:block">
-        <Shield className="w-20 h-20 sm:w-24 sm:h-24 text-amber-400" />
-      </div>
-      <div className="w-full max-w-2xl relative z-10">
-        <div className="relative bg-transparent rounded-lg border-0 p-0 sm:p-20 shadow-none text-[200%] text-center">
-          <div className="text-center mb-6 sm:mb-8 hidden sm:block">
-            <h1 className="text-amber-400 mb-3 sm:mb-2">
-              Our way
-            </h1>
-=======
     <div className="relative min-h-[100svh] flex items-center justify-center px-4 py-10 overflow-hidden">
       <div className="pointer-events-none absolute -top-24 -left-24 h-[420px] w-[420px] rounded-full bg-teal-400/20 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-24 h-[520px] w-[520px] rounded-full bg-purple-500/20 blur-3xl" />
@@ -157,13 +145,9 @@ export function LoginPage() {
             <Shield className="w-10 h-10 text-teal-300" />
             <div className="min-w-0">
               <h1 className={`text-2xl sm:text-3xl leading-tight ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                {title}
+                Our way
               </h1>
-              <p className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
-                Командное саморазвитие через квесты, направления и кланы
-              </p>
             </div>
->>>>>>> 7d5d50b69d2952ea275d05782d711d2549c59957
           </div>
           {mode !== 'select' && (
             <Button

@@ -209,18 +209,9 @@ export function HomePage() {
             <Home className="w-5 h-5 text-teal-300" />
             <h2 className="text-slate-100">Главная</h2>
           </div>
-<<<<<<< HEAD
-          <div className="flex flex-col items-center gap-8 sm:gap-10">
-            <div className="w-full grid grid-cols-1 xl:grid-cols-[minmax(0,520px)_minmax(0,1fr)] gap-8">
-              <div className="w-full">
-                <div className="panel-base panel-teal min-h-[520px]">
-                  <div className="panel-caption text-left">Профиль героя</div>
-                  <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
-=======
->>>>>>> 7d5d50b69d2952ea275d05782d711d2549c59957
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 place-items-stretch">
-            <div className="panel-base panel-teal p-6 lg:min-h-[336px] flex flex-col">
+            <div className="panel-base panel-teal p-6 lg:min-h-[520px] flex flex-col">
               <div className="panel-caption text-left">Панель героя</div>
               <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
               <div className="mt-6">
@@ -245,7 +236,7 @@ export function HomePage() {
               </div>
             </div>
 
-            <div className="panel-base panel-orange p-6 lg:min-h-[336px] flex flex-col">
+            <div className="panel-base panel-orange p-6 lg:min-h-[520px] flex flex-col">
               <div className="panel-caption text-left">Направления</div>
               <div className="space-y-3">
                 <p className="text-xs text-slate-300/70">
@@ -316,36 +307,12 @@ export function HomePage() {
               </div>
             </div>
 
-<<<<<<< HEAD
-              <div className="w-full">
-                <div className="panel-base panel-sky w-full min-h-[520px]">
-                  <div className="panel-caption text-left">Мои квесты по направлениям</div>
-                  {loading ? (
-                    <p className="text-center text-purple-200/60">Загрузка...</p>
-                  ) : (
-                    <div className="grid grid-cols-1 gap-6">
-                      {[...focuses, { id: 0, name: 'Без направления', created_at: '' }].map((focus) => {
-                        const focusQuests =
-                          focus.id === 0
-                            ? quests.filter((q) => !q.focuses || q.focuses.length === 0)
-                            : quests.filter((q) => q.focuses?.some((f) => f.id === focus.id));
-                        if (focusQuests.length === 0) {
-                          return null;
-                        }
-                        return (
-                          <div key={focus.id} className="rounded-lg border border-purple-700/30 bg-slate-950/40 p-4">
-                            <h3 className="text-purple-200 mb-3">{focus.name}</h3>
-                            <QuestList quests={focusQuests} onComplete={handleCompleteQuest} onDelete={handleDeleteQuest} />
-                          </div>
-                        );
-                      })}
-=======
-            <div className="panel-base panel-purple p-6 lg:min-h-[336px] flex flex-col">
+            <div className="panel-base panel-purple p-6 lg:min-h-[520px] flex flex-col">
               <div className="panel-caption text-left">История</div>
               <TaskHistoryPanel quests={quests} />
             </div>
 
-            <div className="panel-base panel-sky p-6 lg:col-span-3">
+            <div className="panel-base panel-sky p-6 lg:col-span-3 lg:min-h-[520px]">
               <div className="panel-caption text-left">Квесты по направлениям</div>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                 {focusCards.map((focus) => {
@@ -396,7 +363,6 @@ export function HomePage() {
                           )}
                         </div>
                       )}
->>>>>>> 7d5d50b69d2952ea275d05782d711d2549c59957
                     </div>
                   );
                 })}

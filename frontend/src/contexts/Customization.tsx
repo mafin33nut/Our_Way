@@ -7,11 +7,8 @@ interface CustomizationContextType {
 }
 const defaultSettings: CustomizationSettings = {
   theme: 'dark',
-<<<<<<< HEAD
   background: 'dynamic',
   customBackgroundUrl: '',
-=======
->>>>>>> 7d5d50b69d2952ea275d05782d711d2549c59957
   soundEnabled: true,
   showHelp: true,
 };

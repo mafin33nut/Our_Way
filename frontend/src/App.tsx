@@ -12,6 +12,7 @@ import { SettingsPage } from './components/pages/SettingsPage';
 import { AchievementsPage } from './components/pages/AchievementsPage';
 import { WelcomePage } from './components/pages/WelcomePage';
 import { useAuth } from './hooks/useAuth';
+import { useCustomization } from './hooks/useCustomization';
 
 function HomeRoute() {
   const { user } = useAuth();
@@ -23,18 +24,14 @@ function HomeRoute() {
 
 function AppLayout({ children }: { children: ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-<<<<<<< HEAD
   const { settings } = useCustomization();
   const isLight = settings.theme === 'light';
-=======
->>>>>>> 7d5d50b69d2952ea275d05782d711d2549c59957
   useEffect(() => {
     if (typeof window !== 'undefined' && window.innerWidth <= 768) {
       setIsSidebarOpen(false);
     }
   }, []);
   return (
-<<<<<<< HEAD
     <div className={`relative min-h-screen ${isLight ? 'ow-theme-light' : 'ow-theme-dark'}`}>
       {settings.background === 'dynamic' && (
         <div className="fixed inset-0 z-0 pointer-events-none">
@@ -50,9 +47,6 @@ function AppLayout({ children }: { children: ReactNode }) {
           </video>
         </div>
       )}
-=======
-    <div className="relative min-h-screen">
->>>>>>> 7d5d50b69d2952ea275d05782d711d2549c59957
       <div className="relative z-10">
         <Header
           isSidebarOpen={isSidebarOpen}
