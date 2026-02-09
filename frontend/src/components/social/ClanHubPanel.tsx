@@ -214,19 +214,18 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
               </div>
 
               <div className="h-[calc(100%-72px)] overflow-y-auto px-[28px] py-[28px] space-y-[19px]">
-                {!user && (
+                {!user ? (
                   <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
                     Войдите, чтобы управлять кланами.
                   </div>
-                )}
-                {user && (
-                    <div
-                      className={
-                        isLight
-                          ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-6'
-                          : 'panel-base panel-teal p-6'
-                      }
-                    >
+                ) : (
+                  <div
+                    className={
+                      isLight
+                        ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-6'
+                        : 'panel-base panel-teal p-6'
+                    }
+                  >
                       <div className="flex items-center gap-2 mb-4">
                         <Crown className="w-5 h-5 text-teal-300" />
                         <h2 className={isLight ? 'text-slate-900' : 'text-slate-100'}>Найти / вступить / создать клан</h2>
@@ -449,7 +448,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                           </div>
                         )}
                       </div>
-                )}
+                  )}
               </div>
             </div>
           </div>,
