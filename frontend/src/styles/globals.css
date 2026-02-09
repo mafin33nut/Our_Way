@@ -267,6 +267,11 @@ h3 {
     color: #ffffff !important;
   }
 
+  /* В светлой теме action-кнопки внутри панелей всегда тёмные с белым текстом */
+  .ow-theme-light .panel-base .action-button {
+    background-color: #020617 !important;
+  }
+
   .panel-base button:hover,
   .panel-base .action-button:hover {
     transform: translateY(-2px) scale(1.02);
