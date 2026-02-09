@@ -19,20 +19,24 @@ export function Button({
     'rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium leading-snug font-sans transform-gpu';
 
   const variantStyles = {
-    // Все основные варианты кнопок — чёрные с белым текстом
-    primary:
-      'bg-black text-white hover:bg-neutral-900 border border-black shadow-md',
-    secondary:
-      'bg-black text-white hover:bg-neutral-900 border border-black shadow-md',
+    primary: isLight
+      ? 'bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 shadow-md'
+      : 'bg-teal-400/90 text-slate-900 hover:bg-teal-300 shadow-md border border-teal-300/60',
+    secondary: isLight
+      ? 'bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 shadow-md'
+      : 'bg-slate-700/60 text-slate-100 hover:bg-slate-700 border border-slate-600/60 shadow-sm',
     ghost: isLight
       ? 'text-slate-900 hover:bg-slate-100 border border-transparent'
       : 'text-slate-100 hover:bg-slate-700/60 border border-slate-600/60',
-    orange:
-      'bg-black text-white hover:bg-neutral-900 border border-black shadow-md',
-    darkOrange:
-      'bg-black text-white hover:bg-neutral-900 border border-black shadow-md',
-    softAmber:
-      'bg-black text-white hover:bg-neutral-900 border border-black shadow-md',
+    orange: isLight
+      ? 'bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 shadow-md'
+      : 'bg-amber-400/80 text-slate-900 hover:bg-amber-400 border border-amber-300/60 shadow-sm',
+    darkOrange: isLight
+      ? 'bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 shadow-md'
+      : 'bg-amber-300/70 text-slate-900 hover:bg-amber-300 border border-amber-300/60 shadow-sm',
+    softAmber: isLight
+      ? 'bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 shadow-md'
+      : 'bg-amber-300/60 text-slate-900 hover:bg-amber-300 border border-amber-300/50 shadow-sm',
   };
   const sizeStyles = {
     sm: 'px-2 py-1.5 text-xs',

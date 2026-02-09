@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Quest } from '../../types';
 import { Button } from '../ui/Button';
 import { questStepsAPI } from '../../api/quests';
+import { useCustomization } from '../../hooks/useCustomization';
 
 interface QuestCardProps {
   quest: Quest;
@@ -13,6 +14,8 @@ interface QuestCardProps {
 export function QuestCard({ quest, onComplete, onDelete, onStepComplete }: QuestCardProps) {
   const [steps, setSteps] = useState(quest.steps ?? []);
   const [now, setNow] = useState(Date.now());
+  const { settings } = useCustomization();
+  const isLight = settings.theme === 'light';
 
   useEffect(() => {
     setSteps(quest.steps ?? []);
@@ -47,11 +50,19 @@ export function QuestCard({ quest, onComplete, onDelete, onStepComplete }: Quest
   const remainingSeconds = remainingMs > 0 ? Math.ceil(remainingMs / 1000) : 0;
 
   return (
-    <div className="rounded-2xl bg-slate-950/30 px-4 py-3">
+    <div
+      className={`rounded-2xl px-4 py-3 ${
+        isLight
+          ? 'bg-white border border-slate-200 text-slate-900'
+          : 'bg-slate-950/30 text-slate-100'
+      }`}
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h3 className="text-slate-100 text-sm font-semibold truncate">{quest.title}</h3>
-          {quest.description && <p className="text-xs text-slate-300/70 mt-1">{quest.description}</p>}
+          <h3 className="text-sm font-semibold truncate">{quest.title}</h3>
+          {quest.description && (
+            <p className="text-xs text-slate-300/70 mt-1">{quest.description}</p>
+          )}
         </div>
         {quest.completed && (
           <span className="text-xs px-3 py-1 rounded-full bg-teal-400/15 text-teal-100 shrink-0">
@@ -63,7 +74,15 @@ export function QuestCard({ quest, onComplete, onDelete, onStepComplete }: Quest
         <div className="mt-3 space-y-2">
           {steps.map((step) => (
             <div key={step.id} className="flex items-center justify-between gap-2 text-sm">
-              <span className={step.completed ? 'text-slate-300/60 line-through' : 'text-slate-100'}>
+              <span
+                className={
+                  step.completed
+                    ? 'text-slate-300/60 line-through'
+                    : isLight
+                    ? 'text-slate-900'
+                    : 'text-slate-100'
+                }
+              >
                 {step.title}
               </span>
               {!step.completed && (

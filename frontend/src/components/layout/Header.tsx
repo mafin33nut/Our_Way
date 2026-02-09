@@ -1,4 +1,5 @@
 import { LogOut, PanelLeftClose, PanelLeftOpen, Settings } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
 import { Button } from '../ui/Button';
@@ -15,6 +16,7 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
   const { user, logout } = useAuth();
   const { settings } = useCustomization();
   const isLight = settings.theme === 'light';
+  const navigate = useNavigate();
 
   return (
     <div
@@ -50,6 +52,7 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
               <Button
                 variant="ghost"
                 size="md"
+                onClick={() => navigate('/settings')}
                 className={`hidden sm:inline-flex items-center gap-2 border-0 ${
                   isLight ? 'text-slate-900' : 'text-slate-100'
                 }`}

@@ -263,11 +263,16 @@ export function HomePage() {
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     {pinnedAchievements.map((slot) => (
-                      <div key={slot.id} className="rounded-xl bg-slate-950/35 px-4 py-3">
-                        <p className="text-sm text-slate-100 achievement-earned">{slot.title}</p>
-                        <p className="text-xs text-slate-300/70 achievement-earned">
-                          Квестов: {slot.req}
-                        </p>
+                      <div
+                        key={slot.id}
+                        className={`rounded-xl px-4 py-3 ${
+                          isLight
+                            ? 'bg-white border border-slate-200 text-slate-900'
+                            : 'bg-slate-950/35 text-slate-100'
+                        }`}
+                      >
+                        <p className="text-sm achievement-earned">{slot.title}</p>
+                        <p className="text-xs achievement-earned">Квестов: {slot.req}</p>
                       </div>
                     ))}
                   </div>
@@ -288,7 +293,11 @@ export function HomePage() {
                   {focuses.map((focus) => (
                     <div
                       key={focus.id}
-                      className={`px-3 py-2 rounded-xl bg-slate-950/30 shadow-[0_10px_22px_-16px_rgba(0,0,0,0.7)] backdrop-blur-sm transition-all ${
+                      className={`px-3 py-2 rounded-xl transition-all ${
+                        isLight
+                          ? 'bg-white border border-slate-200'
+                          : 'bg-slate-950/30 shadow-[0_10px_22px_-16px_rgba(0,0,0,0.7)] backdrop-blur-sm'
+                      } ${
                         selectedFocusId === focus.id
                           ? 'ring-2 ring-amber-300/50'
                           : 'hover:ring-2 hover:ring-white/10'
@@ -328,7 +337,11 @@ export function HomePage() {
                     value={newFocusName}
                     onChange={(e) => setNewFocusName(e.target.value)}
                     placeholder="Новое направление"
-                    className="flex-1 rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                    className={`flex-1 rounded-xl border px-4 py-3 ${
+                      isLight
+                        ? 'border-slate-300 bg-white text-slate-900'
+                        : 'border-slate-600/30 bg-slate-950/40 text-slate-100'
+                    }`}
                   />
                   <Button onClick={handleAddFocus} size="sm" className="action-button">
                     Добавить
@@ -338,8 +351,12 @@ export function HomePage() {
 
                 <div className="mt-4">
                   <p className="text-xs text-slate-300/70 mb-2">Выбранное направление</p>
-                  <div className="rounded-xl bg-slate-950/30 px-4 py-3">
-                    <p className="text-sm text-slate-100">
+                  <div
+                    className={`rounded-xl px-4 py-3 ${
+                      isLight ? 'bg-white border border-slate-200 text-slate-900' : 'bg-slate-950/30 text-slate-100'
+                    }`}
+                  >
+                    <p className="text-sm">
                       {selectedFocusId
                         ? focuses.find((f) => f.id === selectedFocusId)?.name || '—'
                         : 'Без направления'}
@@ -367,12 +384,16 @@ export function HomePage() {
                   const completedToday = focusQuests.filter((q) => q.completed && q.completed_at && isToday(q.completed_at));
 
                   return (
-                    <div
-                      key={focus.id}
-                      className="rounded-2xl bg-slate-950/25 px-5 py-4 shadow-[0_14px_32px_-24px_rgba(0,0,0,0.75)]"
-                    >
+                  <div
+                    key={focus.id}
+                    className={`rounded-2xl px-5 py-4 ${
+                      isLight
+                        ? 'bg-white border border-slate-200 text-slate-900'
+                        : 'bg-slate-950/25 shadow-[0_14px_32px_-24px_rgba(0,0,0,0.75)] text-slate-100'
+                    }`}
+                  >
                       <div className="flex items-center justify-between gap-3 mb-3">
-                        <h3 className="text-slate-100 truncate">{focus.name}</h3>
+                        <h3 className="truncate">{focus.name}</h3>
                         <span className="text-xs text-slate-300/70 shrink-0">
                           {active.length} активн.
                         </span>
@@ -431,9 +452,13 @@ export function HomePage() {
                       key={item.id}
                       type="button"
                       onClick={() => setOpenFaqId((prev) => (prev === item.id ? null : item.id))}
-                      className="w-full text-left rounded-2xl border border-slate-600/40 bg-slate-950/30 px-4 py-3 transition-colors hover:border-teal-300/50"
+                      className={`w-full text-left rounded-2xl px-4 py-3 transition-colors ${
+                        isLight
+                          ? 'bg-white border border-slate-200 text-slate-900 hover:border-teal-300/60'
+                          : 'border border-slate-600/40 bg-slate-950/30 hover:border-teal-300/50 text-slate-100'
+                      }`}
                     >
-                      <p className="text-sm text-slate-100">{item.question}</p>
+                      <p className="text-sm">{item.question}</p>
                       {isOpen && (
                         <p className="mt-2 text-xs text-slate-300/80">
                           {item.answer}
@@ -476,21 +501,33 @@ export function HomePage() {
                       value={taskTitle}
                       onChange={(e) => setTaskTitle(e.target.value)}
                       placeholder="Название квеста"
-                      className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                      className={`w-full rounded-xl border px-4 py-3 ${
+                        isLight
+                          ? 'border-slate-300 bg-white text-slate-900'
+                          : 'border-slate-600/30 bg-slate-950/40 text-slate-100'
+                      }`}
                     />
                     <textarea
                       value={taskDescription}
                       onChange={(e) => setTaskDescription(e.target.value)}
                       placeholder="Описание"
                       rows={4}
-                      className="w-full min-h-[120px] rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                      className={`w-full min-h-[120px] rounded-xl border px-4 py-3 ${
+                        isLight
+                          ? 'border-slate-300 bg-white text-slate-900'
+                          : 'border-slate-600/30 bg-slate-950/40 text-slate-100'
+                      }`}
                     />
                     <div className="flex items-center gap-3">
                       <label className="text-sm text-slate-200/80">Направление:</label>
                       <select
                         value={selectedFocusId ?? ''}
                         onChange={(e) => setSelectedFocusId(e.target.value ? Number(e.target.value) : null)}
-                        className="rounded-xl border border-slate-600/30 bg-slate-950/40 px-3 py-3 text-slate-100"
+                        className={`rounded-xl border px-3 py-3 ${
+                          isLight
+                            ? 'border-slate-300 bg-white text-slate-900'
+                            : 'border-slate-600/30 bg-slate-950/40 text-slate-100'
+                        }`}
                       >
                         <option value="">Без направления</option>
                         {focuses.map((focus) => (
@@ -502,7 +539,13 @@ export function HomePage() {
                     </div>
                   </div>
 
-                  <div className="rounded-2xl bg-slate-950/25 p-5 space-y-3">
+                  <div
+                    className={`rounded-2xl p-5 space-y-3 ${
+                      isLight
+                        ? 'bg-white border border-slate-200 text-slate-900'
+                        : 'bg-slate-950/25 text-slate-200/80'
+                    }`}
+                  >
                     <p className="text-sm text-slate-200/80">Тип квеста</p>
                     <label className="text-sm text-slate-200/80 flex items-center gap-2">
                       <input
@@ -528,7 +571,11 @@ export function HomePage() {
                       <select
                         value={taskDifficulty}
                         onChange={(e) => setTaskDifficulty(e.target.value as TaskDifficulty)}
-                        className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-3 py-3 text-slate-100"
+                        className={`w-full rounded-xl border px-3 py-3 ${
+                          isLight
+                            ? 'border-slate-300 bg-white text-slate-900'
+                            : 'border-slate-600/30 bg-slate-950/40 text-slate-100'
+                        }`}
                       >
                         <option value="easy">Легкая</option>
                         <option value="medium">Средняя</option>
@@ -562,7 +609,11 @@ export function HomePage() {
                               setSteps(copy);
                             }}
                             placeholder={`Шаг ${idx + 1}`}
-                            className="flex-1 rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                            className={`flex-1 rounded-xl border px-4 py-3 ${
+                              isLight
+                                ? 'border-slate-300 bg-white text-slate-900'
+                                : 'border-slate-600/30 bg-slate-950/40 text-slate-100'
+                            }`}
                           />
                           <select
                             value={step.difficulty}
@@ -571,7 +622,11 @@ export function HomePage() {
                               copy[idx] = { ...copy[idx], difficulty: e.target.value as TaskDifficulty };
                               setSteps(copy);
                             }}
-                            className="sm:w-48 rounded-xl border border-slate-600/30 bg-slate-950/40 px-3 py-3 text-slate-100"
+                            className={`sm:w-48 rounded-xl border px-3 py-3 ${
+                              isLight
+                                ? 'border-slate-300 bg-white text-slate-900'
+                                : 'border-slate-600/30 bg-slate-950/40 text-slate-100'
+                            }`}
                           >
                             <option value="easy">Легкая</option>
                             <option value="medium">Средняя</option>
@@ -599,7 +654,7 @@ export function HomePage() {
                   <Button
                     variant="ghost"
                     onClick={() => setIsCreateOpen(false)}
-                    className="bg-slate-950/25"
+                    className={isLight ? '' : 'bg-slate-950/25'}
                   >
                     Закрыть
                   </Button>

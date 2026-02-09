@@ -3,6 +3,7 @@ import { Award, CheckCircle2, Lock, Pin, PinOff } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { authAPI } from '../../api/auth';
 import { Button } from '../ui/Button';
+import { useCustomization } from '../../hooks/useCustomization';
 
 type AchievementSlot = {
   id: string;
@@ -25,11 +26,13 @@ const MAX_PINS = 3;
 
 export function AchievementsPage() {
   const { user, refreshUser } = useAuth();
+  const { settings } = useCustomization();
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
 
   const total = user?.total_quests_completed || 0;
   const pinnedIds = user?.pinned_achievements || [];
+  const isLight = settings.theme === 'light';
 
   const unlocked = useMemo(() => ACHIEVEMENT_SLOTS.filter((slot) => total >= slot.req), [total]);
 
@@ -82,8 +85,14 @@ export function AchievementsPage() {
               </div>
             </div>
             {status && (
-              <div className="mt-4 rounded-xl bg-slate-950/30 px-4 py-3">
-                <p className="text-sm text-slate-100">{status}</p>
+              <div
+                className={`mt-4 rounded-xl px-4 py-3 ${
+                  isLight
+                    ? 'bg-white border border-slate-200 text-slate-900'
+                    : 'bg-slate-950/30 text-slate-100'
+                }`}
+              >
+                <p className="text-sm">{status}</p>
               </div>
             )}
           </div>
@@ -97,9 +106,11 @@ export function AchievementsPage() {
                 return (
                   <div
                     key={slot.id}
-                    className={`rounded-2xl px-5 py-4 bg-slate-950/25 shadow-[0_14px_32px_-24px_rgba(0,0,0,0.75)] ${
-                      isUnlocked ? '' : 'opacity-70'
-                    }`}
+                    className={`rounded-2xl px-5 py-4 ${
+                      isLight
+                        ? 'bg-white border border-slate-200 text-slate-900'
+                        : 'bg-slate-950/25 shadow-[0_14px_32px_-24px_rgba(0,0,0,0.75)] text-slate-100'
+                    } ${isUnlocked ? '' : 'opacity-70'}`}
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">

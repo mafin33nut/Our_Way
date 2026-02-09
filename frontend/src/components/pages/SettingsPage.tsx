@@ -15,6 +15,7 @@ export function SettingsPage() {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
+  const isLight = settings.theme === 'light';
 
   const avatarPreview = useMemo(() => {
     if (!avatarFile) return null;
@@ -102,7 +103,11 @@ export function SettingsPage() {
                         const file = e.target.files?.[0] || null;
                         setAvatarFile(file);
                       }}
-                      className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                      className={`w-full rounded-xl border px-4 py-3 ${
+                        isLight
+                          ? 'border-slate-300 bg-white text-slate-900'
+                          : 'border-slate-600/30 bg-slate-950/40 text-slate-100'
+                      }`}
                     />
                     <p className="text-xs text-slate-300/60 mt-2">Выберите изображение PNG/JPG/WebP.</p>
                   </div>
@@ -114,7 +119,11 @@ export function SettingsPage() {
                       onChange={(e) => setBio(e.target.value)}
                       rows={4}
                       placeholder="Добавьте короткое описание"
-                      className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                      className={`w-full rounded-xl border px-4 py-3 ${
+                        isLight
+                          ? 'border-slate-300 bg-white text-slate-900'
+                          : 'border-slate-600/30 bg-slate-950/40 text-slate-100'
+                      }`}
                     />
                   </div>
 
@@ -136,8 +145,14 @@ export function SettingsPage() {
                       <button
                         type="button"
                         onClick={() => updateSettings({ theme: 'dark' })}
-                        className={`rounded-2xl px-5 py-4 bg-slate-950/25 transition-all ${
-                          settings.theme === 'dark' ? 'ring-2 ring-teal-300/50' : 'hover:ring-2 hover:ring-white/10'
+                        className={`rounded-2xl px-5 py-4 transition-all ${
+                          settings.theme === 'dark'
+                            ? isLight
+                              ? 'bg-slate-900 text-slate-100 ring-2 ring-teal-300/50'
+                              : 'bg-slate-950/25 ring-2 ring-teal-300/50'
+                            : isLight
+                            ? 'bg-white border border-slate-200 hover:ring-2 hover:ring-slate-300/80'
+                            : 'bg-slate-950/25 hover:ring-2 hover:ring-white/10'
                         }`}
                       >
                         <Moon className="w-6 h-6 text-teal-200 mb-2" />
@@ -146,8 +161,10 @@ export function SettingsPage() {
                       <button
                         type="button"
                         onClick={() => updateSettings({ theme: 'light' })}
-                        className={`rounded-2xl px-5 py-4 bg-slate-950/25 transition-all ${
-                          settings.theme === 'light' ? 'ring-2 ring-purple-400/50' : 'hover:ring-2 hover:ring-white/10'
+                        className={`rounded-2xl px-5 py-4 transition-all ${
+                          settings.theme === 'light'
+                            ? 'bg-white border border-slate-200 ring-2 ring-purple-400/50'
+                            : 'bg-slate-950/25 hover:ring-2 hover:ring-white/10'
                         }`}
                       >
                         <Sun className="w-6 h-6 text-amber-300 mb-2" />
@@ -169,8 +186,14 @@ export function SettingsPage() {
                           playVictorySound();
                         }
                       }}
-                      className={`w-full rounded-2xl px-5 py-4 bg-slate-950/25 transition-all flex items-center justify-between ${
-                        settings.soundEnabled ? 'ring-2 ring-teal-300/40' : 'hover:ring-2 hover:ring-white/10'
+                      className={`w-full rounded-2xl px-5 py-4 transition-all flex items-center justify-between ${
+                        settings.soundEnabled
+                          ? isLight
+                            ? 'bg-white border border-teal-300/40 ring-2 ring-teal-300/40'
+                            : 'bg-slate-950/25 ring-2 ring-teal-300/40'
+                          : isLight
+                          ? 'bg-white border border-slate-200 hover:ring-2 hover:ring-slate-300/80'
+                          : 'bg-slate-950/25 hover:ring-2 hover:ring-white/10'
                       }`}
                     >
                       <span className="text-slate-100">
