@@ -138,7 +138,7 @@ export function HomePage() {
           <div className="flex flex-col items-center gap-8 sm:gap-10">
             <div className="w-full grid grid-cols-1 xl:grid-cols-[minmax(0,520px)_minmax(0,1fr)] gap-8">
               <div className="w-full">
-                <div className="panel-base panel-teal">
+                <div className="panel-base panel-teal min-h-[520px]">
                   <div className="panel-caption text-left">Профиль героя</div>
                   <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
 
@@ -179,7 +179,7 @@ export function HomePage() {
               </div>
 
               <div className="w-full">
-                <div className="panel-base panel-sky w-full">
+                <div className="panel-base panel-sky w-full min-h-[520px]">
                   <div className="panel-caption text-left">Мои квесты по направлениям</div>
                   {loading ? (
                     <p className="text-center text-purple-200/60">Загрузка...</p>

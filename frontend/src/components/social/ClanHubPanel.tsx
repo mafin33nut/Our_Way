@@ -140,7 +140,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                 </Button>
               </div>
 
-              <div className="h-[calc(100%-72px)] overflow-y-auto px-[19px] py-[19px] space-y-[19px]">
+              <div className="h-[calc(100%-72px)] overflow-y-auto px-[28px] py-[28px] space-y-[19px]">
                 {!user && (
                   <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
                     Войдите, чтобы управлять кланами.
@@ -148,7 +148,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                 )}
                 {user && (
                   <>
-                    <div className="panel-base panel-purple p-6">
+                    <div className="panel-base panel-purple">
                       <div className="flex items-center gap-2 mb-4">
                         <Crown className="w-5 h-5 text-teal-300" />
                         <h2 className="text-slate-100">Ваши кланы</h2>
@@ -194,10 +194,10 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                       )}
                     </div>
 
-                    <div className="panel-base panel-teal p-6">
+                    <div className="panel-base panel-teal">
                       <div className="flex items-center gap-2 mb-4">
                         <Crown className="w-5 h-5 text-teal-300" />
-                        <h2 className="text-slate-100">Найти или создать клан</h2>
+                        <h2 className="text-slate-100">Найти / создать кланы</h2>
                       </div>
                       <div className="rounded-lg border border-slate-600/40 bg-slate-950/40 p-4 mb-4">
                         <p className="text-sm text-slate-200 mb-2">Вступить в приватный клан по ссылке</p>

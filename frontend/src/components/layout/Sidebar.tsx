@@ -29,10 +29,10 @@ export function Sidebar({ isOpen, onToggleSidebar }: SidebarProps) {
         <button
           type="button"
           onClick={onToggleSidebar}
-          className={`flex flex-col items-center gap-2 rounded-xl px-4 py-4 text-lg transition-colors border ${
+          className={`flex flex-col items-center gap-2 rounded-xl px-4 py-4 text-lg transition-all shadow-md ${
             isLight
-              ? 'bg-white/80 border-slate-200 text-slate-700 hover:bg-white'
-              : 'bg-slate-800/60 border-slate-700/60 text-slate-200 hover:bg-slate-800/80'
+              ? 'bg-slate-100 text-slate-900 hover:bg-slate-200'
+              : 'bg-slate-800/70 text-slate-100 hover:bg-slate-700'
           }`}
           aria-label="Скрыть боковую панель"
         >
@@ -46,10 +46,14 @@ export function Sidebar({ isOpen, onToggleSidebar }: SidebarProps) {
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                `flex flex-col items-center gap-2 rounded-xl px-4 py-4 text-lg transition-colors border ${
+                `flex flex-col items-center gap-2 rounded-xl px-4 py-4 text-lg transition-all ${
                   isActive
-                    ? 'bg-teal-400/20 text-teal-100 border-teal-300/50'
-                    : 'text-slate-300/70 border-transparent hover:border-slate-600/60 hover:text-slate-100'
+                    ? isLight
+                      ? 'bg-teal-500/15 text-slate-900 shadow-md'
+                      : 'bg-teal-400/20 text-teal-100 shadow-md'
+                    : isLight
+                      ? 'text-slate-700 hover:bg-slate-100'
+                      : 'text-slate-300/70 hover:bg-slate-800/80 hover:text-slate-100'
                 }`
               }
             >

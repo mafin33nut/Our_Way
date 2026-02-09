@@ -6,7 +6,7 @@ interface CustomizationContextType {
   playVictorySound: () => void;
 }
 const defaultSettings: CustomizationSettings = {
-  theme: 'light',
+  theme: 'dark',
   background: 'dynamic',
   customBackgroundUrl: '',
   soundEnabled: true,

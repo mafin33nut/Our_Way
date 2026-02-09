@@ -143,10 +143,10 @@ export function ClansPage() {
             <Crown className="w-5 h-5 text-teal-300" />
             <h2 className="text-slate-100">Клановые квесты</h2>
           </div>
-          <div className="panel-base panel-purple p-6">
+          <div className="panel-base panel-purple">
             <div className="flex items-center gap-2 mb-4">
               <Crown className="w-5 h-5 text-teal-300" />
-              <h2 className="text-slate-100">Мои кланы</h2>
+              <h2 className="text-slate-100">Найти / создать кланы</h2>
             </div>
             <div className="rounded-lg border border-slate-600/40 bg-slate-950/40 p-4">
               {clans.length === 0 ? (

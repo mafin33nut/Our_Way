@@ -30,13 +30,14 @@ function HomeRoute() {
 function AppLayout({ children }: { children: ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const { settings } = useCustomization();
+  const isLight = settings.theme === 'light';
   useEffect(() => {
     if (typeof window !== 'undefined' && window.innerWidth <= 768) {
       setIsSidebarOpen(false);
     }
   }, []);
   return (
-    <div className="relative min-h-screen">
+    <div className={`relative min-h-screen ${isLight ? 'ow-theme-light' : 'ow-theme-dark'}`}>
       {settings.background === 'dynamic' && (
         <div className="fixed inset-0 z-0 pointer-events-none">
           <video

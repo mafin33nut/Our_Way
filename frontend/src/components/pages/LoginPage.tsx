@@ -111,7 +111,6 @@ export function LoginPage() {
             <h1 className="text-amber-400 mb-3 sm:mb-2">
               Our way
             </h1>
-            <p className="text-amber-200/60">Командное саморазвитие</p>
           </div>
           {!showForm && (
             <>
