@@ -349,7 +349,11 @@ export function HomePage() {
                         : 'border-slate-600/30 bg-slate-950/40 text-slate-100'
                     }`}
                   />
-                  <Button onClick={handleAddFocus} size="sm" className="action-button">
+                  <Button
+                    onClick={handleAddFocus}
+                    size="sm"
+                    className="action-button text-white"
+                  >
                     Добавить
                   </Button>
                 </div>

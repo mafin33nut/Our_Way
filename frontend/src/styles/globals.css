@@ -77,12 +77,15 @@ h3 {
 }
 
 @layer components {
-  /* Все React-кнопки (компонент Button) помечены классом ow-button:
-     внутри них текст и иконки всегда белые, независимо от темы.
-     Это не затрагивает обычные <button>, например в блоке "Вопросы и ответы". */
-  .ow-button,
-  .ow-button * {
-    color: #ffffff !important;
+  /* Базовые стили для React‑кнопок (компонент Button) */
+  .ow-button {
+    outline: none;
+  }
+
+  .ow-button:focus,
+  .ow-button:focus-visible {
+    outline: none;
+    box-shadow: none;
   }
 
   .panel-caption {
@@ -234,15 +237,23 @@ h3 {
   }
 
   .panel-base .text-xs {
-    color: rgba(255, 255, 255, 0.85) !important;
     font-size: calc(0.75rem * 1.35) !important;
     line-height: 1.5;
   }
 
   .panel-base .text-sm {
-    color: rgba(255, 255, 255, 0.85) !important;
     font-size: calc(0.875rem * 1.35) !important;
     line-height: 1.5;
+  }
+
+  .ow-theme-dark .panel-base .text-xs,
+  .ow-theme-dark .panel-base .text-sm {
+    color: rgba(255, 255, 255, 0.85) !important;
+  }
+
+  .ow-theme-light .panel-base .text-xs,
+  .ow-theme-light .panel-base .text-sm {
+    color: #0f172a !important;
   }
 
   .panel-base .text-slate-300\/60,
@@ -281,9 +292,16 @@ h3 {
   }
 
   .panel-base .panel-comment {
-    color: rgba(255, 255, 255, 0.67) !important;
     font-size: calc(0.875rem * 1.5) !important;
     font-family: "Play", "Segoe UI", sans-serif;
+  }
+
+  .ow-theme-dark .panel-base .panel-comment {
+    color: rgba(255, 255, 255, 0.67) !important;
+  }
+
+  .ow-theme-light .panel-base .panel-comment {
+    color: var(--ow-panel-muted) !important;
   }
 
   .panel-help {

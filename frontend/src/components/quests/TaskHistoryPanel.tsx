@@ -1,12 +1,15 @@
 import { CheckCircle2, ClipboardList } from 'lucide-react';
 import { Quest } from '../../types';
 import { formatTime, isToday } from '../../utils/time';
+import { useCustomization } from '../../hooks/useCustomization';
 
 interface TaskHistoryPanelProps {
   quests: Quest[];
 }
 
 export function TaskHistoryPanel({ quests }: TaskHistoryPanelProps) {
+  const { settings } = useCustomization();
+  const isLight = settings.theme === 'light';
   const completed = quests.filter((q) => q.completed && q.completed_at);
   const completedToday = completed.filter((q) => q.completed_at && isToday(q.completed_at));
   const xpToday = completedToday.reduce((sum, q) => sum + (q.xp_reward || 0), 0);
@@ -22,13 +25,25 @@ export function TaskHistoryPanel({ quests }: TaskHistoryPanelProps) {
       </div>
 
       <div className="grid grid-cols-2 gap-3 mb-4">
-        <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-3">
+        <div
+          className={`rounded-lg border p-3 ${
+            isLight
+              ? 'border-slate-200 bg-white text-slate-900'
+              : 'border-slate-600/40 bg-slate-900/50 text-slate-100'
+          }`}
+        >
           <p className="text-xs text-slate-300/70">Сегодня выполнено</p>
-          <p className="text-lg text-slate-100">{completedToday.length}</p>
+          <p className="text-lg">{completedToday.length}</p>
         </div>
-        <div className="rounded-lg border border-slate-600/40 bg-slate-900/50 p-3">
+        <div
+          className={`rounded-lg border p-3 ${
+            isLight
+              ? 'border-slate-200 bg-white text-slate-900'
+              : 'border-slate-600/40 bg-slate-900/50 text-slate-100'
+          }`}
+        >
           <p className="text-xs text-slate-300/70">XP сегодня</p>
-          <p className="text-lg text-slate-100">{xpToday}</p>
+          <p className="text-lg">{xpToday}</p>
         </div>
       </div>
 
@@ -37,7 +52,11 @@ export function TaskHistoryPanel({ quests }: TaskHistoryPanelProps) {
         {recent.map((quest) => (
           <div
             key={quest.id}
-            className="flex items-start gap-2 rounded-lg border border-slate-600/40 bg-slate-900/50 p-3"
+            className={`flex items-start gap-2 rounded-lg border p-3 ${
+              isLight
+                ? 'border-slate-200 bg-white text-slate-900'
+                : 'border-slate-600/40 bg-slate-900/50 text-slate-100'
+            }`}
           >
             <CheckCircle2 className="w-4 h-4 text-teal-300 mt-0.5" />
             <div className="min-w-0">
