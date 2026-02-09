@@ -353,7 +353,7 @@ h3 {
   }
 
   /* Theme-aware text and background for panels */
-  /* Во всех темах панели и текст внутри них — чёрные без динамики */
+  /* Во всех темах панели — белые без динамики, основной текст тёмный */
   .ow-theme-dark .panel-base,
   .ow-theme-light .panel-base {
     background: #ffffff;
@@ -363,6 +363,14 @@ h3 {
   .ow-theme-dark .panel-base *,
   .ow-theme-light .panel-base * {
     color: #000000 !important;
+  }
+
+  /* Но сами чёрные кнопки и всё внутри них — с белым текстом */
+  .ow-theme-dark .panel-base button,
+  .ow-theme-dark .panel-base button *,
+  .ow-theme-light .panel-base button,
+  .ow-theme-light .panel-base button * {
+    color: #ffffff !important;
   }
 
   /* Uniform inner padding for inner boxes in panels */
@@ -377,10 +385,10 @@ h3 {
     background-color: #ffffff !important;
   }
 
-  /* Весь текст по умолчанию чёрный */
-  body,
-  body * {
-    color: #000000 !important;
+  /* Весь основной текст по умолчанию чёрный,
+     но даём элементам (например, кнопкам) право его переопределять */
+  body {
+    color: #000000;
   }
 }
 
