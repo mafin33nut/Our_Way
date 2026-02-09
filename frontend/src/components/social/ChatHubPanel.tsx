@@ -383,7 +383,7 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
                                 </div>
                               )}
 
-                              <div className="flex-1 overflow-y-auto space-y-3 pr-1">
+                            <div className="flex-1 overflow-y-auto space-y-3 pr-1">
                                 {loadingClanMessages ? (
                                   <div className="text-center py-4 text-purple-200/60 text-sm">
                                     Загрузка сообщений...
@@ -403,10 +403,22 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
                                           message.user === user?.id ? 'justify-end' : 'justify-start'
                                         }`}
                                       >
-                                        <div className="max-w-[85%] px-4 py-3 rounded-2xl bg-slate-950/20 text-purple-100">
+                                        <div
+                                          className={`max-w-[85%] px-4 py-3 rounded-2xl ${
+                                            isLight
+                                              ? 'bg-white border border-slate-200 text-slate-900'
+                                              : 'bg-slate-950/20 text-purple-100'
+                                          }`}
+                                        >
                                           {showAuthor && (
                                             <div className="mb-1">
-                                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-purple-500/15 text-xs text-purple-100">
+                                              <span
+                                                className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs ${
+                                                  isLight
+                                                    ? 'bg-slate-100 text-slate-700'
+                                                    : 'bg-purple-500/15 text-purple-100'
+                                                }`}
+                                              >
                                                 {message.username || 'Участник'}
                                               </span>
                                             </div>
@@ -436,7 +448,11 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
                                     }
                                   }}
                                   placeholder="Напишите сообщение..."
-                                  className="flex-1 rounded-xl border border-purple-600/25 bg-slate-950/30 px-4 py-3 text-purple-100"
+                                  className={`flex-1 rounded-xl border px-4 py-3 ${
+                                    isLight
+                                      ? 'border-slate-300 bg-white text-slate-900'
+                                      : 'border-purple-600/25 bg-slate-950/30 text-purple-100'
+                                  }`}
                                   disabled={!isClanMember}
                                 />
                                 <Button
@@ -508,9 +524,11 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
                                     >
                                       <div
                                         className={`max-w-[85%] px-4 py-3 rounded-2xl ${
-                                          message.senderId === user?.id
-                                            ? 'bg-purple-500/15 text-purple-50'
-                                            : 'bg-slate-950/20 text-purple-100'
+                                          isLight
+                                            ? 'bg-white border border-slate-200 text-slate-900'
+                                            : message.senderId === user?.id
+                                              ? 'bg-purple-500/15 text-purple-50'
+                                              : 'bg-slate-950/20 text-purple-100'
                                         }`}
                                       >
                                         <p className="text-sm leading-snug whitespace-pre-wrap">{message.text}</p>
@@ -531,7 +549,11 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
                                     }
                                   }}
                                   placeholder="Напишите сообщение..."
-                                  className="flex-1 rounded-xl border border-purple-600/25 bg-slate-950/30 px-4 py-3 text-purple-100"
+                                  className={`flex-1 rounded-xl border px-4 py-3 ${
+                                    isLight
+                                      ? 'border-slate-300 bg-white text-slate-900'
+                                      : 'border-purple-600/25 bg-slate-950/30 text-purple-100'
+                                  }`}
                                 />
                                 <Button
                                   onClick={handleSendMessage}
