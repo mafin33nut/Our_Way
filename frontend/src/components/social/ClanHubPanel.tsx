@@ -220,7 +220,6 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                   </div>
                 )}
                 {user && (
-                  <>
                     <div
                       className={
                         isLight
@@ -450,7 +449,6 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                           </div>
                         )}
                       </div>
-                  </>
                 )}
               </div>
             </div>
