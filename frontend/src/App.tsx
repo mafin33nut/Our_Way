@@ -33,20 +33,7 @@ function AppLayout({ children }: { children: ReactNode }) {
   }, []);
   return (
     <div className={`relative min-h-screen ${isLight ? 'ow-theme-light' : 'ow-theme-dark'}`}>
-      {settings.background === 'dynamic' && (
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <video
-            className="w-full h-full object-cover opacity-20 sm:opacity-25"
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster="/neon-background.mp4"
-          >
-            <source src="/neon-background.mp4" type="video/mp4" />
-          </video>
-        </div>
-      )}
+      {/* Убрали динамический видео‑фон, используем только градиенты из CSS */}
       <div className="relative z-10">
         <Header
           isSidebarOpen={isSidebarOpen}

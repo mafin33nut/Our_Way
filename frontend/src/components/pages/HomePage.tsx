@@ -73,7 +73,7 @@ const FAQ_ITEMS: FaqItem[] = [
 
 export function HomePage() {
   const { user, refreshUser } = useAuth();
-  const { playVictorySound } = useCustomization();
+  const { playVictorySound, settings } = useCustomization();
 
   const [quests, setQuests] = useState<Quest[]>([]);
   const [focuses, setFocuses] = useState<UserFocus[]>([]);
@@ -233,6 +233,7 @@ export function HomePage() {
   );
 
   const [openFaqId, setOpenFaqId] = useState<string | null>(null);
+  const isLight = settings.theme === 'light';
 
   if (!user) {
     return <Loader />;
@@ -409,11 +410,15 @@ export function HomePage() {
                 })}
               </div>
 
-              <div className="mt-6 flex justify-center">
-                <Button onClick={() => setIsCreateOpen(true)} size="lg" className="action-button">
-                  Добавить задания
-                </Button>
-              </div>
+                <div className="mt-6 flex justify-center">
+                  <Button
+                    onClick={() => setIsCreateOpen(true)}
+                    size="lg"
+                    className="action-button bg-black text-white hover:bg-neutral-900"
+                  >
+                    Добавить задания
+                  </Button>
+                </div>
             </div>
 
             <div className="panel-base panel-orange p-6 lg:col-span-3">

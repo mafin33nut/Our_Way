@@ -122,7 +122,7 @@ export function AchievementsPage() {
                           variant={isPinned ? 'ghost' : 'primary'}
                           disabled={saving}
                           onClick={() => handleTogglePin(slot.id)}
-                          className="action-button"
+                          className={`action-button ${isPinned ? '' : 'bg-black text-white hover:bg-neutral-900'}`}
                         >
                           {isPinned ? (
                             <>
