@@ -29,7 +29,7 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
           isSidebarOpen ? 'md:ml-28' : ''
         }`}
       >
-        <div className="flex items-center gap-3 sm:gap-5 flex-nowrap">
+        <div className="flex items-center gap-3 sm:gap-5 flex-nowrap ow-header-nav">
           <button
             type="button"
             onClick={onToggleSidebar}

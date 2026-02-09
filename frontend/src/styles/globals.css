@@ -88,6 +88,21 @@ h3 {
     box-shadow: none;
   }
 
+  /* Верхнее меню: кнопки чата, кланов, друзей, выхода в светлой теме
+     делаем читаемыми на белом фоне, без обводок */
+  :root[data-theme='light'] .ow-header-nav .ow-button {
+    background-color: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: #020617 !important;
+    padding-inline: 0.5rem;
+    border-radius: 9999px;
+  }
+
+  :root[data-theme='light'] .ow-header-nav .ow-button:hover {
+    background-color: rgba(15, 23, 42, 0.06) !important;
+  }
+
   .panel-caption {
     @apply text-2xl tracking-wide mb-6;
     font-family: "Play", "Segoe UI", sans-serif;
