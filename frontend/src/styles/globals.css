@@ -242,6 +242,12 @@ h3 {
     color: #ffffff !important;
   }
 
+  /* Конкретно кнопка "Добавить" на панели направлений — всегда белый текст */
+  #add-focus-button,
+  #add-focus-button * {
+    color: #ffffff !important;
+  }
+
   .panel-base button {
     font-size: 171% !important;
     padding: 0.9rem 1.45rem !important;
