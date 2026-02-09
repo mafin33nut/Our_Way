@@ -225,143 +225,192 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                       className={
                         isLight
                           ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-6'
-                          : 'panel-base panel-purple p-6'
-                      }
-                    >
-                      <div className="flex items-center gap-2 mb-4">
-                        <Crown className="w-5 h-5 text-teal-300" />
-                        <h2 className="text-slate-100">Ваши кланы</h2>
-                      </div>
-                      {loading ? (
-                        <div className="text-sm text-slate-300/70">Загрузка списка кланов...</div>
-                      ) : clans.length === 0 ? (
-                        <div className="text-sm text-slate-300/70">Вы пока не состоите в кланах.</div>
-                      ) : (
-                        <>
-                          <div className="flex flex-wrap gap-2">
-                            {clans.map((clan) => (
-                              <button
-                                key={clan.id}
-                                onClick={() => setSelectedClanId(clan.id)}
-                                className={`rounded-lg border text-xs transition-colors px-6 py-2 ${
-                                  selectedClanId === clan.id
-                                    ? 'border-teal-300/60 bg-teal-400/10 text-teal-100'
-                                    : 'border-slate-600/60 text-slate-300/70 hover:border-slate-500/60'
-                                }`}
-                              >
-                                {clan.name}
-                              </button>
-                            ))}
-                          </div>
-                          {selectedClan && (
-                            <div className="mt-4 flex flex-wrap items-center gap-3">
-                              <Button
-                                onClick={handleLeaveClan}
-                                disabled={leaveLoading}
-                                className="bg-slate-800/60 text-slate-200 hover:bg-slate-700/70 border border-slate-600/60"
-                              >
-                                {leaveLoading
-                                  ? 'Обработка...'
-                                  : (selectedClan.members?.length || 0) <= 1
-                                  ? 'Удалить клан'
-                                  : 'Покинуть клан'}
-                              </Button>
-                              {leaveStatus && <span className="text-sm text-slate-300/70">{leaveStatus}</span>}
-                            </div>
-                          )}
-
-                          {selectedClan && (
-                            <div className="mt-6 space-y-6">
-                              <div className="panel-base panel-orange p-6">
-                                <div className="panel-caption text-left">Клановые квесты</div>
-                                {loadingClanQuests ? (
-                                  <div className="text-sm text-slate-300/70">Загрузка квестов...</div>
-                                ) : (
-                                  <ClanQuestList
-                                    quests={selectedClanQuests}
-                                    onContribute={handleClanQuestContribute}
-                                    onDelete={handleDeleteClanQuest}
-                                    currentUsername={user.username}
-                                  />
-                                )}
-                              </div>
-
-                              <div className="panel-base panel-teal p-6">
-                                <div className="panel-caption text-left">Создать клановый квест</div>
-                                <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-4">
-                                  <div className="space-y-3">
-                                    <input
-                                      value={clanQuestTitle}
-                                      onChange={(e) => setClanQuestTitle(e.target.value)}
-                                      placeholder="Название квеста"
-                                      className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
-                                    />
-                                    <textarea
-                                      value={clanQuestDescription}
-                                      onChange={(e) => setClanQuestDescription(e.target.value)}
-                                      placeholder="Описание"
-                                      rows={3}
-                                      className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
-                                    />
-                                  </div>
-                                  <div className="rounded-xl border border-slate-600/30 bg-slate-950/25 p-4 space-y-3">
-                                    <label className="text-sm text-slate-200/80 flex flex-col gap-2">
-                                      Сложность
-                                      <select
-                                        value={clanQuestDifficulty}
-                                        onChange={(e) =>
-                                          setClanQuestDifficulty(e.target.value as 'easy' | 'medium' | 'hard')
-                                        }
-                                        className="rounded-xl border border-slate-600/30 bg-slate-950/40 px-3 py-3 text-slate-100"
-                                      >
-                                        <option value="easy">Легкая</option>
-                                        <option value="medium">Средняя</option>
-                                        <option value="hard">Сложная</option>
-                                      </select>
-                                    </label>
-                                    <label className="text-sm text-slate-200/80 flex items-center justify-between gap-3">
-                                      Макс. участников
-                                      <input
-                                        type="number"
-                                        min={1}
-                                        value={clanQuestMaxParticipants}
-                                        onChange={(e) =>
-                                          setClanQuestMaxParticipants(Math.max(1, Number(e.target.value) || 1))
-                                        }
-                                        className="w-24 rounded-xl border border-slate-600/30 bg-slate-950/40 px-3 py-2 text-slate-100"
-                                      />
-                                    </label>
-                                  </div>
-                                </div>
-                                <div className="mt-4 flex items-center justify-between gap-3">
-                                  {clanQuestStatus && (
-                                    <span className="text-sm text-slate-200/70">{clanQuestStatus}</span>
-                                  )}
-                                  <Button
-                                    onClick={handleCreateClanQuest}
-                                    disabled={creatingClanQuest || !clanQuestTitle.trim()}
-                                    className="action-button"
-                                  >
-                                    {creatingClanQuest ? 'Создание...' : 'Создать'}
-                                  </Button>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </div>
-
-                    <div
-                      className={
-                        isLight
-                          ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-6'
                           : 'panel-base panel-teal p-6'
                       }
                     >
                       <div className="flex items-center gap-2 mb-4">
                         <Crown className="w-5 h-5 text-teal-300" />
-                        <h2 className={isLight ? 'text-slate-900' : 'text-slate-100'}>Найти / создать кланы</h2>
+                        <h2 className={isLight ? 'text-slate-900' : 'text-slate-100'}>Найти / вступить / создать клан</h2>
+                      </div>
+
+                      <div className="space-y-6">
+                        <div>
+                          <p className="text-sm font-medium mb-2 text-slate-200/90">
+                            Ваши кланы
+                          </p>
+                          {loading ? (
+                            <div className="text-sm text-slate-300/70">Загрузка списка кланов...</div>
+                          ) : clans.length === 0 ? (
+                            <div className="text-sm text-slate-300/70">Вы пока не состоите в кланах.</div>
+                          ) : (
+                            <>
+                              <div className="flex flex-wrap gap-2">
+                                {clans.map((clan) => (
+                                  <button
+                                    key={clan.id}
+                                    onClick={() => setSelectedClanId(clan.id)}
+                                    className={`rounded-lg border text-xs transition-colors px-6 py-2 ${
+                                      selectedClanId === clan.id
+                                        ? 'border-teal-300/60 bg-teal-400/10 text-teal-100'
+                                        : 'border-slate-600/60 text-slate-300/70 hover:border-slate-500/60'
+                                    }`}
+                                  >
+                                    {clan.name}
+                                  </button>
+                                ))}
+                              </div>
+                              {selectedClan && (
+                                <div className="mt-4 flex flex-wrap items-center gap-3">
+                                  <Button
+                                    onClick={handleLeaveClan}
+                                    disabled={leaveLoading}
+                                    className="bg-slate-800/60 text-slate-200 hover:bg-slate-700/70 border border-slate-600/60"
+                                  >
+                                    {leaveLoading
+                                      ? 'Обработка...'
+                                      : (selectedClan.members?.length || 0) <= 1
+                                      ? 'Удалить клан'
+                                      : 'Покинуть клан'}
+                                  </Button>
+                                  {leaveStatus && <span className="text-sm text-slate-300/70">{leaveStatus}</span>}
+                                </div>
+                              )}
+                            </>
+                          )}
+                        </div>
+
+                        <div>
+                          <p className="text-sm font-medium mb-2 text-slate-200/90">
+                            Вступить в приватный клан по ссылке
+                          </p>
+                          <div
+                            className={`rounded-lg border p-4 mb-4 ${
+                              isLight ? 'border-slate-200 bg-slate-50' : 'border-slate-600/40 bg-slate-950/40'
+                            }`}
+                          >
+                            <div className="flex flex-col gap-3">
+                              <input
+                                value={joinLink}
+                                onChange={(e) => setJoinLink(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleJoinByLink()}
+                                placeholder="Вставьте ссылку или ID клана"
+                                className={`w-full rounded-lg border px-3 py-2 ${
+                                  isLight
+                                    ? 'border-slate-300 bg-white text-slate-900'
+                                    : 'border-slate-600/40 bg-slate-950/50 text-slate-100'
+                                }`}
+                              />
+                              <input
+                                value={joinLinkPassword}
+                                onChange={(e) => setJoinLinkPassword(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleJoinByLink()}
+                                placeholder="Пароль (если нужен)"
+                                type="password"
+                                className={`w-full rounded-lg border px-3 py-2 ${
+                                  isLight
+                                    ? 'border-slate-300 bg-white text-slate-900'
+                                    : 'border-slate-600/40 bg-slate-950/50 text-slate-100'
+                                }`}
+                              />
+                              <div className="flex items-center justify-between gap-3">
+                                <span className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-300/70'}`}>
+                                  {joinLinkLoading ? 'Отправка запроса...' : 'Нажмите Enter, чтобы отправить запрос'}
+                                </span>
+                                {joinLinkStatus && (
+                                  <span className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
+                                    {joinLinkStatus}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <p className="text-sm font-medium mb-2 text-slate-200/90">
+                            Создать новый клан
+                          </p>
+                          <ClanCreationPanel onClanCreated={loadClans} />
+                        </div>
+
+                        {selectedClan && (
+                          <div className="mt-4 space-y-6">
+                            <div className="panel-base panel-orange p-6">
+                              <div className="panel-caption text-left">Клановые квесты</div>
+                              {loadingClanQuests ? (
+                                <div className="text-sm text-slate-300/70">Загрузка квестов...</div>
+                              ) : (
+                                <ClanQuestList
+                                  quests={selectedClanQuests}
+                                  onContribute={handleClanQuestContribute}
+                                  onDelete={handleDeleteClanQuest}
+                                  currentUsername={user.username}
+                                />
+                              )}
+                            </div>
+
+                            <div className="panel-base panel-teal p-6">
+                              <div className="panel-caption text-left">Создать клановый квест</div>
+                              <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-4">
+                                <div className="space-y-3">
+                                  <input
+                                    value={clanQuestTitle}
+                                    onChange={(e) => setClanQuestTitle(e.target.value)}
+                                    placeholder="Название квеста"
+                                    className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                                  />
+                                  <textarea
+                                    value={clanQuestDescription}
+                                    onChange={(e) => setClanQuestDescription(e.target.value)}
+                                    placeholder="Описание"
+                                    rows={3}
+                                    className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                                  />
+                                </div>
+                                <div className="rounded-xl border border-slate-600/30 bg-slate-950/25 p-4 space-y-3">
+                                  <label className="text-sm text-slate-200/80 flex flex-col gap-2">
+                                    Сложность
+                                    <select
+                                      value={clanQuestDifficulty}
+                                      onChange={(e) =>
+                                        setClanQuestDifficulty(e.target.value as 'easy' | 'medium' | 'hard')
+                                      }
+                                      className="rounded-xl border border-slate-600/30 bg-slate-950/40 px-3 py-3 text-slate-100"
+                                    >
+                                      <option value="easy">Легкая</option>
+                                      <option value="medium">Средняя</option>
+                                      <option value="hard">Сложная</option>
+                                    </select>
+                                  </label>
+                                  <label className="text-sm text-slate-200/80 flex items-center justify-between gap-3">
+                                    Макс. участников
+                                    <input
+                                      type="number"
+                                      min={1}
+                                      value={clanQuestMaxParticipants}
+                                      onChange={(e) =>
+                                        setClanQuestMaxParticipants(Math.max(1, Number(e.target.value) || 1))
+                                      }
+                                      className="w-24 rounded-xl border border-slate-600/30 bg-slate-950/40 px-3 py-2 text-slate-100"
+                                    />
+                                  </label>
+                                </div>
+                              </div>
+                              <div className="mt-4 flex items-center justify-between gap-3">
+                                {clanQuestStatus && (
+                                  <span className="text-sm text-slate-200/70">{clanQuestStatus}</span>
+                                )}
+                                <Button
+                                  onClick={handleCreateClanQuest}
+                                  disabled={creatingClanQuest || !clanQuestTitle.trim()}
+                                  className="action-button"
+                                >
+                                  {creatingClanQuest ? 'Создание...' : 'Создать'}
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                       <div
                         className={`rounded-lg border p-4 mb-4 ${

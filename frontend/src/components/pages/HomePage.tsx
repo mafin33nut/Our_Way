@@ -382,7 +382,7 @@ export function HomePage() {
               <TaskHistoryPanel quests={quests} />
             </div>
 
-            <div className="panel-base panel-sky p-6 lg:col-span-3 lg:min-h-[520px]">
+            <div className="panel-base panel-sky p-6 lg:col-span-3 lg:min-h-[430px]">
               <div className="panel-caption text-left">Квесты по направлениям</div>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                 {focusCards.map((focus) => {

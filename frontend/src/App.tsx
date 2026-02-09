@@ -51,7 +51,7 @@ function AppLayout({ children }: { children: ReactNode }) {
           isOpen={isSidebarOpen}
           onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
         />
-        <div className={`${isSidebarOpen ? 'md:ml-28' : ''} px-4 sm:px-6 md:px-8`}>
+        <div className={`${isSidebarOpen ? 'md:ml-28' : ''} ow-page-shell px-4 sm:px-6 md:px-8`}>
           {children}
         </div>
       </div>

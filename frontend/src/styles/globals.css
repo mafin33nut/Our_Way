@@ -410,6 +410,26 @@ h3 {
     font-size: calc(0.875rem * 1.2) !important;
   }
 
+  /* Универсальная "скорлупа" страницы: адаптация под мобильные и большие мониторы */
+  .ow-page-shell {
+    width: 100%;
+    max-width: 1920px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (min-width: 1280px) {
+    .ow-page-shell {
+      max-width: 1440px;
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .ow-page-shell {
+      max-width: 1600px;
+    }
+  }
+
   @media (max-width: 768px) {
     body {
       font-size: 16px;
