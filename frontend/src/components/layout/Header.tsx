@@ -1,4 +1,4 @@
-import { LogOut, PanelLeftClose, PanelLeftOpen, Settings } from 'lucide-react';
+import { LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
@@ -53,27 +53,32 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 variant="ghost"
                 size="md"
                 onClick={() => navigate('/settings')}
-                className={`hidden sm:inline-flex items-center gap-2 border-0 ${
+                className={`hidden sm:inline-flex items-center gap-2 border-0 rounded-lg px-4 py-2 text-sm ${
                   isLight ? 'text-slate-900' : 'text-slate-100'
                 }`}
               >
-                <Settings className="w-5 h-5" />
                 <span>Настройки</span>
               </Button>
               <FriendsPanel
-                className={`action-button border-0 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}
+                className={`hidden sm:inline-flex items-center gap-2 border-0 rounded-lg px-4 py-2 text-sm ${
+                  isLight ? 'text-slate-900' : 'text-slate-100'
+                }`}
               />
               <ClanHubPanel
-                className={`action-button border-0 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}
+                className={`hidden sm:inline-flex items-center gap-2 border-0 rounded-lg px-4 py-2 text-sm ${
+                  isLight ? 'text-slate-900' : 'text-slate-100'
+                }`}
               />
               <ChatHubPanel
-                className={`action-button border-0 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}
+                className={`hidden sm:inline-flex items-center gap-2 border-0 rounded-lg px-4 py-2 text-sm ${
+                  isLight ? 'text-slate-900' : 'text-slate-100'
+                }`}
               />
               <Button
                 variant="ghost"
                 size="md"
                 onClick={logout}
-                className={`action-button flex items-center gap-2 whitespace-nowrap border-0 ${
+                className={`hidden sm:inline-flex items-center gap-2 whitespace-nowrap border-0 rounded-lg px-4 py-2 text-sm ${
                   isLight ? 'text-slate-900' : 'text-slate-100'
                 }`}
               >
