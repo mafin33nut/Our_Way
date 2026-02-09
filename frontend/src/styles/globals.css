@@ -175,21 +175,10 @@ h3 {
     box-shadow: 0 18px 40px -22px rgba(15, 23, 42, 0.25), 0 0 18px rgba(124, 58, 237, 0.1);
   }
 
-  /* В светлой теме основной текст в панелях делаем тёмным,
-     чтобы названия достижений и другие надписи не были белыми */
+  /* В светлой теме ВСЁ содержимое панелей делаем тёмным,
+     чтобы заголовки и тексты не были белыми на светлом фоне */
   :root[data-theme='light'] .panel-base,
-  :root[data-theme='light'] .panel-base h1,
-  :root[data-theme='light'] .panel-base h2,
-  :root[data-theme='light'] .panel-base h3,
-  :root[data-theme='light'] .panel-base p,
-  :root[data-theme='light'] .panel-base span {
-    color: #0f172a;
-  }
-
-  :root[data-theme='light'] .panel-base .text-slate-100,
-  :root[data-theme='light'] .panel-base .text-slate-200,
-  :root[data-theme='light'] .panel-base .text-slate-300,
-  :root[data-theme='light'] .panel-base .text-slate-100\/80 {
+  :root[data-theme='light'] .panel-base * {
     color: #0f172a !important;
   }
 
