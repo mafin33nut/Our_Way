@@ -127,7 +127,10 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                 </Button>
               </div>
 
-              <div className="h-[calc(100%-72px)] overflow-y-auto px-[19px] py-[19px] space-y-[19px]">
+              <div
+                className="h-[calc(100%-72px)] overflow-y-auto space-y-[19px]"
+                style={{ padding: '0.7cm' }}
+              >
                 {!user && (
                   <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
                     Войдите, чтобы управлять друзьями.
@@ -138,8 +141,8 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                     <div
                       className={
                         isLight
-                          ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-6'
-                          : 'panel-base panel-purple p-6'
+                          ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-8'
+                          : 'panel-base panel-purple p-8'
                       }
                     >
                       <div className={isLight ? 'text-slate-800 font-medium mb-4' : 'panel-caption text-left'}>
@@ -158,7 +161,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                           {requests.map((req) => (
                             <div
                               key={req.id}
-                              className={`flex items-center justify-between gap-3 rounded-xl px-4 py-3 ${
+                              className={`flex items-center justify-between gap-3 rounded-xl px-5 py-4 ${
                                 isLight ? 'bg-slate-50 border border-slate-200' : 'bg-slate-950/40'
                               }`}
                             >

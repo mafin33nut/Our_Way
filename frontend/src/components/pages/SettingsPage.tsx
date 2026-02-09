@@ -103,7 +103,7 @@ export function SettingsPage() {
                     <Button
                       onClick={handleSaveProfile}
                       disabled={saving}
-                      className={`action-button ${isLight ? 'text-white' : ''}`}
+                      className={`action-button ${isLight ? '!text-white [&_*]:!text-white' : ''}`}
                     >
                       {saving ? 'Сохранение...' : 'Сохранить'}
                     </Button>

@@ -16,8 +16,8 @@ export function AllFriendsPanel({ friends, isLight = false }: AllFriendsPanelPro
     <div
       className={
         isLight
-          ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-6'
-          : 'panel-base panel-purple p-6'
+          ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-8'
+          : 'panel-base panel-purple p-8'
       }
     >
       <div className="flex items-center gap-2 mb-4">
@@ -29,7 +29,7 @@ export function AllFriendsPanel({ friends, isLight = false }: AllFriendsPanelPro
           {friends.map((friend) => (
             <div
               key={friend.id}
-              className={`flex items-center justify-between p-3 rounded-lg border transition-colors ${
+              className={`flex items-center justify-between p-4 rounded-lg border transition-colors ${
                 isLight
                   ? 'bg-slate-50 border-slate-200 hover:border-slate-300'
                   : 'bg-slate-950/40 border-purple-600/20 hover:border-purple-500/50'
