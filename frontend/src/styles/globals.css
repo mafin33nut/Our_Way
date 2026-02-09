@@ -16,21 +16,22 @@
   box-sizing: border-box;
 }
 :root {
-  --ow-body-bg: linear-gradient(180deg, #2f3441 0%, #2b313c 45%, #232833 100%);
-  --ow-body-fg: #f8fafc;
+  /* Статичный светлый фон и чёрный текст по всей системе */
+  --ow-body-bg: #ffffff;
+  --ow-body-fg: #000000;
 
-  --ow-panel-bg: linear-gradient(180deg, rgba(51, 65, 85, 0.78) 0%, rgba(30, 41, 59, 0.72) 45%, rgba(15, 23, 42, 0.82) 100%);
-  --ow-panel-text: #f8fafc;
-  --ow-panel-muted: rgba(226, 232, 240, 0.72);
+  --ow-panel-bg: #ffffff;
+  --ow-panel-text: #000000;
+  --ow-panel-muted: #111827;
 }
 
 :root[data-theme='light'] {
-  --ow-body-bg: linear-gradient(180deg, #f6f7fb 0%, #eef1f6 45%, #e8ebf2 100%);
-  --ow-body-fg: #0f172a;
+  --ow-body-bg: #ffffff;
+  --ow-body-fg: #000000;
 
-  --ow-panel-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.92) 55%, rgba(241, 245, 249, 0.92) 100%);
-  --ow-panel-text: #0f172a;
-  --ow-panel-muted: rgba(15, 23, 42, 0.72);
+  --ow-panel-bg: #ffffff;
+  --ow-panel-text: #000000;
+  --ow-panel-muted: #111827;
 }
 body {
   font-family: "Play", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -38,8 +39,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--ow-body-bg);
-  background-size: 200% 200%;
-  animation: ow-bg-shift 14s ease-in-out infinite;
+  background-size: auto;
+  /* Убираем анимацию фона и делаем текст по умолчанию чёрным */
+  animation: none;
   color: var(--ow-body-fg);
   min-height: 100vh;
 }
@@ -78,16 +80,16 @@ h3 {
   }
 
   .panel-base {
-    @apply rounded-2xl border-0 ring-0 bg-gradient-to-b from-slate-800/85 via-slate-800/75 to-slate-900/85 shadow-[0_18px_42px_-20px_rgba(15,23,42,0.98)] backdrop-blur-sm text-white;
+    @apply rounded-2xl border border-slate-300 ring-0 bg-white text-black;
     position: relative;
-    /* ~0.7cm внутренний отступ при базовом размере шрифта */
     padding: 1.75rem !important;
     margin-bottom: 38px;
     font-family: "Play", "Segoe UI", sans-serif;
     font-size: 125%;
     line-height: 1.6;
-    box-shadow: 0 18px 42px -20px rgba(15, 23, 42, 0.98), 0 0 28px rgba(56, 189, 248, 0.14);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    /* Без теней и анимаций */
+    box-shadow: none;
+    transition: none;
   }
 
   .panel-base,
@@ -95,9 +97,9 @@ h3 {
     font-family: "Play", "Segoe UI", sans-serif;
   }
   .panel-base:hover {
-    transform: translateY(-6px) scale(1.01);
-    box-shadow: 0 28px 60px -22px rgba(15, 23, 42, 1), 0 0 40px rgba(56, 189, 248, 0.22);
-    border-color: rgba(15, 23, 42, 0.95);
+    transform: none;
+    box-shadow: none;
+    border-color: rgba(148, 163, 184, 1);
   }
 
   .panel-base .w-full {
@@ -167,7 +169,8 @@ h3 {
     font-size: 171% !important;
     padding: 0.9rem 1.45rem !important;
     line-height: 1.2;
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    /* Убираем "прыгучесть" кнопок внутри панелей */
+    transition: none;
     margin: 0.15rem 0.25rem;
   }
 
@@ -184,8 +187,8 @@ h3 {
 
   .panel-base button:hover,
   .panel-base .action-button:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.55);
+    transform: none;
+    box-shadow: none;
   }
 
   :root[data-theme='light'] .panel-base input::placeholder,
@@ -195,8 +198,8 @@ h3 {
 
   .panel-base .rounded-lg.border:hover,
   .panel-base .rounded-xl.border:hover {
-    transform: translateY(-2px) scale(1.01);
-    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.6);
+    transform: none;
+    box-shadow: none;
   }
 
   .panel-base .text-xs {
@@ -346,17 +349,16 @@ h3 {
   }
 
   /* Theme-aware text and background for panels */
-  .ow-theme-dark .panel-base * {
-    color: #ffffff !important;
-  }
-
+  /* Во всех темах панели и текст внутри них — чёрные без динамики */
+  .ow-theme-dark .panel-base,
   .ow-theme-light .panel-base {
-    background: linear-gradient(180deg, #f9fafb 0%, #f3f4f6 45%, #e5e7eb 100%);
-    box-shadow: 0 18px 42px -20px rgba(15, 23, 42, 0.18);
+    background: #ffffff;
+    box-shadow: none;
   }
 
-  .ow-theme-light .panel-base:hover {
-    box-shadow: 0 24px 56px -24px rgba(15, 23, 42, 0.32);
+  .ow-theme-dark .panel-base *,
+  .ow-theme-light .panel-base * {
+    color: #000000 !important;
   }
 
   /* Uniform inner padding for inner boxes in panels */
@@ -371,17 +373,27 @@ h3 {
     background-color: #ffffff !important;
   }
 
-  /* Remove purple accents globally, replace with teal/neutral tones */
-  [class*="text-purple-"] {
-    color: #0f172a !important; /* dark neutral text */
+  /* Весь текст по умолчанию чёрный */
+  body,
+  body * {
+    color: #000000 !important;
   }
 
-  [class*="bg-purple-"] {
-    background-color: #e0f2fe !important; /* light teal-like background */
+  /* Все кнопки — чёрные, а текст в них — белый, без эффектов наведения */
+  button {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid #000000 !important;
+    box-shadow: none !important;
+    transition: none !important;
   }
 
-  [class*="border-purple-"] {
-    border-color: #38bdf8 !important; /* teal border */
+  button:hover,
+  button:focus {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    transform: none !important;
   }
 }
 
