@@ -63,7 +63,7 @@ export function CharacterProfile({ user, questsCompletedToday }: CharacterProfil
         </div>
         <div className="w-full h-3 rounded-full overflow-hidden border bg-slate-950/50 border-slate-600/40">
           <div
-            className="h-full bg-gradient-to-r from-teal-400 to-cyan-300 transition-all duration-500 rounded-full"
+            className="h-full bg-gradient-to-r from-amber-400 to-rose-400 transition-all duration-500 rounded-full"
             style={{ width: `${xpPercentage}%` }}
           />
         </div>
