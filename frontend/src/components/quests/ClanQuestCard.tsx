@@ -1,6 +1,7 @@
 import { ClanQuest } from '../../types';
 import { Users, Crown, Clock } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { useCustomization } from '../../hooks/useCustomization';
 import { useState } from 'react';
 interface ClanQuestCardProps {
   quest: ClanQuest;
@@ -9,6 +10,8 @@ interface ClanQuestCardProps {
   currentUsername: string;
 }
 export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }: ClanQuestCardProps) {
+  const { settings } = useCustomization();
+  const isLight = settings.theme === 'light';
   const safeParticipants = quest.participants ?? [];
   const [isContributing, setIsContributing] = useState(false);
   const participantCount =
@@ -37,48 +40,60 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
   };
   return (
     <div
-      className={`rounded-xl border p-6 transition-all bg-white border-slate-200 ${
-        quest.completed ? 'opacity-80' : 'shadow-md'
+      className={`rounded-xl border p-6 transition-all ${
+        isLight
+          ? `bg-white border-slate-200 ${quest.completed ? 'opacity-80' : 'shadow-md'}`
+          : `bg-teal-950/40 ${quest.completed ? 'border-teal-600/40 opacity-80' : 'border-teal-300/60 shadow-lg shadow-teal-400/10 ring-1 ring-teal-300/60 ring-offset-2 ring-offset-teal-950'}`
       }`}
     >
       {/* Header */}
       <div className="flex items-start justify-between gap-4 mb-4">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
-            <Crown className="w-5 h-5 text-slate-700" />
-            <span className="text-xs px-2 py-1 rounded bg-slate-100 text-slate-700">
+            <Crown className={`w-5 h-5 ${isLight ? 'text-slate-700' : 'text-teal-300'}`} />
+            <span className={`text-xs px-2 py-1 rounded ${isLight ? 'bg-slate-100 text-slate-700' : 'bg-teal-800/50 text-teal-100'}`}>
               {difficultyLabel}
             </span>
           </div>
-          <h3 className={`text-lg mb-2 ${quest.completed ? 'text-slate-400 line-through' : 'text-slate-900'}`}>
+          <h3
+            className={`text-lg mb-2 ${
+              quest.completed
+                ? isLight
+                  ? 'text-slate-400 line-through'
+                  : 'text-slate-300 line-through'
+                : isLight
+                  ? 'text-slate-900'
+                  : 'text-slate-100'
+            }`}
+          >
             {quest.title}
           </h3>
-          <p className="text-slate-600 text-sm">
+          <p className={isLight ? 'text-slate-600 text-sm' : 'text-slate-300/70 text-sm'}>
             {quest.description}
           </p>
         </div>
         <div className="text-right flex-shrink-0">
-          <div className="text-2xl text-slate-900">+{quest.xp_reward}</div>
-          <div className="text-xs text-slate-500">XP награда</div>
+          <div className={`text-2xl ${isLight ? 'text-slate-900' : 'text-teal-200'}`}>+{quest.xp_reward}</div>
+          <div className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-300/60'}`}>XP награда</div>
         </div>
       </div>
       {/* Progress Bar */}
       <div className="mb-4">
-        <div className="flex justify-between text-sm mb-2 text-slate-600">
+        <div className={`flex justify-between text-sm mb-2 ${isLight ? 'text-slate-600' : 'text-slate-300/80'}`}>
           <span>Участники</span>
           <span>{participantCount} / {maxParticipants}</span>
         </div>
-        <div className="w-full h-4 rounded-full overflow-hidden border bg-slate-100 border-slate-200">
+        <div className={`w-full h-4 rounded-full overflow-hidden border ${isLight ? 'bg-slate-100 border-slate-200' : 'bg-teal-950/50 border-teal-600/40'}`}>
           <div
-            className="h-full transition-all duration-500 bg-black"
+            className={`h-full transition-all duration-500 ${isLight ? 'bg-black' : 'bg-gradient-to-r from-teal-400 to-cyan-300'}`}
             style={{ width: `${Math.min(progressPercentage, 100)}%` }}
           />
         </div>
       </div>
       <div className="mb-4">
         <div className="flex items-center gap-2 mb-2">
-          <Users className="w-4 h-4 text-slate-700" />
-          <span className="text-sm text-slate-600">
+          <Users className={`w-4 h-4 ${isLight ? 'text-slate-700' : 'text-teal-300'}`} />
+          <span className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/80'}`}>
             Участники ({safeParticipants.length})
           </span>
         </div>
@@ -87,29 +102,33 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
             <div
               key={participant.id}
               className={`flex items-center justify-between p-2 rounded border ${
-                participant.username === currentUsername
-                  ? 'bg-slate-50 border-black'
-                  : 'bg-white border-slate-200'
+                isLight
+                  ? participant.username === currentUsername
+                    ? 'bg-slate-50 border-black'
+                    : 'bg-white border-slate-200'
+                  : participant.username === currentUsername
+                    ? 'bg-teal-900/40 border-teal-300/60'
+                    : 'bg-teal-900/40 border-teal-700/50'
               }`}
             >
               <div>
-                <p className="text-sm text-slate-900">{participant.username}</p>
-                <p className="text-xs text-slate-500">Уровень {participant.level}</p>
+                <p className={`text-sm ${isLight ? 'text-slate-900' : 'text-slate-200'}`}>{participant.username}</p>
+                <p className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-300/60'}`}>Уровень {participant.level}</p>
               </div>
             </div>
           ))}
         </div>
         {safeParticipants.length > 6 && (
-          <p className="text-xs text-center mt-2 text-slate-500">
+          <p className={`text-xs text-center mt-2 ${isLight ? 'text-slate-500' : 'text-slate-300/60'}`}>
             +{safeParticipants.length - 6} ещё участников
           </p>
         )}
       </div>
       {getDaysLeft() !== null && (
-        <div className="flex items-center gap-2 mb-4 p-3 rounded border bg-slate-50 border-slate-200">
-          <Clock className="w-4 h-4 text-slate-700" />
-          <span className="text-sm text-slate-600">
-            Осталось дней: <span className="text-slate-900">{getDaysLeft()}</span>
+        <div className={`flex items-center gap-2 mb-4 p-3 rounded border ${isLight ? 'bg-slate-50 border-slate-200' : 'bg-teal-900/40 border-teal-600/40'}`}>
+          <Clock className={`w-4 h-4 ${isLight ? 'text-slate-700' : 'text-teal-300'}`} />
+          <span className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/80'}`}>
+            Осталось дней: <span className={isLight ? 'text-slate-900' : 'text-teal-200'}>{getDaysLeft()}</span>
           </span>
         </div>
       )}
@@ -119,7 +138,11 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
             onClick={handleContribute}
             disabled={isContributing || hasJoined || isFull}
             size="md"
-            className="flex-1 px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black"
+            className={
+              isLight
+                ? 'flex-1 px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black'
+                : 'flex-1'
+            }
           >
             {isContributing ? 'Отправка...' : hasJoined ? 'Вы участвуете' : isFull ? 'Набор завершён' : 'Участвовать'}
           </Button>
@@ -130,7 +153,11 @@ export function ClanQuestCard({ quest, onContribute, onDelete, currentUsername }
           variant="ghost"
           size="sm"
           onClick={() => onDelete(quest.id)}
-          className="bg-black text-white hover:bg-slate-900 border border-black px-4 py-2 rounded-xl"
+          className={
+            isLight
+              ? 'bg-black text-white hover:bg-slate-900 border border-black px-4 py-2 rounded-xl'
+              : ''
+          }
         >
           Удалить
         </Button>

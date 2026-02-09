@@ -153,9 +153,9 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                         Заявки в друзья
                       </div>
                       {loadingRequests ? (
-                        <div className="text-sm text-slate-600">Загрузка заявок...</div>
+                        <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>Загрузка заявок...</div>
                       ) : requests.length === 0 ? (
-                        <div className="text-sm text-slate-600">Нет входящих заявок.</div>
+                        <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>Нет входящих заявок.</div>
                       ) : (
                         <div className="space-y-2">
                           {requests.map((req) => (
@@ -166,8 +166,8 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                               }`}
                             >
                               <div className="min-w-0">
-                                <p className="text-slate-900 truncate">{req.from_user_username}</p>
-                                <p className="text-xs text-slate-600">Хочет добавить вас в друзья</p>
+                                <p className={isLight ? 'text-slate-900 truncate' : 'text-slate-100 truncate'}>{req.from_user_username}</p>
+                                <p className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>Хочет добавить вас в друзья</p>
                               </div>
                               <div className="flex items-center gap-2 shrink-0">
                                 <Button
@@ -213,7 +213,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                       Поиск друзей
                     </div>
                     {loading ? (
-                      <div className="text-sm text-slate-600">Загрузка списка друзей...</div>
+                      <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>Загрузка списка друзей...</div>
                     ) : (
                       <>
                         <div className={isLight ? 'text-sm font-medium text-slate-700' : 'panel-comment'}>
