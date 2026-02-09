@@ -12,15 +12,9 @@ export function SettingsPage() {
   const { settings, updateSettings, playVictorySound } = useCustomization();
 
   const [bio, setBio] = useState(user?.bio ?? '');
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const isLight = settings.theme === 'light';
-
-  const avatarPreview = useMemo(() => {
-    if (!avatarFile) return null;
-    return URL.createObjectURL(avatarFile);
-  }, [avatarFile]);
 
   if (!user) {
     return null;
@@ -32,12 +26,8 @@ export function SettingsPage() {
     try {
       const formData = new FormData();
       formData.append('bio', bio);
-      if (avatarFile) {
-        formData.append('avatar', avatarFile);
-      }
       await authAPI.updateProfile(formData);
       await refreshUser();
-      setAvatarFile(null);
       setStatus('Настройки сохранены.');
     } catch (err) {
       console.error('Failed to update profile', err);
@@ -73,9 +63,9 @@ export function SettingsPage() {
                 <div className="panel-caption text-left">Профиль</div>
 
                 <div className="flex items-center gap-4 mb-6">
-                  {avatarPreview || resolveMediaUrl(user.avatar) ? (
+                  {resolveMediaUrl(user.avatar) ? (
                     <img
-                      src={(avatarPreview || (resolveMediaUrl(user.avatar) as string)) as string}
+                      src={resolveMediaUrl(user.avatar) as string}
                       alt={user.username}
                       className="w-20 h-20 rounded-full object-cover border-2 border-teal-300/60"
                     />
@@ -95,24 +85,6 @@ export function SettingsPage() {
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-xs text-slate-300/70 mb-2">Аватар</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0] || null;
-                        setAvatarFile(file);
-                      }}
-                      className={`w-full rounded-xl border px-4 py-3 ${
-                        isLight
-                          ? 'border-slate-300 bg-white text-slate-900'
-                          : 'border-slate-600/30 bg-slate-950/40 text-slate-100'
-                      }`}
-                    />
-                    <p className="text-xs text-slate-300/60 mt-2">Выберите изображение PNG/JPG/WebP.</p>
-                  </div>
-
-                  <div>
                     <label className="block text-xs text-slate-300/70 mb-2">Описание</label>
                     <textarea
                       value={bio}
@@ -128,7 +100,11 @@ export function SettingsPage() {
                   </div>
 
                   <div className="flex justify-end">
-                    <Button onClick={handleSaveProfile} disabled={saving} className="action-button">
+                    <Button
+                      onClick={handleSaveProfile}
+                      disabled={saving}
+                      className={`action-button ${isLight ? 'text-white' : ''}`}
+                    >
                       {saving ? 'Сохранение...' : 'Сохранить'}
                     </Button>
                   </div>

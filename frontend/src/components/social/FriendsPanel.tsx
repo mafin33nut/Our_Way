@@ -135,22 +135,40 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                 )}
                 {user && (
                   <>
-                    <div className="panel-base panel-purple p-6">
-                      <div className="panel-caption text-left">Заявки в друзья</div>
+                    <div
+                      className={
+                        isLight
+                          ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-6'
+                          : 'panel-base panel-purple p-6'
+                      }
+                    >
+                      <div className={isLight ? 'text-slate-800 font-medium mb-4' : 'panel-caption text-left'}>
+                        Заявки в друзья
+                      </div>
                       {loadingRequests ? (
-                        <div className="text-sm text-slate-300/70">Загрузка заявок...</div>
+                        <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
+                          Загрузка заявок...
+                        </div>
                       ) : requests.length === 0 ? (
-                        <div className="text-sm text-slate-300/70">Нет входящих заявок.</div>
+                        <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
+                          Нет входящих заявок.
+                        </div>
                       ) : (
                         <div className="space-y-2">
                           {requests.map((req) => (
                             <div
                               key={req.id}
-                              className="flex items-center justify-between gap-3 rounded-xl bg-slate-950/40 px-4 py-3"
+                              className={`flex items-center justify-between gap-3 rounded-xl px-4 py-3 ${
+                                isLight ? 'bg-slate-50 border border-slate-200' : 'bg-slate-950/40'
+                              }`}
                             >
                               <div className="min-w-0">
-                                <p className="text-slate-100 truncate">{req.from_user_username}</p>
-                                <p className="text-xs text-slate-300/70">Хочет добавить вас в друзья</p>
+                                <p className={isLight ? 'text-slate-900 truncate' : 'text-slate-100 truncate'}>
+                                  {req.from_user_username}
+                                </p>
+                                <p className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
+                                  Хочет добавить вас в друзья
+                                </p>
                               </div>
                               <div className="flex items-center gap-2 shrink-0">
                                 <Button
@@ -181,16 +199,21 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                       }}
                       friendIds={friends.map((friend) => friend.id)}
                       currentUserId={user.id}
+                      isLight={isLight}
                     />
-                    <div className="panel-comment">Поиск друзей</div>
+                    <div className={isLight ? 'text-sm font-medium text-slate-700' : 'panel-comment'}>
+                      Поиск друзей
+                    </div>
                     {loading ? (
                       <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>
                         Загрузка списка друзей...
                       </div>
                     ) : (
                       <>
-                        <div className="panel-comment">Ваши друзья</div>
-                        <AllFriendsPanel friends={friends} />
+                        <div className={isLight ? 'text-sm font-medium text-slate-700' : 'panel-comment'}>
+                          Ваши друзья
+                        </div>
+                        <AllFriendsPanel friends={friends} isLight={isLight} />
                       </>
                     )}
                   </>
