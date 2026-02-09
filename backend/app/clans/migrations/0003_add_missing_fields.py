@@ -95,16 +95,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RunPython(migrate_clanquest_fields, migrations.RunPython.noop),
-        migrations.AddField(
-            model_name='clanquest',
-            name='difficulty',
-            field=models.CharField(choices=[('epic', 'Epic'), ('legendary', 'Legendary')], default='epic', max_length=20),
-        ),
-        migrations.AddField(
-            model_name='clanquest',
-            name='created_at',
-            field=models.DateTimeField(auto_now_add=True, null=True, blank=True),
-        ),
         migrations.RunPython(
             lambda apps, schema_editor: create_leaderboard_entry_if_not_exists(apps, schema_editor),
             migrations.RunPython.noop

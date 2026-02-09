@@ -4,8 +4,14 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
-// Берём базовый URL из Vite-окружения, с дефолтом на localhost
-const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://127.0.0.1:8000';
+// Берём базовый URL из Vite-окружения. Если не задан, используем текущий hostname и порт 8000.
+// Это соответствует схеме деплоя: фронт на :443, бек на :8000.
+const RUNTIME_DEFAULT_BASE_URL =
+  typeof window !== 'undefined'
+    ? `${window.location.protocol}//${window.location.hostname}:8000`
+    : 'http://127.0.0.1:8000';
+
+const BASE_URL = import.meta.env.VITE_API_URL ?? RUNTIME_DEFAULT_BASE_URL;
 
 export const apiClient = axios.create({
   baseURL: BASE_URL, // БЕЗ /api здесь

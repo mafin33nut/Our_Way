@@ -1,198 +1,208 @@
-import { useEffect, useState } from 'react';
-import { Settings, Volume2, VolumeX, Eye, EyeOff, Image as ImageIcon, ArrowLeft } from 'lucide-react';
-import { Button } from '../ui/Button';
-import { useCustomization } from '../../hooks/useCustomization';
-import { BACKGROUND_OPTIONS } from '../../types';
+import { useMemo, useState } from 'react';
+import { ArrowLeft, Moon, Settings, Sun, User as UserIcon, Volume2, VolumeX } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useCustomization } from '../../hooks/useCustomization';
+import { useAuth } from '../../hooks/useAuth';
+import { authAPI } from '../../api/auth';
+import { Button } from '../ui/Button';
+import { PanelHelp } from '../ui/PanelHelp';
+import { resolveMediaUrl } from '../../utils/media';
 
 export function SettingsPage() {
+  const { user, refreshUser } = useAuth();
   const { settings, updateSettings, playVictorySound } = useCustomization();
-  const isDynamic = settings.background === 'dynamic';
-  const [bgImageLoaded, setBgImageLoaded] = useState(false);
-  const backgroundOption = BACKGROUND_OPTIONS.find((bg) => bg.id === settings.background);
-  const backgroundUrl = backgroundOption?.url || '';
-  const hasBackground =
-    settings.background &&
-    settings.background !== 'dynamic' &&
-    backgroundUrl &&
-    backgroundUrl.trim() !== '';
 
-  useEffect(() => {
-    if (hasBackground && backgroundUrl) {
-      const img = new window.Image();
-      img.onload = () => setBgImageLoaded(true);
-      img.onerror = () => setBgImageLoaded(false);
-      img.src = backgroundUrl;
-    } else {
-      setBgImageLoaded(false);
+  const [bio, setBio] = useState(user?.bio ?? '');
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
+
+  const avatarPreview = useMemo(() => {
+    if (!avatarFile) return null;
+    return URL.createObjectURL(avatarFile);
+  }, [avatarFile]);
+
+  if (!user) {
+    return null;
+  }
+
+  const handleSaveProfile = async () => {
+    setSaving(true);
+    setStatus(null);
+    try {
+      const formData = new FormData();
+      formData.append('bio', bio);
+      if (avatarFile) {
+        formData.append('avatar', avatarFile);
+      }
+      await authAPI.updateProfile(formData);
+      await refreshUser();
+      setAvatarFile(null);
+      setStatus('Настройки сохранены.');
+    } catch (err) {
+      console.error('Failed to update profile', err);
+      setStatus('Не удалось сохранить настройки.');
+    } finally {
+      setSaving(false);
     }
-  }, [hasBackground, backgroundUrl]);
+  };
 
   return (
-    <div
-      className={`min-h-screen relative ${isDynamic ? 'bg-transparent' : 'bg-slate-950'} ${
-        isDynamic || hasBackground ? '' : 'bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950'
-      }`}
-    >
-      {hasBackground && (
-        <div
-          key={`bg-${settings.background}-${backgroundUrl}`}
-          className="fixed inset-0 z-0"
-          style={{
-            backgroundColor: 'rgb(2 6 23)',
-            backgroundImage: backgroundUrl ? `url(${backgroundUrl})` : undefined,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundAttachment: 'fixed',
-          }}
-        >
-          <div className={`absolute inset-0 ${bgImageLoaded ? 'bg-slate-900/30' : 'bg-slate-900/70'} backdrop-blur-sm`} />
-        </div>
-      )}
-      <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
-        <div className="w-full max-w-4xl">
-          <div className="panel-base panel-purple">
-            <div className="p-6 border-b border-purple-600/30">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Link to="/">
-                    <Button variant="ghost" size="sm">
-                      <ArrowLeft className="w-4 h-4 mr-2" />
-                      Назад
+    <div className="min-h-screen">
+      <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
+        <div className="w-full max-w-[1200px]">
+          <div className="panel-base panel-purple p-6">
+            <div className="flex items-center justify-between gap-4 mb-6">
+              <div className="flex items-center gap-3">
+                <Link to="/">
+                  <Button variant="ghost" size="sm">
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Назад
+                  </Button>
+                </Link>
+                <div className="flex items-center gap-2">
+                  <Settings className="w-6 h-6 text-purple-400" />
+                  <h1 className="text-2xl text-purple-300">Настройки</h1>
+                </div>
+              </div>
+              {status && <span className="text-sm text-slate-200/70">{status}</span>}
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="panel-base panel-teal p-6">
+                <div className="panel-caption text-left">Профиль</div>
+
+                <div className="flex items-center gap-4 mb-6">
+                  {avatarPreview || resolveMediaUrl(user.avatar) ? (
+                    <img
+                      src={(avatarPreview || (resolveMediaUrl(user.avatar) as string)) as string}
+                      alt={user.username}
+                      className="w-20 h-20 rounded-full object-cover border-2 border-teal-300/60"
+                    />
+                  ) : (
+                    <div className="w-20 h-20 rounded-full bg-slate-800/70 border-2 border-teal-300/60 flex items-center justify-center text-slate-200">
+                      <UserIcon className="w-9 h-9" />
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <p className="text-slate-100">{user.username}</p>
+                    <p className="text-xs text-slate-300/70">{user.email || '—'}</p>
+                    <p className="text-xs text-slate-300/70">
+                      Уровень {user.level} · {user.xp} XP
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs text-slate-300/70 mb-2">Аватар</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] || null;
+                        setAvatarFile(file);
+                      }}
+                      className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                    />
+                    <p className="text-xs text-slate-300/60 mt-2">Выберите изображение PNG/JPG/WebP.</p>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-slate-300/70 mb-2">Описание</label>
+                    <textarea
+                      value={bio}
+                      onChange={(e) => setBio(e.target.value)}
+                      rows={4}
+                      placeholder="Добавьте короткое описание"
+                      className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                    />
+                  </div>
+
+                  <div className="flex justify-end">
+                    <Button onClick={handleSaveProfile} disabled={saving} className="action-button">
+                      {saving ? 'Сохранение...' : 'Сохранить'}
                     </Button>
-                  </Link>
-                  <div className="flex items-center gap-2">
-                    <Settings className="w-6 h-6 text-purple-400" />
-                    <h1 className="text-2xl text-purple-300">Настройки</h1>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="p-6 space-y-8">
-              <div>
-                <h2 className="mb-4 text-xl text-purple-200">Фоновое изображение</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {BACKGROUND_OPTIONS.filter((bg) => bg.id !== 'custom').map((bg) => (
+              <div className="panel-base panel-orange p-6">
+                <div className="panel-caption text-left">Интерфейс</div>
+
+                <div className="space-y-6">
+                  <div>
+                    <p className="text-sm text-slate-200/80 mb-3">Тема</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => updateSettings({ theme: 'dark' })}
+                        className={`rounded-2xl px-5 py-4 bg-slate-950/25 transition-all ${
+                          settings.theme === 'dark' ? 'ring-2 ring-teal-300/50' : 'hover:ring-2 hover:ring-white/10'
+                        }`}
+                      >
+                        <Moon className="w-6 h-6 text-teal-200 mb-2" />
+                        <p className="text-sm text-slate-100">Темная</p>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => updateSettings({ theme: 'light' })}
+                        className={`rounded-2xl px-5 py-4 bg-slate-950/25 transition-all ${
+                          settings.theme === 'light' ? 'ring-2 ring-purple-400/50' : 'hover:ring-2 hover:ring-white/10'
+                        }`}
+                      >
+                        <Sun className="w-6 h-6 text-amber-300 mb-2" />
+                        <p className="text-sm text-slate-100">Светлая</p>
+                      </button>
+                    </div>
+                    <p className="text-xs text-slate-300/60 mt-2">
+                      Светлая тема: бело-серая с фиолетовым акцентом.
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-sm text-slate-200/80 mb-3">Звуки</p>
                     <button
-                      key={bg.id}
-                      onClick={() => updateSettings({ background: bg.id })}
-                      className={`relative aspect-video rounded-lg border-2 overflow-hidden transition-all ${
-                        settings.background === bg.id
-                          ? 'border-purple-500 ring-2 ring-purple-400/50 shadow-lg'
-                          : 'border-purple-600/30 hover:border-purple-500/50'
+                      type="button"
+                      onClick={() => {
+                        updateSettings({ soundEnabled: !settings.soundEnabled });
+                        if (!settings.soundEnabled) {
+                          playVictorySound();
+                        }
+                      }}
+                      className={`w-full rounded-2xl px-5 py-4 bg-slate-950/25 transition-all flex items-center justify-between ${
+                        settings.soundEnabled ? 'ring-2 ring-teal-300/40' : 'hover:ring-2 hover:ring-white/10'
                       }`}
                     >
-                      {bg.url ? (
-                        <img
-                          src={bg.url}
-                          alt={bg.name}
-                          className="w-full h-full object-cover"
-                        />
+                      <span className="text-slate-100">
+                        {settings.soundEnabled ? 'Звук включен' : 'Звук выключен'}
+                      </span>
+                      {settings.soundEnabled ? (
+                        <Volume2 className="w-5 h-5 text-teal-200" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-slate-800">
-                          <ImageIcon className="w-8 h-8 text-purple-400/40" />
-                        </div>
+                        <VolumeX className="w-5 h-5 text-slate-300/70" />
                       )}
-                      <div className="absolute bottom-0 left-0 right-0 p-2 text-xs text-center bg-black/70 text-white">
-                        {bg.name}
-                      </div>
                     </button>
-                  ))}
-                </div>
-              </div>
+                  </div>
 
-              <div>
-                <h2 className="mb-4 text-xl text-purple-200">Звуковые эффекты</h2>
-                <button
-                  onClick={() => {
-                    updateSettings({ soundEnabled: !settings.soundEnabled });
-                    if (!settings.soundEnabled) {
-                      playVictorySound();
-                    }
-                  }}
-                  className={`w-full p-4 rounded-lg border-2 transition-all flex items-center justify-between ${
-                    settings.soundEnabled
-                      ? 'border-purple-500 bg-purple-900/40 ring-2 ring-purple-400/50'
-                      : 'border-purple-600/30 bg-slate-800/50'
-                  }`}
-                >
-                  <span className="text-purple-200">
-                    {settings.soundEnabled ? 'Звук включен' : 'Звук выключен'}
-                  </span>
-                  {settings.soundEnabled ? (
-                    <Volume2 className="text-purple-400" />
-                  ) : (
-                    <VolumeX className="text-purple-400/60" />
-                  )}
-                </button>
-              </div>
-
-              <div>
-                <h2 className="mb-4 text-xl text-purple-200">Отображение панелей</h2>
-                <div className="space-y-3">
-                  <button
-                    onClick={() => updateSettings({ showHelp: !settings.showHelp })}
-                    className={`w-full p-4 rounded-lg border-2 transition-all flex items-center justify-between ${
-                      settings.showHelp
-                        ? 'border-purple-500 bg-purple-900/40 ring-2 ring-purple-400/50'
-                        : 'border-purple-600/30 bg-slate-800/50'
-                    }`}
-                  >
-                    <span className="text-purple-200">Подсказки "Как это работает"</span>
-                    {settings.showHelp ? (
-                      <Eye className="text-purple-400" />
-                    ) : (
-                      <EyeOff className="text-purple-400/60" />
-                    )}
-                  </button>
-                  <button
-                    onClick={() => updateSettings({ showFriends: !settings.showFriends })}
-                    className={`w-full p-4 rounded-lg border-2 transition-all flex items-center justify-between ${
-                      settings.showFriends
-                        ? 'border-purple-500 bg-purple-900/40 ring-2 ring-purple-400/50'
-                        : 'border-purple-600/30 bg-slate-800/50'
-                    }`}
-                  >
-                    <span className="text-purple-200">Панель друзей</span>
-                    {settings.showFriends ? (
-                      <Eye className="text-purple-400" />
-                    ) : (
-                      <EyeOff className="text-purple-400/60" />
-                    )}
-                  </button>
-
-                  <button
-                    onClick={() => updateSettings({ showActivities: !settings.showActivities })}
-                    className={`w-full p-4 rounded-lg border-2 transition-all flex items-center justify-between ${
-                      settings.showActivities
-                        ? 'border-purple-500 bg-purple-900/40 ring-2 ring-purple-400/50'
-                        : 'border-purple-600/30 bg-slate-800/50'
-                    }`}
-                  >
-                    <span className="text-purple-200">Лента активности</span>
-                    {settings.showActivities ? (
-                      <Eye className="text-purple-400" />
-                    ) : (
-                      <EyeOff className="text-purple-400/60" />
-                    )}
-                  </button>
-
-                  <button
-                    onClick={() => updateSettings({ showClan: !settings.showClan })}
-                    className={`w-full p-4 rounded-lg border-2 transition-all flex items-center justify-between ${
-                      settings.showClan
-                        ? 'border-purple-500 bg-purple-900/40 ring-2 ring-purple-400/50'
-                        : 'border-purple-600/30 bg-slate-800/50'
-                    }`}
-                  >
-                    <span className="text-purple-200">Информация о клане</span>
-                    {settings.showClan ? (
-                      <Eye className="text-purple-400" />
-                    ) : (
-                      <EyeOff className="text-purple-400/60" />
-                    )}
-                  </button>
+                  <div>
+                    <p className="text-sm text-slate-200/80 mb-3">Подсказки</p>
+                    <button
+                      type="button"
+                      onClick={() => updateSettings({ showHelp: !settings.showHelp })}
+                      className={`w-full rounded-2xl px-5 py-4 bg-slate-950/25 transition-all flex items-center justify-between ${
+                        settings.showHelp ? 'ring-2 ring-teal-300/40' : 'hover:ring-2 hover:ring-white/10'
+                      }`}
+                    >
+                      <span className="text-slate-100">Показывать “Как это работает”</span>
+                      <span className="text-xs text-slate-300/70">
+                        {settings.showHelp ? 'Вкл' : 'Выкл'}
+                      </span>
+                    </button>
+                    <PanelHelp>
+                      <p>Подсказки отображаются под основными панелями и помогают ориентироваться по шагам.</p>
+                    </PanelHelp>
+                  </div>
                 </div>
               </div>
             </div>
@@ -202,3 +212,4 @@ export function SettingsPage() {
     </div>
   );
 }
+

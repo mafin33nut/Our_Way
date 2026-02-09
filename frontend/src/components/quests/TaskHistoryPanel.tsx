@@ -15,10 +15,10 @@ export function TaskHistoryPanel({ quests }: TaskHistoryPanelProps) {
     .slice(0, 8);
 
   return (
-    <div className="panel-base panel-purple p-6">
+    <div className="min-h-[260px] flex flex-col">
       <div className="flex items-center gap-2 mb-4">
         <ClipboardList className="w-5 h-5 text-teal-300" />
-        <h2 className="text-slate-100">Завершение и история</h2>
+        <h2 className="text-slate-100">История выполнения</h2>
       </div>
 
       <div className="grid grid-cols-2 gap-3 mb-4">

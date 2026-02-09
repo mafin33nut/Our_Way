@@ -6,16 +6,24 @@ from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+def env_bool(name: str, default: str = "False") -> bool:
+    return os.getenv(name, default).strip().lower() in ("1", "true", "yes", "on")
+
+
+def env_list(name: str, default: str = "") -> list[str]:
+    return [item.strip() for item in os.getenv(name, default).split(",") if item.strip()]
+
+
 # Load .env
-load_dotenv(BASE_DIR / ".env")
+load_dotenv(BASE_DIR.parent / ".env")
 
 # SECURITY
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY") or "django-insecure-dev-placeholder"
-DEBUG = os.getenv("DEBUG", "True").lower() in ("1", "true", "yes")
-ALLOWED_HOSTS = [h for h in os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",") if h]
+DEBUG = env_bool("DEBUG", "True")
+ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", "localhost,127.0.0.1")
 
 # Database
-USE_SQLITE = os.getenv("USE_SQLITE", "False").lower() in ("1", "true", "yes")
+USE_SQLITE = env_bool("USE_SQLITE", "False")
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if USE_SQLITE:
@@ -33,7 +41,7 @@ else:
     else:
         DB_NAME = os.getenv("DB_NAME")
         DB_USER = os.getenv("DB_USER")
-        DB_PASSWORD = os.getenv("DB_PASSWORD", "")
+        DB_PASSWORD = os.getenv("DB_PASSWORD", "").replace("$$", "$")
         DB_HOST = os.getenv("DB_HOST", "localhost")
         DB_PORT = os.getenv("DB_PORT", "5432")
 
@@ -79,6 +87,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "app.api.middleware.DisableCSRFForAPI",  # Custom middleware to exempt API routes
@@ -122,9 +131,10 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 STATIC_ROOT = str(BASE_DIR / "static")  # абсолютный путь
-MEDIA_URL = '/media/'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR / "media")    # абсолютный путь
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -152,17 +162,37 @@ SIMPLE_JWT = {
 }
 
 # CORS
-CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL", "True").lower() in ("1", "true", "yes")
+CORS_ALLOW_ALL_ORIGINS = env_bool("CORS_ALLOW_ALL", "True")
+if not CORS_ALLOW_ALL_ORIGINS:
+    CORS_ALLOWED_ORIGINS = env_list("CORS_ALLOWED_ORIGINS")
+CORS_ALLOW_CREDENTIALS = env_bool("CORS_ALLOW_CREDENTIALS", "False")
 
 # CSRF settings - exempt API endpoints
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",")
-CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
-CSRF_COOKIE_HTTPONLY = False
+CSRF_TRUSTED_ORIGINS = env_list(
+    "CSRF_TRUSTED_ORIGINS",
+    "http://localhost:5173,http://127.0.0.1:5173",
+)
+CSRF_COOKIE_SECURE = env_bool("CSRF_COOKIE_SECURE", "True" if not DEBUG else "False")
+CSRF_COOKIE_HTTPONLY = env_bool("CSRF_COOKIE_HTTPONLY", "False")
+SESSION_COOKIE_SECURE = env_bool("SESSION_COOKIE_SECURE", "True" if not DEBUG else "False")
+
+if env_bool("USE_X_FORWARDED_PROTO", "True"):
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = env_bool("USE_X_FORWARDED_HOST", "True")
+SECURE_SSL_REDIRECT = env_bool("SECURE_SSL_REDIRECT", "False")
+SECURE_HSTS_SECONDS = int(os.getenv("SECURE_HSTS_SECONDS", "0"))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env_bool("SECURE_HSTS_INCLUDE_SUBDOMAINS", "False")
+SECURE_HSTS_PRELOAD = env_bool("SECURE_HSTS_PRELOAD", "False")
 
 # Email
 EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
 EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.example.com")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = env_bool("EMAIL_USE_TLS", "True")
+EMAIL_USE_SSL = env_bool("EMAIL_USE_SSL", "False")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "webmaster@localhost")
 
 # Logging (console output for debugging)
 LOGGING = {

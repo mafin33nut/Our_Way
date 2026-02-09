@@ -5,6 +5,7 @@ export interface User {
   avatar?: string | null;
   bio?: string;
   has_seen_welcome?: boolean;
+  pinned_achievements?: string[];
   level: number;
   xp: number;
   xp_to_next_level: number;
@@ -100,6 +101,17 @@ export interface Friend {
   quests_completed_today: number;
   is_online: boolean;
 }
+
+export interface FriendRequest {
+  id: number;
+  from_user: number;
+  from_user_username: string;
+  to_user: number;
+  to_user_username: string;
+  status: 'pending' | 'accepted' | 'rejected';
+  created_at: string;
+  decided_at?: string | null;
+}
 export interface ClanMember {
   id: number;
   username: string;
@@ -145,36 +157,9 @@ export interface Activity {
 }
 export interface CustomizationSettings {
   theme: 'light' | 'dark';
-  background: string;
-  customBackgroundUrl?: string;
   soundEnabled: boolean;
-  showFriends: boolean;
-  showActivities: boolean;
-  showClan: boolean;
   showHelp: boolean;
 }
-export const BACKGROUND_OPTIONS = [
-  {
-    id: 'kingdom',
-    name: 'Королевство',
-    url: '/kingdom.jpg',
-  },
-  {
-    id: 'adventure',
-    name: 'Приключение',
-    url: '/adventure.jpg',
-  },
-  {
-    id: 'custom',
-    name: 'Свой фон',
-    url: '',
-  },
-  {
-    id: 'dynamic',
-    name: 'Динамичный фон',
-    url: '',
-  },
-];
 
 export interface ActivityTimer {
   id: number;

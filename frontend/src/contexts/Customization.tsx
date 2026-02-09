@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, ReactNode } from 'react';
-import { CustomizationSettings, BACKGROUND_OPTIONS } from '../types';
+import { CustomizationSettings } from '../types';
 interface CustomizationContextType {
   settings: CustomizationSettings;
   updateSettings: (settings: Partial<CustomizationSettings>) => void;
@@ -7,12 +7,12 @@ interface CustomizationContextType {
 }
 const defaultSettings: CustomizationSettings = {
   theme: 'dark',
+<<<<<<< HEAD
   background: 'dynamic',
   customBackgroundUrl: '',
+=======
+>>>>>>> 7d5d50b69d2952ea275d05782d711d2549c59957
   soundEnabled: true,
-  showFriends: true,
-  showActivities: true,
-  showClan: true,
   showHelp: true,
 };
 export const CustomizationContext = createContext<CustomizationContextType | undefined>(undefined);
@@ -22,11 +22,23 @@ interface CustomizationProviderProps {
 export function CustomizationProvider({ children }: CustomizationProviderProps) {
   const [settings, setSettings] = useState<CustomizationSettings>(() => {
     const saved = localStorage.getItem('customization_settings');
-    return saved ? JSON.parse(saved) : defaultSettings;
+    try {
+      const parsed = saved ? (JSON.parse(saved) as Partial<CustomizationSettings>) : {};
+      return { ...defaultSettings, ...parsed };
+    } catch {
+      return defaultSettings;
+    }
   });
   useEffect(() => {
     localStorage.setItem('customization_settings', JSON.stringify(settings));
   }, [settings]);
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.dataset.theme = settings.theme;
+    }
+  }, [settings.theme]);
+
   const updateSettings = (newSettings: Partial<CustomizationSettings>) => {
     setSettings((prev) => ({ ...prev, ...newSettings }));
   };

@@ -1,15 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, ShieldCheck, ListChecks } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
-import { useCustomization } from '../../hooks/useCustomization';
 import { authAPI } from '../../api/auth';
 import { Button } from '../ui/Button';
 import { PanelHelp } from '../ui/PanelHelp';
 
 export function WelcomePage() {
   const { user, refreshUser } = useAuth();
-  const { settings } = useCustomization();
-  const isDynamic = settings.background === 'dynamic';
   const navigate = useNavigate();
 
   if (!user) {
@@ -29,7 +26,7 @@ export function WelcomePage() {
   };
 
   return (
-    <div className={`min-h-screen ${isDynamic ? 'bg-transparent' : 'bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950'}`}>
+    <div className="min-h-screen">
       <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1200px]">
           <div className="panel-base panel-purple p-10">
@@ -76,8 +73,8 @@ export function WelcomePage() {
                   <p className="text-slate-200">Шаг 4: Настройки</p>
                 </div>
                 <p className="text-slate-300/70 text-sm">
-                  Проверьте фон, звук и видимость панелей.
-                  Подсказки можно отключить в настройках интерфейса.
+                  Проверьте тему и звук в настройках, чтобы интерфейс был комфортным.
+                  Подсказки можно отключить там же.
                 </p>
               </div>
             </div>

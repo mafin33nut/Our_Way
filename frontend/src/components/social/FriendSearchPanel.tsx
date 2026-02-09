@@ -16,6 +16,7 @@ export function FriendSearchPanel({ onFriendAdded, friendIds = [], currentUserId
   const [searching, setSearching] = useState(false);
   const [addingFriend, setAddingFriend] = useState<number | null>(null);
   const [error, setError] = useState('');
+  const [status, setStatus] = useState('');
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
@@ -43,10 +44,12 @@ export function FriendSearchPanel({ onFriendAdded, friendIds = [], currentUserId
   const handleAddFriend = async (userId: number) => {
     setAddingFriend(userId);
     setError('');
+    setStatus('');
     try {
       await socialAPI.addFriend(Number(userId));
       setSearchResults((prev) => prev.filter((u) => u.id !== userId));
       await onFriendAdded();
+      setStatus('Заявка отправлена.');
     } catch (err: any) {
       console.error('Add friend error:', err);
       setError(err.response?.data?.detail || 'Не удалось добавить друга');
@@ -86,6 +89,12 @@ export function FriendSearchPanel({ onFriendAdded, friendIds = [], currentUserId
         {error && (
           <div className="p-3 rounded-lg border bg-red-900/30 border-red-600/50">
             <p className="text-sm text-red-200">{error}</p>
+          </div>
+        )}
+
+        {status && !error && (
+          <div className="p-3 rounded-lg border bg-slate-900/40 border-purple-600/30">
+            <p className="text-sm text-purple-200">{status}</p>
           </div>
         )}
 

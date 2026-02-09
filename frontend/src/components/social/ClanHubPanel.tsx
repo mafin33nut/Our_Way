@@ -5,8 +5,10 @@ import { Button } from '../ui/Button';
 import { useCustomization } from '../../hooks/useCustomization';
 import { useAuth } from '../../hooks/useAuth';
 import { socialAPI } from '../../api/social';
-import { Clan } from '../../types';
+import { Clan, ClanQuest } from '../../types';
 import { ClanCreationPanel } from './ClanCreationPanel';
+import { clanQuestsAPI } from '../../api/quests';
+import { ClanQuestList } from '../quests/ClanQuestList';
 
 type ClanHubPanelProps = {
   className?: string;
@@ -23,6 +25,14 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
   const [joinLinkLoading, setJoinLinkLoading] = useState(false);
   const [leaveLoading, setLeaveLoading] = useState(false);
   const [leaveStatus, setLeaveStatus] = useState<string | null>(null);
+  const [clanQuests, setClanQuests] = useState<ClanQuest[]>([]);
+  const [loadingClanQuests, setLoadingClanQuests] = useState(false);
+  const [clanQuestTitle, setClanQuestTitle] = useState('');
+  const [clanQuestDescription, setClanQuestDescription] = useState('');
+  const [clanQuestMaxParticipants, setClanQuestMaxParticipants] = useState(2);
+  const [clanQuestDifficulty, setClanQuestDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
+  const [creatingClanQuest, setCreatingClanQuest] = useState(false);
+  const [clanQuestStatus, setClanQuestStatus] = useState<string | null>(null);
   const { settings } = useCustomization();
   const { user } = useAuth();
   const isLight = settings.theme === 'light';
@@ -44,6 +54,15 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
   useEffect(() => {
     if (isOpen) {
       loadClans();
+      (async () => {
+        setLoadingClanQuests(true);
+        try {
+          const list = await clanQuestsAPI.getAll().catch(() => []);
+          setClanQuests(list || []);
+        } finally {
+          setLoadingClanQuests(false);
+        }
+      })();
     }
   }, [isOpen, loadClans]);
 
@@ -80,6 +99,56 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
     [clans, selectedClanId]
   );
 
+  const selectedClanQuests = useMemo(() => {
+    if (!selectedClan) return [];
+    return clanQuests.filter((q) => q.clan === selectedClan.id);
+  }, [clanQuests, selectedClan]);
+
+  const handleClanQuestContribute = async (id: number) => {
+    try {
+      const updated = await clanQuestsAPI.contribute(id);
+      setClanQuests((prev) => prev.map((q) => (q.id === id ? updated : q)));
+    } catch (error) {
+      console.error('Failed to contribute to clan quest:', error);
+    }
+  };
+
+  const handleDeleteClanQuest = async (id: number) => {
+    try {
+      await clanQuestsAPI.delete(id);
+      setClanQuests((prev) => prev.filter((q) => q.id !== id));
+    } catch (error) {
+      console.error('Failed to delete clan quest:', error);
+    }
+  };
+
+  const handleCreateClanQuest = async () => {
+    if (!selectedClan) return;
+    if (!clanQuestTitle.trim()) return;
+    setCreatingClanQuest(true);
+    setClanQuestStatus(null);
+    try {
+      const created = await clanQuestsAPI.create({
+        clan: selectedClan.id,
+        title: clanQuestTitle.trim(),
+        description: clanQuestDescription.trim(),
+        max_participants: clanQuestMaxParticipants,
+        difficulty: clanQuestDifficulty,
+      });
+      setClanQuests((prev) => [created, ...prev]);
+      setClanQuestTitle('');
+      setClanQuestDescription('');
+      setClanQuestMaxParticipants(2);
+      setClanQuestDifficulty('easy');
+      setClanQuestStatus('Клановый квест создан.');
+    } catch (error: any) {
+      console.error('Failed to create clan quest:', error);
+      setClanQuestStatus(error?.response?.data?.detail || 'Не удалось создать клановый квест.');
+    } finally {
+      setCreatingClanQuest(false);
+    }
+  };
+
   const handleLeaveClan = async () => {
     if (!selectedClan) return;
     setLeaveLoading(true);
@@ -103,9 +172,9 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
         size="md"
         onClick={() => setIsOpen(true)}
         aria-label="Открыть кланы"
-        className={`flex items-center gap-2 ${className}`}
+        className={`flex items-center gap-2 sm:flex-col sm:gap-2 sm:px-4 sm:py-3 sm:text-base sm:rounded-xl sm:border sm:border-slate-600/60 sm:bg-slate-800/50 sm:hover:bg-slate-800/80 ${className}`}
       >
-        <Crown className="w-5 h-5" />
+        <Crown className="w-5 h-5 sm:hidden" />
         <span className="hidden sm:inline">Кланы</span>
       </Button>
 
@@ -190,6 +259,85 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                               {leaveStatus && <span className="text-sm text-slate-300/70">{leaveStatus}</span>}
                             </div>
                           )}
+
+                          {selectedClan && (
+                            <div className="mt-6 space-y-6">
+                              <div className="panel-base panel-orange p-6">
+                                <div className="panel-caption text-left">Клановые квесты</div>
+                                {loadingClanQuests ? (
+                                  <div className="text-sm text-slate-300/70">Загрузка квестов...</div>
+                                ) : (
+                                  <ClanQuestList
+                                    quests={selectedClanQuests}
+                                    onContribute={handleClanQuestContribute}
+                                    onDelete={handleDeleteClanQuest}
+                                    currentUsername={user.username}
+                                  />
+                                )}
+                              </div>
+
+                              <div className="panel-base panel-teal p-6">
+                                <div className="panel-caption text-left">Создать клановый квест</div>
+                                <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-4">
+                                  <div className="space-y-3">
+                                    <input
+                                      value={clanQuestTitle}
+                                      onChange={(e) => setClanQuestTitle(e.target.value)}
+                                      placeholder="Название квеста"
+                                      className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                                    />
+                                    <textarea
+                                      value={clanQuestDescription}
+                                      onChange={(e) => setClanQuestDescription(e.target.value)}
+                                      placeholder="Описание"
+                                      rows={3}
+                                      className="w-full rounded-xl border border-slate-600/30 bg-slate-950/40 px-4 py-3 text-slate-100"
+                                    />
+                                  </div>
+                                  <div className="rounded-xl border border-slate-600/30 bg-slate-950/25 p-4 space-y-3">
+                                    <label className="text-sm text-slate-200/80 flex flex-col gap-2">
+                                      Сложность
+                                      <select
+                                        value={clanQuestDifficulty}
+                                        onChange={(e) =>
+                                          setClanQuestDifficulty(e.target.value as 'easy' | 'medium' | 'hard')
+                                        }
+                                        className="rounded-xl border border-slate-600/30 bg-slate-950/40 px-3 py-3 text-slate-100"
+                                      >
+                                        <option value="easy">Легкая</option>
+                                        <option value="medium">Средняя</option>
+                                        <option value="hard">Сложная</option>
+                                      </select>
+                                    </label>
+                                    <label className="text-sm text-slate-200/80 flex items-center justify-between gap-3">
+                                      Макс. участников
+                                      <input
+                                        type="number"
+                                        min={1}
+                                        value={clanQuestMaxParticipants}
+                                        onChange={(e) =>
+                                          setClanQuestMaxParticipants(Math.max(1, Number(e.target.value) || 1))
+                                        }
+                                        className="w-24 rounded-xl border border-slate-600/30 bg-slate-950/40 px-3 py-2 text-slate-100"
+                                      />
+                                    </label>
+                                  </div>
+                                </div>
+                                <div className="mt-4 flex items-center justify-between gap-3">
+                                  {clanQuestStatus && (
+                                    <span className="text-sm text-slate-200/70">{clanQuestStatus}</span>
+                                  )}
+                                  <Button
+                                    onClick={handleCreateClanQuest}
+                                    disabled={creatingClanQuest || !clanQuestTitle.trim()}
+                                    className="action-button"
+                                  >
+                                    {creatingClanQuest ? 'Создание...' : 'Создать'}
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </>
                       )}
                     </div>
@@ -205,20 +353,22 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                           <input
                             value={joinLink}
                             onChange={(e) => setJoinLink(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleJoinByLink()}
                             placeholder="Вставьте ссылку или ID клана"
                             className="w-full rounded-lg border border-slate-600/40 bg-slate-950/50 px-3 py-2 text-slate-100"
                           />
                           <input
                             value={joinLinkPassword}
                             onChange={(e) => setJoinLinkPassword(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleJoinByLink()}
                             placeholder="Пароль (если нужен)"
                             type="password"
                             className="w-full rounded-lg border border-slate-600/40 bg-slate-950/50 px-3 py-2 text-slate-100"
                           />
                           <div className="flex items-center justify-between gap-3">
-                            <Button onClick={handleJoinByLink} disabled={joinLinkLoading} className="action-button">
-                              {joinLinkLoading ? 'Отправка...' : 'Отправить запрос'}
-                            </Button>
+                            <span className="text-xs text-slate-300/70">
+                              {joinLinkLoading ? 'Отправка запроса...' : 'Нажмите Enter, чтобы отправить запрос'}
+                            </span>
                             {joinLinkStatus && <span className="text-sm text-slate-300/70">{joinLinkStatus}</span>}
                           </div>
                         </div>
