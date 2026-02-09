@@ -126,11 +126,11 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsOpen(false)}
-                  className={
+                  className={`px-4 py-2 rounded-lg ${
                     isLight
                       ? 'border border-black bg-black text-white hover:bg-slate-900 [&_*]:text-white'
-                      : ''
-                  }
+                      : 'border border-slate-600/50 bg-slate-900/40 text-slate-100 hover:bg-slate-800/60'
+                  }`}
                 >
                   <X className="w-4 h-4" />
                 </Button>
@@ -142,13 +142,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                 )}
                 {user && (
                   <>
-                    <div
-                      className={`rounded-2xl border p-6 ${
-                        isLight
-                          ? 'bg-white/95 border-slate-200 shadow-[0_18px_42px_-28px_rgba(15,23,42,0.4)] backdrop-blur'
-                          : 'panel-base panel-purple'
-                      }`}
-                    >
+                    <div className={`rounded-2xl border p-6 ${isLight ? 'bg-white border-slate-200 shadow-xl' : 'panel-base panel-purple'}`}>
                       <div className={isLight ? 'text-slate-900 font-medium mb-4' : 'panel-caption text-left'}>
                         Заявки в друзья
                       </div>
@@ -190,7 +184,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                                   className={
                                     isLight
                                       ? 'px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black [&_*]:text-white'
-                                      : ''
+                                      : 'px-5 py-3 rounded-xl text-base border border-slate-600/50 text-slate-100 hover:bg-slate-800/50'
                                   }
                                 >
                                   Отклонить

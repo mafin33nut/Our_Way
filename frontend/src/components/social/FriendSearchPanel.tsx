@@ -97,7 +97,7 @@ export function FriendSearchPanel({ onFriendAdded, friendIds = [], currentUserId
             className={
               isLight
                 ? 'px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black'
-                : ''
+                : 'px-5 py-3 rounded-xl text-base'
             }
           >
             {searching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
@@ -159,7 +159,7 @@ export function FriendSearchPanel({ onFriendAdded, friendIds = [], currentUserId
                   className={
                     isLight
                       ? 'px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black'
-                      : ''
+                      : 'px-5 py-3 rounded-xl text-base'
                   }
                 >
                   {addingFriend === user.id ? (

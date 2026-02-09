@@ -94,6 +94,8 @@ export function HomePage() {
   const [taskDescription, setTaskDescription] = useState('');
   const [taskType, setTaskType] = useState<TaskType>('simple');
   const [taskDifficulty, setTaskDifficulty] = useState<TaskDifficulty>('easy');
+  const [useTaskTimer, setUseTaskTimer] = useState(false);
+  const [taskTimerMinutes, setTaskTimerMinutes] = useState(60);
   const [steps, setSteps] = useState<Array<{ title: string; difficulty: TaskDifficulty }>>([
     { title: '', difficulty: 'easy' },
   ]);
@@ -206,6 +208,7 @@ export function HomePage() {
         description: taskDescription.trim(),
         difficulty: taskDifficulty,
         focus_ids: selectedFocusId ? [selectedFocusId] : [],
+        timer_minutes: useTaskTimer ? taskTimerMinutes : undefined,
         steps:
           taskType === 'stepwise'
             ? steps
@@ -224,6 +227,8 @@ export function HomePage() {
       setSteps([{ title: '', difficulty: 'easy' }]);
       setTaskType('simple');
       setTaskDifficulty('easy');
+      setUseTaskTimer(false);
+      setTaskTimerMinutes(60);
       setIsCreateOpen(false);
     } catch (error: any) {
       console.error('Failed to create quest:', error);
@@ -597,6 +602,36 @@ export function HomePage() {
                         <option value="medium">Средняя</option>
                         <option value="hard">Сложная</option>
                       </select>
+                    </div>
+
+                    <div className="pt-2 space-y-2">
+                      <label className="text-sm text-slate-200/80 flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={useTaskTimer}
+                          onChange={(e) => setUseTaskTimer(e.target.checked)}
+                          className="accent-teal-300"
+                        />
+                        Поставить таймер (необязательно)
+                      </label>
+                      {useTaskTimer && (
+                        <div className="space-y-2">
+                          <label className="text-sm text-slate-200/80 block">Время (минуты)</label>
+                          <input
+                            type="number"
+                            min={1}
+                            max={10080}
+                            value={taskTimerMinutes}
+                            onChange={(e) => setTaskTimerMinutes(Math.max(1, Number(e.target.value) || 1))}
+                            className={`w-full rounded-xl border px-3 py-3 ${
+                              isLight
+                                ? 'border-slate-300 bg-white text-slate-900'
+                                : 'border-slate-600/30 bg-slate-950/40 text-slate-100'
+                            }`}
+                          />
+                          <p className="text-xs text-slate-300/70">Таймер добавит +30 XP к награде квеста.</p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

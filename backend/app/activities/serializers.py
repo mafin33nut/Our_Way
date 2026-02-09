@@ -1,3 +1,4 @@
+from datetime import timedelta
 from rest_framework import serializers
 from django.utils import timezone
 from app.notifications.services import send_notification_to_user
@@ -382,6 +383,7 @@ class QuestSerializer(serializers.ModelSerializer):
         default=list,
     )
     steps = QuestStepSerializer(many=True, required=False)
+    timer_minutes = serializers.IntegerField(write_only=True, required=False, min_value=1, max_value=10080)
 
     class Meta:
         model = Quest
@@ -403,6 +405,7 @@ class QuestSerializer(serializers.ModelSerializer):
             'focus_area',
             'focuses',
             'focus_ids',
+            'timer_minutes',
             'steps',
         ]
         read_only_fields = ['id', 'created_at', 'completed_at', 'user', 'accepted_at', 'expires_at', 'deleted_at']
@@ -410,6 +413,7 @@ class QuestSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         steps_data = validated_data.pop('steps', [])
         focus_ids = validated_data.pop('focus_ids', [])
+        timer_minutes = validated_data.pop('timer_minutes', None)
         request = self.context.get('request')
         if request and hasattr(request, 'user'):
             validated_data['user'] = request.user
@@ -427,7 +431,10 @@ class QuestSerializer(serializers.ModelSerializer):
                     'medium': 50,
                     'hard': 70,
                 }.get(step.get('difficulty') or 'easy', 30)
-        validated_data['xp_reward'] = base_xp + step_bonus
+        timer_bonus = 30 if timer_minutes else 0
+        validated_data['xp_reward'] = base_xp + step_bonus + timer_bonus
+        if timer_minutes:
+            validated_data['expires_at'] = timezone.now() + timedelta(minutes=int(timer_minutes))
         quest = super().create(validated_data)
 
         if focus_ids:

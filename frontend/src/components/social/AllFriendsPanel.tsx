@@ -80,7 +80,11 @@ export function AllFriendsPanel({ friends }: AllFriendsPanelProps) {
                   size="sm"
                   variant="ghost"
                   onClick={() => setSelectedFriendId(friend.id)}
-                  className={isLight ? 'bg-black text-white hover:bg-slate-900 border border-black [&_*]:text-white' : ''}
+                  className={
+                    isLight
+                      ? 'bg-black text-white hover:bg-slate-900 border border-black [&_*]:text-white'
+                      : 'px-4 py-2 rounded-xl text-sm border border-slate-600/40 text-slate-100 hover:bg-slate-800/50'
+                  }
                 >
                   Смотреть профиль
                 </Button>

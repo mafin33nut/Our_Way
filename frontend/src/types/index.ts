@@ -91,6 +91,7 @@ export interface QuestCreate {
   description: string;
   difficulty: 'easy' | 'medium' | 'hard';
   focus_ids?: number[];
+  timer_minutes?: number;
   steps?: Array<{ title: string; difficulty?: 'easy' | 'medium' | 'hard'; order?: number }>;
 }
 export interface Friend {
