@@ -218,18 +218,18 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                 </Button>
               </div>
 
-              <div className="h-[calc(100%-72px)] overflow-y-auto px-8 sm:px-10 py-8 sm:py-10 space-y-8">
+              <div className="h-[calc(100%-72px)] overflow-y-auto px-[28px] py-[28px] space-y-[19px]">
                 {!user ? (
                   <div className="text-sm text-slate-600">
                     Войдите, чтобы управлять кланами.
                   </div>
                 ) : (
-                  <div className="space-y-8">
+                  <div className="space-y-[19px]">
                     {/* Панель: Ваши кланы */}
                     <div
-                      className="rounded-2xl bg-white border border-slate-200 shadow-xl p-8"
+                      className="rounded-2xl bg-white border border-slate-200 shadow-xl p-6"
                     >
-                      <div className="flex items-center gap-2 mb-6">
+                      <div className="flex items-center gap-2 mb-4">
                         <Crown className="w-5 h-5 text-slate-800" />
                         <h3 className="text-slate-900">Ваши кланы</h3>
                       </div>
@@ -243,12 +243,12 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                         </div>
                       ) : (
                         <>
-                          <div className="flex flex-wrap gap-3">
+                          <div className="flex flex-wrap gap-2">
                             {clans.map((clan) => (
                               <button
                                 key={clan.id}
                                 onClick={() => setSelectedClanId(clan.id)}
-                                className={`rounded-xl border text-sm font-medium transition-colors px-6 py-3 ${
+                                className={`rounded-xl border text-sm font-medium transition-colors px-5 py-3 ${
                                   selectedClanId === clan.id
                                     ? 'border-black bg-black text-white'
                                     : 'border-slate-300 text-slate-800 hover:border-slate-400 hover:bg-slate-50'
@@ -259,7 +259,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                             ))}
                           </div>
                           {selectedClan && (
-                            <div className="mt-6 flex flex-wrap items-center gap-4">
+                            <div className="mt-4 flex flex-wrap items-center gap-4">
                               <Button
                                 onClick={handleLeaveClan}
                                 disabled={leaveLoading}
@@ -283,17 +283,17 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
 
                     {/* Панель: Вступить по ссылке */}
                     <div
-                      className="rounded-2xl bg-white border border-slate-200 shadow-xl p-8"
+                      className="rounded-2xl bg-white border border-slate-200 shadow-xl p-6"
                     >
-                      <h3 className="text-base font-medium mb-4 text-slate-900">
+                      <h3 className="text-base font-medium mb-3 text-slate-900">
                         Вступить в приватный клан по ссылке
                       </h3>
                       <div
-                        className={`rounded-xl border p-5 ${
+                        className={`rounded-xl border p-4 ${
                           'border-slate-200 bg-slate-50'
                         }`}
                       >
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-3">
                           <input
                             value={joinLink}
                             onChange={(e) => setJoinLink(e.target.value)}
@@ -335,9 +335,9 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
 
                     {/* Панель: Создать новый клан */}
                     <div
-                      className="rounded-2xl bg-white border border-slate-200 shadow-xl p-8"
+                      className="rounded-2xl bg-white border border-slate-200 shadow-xl p-6"
                     >
-                      <h3 className="text-base font-medium mb-6 text-slate-900">Создать новый клан</h3>
+                      <h3 className="text-base font-medium mb-4 text-slate-900">Создать новый клан</h3>
                       <ClanCreationPanel onClanCreated={loadClans} />
                     </div>
 
@@ -345,9 +345,9 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                     {selectedClan && (
                       <>
                         <div
-                          className="rounded-2xl bg-white border border-slate-200 shadow-md p-8"
+                          className="rounded-2xl bg-white border border-slate-200 shadow-md p-6"
                         >
-                          <div className="text-slate-900 font-medium mb-6 text-base">Клановые квесты</div>
+                          <div className="text-slate-900 font-medium mb-4 text-base">Клановые квесты</div>
                           {loadingClanQuests ? (
                             <div className="text-sm text-slate-600">Загрузка квестов...</div>
                           ) : (
@@ -361,11 +361,11 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                         </div>
 
                         <div
-                          className="rounded-2xl bg-white border border-slate-200 shadow-md p-8"
+                          className="rounded-2xl bg-white border border-slate-200 shadow-md p-6"
                         >
-                          <div className="text-slate-900 font-medium mb-6 text-base">Создать клановый квест</div>
-                          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-6">
-                            <div className="space-y-4">
+                          <div className="text-slate-900 font-medium mb-4 text-base">Создать клановый квест</div>
+                          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-4">
+                            <div className="space-y-3">
                               <input
                                 value={clanQuestTitle}
                                 onChange={(e) => setClanQuestTitle(e.target.value)}

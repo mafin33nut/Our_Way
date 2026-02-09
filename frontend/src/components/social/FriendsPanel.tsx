@@ -122,14 +122,14 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                 </Button>
               </div>
 
-              <div className="h-[calc(100%-72px)] overflow-y-auto px-8 sm:px-10 py-8 sm:py-10 space-y-8">
+              <div className="h-[calc(100%-72px)] overflow-y-auto px-[19px] py-[19px] space-y-[19px]">
                 {!user && (
                   <div className="text-sm text-slate-600">Войдите, чтобы управлять друзьями.</div>
                 )}
                 {user && (
                   <>
                     <div
-                      className="rounded-2xl bg-white border border-slate-200 shadow-xl p-8"
+                      className="rounded-2xl bg-white border border-slate-200 shadow-xl p-6"
                     >
                       <div className="text-slate-900 font-medium mb-4">Заявки в друзья</div>
                       {loadingRequests ? (
@@ -141,7 +141,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                           {requests.map((req) => (
                             <div
                               key={req.id}
-                              className="flex items-center justify-between gap-3 rounded-xl px-5 py-4 bg-slate-50 border border-slate-200"
+                              className="flex items-center justify-between gap-3 rounded-xl px-4 py-3 bg-slate-50 border border-slate-200"
                             >
                               <div className="min-w-0">
                                 <p className="text-slate-900 truncate">{req.from_user_username}</p>
