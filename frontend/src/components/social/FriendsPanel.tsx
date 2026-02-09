@@ -86,7 +86,11 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
         size="md"
         onClick={() => setIsOpen(true)}
         aria-label="Открыть друзей"
-        className={`flex items-center gap-2 sm:flex-col sm:gap-2 sm:px-4 sm:py-3 sm:text-base sm:rounded-xl sm:border sm:border-slate-600/60 sm:bg-slate-800/50 sm:hover:bg-slate-800/80 ${className}`}
+        className={`flex items-center gap-2 sm:flex-col sm:gap-2 sm:px-4 sm:py-3 sm:text-base sm:rounded-xl sm:border ${
+          isLight
+            ? 'sm:border-slate-200 sm:bg-white/90 sm:hover:bg-slate-100 text-slate-900'
+            : 'sm:border-slate-600/60 sm:bg-slate-800/50 sm:hover:bg-slate-800/80 text-white'
+        } ${className}`}
       >
         <Users className="w-5 h-5 sm:hidden" />
         <span className="hidden sm:inline">Друзья</span>

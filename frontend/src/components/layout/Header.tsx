@@ -33,7 +33,7 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
           <button
             type="button"
             onClick={onToggleSidebar}
-            className={`inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl transition-all shadow-md ${
+            className={`inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl transition-all shadow-md focus:outline-none focus-visible:outline-none focus:ring-0 ${
               isLight
                 ? 'bg-slate-100 hover:bg-slate-200 text-slate-900'
                 : 'bg-slate-800/80 hover:bg-slate-700 text-slate-100'
@@ -53,25 +53,25 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 variant="ghost"
                 size="md"
                 onClick={() => navigate('/settings')}
-                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-none shadow-none hover:bg-transparent ${
-                  isLight ? 'text-slate-900' : 'text-slate-100'
+                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-0 shadow-none hover:bg-transparent ${
+                  isLight ? 'text-slate-900' : 'text-white'
                 }`}
               >
                 <span>Настройки</span>
               </Button>
               <FriendsPanel
-                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-none shadow-none hover:bg-transparent ${
-                  isLight ? 'text-slate-900' : 'text-slate-100'
+                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-0 shadow-none hover:bg-transparent ${
+                  isLight ? 'text-slate-900' : 'text-white'
                 }`}
               />
               <ClanHubPanel
-                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-none shadow-none hover:bg-transparent ${
-                  isLight ? 'text-slate-900' : 'text-slate-100'
+                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-0 shadow-none hover:bg-transparent ${
+                  isLight ? 'text-slate-900' : 'text-white'
                 }`}
               />
               <ChatHubPanel
-                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-none shadow-none hover:bg-transparent ${
-                  isLight ? 'text-slate-900' : 'text-slate-100'
+                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-0 shadow-none hover:bg-transparent ${
+                  isLight ? 'text-slate-900' : 'text-white'
                 }`}
               />
               <Button
