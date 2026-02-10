@@ -12,6 +12,7 @@ const defaultSettings: CustomizationSettings = {
   soundEnabled: true,
   showHelp: true,
 };
+const LIGHT_THEME_ARCHIVED = true;
 export const CustomizationContext = createContext<CustomizationContextType | undefined>(undefined);
 interface CustomizationProviderProps {
   children: ReactNode;
@@ -21,7 +22,11 @@ export function CustomizationProvider({ children }: CustomizationProviderProps) 
     const saved = localStorage.getItem('customization_settings');
     try {
       const parsed = saved ? (JSON.parse(saved) as Partial<CustomizationSettings>) : {};
-      return { ...defaultSettings, ...parsed };
+      const merged = { ...defaultSettings, ...parsed };
+      if (LIGHT_THEME_ARCHIVED && merged.theme !== 'dark') {
+        return { ...merged, theme: 'dark' };
+      }
+      return merged;
     } catch {
       return defaultSettings;
     }
@@ -37,6 +42,10 @@ export function CustomizationProvider({ children }: CustomizationProviderProps) 
   }, [settings.theme]);
 
   const updateSettings = (newSettings: Partial<CustomizationSettings>) => {
+    if (LIGHT_THEME_ARCHIVED && newSettings.theme === 'light') {
+      setSettings((prev) => ({ ...prev, theme: 'dark' }));
+      return;
+    }
     setSettings((prev) => ({ ...prev, ...newSettings }));
   };
   const playVictorySound = () => {

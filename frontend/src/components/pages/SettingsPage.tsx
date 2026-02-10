@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ArrowLeft, Moon, Settings, Sun, User as UserIcon, Volume2, VolumeX } from 'lucide-react';
+import { ArrowLeft, Moon, Settings, User as UserIcon, Volume2, VolumeX } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCustomization } from '../../hooks/useCustomization';
 import { useAuth } from '../../hooks/useAuth';
@@ -118,7 +118,7 @@ export function SettingsPage() {
                 <div className="space-y-6">
                   <div>
                     <p className="text-sm text-slate-200/80 mb-3">Тема</p>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 gap-3">
                       <button
                         type="button"
                         onClick={() => updateSettings({ theme: 'dark' })}
@@ -135,22 +135,8 @@ export function SettingsPage() {
                         <Moon className="w-6 h-6 text-teal-200 mb-2" />
                         <p className="text-sm text-slate-100">Темная</p>
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => updateSettings({ theme: 'light' })}
-                        className={`rounded-2xl px-5 py-4 transition-all ${
-                          settings.theme === 'light'
-                            ? 'bg-white border border-slate-200 ring-2 ring-purple-400/50'
-                            : 'bg-slate-950/25 hover:ring-2 hover:ring-white/10'
-                        }`}
-                      >
-                        <Sun className="w-6 h-6 text-amber-300 mb-2" />
-                        <p className="text-sm text-slate-100">Светлая</p>
-                      </button>
                     </div>
-                    <p className="text-xs text-slate-300/60 mt-2">
-                      Светлая тема: бело-серая с фиолетовым акцентом.
-                    </p>
+                    <p className="text-xs text-slate-300/60 mt-2">Светлая тема временно в архиве.</p>
                   </div>
 
                   <div>
