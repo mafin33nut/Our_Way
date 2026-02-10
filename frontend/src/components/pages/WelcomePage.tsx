@@ -44,7 +44,7 @@ export function WelcomePage() {
             </div>
 
             <div className="mt-16 flex items-center justify-center">
-              <div className="grid grid-cols-1 gap-4 w-full max-w-[980px]">
+              <div className="grid grid-cols-1 gap-4 w-full max-w-[1800px]">
                 <div className="group rounded-2xl p-[2px] bg-gradient-to-r from-teal-400/75 via-cyan-400/70 to-violet-500/75 transition-transform duration-300 hover:scale-[1.02] hover:translate-x-1">
                   <div className="rounded-2xl bg-slate-900/90 p-5 sm:p-6">
                     <Button
