@@ -3,6 +3,7 @@ import { Shield } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { authAPI } from '../../api/auth';
 import { Button } from '../ui/Button';
+import { HybridDynamicBackground } from '../background/HybridDynamicBackground';
 
 export function WelcomePage() {
   const { user, refreshUser } = useAuth();
@@ -26,6 +27,11 @@ export function WelcomePage() {
 
   return (
     <div className="min-h-screen bg-slate-950">
+      <HybridDynamicBackground
+        opacity={0.68}
+        speed={0.9}
+        palette={{ a: '#2dd4bf', b: '#22d3ee', c: '#8b5cf6', d: '#d946ef' }}
+      />
       <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1200px]">
           <div className="relative rounded-2xl bg-slate-900/90 border border-slate-700/70 shadow-[0_20px_46px_-16px_rgba(15,23,42,0.95)] p-8 sm:p-10 min-h-[58vh]">
@@ -38,25 +44,25 @@ export function WelcomePage() {
             </div>
 
             <div className="mt-16 flex items-center justify-center">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-[560px]">
-                <div className="group rounded-2xl p-[2px] bg-gradient-to-br from-cyan-400/70 to-violet-500/70 transition-transform duration-300 hover:scale-105 hover:rotate-[0.6deg]">
-                  <div className="rounded-2xl bg-slate-900/90 p-4">
+              <div className="grid grid-cols-1 gap-4 w-full max-w-[980px]">
+                <div className="group rounded-2xl p-[2px] bg-gradient-to-r from-teal-400/75 via-cyan-400/70 to-violet-500/75 transition-transform duration-300 hover:scale-[1.02] hover:translate-x-1">
+                  <div className="rounded-2xl bg-slate-900/90 p-5 sm:p-6">
                     <Button
                       onClick={() => navigate('/settings')}
                       size="lg"
-                      className="w-full px-5 py-3 rounded-xl text-base font-semibold bg-slate-900/85 border border-slate-700 text-slate-100 hover:bg-slate-800"
+                      className="w-full px-6 py-4 rounded-xl text-lg font-semibold bg-gradient-to-r from-slate-900 to-slate-800 text-slate-100 border border-slate-600 hover:from-slate-800 hover:to-slate-700"
                     >
                       Настройки
                     </Button>
                   </div>
                 </div>
 
-                <div className="group rounded-2xl p-[2px] bg-gradient-to-br from-violet-500/70 to-fuchsia-500/70 transition-transform duration-300 hover:scale-105 hover:-rotate-[0.6deg]">
-                  <div className="rounded-2xl bg-slate-900/90 p-4">
+                <div className="group rounded-2xl p-[2px] bg-gradient-to-r from-violet-500/75 via-fuchsia-500/70 to-teal-400/75 transition-transform duration-300 hover:scale-[1.02] hover:-translate-x-1">
+                  <div className="rounded-2xl bg-slate-900/90 p-5 sm:p-6">
                     <Button
                       onClick={handleContinue}
                       size="lg"
-                      className="w-full px-5 py-3 rounded-xl text-base font-semibold bg-gradient-to-r from-violet-500/95 to-indigo-500/95 text-white hover:from-violet-400 hover:to-indigo-400 border border-violet-300/40 shadow-[0_14px_30px_-14px_rgba(139,92,246,0.65)]"
+                      className="w-full px-6 py-4 rounded-xl text-lg font-semibold bg-gradient-to-r from-teal-400/95 to-violet-500/95 text-white hover:from-teal-300 hover:to-violet-400 border border-violet-300/40 shadow-[0_14px_30px_-14px_rgba(45,212,191,0.55)]"
                     >
                       Перейти к приложению
                     </Button>

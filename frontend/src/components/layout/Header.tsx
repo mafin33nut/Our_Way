@@ -49,34 +49,34 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
           </button>
 
           {user && (
-            <div className="flex-1 flex justify-end gap-3 sm:gap-4">
+            <div className="flex-1 flex justify-end gap-2 sm:gap-4 overflow-x-auto pb-1">
               <Button
                 variant="ghost"
                 size="md"
                 onClick={() => navigate('/settings')}
-                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-0 shadow-none hover:bg-transparent ${
+                className={`inline-flex items-center gap-2 px-1 py-0 text-xs sm:text-sm bg-transparent border-0 shadow-none hover:bg-transparent whitespace-nowrap ${
                   isLight ? 'text-slate-900' : 'text-white'
                 }`}
               >
                 <span>Настройки</span>
               </Button>
               <FriendsPanel
-                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-0 shadow-none hover:bg-transparent ${
+                className={`inline-flex items-center gap-2 px-1 py-0 text-xs sm:text-sm bg-transparent border-0 shadow-none hover:bg-transparent whitespace-nowrap ${
                   isLight ? 'text-slate-900' : 'text-white'
                 }`}
               />
               <ClanHubPanel
-                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-0 shadow-none hover:bg-transparent ${
+                className={`inline-flex items-center gap-2 px-1 py-0 text-xs sm:text-sm bg-transparent border-0 shadow-none hover:bg-transparent whitespace-nowrap ${
                   isLight ? 'text-slate-900' : 'text-white'
                 }`}
               />
               <LeadersPanel
-                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-0 shadow-none hover:bg-transparent ${
+                className={`inline-flex items-center gap-2 px-1 py-0 text-xs sm:text-sm bg-transparent border-0 shadow-none hover:bg-transparent whitespace-nowrap ${
                   isLight ? 'text-slate-900' : 'text-white'
                 }`}
               />
               <ChatHubPanel
-                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-0 shadow-none hover:bg-transparent ${
+                className={`inline-flex items-center gap-2 px-1 py-0 text-xs sm:text-sm bg-transparent border-0 shadow-none hover:bg-transparent whitespace-nowrap ${
                   isLight ? 'text-slate-900' : 'text-white'
                 }`}
               />
@@ -84,7 +84,7 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 variant="ghost"
                 size="md"
                 onClick={logout}
-                className={`hidden sm:inline-flex items-center gap-2 whitespace-nowrap px-0 py-0 text-sm bg-transparent border-0 shadow-none hover:bg-transparent ${
+                className={`inline-flex items-center gap-2 whitespace-nowrap px-1 py-0 text-xs sm:text-sm bg-transparent border-0 shadow-none hover:bg-transparent ${
                   isLight ? 'text-slate-900' : 'text-white'
                 }`}
               >

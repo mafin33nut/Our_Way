@@ -3,6 +3,7 @@ import { Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../ui/Button';
+import { HybridDynamicBackground } from '../background/HybridDynamicBackground';
 
 type AuthMode = 'select' | 'login' | 'register';
 
@@ -134,8 +135,11 @@ export function LoginPage() {
 
   return (
     <div className="relative min-h-[100svh] flex items-center justify-center px-4 py-10 overflow-hidden bg-slate-950">
-      <div className="pointer-events-none absolute -top-24 -left-24 h-[420px] w-[420px] rounded-full bg-violet-500/15 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -right-24 h-[520px] w-[520px] rounded-full bg-cyan-400/10 blur-3xl" />
+      <HybridDynamicBackground
+        opacity={0.72}
+        speed={1}
+        palette={{ a: '#2dd4bf', b: '#22d3ee', c: '#8b5cf6', d: '#d946ef' }}
+      />
       <div className="pointer-events-none absolute left-5 top-5 sm:left-7 sm:top-7">
         <Shield className="w-7 h-7 sm:w-8 sm:h-8 text-violet-300/90" />
       </div>
@@ -147,9 +151,9 @@ export function LoginPage() {
 
         {mode === 'select' && (
           <div className="flex items-center justify-center">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-[560px]">
-              <div className="group rounded-2xl p-[2px] bg-gradient-to-br from-violet-500/70 to-cyan-400/70 transition-transform duration-300 hover:scale-105 hover:rotate-[0.6deg]">
-                <div className="rounded-2xl bg-slate-900/90 p-4">
+            <div className="grid grid-cols-1 gap-4 w-full max-w-[980px]">
+              <div className="group rounded-2xl p-[2px] bg-gradient-to-r from-teal-400/75 via-cyan-400/70 to-violet-500/75 transition-transform duration-300 hover:scale-[1.02] hover:translate-x-1">
+                <div className="rounded-2xl bg-slate-900/90 p-5 sm:p-6">
                   <Button
                     type="button"
                     size="lg"
@@ -157,15 +161,15 @@ export function LoginPage() {
                       setMode('login');
                       setError(null);
                     }}
-                    className="w-full px-5 py-3 rounded-xl text-base font-semibold bg-gradient-to-r from-violet-500/95 to-indigo-500/95 text-white hover:from-violet-400 hover:to-indigo-400 border border-violet-300/40 shadow-[0_14px_30px_-14px_rgba(139,92,246,0.65)]"
+                    className="w-full px-6 py-4 rounded-xl text-lg font-semibold bg-gradient-to-r from-teal-400/95 to-violet-500/95 text-white hover:from-teal-300 hover:to-violet-400 border border-violet-300/40 shadow-[0_14px_30px_-14px_rgba(45,212,191,0.55)]"
                   >
                     Войти
                   </Button>
                 </div>
               </div>
 
-              <div className="group rounded-2xl p-[2px] bg-gradient-to-br from-cyan-400/70 to-fuchsia-500/70 transition-transform duration-300 hover:scale-105 hover:-rotate-[0.6deg]">
-                <div className="rounded-2xl bg-slate-900/90 p-4">
+              <div className="group rounded-2xl p-[2px] bg-gradient-to-r from-violet-500/75 via-fuchsia-500/70 to-teal-400/75 transition-transform duration-300 hover:scale-[1.02] hover:-translate-x-1">
+                <div className="rounded-2xl bg-slate-900/90 p-5 sm:p-6">
                   <Button
                     type="button"
                     size="lg"
@@ -173,7 +177,7 @@ export function LoginPage() {
                       setMode('register');
                       setError(null);
                     }}
-                    className="w-full px-5 py-3 rounded-xl text-base font-semibold bg-gradient-to-r from-fuchsia-500/95 to-violet-500/95 text-white hover:from-fuchsia-400 hover:to-violet-400 border border-fuchsia-300/40 shadow-[0_14px_30px_-14px_rgba(217,70,239,0.65)]"
+                    className="w-full px-6 py-4 rounded-xl text-lg font-semibold bg-gradient-to-r from-violet-500/95 to-teal-400/95 text-white hover:from-violet-400 hover:to-teal-300 border border-teal-300/40 shadow-[0_14px_30px_-14px_rgba(139,92,246,0.6)]"
                   >
                     Зарегистрироваться
                   </Button>
