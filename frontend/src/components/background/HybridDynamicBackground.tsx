@@ -38,12 +38,13 @@ type Particle = {
   vx: number;
   vy: number;
   alpha: number;
+  phase: number;
 };
 
 export function HybridDynamicBackground({
   className = '',
   opacity = 0.72,
-  speed = 1,
+  speed = 1.15,
   palette = DEFAULT_PALETTE,
 }: HybridDynamicBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -81,8 +82,8 @@ export function HybridDynamicBackground({
       blobs.length = 0;
       particles.length = 0;
 
-      const blobCount = width < 640 ? 4 : 6;
-      const particleCount = width < 640 ? 55 : 90;
+      const blobCount = width < 640 ? 5 : 8;
+      const particleCount = width < 640 ? 110 : 180;
 
       for (let i = 0; i < blobCount; i += 1) {
         const r = Math.max(width, height) * (0.15 + Math.random() * 0.16);
@@ -90,8 +91,8 @@ export function HybridDynamicBackground({
           x: Math.random() * width,
           y: Math.random() * height,
           r,
-          vx: (Math.random() - 0.5) * 0.09 * speed,
-          vy: (Math.random() - 0.5) * 0.09 * speed,
+          vx: (Math.random() - 0.5) * 0.13 * speed,
+          vy: (Math.random() - 0.5) * 0.13 * speed,
           color: colors[i % colors.length],
           phase: Math.random() * Math.PI * 2,
         });
@@ -101,20 +102,21 @@ export function HybridDynamicBackground({
         particles.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          r: 0.7 + Math.random() * 1.9,
-          vx: (Math.random() - 0.5) * 0.11 * speed,
-          vy: (Math.random() - 0.5) * 0.11 * speed,
-          alpha: 0.12 + Math.random() * 0.24,
+          r: 0.9 + Math.random() * 2.8,
+          vx: (Math.random() - 0.5) * 0.18 * speed,
+          vy: (Math.random() - 0.5) * 0.18 * speed,
+          alpha: 0.22 + Math.random() * 0.32,
+          phase: Math.random() * Math.PI * 2,
         });
       }
     };
 
     const drawBlob = (blob: Blob, t: number) => {
-      const wobble = 1 + 0.07 * Math.sin(t * 0.001 + blob.phase);
+      const wobble = 1 + 0.12 * Math.sin(t * 0.0016 + blob.phase);
       const rr = blob.r * wobble;
       const g = ctx.createRadialGradient(blob.x, blob.y, 0, blob.x, blob.y, rr);
-      g.addColorStop(0, `${blob.color}7a`);
-      g.addColorStop(0.45, `${blob.color}2f`);
+      g.addColorStop(0, `${blob.color}a0`);
+      g.addColorStop(0.42, `${blob.color}42`);
       g.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = g;
       ctx.beginPath();
@@ -161,17 +163,26 @@ export function HybridDynamicBackground({
         if (p.y < -4) p.y = height + 4;
         if (p.y > height + 4) p.y = -4;
 
-        ctx.fillStyle = `rgba(226,232,240,${p.alpha})`;
+        const twinkle = 0.65 + 0.55 * Math.sin(now * 0.003 + p.phase);
+        const alpha = Math.min(0.95, p.alpha * twinkle);
+
+        ctx.fillStyle = `rgba(226,232,240,${alpha})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Soft glow ring to make particles clearly visible.
+        ctx.fillStyle = `rgba(148,163,184,${alpha * 0.35})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * 2.1, 0, Math.PI * 2);
         ctx.fill();
       }
 
       // Very subtle moving vignette.
       ctx.globalCompositeOperation = 'multiply';
       const v = ctx.createRadialGradient(
-        width * (0.5 + 0.04 * Math.sin(now * 0.00015)),
-        height * (0.5 + 0.04 * Math.cos(now * 0.00013)),
+        width * (0.5 + 0.06 * Math.sin(now * 0.0002)),
+        height * (0.5 + 0.06 * Math.cos(now * 0.00018)),
         Math.min(width, height) * 0.25,
         width * 0.5,
         height * 0.5,
