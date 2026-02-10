@@ -102,13 +102,13 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
     <div
       className={
         isLight
-          ? 'rounded-2xl border border-slate-200 bg-white shadow-xl p-6'
+          ? 'rounded-2xl border border-slate-200 bg-white shadow-lg p-7'
           : 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 rounded-2xl border border-slate-600/50 p-6 shadow-2xl backdrop-blur-sm ring-1 ring-teal-300/40 ring-offset-2 ring-offset-slate-900'
       }
     >
       <div className="flex items-center gap-2 mb-4">
         <Crown className={`w-5 h-5 ${isLight ? 'text-slate-800' : 'text-teal-400'}`} />
-        <h2 className={isLight ? 'text-slate-900' : 'text-slate-100'}>Клан</h2>
+        <h2 className={isLight ? 'text-slate-900 text-lg font-semibold' : 'text-slate-100'}>Клан</h2>
       </div>
 
       <div className="flex gap-3 mb-4">
@@ -123,10 +123,10 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
           className={`flex-1 py-3 px-5 rounded-xl text-sm font-medium transition-colors border ${
             mode === 'create'
               ? isLight
-                ? 'bg-black text-white border-black'
+                ? 'bg-slate-900 text-white border-slate-900'
                 : 'bg-slate-800/60 text-teal-100 border-teal-300/50'
               : isLight
-                ? 'bg-white text-slate-800 border-slate-300 hover:bg-slate-50'
+                ? 'bg-white text-slate-800 border-slate-300 hover:bg-slate-100'
                 : 'bg-slate-950/40 text-slate-300/70 border-slate-700/60 hover:bg-slate-950/60'
           }`}
         >
@@ -146,10 +146,10 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
           className={`flex-1 py-3 px-5 rounded-xl text-sm font-medium transition-colors border ${
             mode === 'join'
               ? isLight
-                ? 'bg-black text-white border-black'
+                ? 'bg-slate-900 text-white border-slate-900'
                 : 'bg-slate-800/60 text-teal-100 border-teal-300/50'
               : isLight
-                ? 'bg-white text-slate-800 border-slate-300 hover:bg-slate-50'
+                ? 'bg-white text-slate-800 border-slate-300 hover:bg-slate-100'
                 : 'bg-slate-950/40 text-slate-300/70 border-slate-700/60 hover:bg-slate-950/60'
           }`}
         >
@@ -158,7 +158,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
       </div>
 
       {error && (
-        <div className={`p-3 rounded-lg border mb-4 ${isLight ? 'bg-slate-100 border-slate-300' : 'bg-rose-900/30 border-rose-400/40'}`}>
+        <div className={`p-4 rounded-lg border mb-4 ${isLight ? 'bg-white border-slate-200' : 'bg-rose-900/30 border-rose-400/40'}`}>
           <p className={`text-sm ${isLight ? 'text-slate-700' : 'text-rose-200'}`}>{error}</p>
         </div>
       )}
@@ -197,7 +197,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
               }`}
             />
           </div>
-          <div className={`rounded-xl border p-4 ${isLight ? 'border-slate-200 bg-slate-50' : 'border-slate-600/40 bg-slate-950/40'}`}>
+          <div className={`rounded-xl border p-5 ${isLight ? 'border-slate-200 bg-white' : 'border-slate-600/40 bg-slate-950/40'}`}>
             <p className={`text-sm mb-2 ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>Доступ</p>
             <div className="flex items-center gap-3">
               <button
@@ -206,10 +206,10 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
                 className={`flex-1 py-3 px-4 rounded-xl text-sm font-medium transition-colors border ${
                   isPublic
                     ? isLight
-                      ? 'bg-black text-white border-black'
+                      ? 'bg-slate-900 text-white border-slate-900'
                       : 'bg-slate-800/60 text-teal-100 border-teal-300/50'
                     : isLight
-                      ? 'bg-white text-slate-800 border-slate-300 hover:bg-slate-50'
+                      ? 'bg-white text-slate-800 border-slate-300 hover:bg-slate-100'
                       : 'bg-slate-950/40 text-slate-300/70 border-slate-700/60 hover:bg-slate-950/60'
                 }`}
               >
@@ -221,10 +221,10 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
                 className={`flex-1 py-3 px-4 rounded-xl text-sm font-medium transition-colors border ${
                   !isPublic
                     ? isLight
-                      ? 'bg-black text-white border-black'
+                      ? 'bg-slate-900 text-white border-slate-900'
                       : 'bg-slate-800/60 text-teal-100 border-teal-300/50'
                     : isLight
-                      ? 'bg-white text-slate-800 border-slate-300 hover:bg-slate-50'
+                      ? 'bg-white text-slate-800 border-slate-300 hover:bg-slate-100'
                       : 'bg-slate-950/40 text-slate-300/70 border-slate-700/60 hover:bg-slate-950/60'
                 }`}
               >
@@ -255,7 +255,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
             disabled={creating || !clanName.trim()}
             className={
               isLight
-                ? 'w-full bg-black text-white hover:bg-slate-900 border border-black px-5 py-3 rounded-xl text-base'
+                ? 'w-full bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 px-6 py-3.5 rounded-xl text-[17px] font-semibold shadow-sm'
                 : 'w-full action-button'
             }
           >
@@ -295,7 +295,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
               size="md"
               className={
                 isLight
-                  ? 'px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black'
+                  ? 'px-6 py-3.5 rounded-xl text-[17px] font-semibold bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 shadow-sm'
                   : ''
               }
             >
@@ -362,7 +362,7 @@ export function ClanCreationPanel({ onClanCreated }: ClanCreationPanelProps) {
                       size="md"
                       className={
                         isLight
-                          ? 'px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black'
+                          ? 'px-6 py-3.5 rounded-xl text-[17px] font-semibold bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 shadow-sm'
                           : ''
                       }
                     >

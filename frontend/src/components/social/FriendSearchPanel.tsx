@@ -65,13 +65,13 @@ export function FriendSearchPanel({ onFriendAdded, friendIds = [], currentUserId
     <div
       className={
         isLight
-          ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-7 mb-[38px] last:mb-0'
+          ? 'rounded-2xl bg-white border border-slate-200 shadow-lg p-7 mb-[38px] last:mb-0'
           : 'panel-base panel-red p-6'
       }
     >
       <div className="flex items-center gap-2 mb-4">
         <Users className={`w-5 h-5 ${isLight ? 'text-slate-800' : 'text-purple-400'}`} />
-        <h2 className={isLight ? 'text-slate-900' : 'text-purple-300'}>Найти друзей</h2>
+        <h2 className={isLight ? 'text-slate-900 text-lg font-semibold' : 'text-purple-300'}>Найти друзей</h2>
       </div>
 
       <div className="space-y-4">
@@ -96,7 +96,7 @@ export function FriendSearchPanel({ onFriendAdded, friendIds = [], currentUserId
             size="md"
             className={
               isLight
-                ? 'px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black'
+                ? 'px-6 py-3.5 rounded-xl text-[17px] font-semibold bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 shadow-sm'
                 : 'px-5 py-3 rounded-xl text-base'
             }
           >
@@ -105,13 +105,13 @@ export function FriendSearchPanel({ onFriendAdded, friendIds = [], currentUserId
         </div>
 
         {error && (
-          <div className={`p-3 rounded-lg border ${isLight ? 'bg-slate-100 border-slate-300' : 'bg-red-900/30 border-red-600/50'}`}>
+          <div className={`p-4 rounded-lg border ${isLight ? 'bg-white border-slate-200' : 'bg-red-900/30 border-red-600/50'}`}>
             <p className={`text-sm ${isLight ? 'text-slate-700' : 'text-red-200'}`}>{error}</p>
           </div>
         )}
 
         {status && !error && (
-          <div className={`p-3 rounded-lg border ${isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-900/40 border-purple-600/30'}`}>
+          <div className={`p-4 rounded-lg border ${isLight ? 'bg-white border-slate-200' : 'bg-slate-900/40 border-purple-600/30'}`}>
             <p className={`text-sm ${isLight ? 'text-slate-700' : 'text-purple-200'}`}>{status}</p>
           </div>
         )}
@@ -158,7 +158,7 @@ export function FriendSearchPanel({ onFriendAdded, friendIds = [], currentUserId
                   size="md"
                   className={
                     isLight
-                      ? 'px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black'
+                      ? 'px-6 py-3.5 rounded-xl text-[17px] font-semibold bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 shadow-sm'
                       : 'px-5 py-3 rounded-xl text-base'
                   }
                 >

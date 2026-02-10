@@ -89,7 +89,7 @@ export function LeadersPanel({ className = '' }: LeadersPanelProps) {
                   onClick={() => setIsOpen(false)}
                   className={
                     isLight
-                      ? 'border border-black bg-black text-white hover:bg-slate-900 [&_*]:text-white'
+                      ? 'px-4 py-2 rounded-lg border border-slate-900 bg-slate-900 text-white hover:bg-slate-800 shadow-sm [&_*]:text-white'
                       : ''
                   }
                 >
@@ -102,31 +102,31 @@ export function LeadersPanel({ className = '' }: LeadersPanelProps) {
                   <div
                     className={
                       isLight
-                        ? 'rounded-2xl border border-slate-200 bg-white/90 shadow-[0_20px_45px_-28px_rgba(15,23,42,0.35)] p-6'
+                        ? 'rounded-2xl border border-slate-200 bg-white shadow-lg p-7'
                         : 'panel-base panel-orange p-6'
                     }
                   >
-                    <div className={isLight ? 'text-slate-900 font-medium mb-4' : 'panel-caption text-left'}>
+                    <div className={isLight ? 'text-slate-900 text-lg font-semibold mb-4' : 'panel-caption text-left'}>
                       Топ игроков
                     </div>
                     <div
                       className={
                         isLight
-                          ? 'rounded-xl bg-slate-50 border border-slate-200 overflow-hidden'
+                          ? 'rounded-xl bg-white border border-slate-200 overflow-hidden'
                           : 'rounded-xl bg-slate-950/25 overflow-hidden'
                       }
                     >
                       <div className="max-h-[60vh] overflow-auto">
-                        <table className="w-full text-sm">
+                        <table className="w-full text-base">
                           <thead
                             className={`sticky top-0 z-10 ${
                               isLight ? 'bg-white/95 backdrop-blur border-b border-slate-200' : 'bg-slate-950/60'
                             }`}
                           >
                             <tr>
-                              <th className={`px-4 py-3 text-left ${isLight ? 'text-slate-500' : ''}`}>#</th>
-                              <th className={`px-4 py-3 text-left ${isLight ? 'text-slate-500' : ''}`}>Игрок</th>
-                              <th className={`px-4 py-3 text-right ${isLight ? 'text-slate-500' : ''}`}>Уровень</th>
+                              <th className={`px-4 py-3 text-left ${isLight ? 'text-slate-600 font-semibold' : ''}`}>#</th>
+                              <th className={`px-4 py-3 text-left ${isLight ? 'text-slate-600 font-semibold' : ''}`}>Игрок</th>
+                              <th className={`px-4 py-3 text-right ${isLight ? 'text-slate-600 font-semibold' : ''}`}>Уровень</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -180,32 +180,32 @@ export function LeadersPanel({ className = '' }: LeadersPanelProps) {
                   <div
                     className={
                       isLight
-                        ? 'rounded-2xl border border-slate-200 bg-white/90 shadow-[0_20px_45px_-28px_rgba(15,23,42,0.35)] p-6'
+                        ? 'rounded-2xl border border-slate-200 bg-white shadow-lg p-7'
                         : 'panel-base panel-teal p-6'
                     }
                   >
-                    <div className={isLight ? 'text-slate-900 font-medium mb-4 flex items-center gap-2' : 'panel-caption text-left flex items-center gap-2'}>
+                    <div className={isLight ? 'text-slate-900 text-lg font-semibold mb-4 flex items-center gap-2' : 'panel-caption text-left flex items-center gap-2'}>
                       <Users className={`w-5 h-5 ${isLight ? 'text-slate-700' : 'text-teal-300'}`} />
                       Лидеры кланов
                     </div>
                     <div
                       className={
                         isLight
-                          ? 'rounded-xl bg-slate-50 border border-slate-200 overflow-hidden'
+                          ? 'rounded-xl bg-white border border-slate-200 overflow-hidden'
                           : 'rounded-xl bg-slate-950/25 overflow-hidden'
                       }
                     >
                       <div className="max-h-[60vh] overflow-auto">
-                        <table className="w-full text-sm">
+                        <table className="w-full text-base">
                           <thead
                             className={`sticky top-0 z-10 ${
                               isLight ? 'bg-white/95 backdrop-blur border-b border-slate-200' : 'bg-slate-950/60'
                             }`}
                           >
                             <tr>
-                              <th className={`px-4 py-3 text-left ${isLight ? 'text-slate-500' : ''}`}>Клан</th>
-                              <th className={`px-4 py-3 text-left ${isLight ? 'text-slate-500' : ''}`}>Лидер</th>
-                              <th className={`px-4 py-3 text-right ${isLight ? 'text-slate-500' : ''}`}>XP</th>
+                              <th className={`px-4 py-3 text-left ${isLight ? 'text-slate-600 font-semibold' : ''}`}>Клан</th>
+                              <th className={`px-4 py-3 text-left ${isLight ? 'text-slate-600 font-semibold' : ''}`}>Лидер</th>
+                              <th className={`px-4 py-3 text-right ${isLight ? 'text-slate-600 font-semibold' : ''}`}>XP</th>
                             </tr>
                           </thead>
                           <tbody>

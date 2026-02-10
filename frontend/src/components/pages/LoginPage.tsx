@@ -132,9 +132,9 @@ export function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-[100svh] flex items-center justify-center px-4 py-10 overflow-hidden bg-slate-50">
-      <div className="pointer-events-none absolute -top-24 -left-24 h-[420px] w-[420px] rounded-full bg-slate-200/50 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -right-24 h-[520px] w-[520px] rounded-full bg-slate-300/40 blur-3xl" />
+    <div className="relative min-h-[100svh] flex items-center justify-center px-4 py-10 overflow-hidden bg-white">
+      <div className="pointer-events-none absolute -top-24 -left-24 h-[420px] w-[420px] rounded-full bg-slate-100/70 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -right-24 h-[520px] w-[520px] rounded-full bg-slate-100/60 blur-3xl" />
 
       <div className="w-full max-w-[1100px] relative z-10">
         <div className="flex items-center justify-between gap-4 mb-10">
@@ -157,7 +157,7 @@ export function LoginPage() {
                 setMode('select');
                 setError(null);
               }}
-              className="bg-white border border-slate-200 text-slate-700 hover:text-slate-900"
+              className="bg-white border border-slate-200 text-slate-700 hover:text-slate-900 px-5 py-3 text-base"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Назад
@@ -172,7 +172,7 @@ export function LoginPage() {
                 className="relative rounded-3xl bg-white border border-slate-200 shadow-lg p-7 sm:p-8"
               >
                 <p
-                  className="text-sm leading-relaxed text-slate-600"
+                  className="text-base leading-relaxed text-slate-600"
                 >
                   Рады видеть вас снова.
                 </p>
@@ -182,7 +182,7 @@ export function LoginPage() {
                   Войти в аккаунт
                 </h2>
                 <p
-                  className="mt-4 text-sm leading-relaxed text-slate-600"
+                  className="mt-4 text-base leading-relaxed text-slate-600"
                 >
                   Продолжайте выполнять квесты, отслеживать прогресс по направлениям и открывать достижения.
                 </p>
@@ -194,7 +194,7 @@ export function LoginPage() {
                       setMode('login');
                       setError(null);
                     }}
-                    className="w-full bg-black text-white hover:bg-slate-900 border border-black"
+                    className="w-full bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 px-6 py-3.5 text-[17px] font-semibold shadow-sm"
                   >
                     Войти
                   </Button>
@@ -207,7 +207,7 @@ export function LoginPage() {
                 className="relative rounded-3xl bg-white border border-slate-200 shadow-lg p-7 sm:p-8"
               >
                 <p
-                  className="text-sm leading-relaxed text-slate-600"
+                  className="text-base leading-relaxed text-slate-600"
                 >
                   Добро пожаловать.
                 </p>
@@ -217,7 +217,7 @@ export function LoginPage() {
                   Создать аккаунт
                 </h2>
                 <p
-                  className="mt-4 text-sm leading-relaxed text-slate-600"
+                  className="mt-4 text-base leading-relaxed text-slate-600"
                 >
                   Имя пользователя должно быть уникальным. Пароль: латиница и цифры, минимум 8, с
                   заглавной буквой.
@@ -230,7 +230,7 @@ export function LoginPage() {
                       setMode('register');
                       setError(null);
                     }}
-                    className="w-full bg-black text-white hover:bg-slate-900 border border-black"
+                    className="w-full bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 px-6 py-3.5 text-[17px] font-semibold shadow-sm"
                   >
                     Зарегистрироваться
                   </Button>
@@ -241,11 +241,11 @@ export function LoginPage() {
         )}
 
         {mode !== 'select' && (
-          <div className="rounded-2xl bg-white border border-slate-200 shadow-xl p-6 sm:p-8 max-w-[820px] mx-auto">
-            <div className="text-slate-900 font-medium mb-2">
+          <div className="rounded-2xl bg-white border border-slate-200 shadow-lg p-8 sm:p-10 max-w-[860px] mx-auto">
+            <div className="text-slate-900 text-lg font-semibold mb-2">
               {mode === 'register' ? 'Новый аккаунт' : 'Вход в аккаунт'}
             </div>
-            <p className="text-sm text-slate-600 mb-6">
+            <p className="text-base text-slate-600 mb-7">
               {mode === 'register'
                 ? 'Заполните поля ниже, чтобы создать учётную запись. Мы используем только необходимые данные.'
                 : 'Введите имя пользователя и пароль, чтобы продолжить работу с вашими квестами.'}
@@ -329,8 +329,8 @@ export function LoginPage() {
                 </div>
               )}
 
-              <div className="pt-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <Button type="submit" size="lg" disabled={loading} className="bg-black text-white hover:bg-slate-900 border border-black">
+              <div className="pt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <Button type="submit" size="lg" disabled={loading} className="bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 px-6 py-3.5 text-[17px] font-semibold shadow-sm">
                   {mode === 'register'
                     ? loading
                       ? 'Регистрация...'
@@ -347,7 +347,7 @@ export function LoginPage() {
                     setMode('select');
                     setError(null);
                   }}
-                  className="bg-white border border-slate-200 text-slate-700 hover:text-slate-900"
+                  className="bg-white border border-slate-200 text-slate-700 hover:text-slate-900 px-6 py-3.5 text-base"
                 >
                   Назад к выбору
                 </Button>

@@ -109,13 +109,13 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
             <div
               className={`absolute right-0 top-0 h-full w-full max-w-full sm:max-w-[50vw] ${
                 isLight
-                  ? 'bg-gradient-to-b from-white to-slate-50 border-l border-slate-200'
+                  ? 'bg-white border-l border-slate-200'
                   : 'bg-gradient-to-br from-slate-900/95 to-slate-950/95 border-l border-slate-700/60'
               }`}
             >
               <div
                 className={`flex items-center justify-between px-6 py-4 border-b ${
-                  isLight ? 'border-slate-200 bg-white/90 backdrop-blur' : 'border-slate-700/60'
+                  isLight ? 'border-slate-200 bg-white' : 'border-slate-700/60'
                 }`}
               >
                 <div className="flex items-center gap-2">
@@ -143,7 +143,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                 {user && (
                   <>
                     <div className={`rounded-2xl border ${isLight ? 'bg-white border-slate-200 shadow-xl p-7 mb-[38px] last:mb-0' : 'panel-base panel-purple'}`}>
-                      <div className={isLight ? 'text-slate-900 font-medium mb-4' : 'panel-caption text-left'}>
+                      <div className={isLight ? 'text-slate-900 text-lg font-semibold mb-4' : 'panel-caption text-left'}>
                         Заявки в друзья
                       </div>
                       {loadingRequests ? (
@@ -156,7 +156,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                             <div
                               key={req.id}
                               className={`flex items-center justify-between gap-3 rounded-xl px-4 py-3 ${
-                                isLight ? 'bg-slate-50 border border-slate-200' : 'bg-slate-950/40 border border-slate-700/40'
+                                isLight ? 'bg-white border border-slate-200' : 'bg-slate-950/40 border border-slate-700/40'
                               }`}
                             >
                               <div className="min-w-0">
@@ -170,7 +170,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                                   disabled={actioningRequestId === req.id}
                                   className={
                                     isLight
-                                      ? 'px-5 py-3 rounded-xl text-base bg-slate-900 text-white hover:bg-slate-800 border border-slate-900'
+                                      ? 'px-6 py-3.5 rounded-xl text-[17px] font-semibold bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 shadow-sm'
                                       : 'px-5 py-3 rounded-xl text-base action-button'
                                   }
                                 >
@@ -183,7 +183,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                                   disabled={actioningRequestId === req.id}
                                   className={
                                     isLight
-                                      ? 'px-5 py-3 rounded-xl text-base bg-black text-white hover:bg-slate-900 border border-black [&_*]:text-white'
+                                      ? 'px-6 py-3.5 rounded-xl text-[17px] font-semibold bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 shadow-sm [&_*]:text-white'
                                       : 'px-5 py-3 rounded-xl text-base border border-slate-600/50 text-slate-100 hover:bg-slate-800/50'
                                   }
                                 >
@@ -203,14 +203,14 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                       friendIds={friends.map((friend) => friend.id)}
                       currentUserId={user.id}
                     />
-                    <div className={isLight ? 'text-sm font-medium text-slate-700' : 'panel-comment'}>
+                    <div className={isLight ? 'text-base font-semibold text-slate-800' : 'panel-comment'}>
                       Поиск друзей
                     </div>
                     {loading ? (
                       <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>Загрузка списка друзей...</div>
                     ) : (
                       <>
-                        <div className={isLight ? 'text-sm font-medium text-slate-700' : 'panel-comment'}>
+                        <div className={isLight ? 'text-base font-semibold text-slate-800' : 'panel-comment'}>
                           Ваши друзья
                         </div>
                         <AllFriendsPanel friends={friends} />

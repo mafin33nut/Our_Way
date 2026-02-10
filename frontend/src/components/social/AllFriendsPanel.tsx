@@ -18,13 +18,13 @@ export function AllFriendsPanel({ friends }: AllFriendsPanelProps) {
     <div
       className={
         isLight
-          ? 'rounded-2xl bg-white border border-slate-200 shadow-xl p-7 mb-[38px] last:mb-0'
+          ? 'rounded-2xl bg-white border border-slate-200 shadow-lg p-7 mb-[38px] last:mb-0'
           : 'panel-base panel-purple p-6'
       }
     >
       <div className="flex items-center gap-2 mb-4">
         <Users className={`w-5 h-5 ${isLight ? 'text-slate-800' : 'text-purple-400'}`} />
-        <h2 className={isLight ? 'text-slate-900' : 'text-purple-300'}>Все друзья</h2>
+        <h2 className={isLight ? 'text-slate-900 text-lg font-semibold' : 'text-purple-300'}>Все друзья</h2>
       </div>
       {friends.length > 0 ? (
         <div className="space-y-2 max-h-80 overflow-y-auto">
@@ -33,7 +33,7 @@ export function AllFriendsPanel({ friends }: AllFriendsPanelProps) {
               key={friend.id}
               className={`flex items-center justify-between p-4 rounded-xl border transition-colors ${
                 isLight
-                  ? 'bg-slate-50 border-slate-200 hover:border-slate-300'
+                  ? 'bg-white border-slate-200 hover:border-slate-300'
                   : 'bg-slate-950/40 border-purple-600/20 hover:border-purple-500/50'
               }`}
             >
@@ -82,7 +82,7 @@ export function AllFriendsPanel({ friends }: AllFriendsPanelProps) {
                   onClick={() => setSelectedFriendId(friend.id)}
                   className={
                     isLight
-                      ? 'bg-black text-white hover:bg-slate-900 border border-black [&_*]:text-white'
+                      ? 'px-5 py-3 rounded-xl text-base font-semibold bg-slate-900 text-white hover:bg-slate-800 border border-slate-900 shadow-sm [&_*]:text-white'
                       : 'px-4 py-2 rounded-xl text-sm border border-slate-600/40 text-slate-100 hover:bg-slate-800/50'
                   }
                 >
