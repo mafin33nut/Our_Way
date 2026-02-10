@@ -6,6 +6,7 @@ import { Button } from '../ui/Button';
 import { FriendsPanel } from '../social/FriendsPanel';
 import { ClanHubPanel } from '../social/ClanHubPanel';
 import { ChatHubPanel } from '../social/ChatHubPanel';
+import { LeadersPanel } from '../social/LeadersPanel';
 
 type HeaderProps = {
   isSidebarOpen: boolean;
@@ -65,6 +66,11 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 }`}
               />
               <ClanHubPanel
+                className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-0 shadow-none hover:bg-transparent ${
+                  isLight ? 'text-slate-900' : 'text-white'
+                }`}
+              />
+              <LeadersPanel
                 className={`hidden sm:inline-flex items-center gap-2 px-0 py-0 text-sm bg-transparent border-0 shadow-none hover:bg-transparent ${
                   isLight ? 'text-slate-900' : 'text-white'
                 }`}

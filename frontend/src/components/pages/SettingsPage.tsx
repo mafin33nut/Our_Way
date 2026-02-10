@@ -149,7 +149,7 @@ export function SettingsPage() {
                           playVictorySound();
                         }
                       }}
-                      className={`w-full rounded-2xl px-5 py-4 transition-all flex items-center justify-between ${
+                      className={`w-full rounded-xl px-4 py-3 transition-all flex items-center justify-between ${
                         settings.soundEnabled
                           ? isLight
                             ? 'bg-white border border-teal-300/40 ring-2 ring-teal-300/40'
@@ -159,13 +159,13 @@ export function SettingsPage() {
                           : 'bg-slate-950/25 hover:ring-2 hover:ring-white/10'
                       }`}
                     >
-                      <span className="text-slate-100">
+                      <span className="text-sm text-slate-100">
                         {settings.soundEnabled ? 'Звук включен' : 'Звук выключен'}
                       </span>
                       {settings.soundEnabled ? (
-                        <Volume2 className="w-5 h-5 text-teal-200" />
+                        <Volume2 className="w-4 h-4 text-teal-200" />
                       ) : (
-                        <VolumeX className="w-5 h-5 text-slate-300/70" />
+                        <VolumeX className="w-4 h-4 text-slate-300/70" />
                       )}
                     </button>
                   </div>

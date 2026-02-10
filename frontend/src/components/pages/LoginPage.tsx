@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react';
-import { Shield, ArrowLeft } from 'lucide-react';
+import { Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../ui/Button';
@@ -73,6 +73,7 @@ export function LoginPage() {
   const [password2, setPassword2] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [passwordTouched, setPasswordTouched] = useState(false);
 
   const { user, login, register } = useAuth();
   const navigate = useNavigate();
@@ -135,52 +136,20 @@ export function LoginPage() {
     <div className="relative min-h-[100svh] flex items-center justify-center px-4 py-10 overflow-hidden bg-slate-950">
       <div className="pointer-events-none absolute -top-24 -left-24 h-[420px] w-[420px] rounded-full bg-violet-500/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-24 h-[520px] w-[520px] rounded-full bg-cyan-400/10 blur-3xl" />
+      <div className="pointer-events-none absolute left-5 top-5 sm:left-7 sm:top-7">
+        <Shield className="w-7 h-7 sm:w-8 sm:h-8 text-violet-300/90" />
+      </div>
 
       <div className="w-full max-w-[1100px] relative z-10">
-        <div className="flex items-center justify-between gap-4 mb-10">
-          <div className="flex items-center gap-3">
-            <Shield className="w-10 h-10 text-violet-300" />
-            <div className="min-w-0">
-              <h1 className="text-2xl sm:text-3xl leading-tight text-slate-50">
-                Our way
-              </h1>
-              <p className="mt-2 text-sm sm:text-base text-slate-300">
-                Единая точка входа: выберите, войти в существующий профиль или создать новый аккаунт.
-              </p>
-            </div>
-          </div>
-          {mode !== 'select' && (
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => {
-                setMode('select');
-                setError(null);
-              }}
-              className="bg-slate-900/80 border border-slate-700 text-slate-100 hover:bg-slate-800 px-5 py-3 text-base"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Назад
-            </Button>
-          )}
+        <div className="flex items-center justify-center mb-10">
+          <h1 className="text-2xl sm:text-3xl leading-tight text-slate-50">Our way</h1>
         </div>
 
         {mode === 'select' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="group relative rounded-3xl p-6">
-              <div
-                className="relative rounded-3xl bg-slate-900/85 border border-slate-700/70 shadow-[0_18px_42px_-18px_rgba(15,23,42,0.95)] p-7 sm:p-8"
-              >
-                <p className="text-base leading-relaxed text-slate-300">
-                  Рады видеть вас снова.
-                </p>
-                <h2 className="mt-2 text-xl sm:text-2xl text-slate-50">
-                  Войти в аккаунт
-                </h2>
-                <p className="mt-4 text-base leading-relaxed text-slate-300">
-                  Продолжайте выполнять квесты, отслеживать прогресс по направлениям и открывать достижения.
-                </p>
-                <div className="mt-6">
+          <div className="flex items-center justify-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-[560px]">
+              <div className="group rounded-2xl p-[2px] bg-gradient-to-br from-violet-500/70 to-cyan-400/70 transition-transform duration-300 hover:scale-105 hover:rotate-[0.6deg]">
+                <div className="rounded-2xl bg-slate-900/90 p-4">
                   <Button
                     type="button"
                     size="lg"
@@ -188,29 +157,15 @@ export function LoginPage() {
                       setMode('login');
                       setError(null);
                     }}
-                    className="w-full bg-gradient-to-r from-violet-500/95 to-indigo-500/95 text-white hover:from-violet-400 hover:to-indigo-400 border border-violet-300/40 px-6 py-3.5 text-[17px] font-semibold shadow-[0_14px_30px_-14px_rgba(139,92,246,0.65)]"
+                    className="w-full px-5 py-3 rounded-xl text-base font-semibold bg-gradient-to-r from-violet-500/95 to-indigo-500/95 text-white hover:from-violet-400 hover:to-indigo-400 border border-violet-300/40 shadow-[0_14px_30px_-14px_rgba(139,92,246,0.65)]"
                   >
                     Войти
                   </Button>
                 </div>
               </div>
-            </div>
 
-            <div className="group relative rounded-3xl p-6">
-              <div
-                className="relative rounded-3xl bg-slate-900/85 border border-slate-700/70 shadow-[0_18px_42px_-18px_rgba(15,23,42,0.95)] p-7 sm:p-8"
-              >
-                <p className="text-base leading-relaxed text-slate-300">
-                  Добро пожаловать.
-                </p>
-                <h2 className="mt-2 text-xl sm:text-2xl text-slate-50">
-                  Создать аккаунт
-                </h2>
-                <p className="mt-4 text-base leading-relaxed text-slate-300">
-                  Имя пользователя должно быть уникальным. Пароль: латиница и цифры, минимум 8, с
-                  заглавной буквой.
-                </p>
-                <div className="mt-6">
+              <div className="group rounded-2xl p-[2px] bg-gradient-to-br from-cyan-400/70 to-fuchsia-500/70 transition-transform duration-300 hover:scale-105 hover:-rotate-[0.6deg]">
+                <div className="rounded-2xl bg-slate-900/90 p-4">
                   <Button
                     type="button"
                     size="lg"
@@ -218,7 +173,7 @@ export function LoginPage() {
                       setMode('register');
                       setError(null);
                     }}
-                    className="w-full bg-gradient-to-r from-violet-500/95 to-indigo-500/95 text-white hover:from-violet-400 hover:to-indigo-400 border border-violet-300/40 px-6 py-3.5 text-[17px] font-semibold shadow-[0_14px_30px_-14px_rgba(139,92,246,0.65)]"
+                    className="w-full px-5 py-3 rounded-xl text-base font-semibold bg-gradient-to-r from-fuchsia-500/95 to-violet-500/95 text-white hover:from-fuchsia-400 hover:to-violet-400 border border-fuchsia-300/40 shadow-[0_14px_30px_-14px_rgba(217,70,239,0.65)]"
                   >
                     Зарегистрироваться
                   </Button>
@@ -281,14 +236,18 @@ export function LoginPage() {
                     id="password"
                     type="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      if (!passwordTouched) setPasswordTouched(true);
+                    }}
+                    onBlur={() => setPasswordTouched(true)}
                     placeholder="Введите пароль"
                     className="w-full rounded-xl border border-slate-600/50 bg-slate-950/60 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-violet-300/60"
                     required
                   />
-                  {mode === 'register' && (
-                    <p className="mt-3 text-xs leading-relaxed text-slate-400">
-                      Минимум 8 символов. Только латиница и цифры. Обязательно: A-Z, a-z и 0-9.
+                  {mode === 'register' && passwordTouched && password && validatePassword(password) && (
+                    <p className="mt-3 text-xs leading-relaxed text-rose-300">
+                      {validatePassword(password)}
                     </p>
                   )}
                 </div>
@@ -317,7 +276,7 @@ export function LoginPage() {
                 </div>
               )}
 
-              <div className="pt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="pt-3 flex flex-col sm:flex-row sm:items-center sm:justify-start gap-4">
                 <Button type="submit" size="lg" disabled={loading} className="bg-gradient-to-r from-violet-500/95 to-indigo-500/95 text-white hover:from-violet-400 hover:to-indigo-400 border border-violet-300/40 px-6 py-3.5 text-[17px] font-semibold shadow-[0_14px_30px_-14px_rgba(139,92,246,0.65)]">
                   {mode === 'register'
                     ? loading
@@ -326,18 +285,6 @@ export function LoginPage() {
                     : loading
                     ? 'Вход...'
                     : 'Войти'}
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="lg"
-                  onClick={() => {
-                    setMode('select');
-                    setError(null);
-                  }}
-                  className="bg-slate-900/80 border border-slate-700 text-slate-100 hover:bg-slate-800 px-6 py-3.5 text-base"
-                >
-                  Назад к выбору
                 </Button>
               </div>
             </form>

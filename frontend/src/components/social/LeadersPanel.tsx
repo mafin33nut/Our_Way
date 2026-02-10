@@ -47,10 +47,10 @@ export function LeadersPanel({ className = '' }: LeadersPanelProps) {
         size="md"
         onClick={() => setIsOpen(true)}
         aria-label="Открыть лидеров"
-        className={`flex items-center gap-2 sm:flex-col sm:gap-2 sm:px-4 sm:py-3 sm:text-base sm:rounded-xl sm:border ${
+        className={`flex items-center gap-2 sm:flex-col sm:gap-2 sm:px-4 sm:py-3 sm:text-base sm:rounded-xl ${
           isLight
-            ? 'sm:border-black sm:bg-black sm:hover:bg-slate-900 text-white'
-            : 'sm:border-slate-600/60 sm:bg-slate-800/50 sm:hover:bg-slate-800/80 text-white'
+            ? 'sm:bg-black sm:hover:bg-slate-900 text-white'
+            : 'sm:bg-slate-800/50 sm:hover:bg-slate-800/80 text-white'
         } ${className}`}
       >
         <Trophy className="w-5 h-5 sm:hidden" />
@@ -70,13 +70,13 @@ export function LeadersPanel({ className = '' }: LeadersPanelProps) {
             <div
               className={`absolute right-0 top-0 h-full w-full max-w-full sm:max-w-[52vw] md:max-w-[760px] ${
                 isLight
-                  ? 'bg-white border-l border-slate-200'
-                  : 'bg-gradient-to-br from-slate-900/95 to-slate-950/95 border-l border-slate-700/60'
+                  ? 'bg-white shadow-[0_28px_70px_-26px_rgba(15,23,42,0.35)] ring-1 ring-slate-200/70'
+                  : 'bg-gradient-to-br from-slate-900/95 to-slate-950/95 shadow-[0_32px_86px_-30px_rgba(2,6,23,0.95)] ring-1 ring-slate-600/35'
               }`}
             >
               <div
-                className={`flex items-center justify-between px-6 py-4 border-b ${
-                  isLight ? 'border-slate-200' : 'border-slate-700/60'
+                className={`flex items-center justify-between px-6 py-4 ${
+                  isLight ? 'bg-white/95 backdrop-blur' : 'bg-slate-950/35 backdrop-blur'
                 }`}
               >
                 <div className="flex items-center gap-2">
