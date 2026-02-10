@@ -11,6 +11,7 @@ import { Button } from '../ui/Button';
 import { CharacterProfile } from '../profile/characterProfile';
 import { TaskHistoryPanel } from '../quests/TaskHistoryPanel';
 import { QuestCard } from '../quests/QuestCard';
+import { HybridDynamicBackground } from '../background/HybridDynamicBackground';
 
 type TaskType = 'simple' | 'stepwise';
 type TaskDifficulty = 'easy' | 'medium' | 'hard';
@@ -255,8 +256,13 @@ export function HomePage() {
   }
 
   return (
-    <div className="min-h-screen">
-      <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
+    <div className="relative min-h-screen overflow-hidden">
+      <HybridDynamicBackground
+        opacity={0.34}
+        speed={0.7}
+        palette={{ a: '#2dd4bf', b: '#22d3ee', c: '#8b5cf6', d: '#d946ef' }}
+      />
+      <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1800px] mx-auto">
           <div className="flex items-center gap-2 text-slate-100 mb-6">
             <Home className="w-5 h-5 text-teal-300" />

@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { authAPI } from '../../api/auth';
 import { Button } from '../ui/Button';
 import { useCustomization } from '../../hooks/useCustomization';
+import { HybridDynamicBackground } from '../background/HybridDynamicBackground';
 
 type AchievementSlot = {
   id: string;
@@ -65,8 +66,13 @@ export function AchievementsPage() {
   }
 
   return (
-    <div className="min-h-screen">
-      <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
+    <div className="relative min-h-screen overflow-hidden">
+      <HybridDynamicBackground
+        opacity={0.36}
+        speed={0.75}
+        palette={{ a: '#2dd4bf', b: '#22d3ee', c: '#8b5cf6', d: '#d946ef' }}
+      />
+      <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1200px] flex flex-col items-center gap-8 sm:gap-10">
           <div className="w-full flex items-center gap-2 text-slate-100">
             <Award className="w-5 h-5 text-teal-300" />
