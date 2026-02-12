@@ -265,6 +265,20 @@ export function HomePage() {
       />
       <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-8 sm:px-10 sm:py-14">
         <div className="w-full max-w-[1800px] mx-auto">
+          <div className="panel-base panel-purple p-6 mb-8 sm:mb-10">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+              <div className="min-w-0">
+                <h1 className="font-ow-brand text-4xl sm:text-5xl lg:text-6xl text-teal-200">Our Way</h1>
+              </div>
+              <div className="max-w-[860px] rounded-2xl border border-slate-600/30 bg-slate-950/30 px-5 py-4">
+                <p className="text-sm sm:text-base text-slate-200/90 leading-relaxed">
+                  Пространство для роста, где вы превращаете цели в понятные шаги, отслеживаете прогресс и
+                  двигаетесь вперед каждый день.
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div className="flex items-center gap-3 text-slate-100 mb-10">
             <Home className="w-5 h-5 text-teal-300" />
             <h2 className="text-violet-200">Главная</h2>
