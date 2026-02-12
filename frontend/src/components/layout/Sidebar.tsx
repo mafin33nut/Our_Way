@@ -1,9 +1,10 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Star, PanelLeftClose } from 'lucide-react';
+import { Home, Star, PanelLeftClose, CalendarDays } from 'lucide-react';
 import { useCustomization } from '../../hooks/useCustomization';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Главная', icon: Home },
+  { to: '/calendar', label: 'Календарь', icon: CalendarDays },
   { to: '/achievements', label: 'Достижения', icon: Star },
 ];
 

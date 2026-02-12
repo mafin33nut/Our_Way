@@ -11,6 +11,7 @@ import { HomePage } from './components/pages/HomePage';
 import { SettingsPage } from './components/pages/SettingsPage';
 import { AchievementsPage } from './components/pages/AchievementsPage';
 import { WelcomePage } from './components/pages/WelcomePage';
+import { CalendarPage } from './components/pages/CalendarPage';
 import { useAuth } from './hooks/useAuth';
 import { useCustomization } from './hooks/useCustomization';
 
@@ -102,6 +103,16 @@ function App() {
                 <PrivateRoute>
                   <AppLayout>
                     <AchievementsPage />
+                  </AppLayout>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/calendar"
+              element={
+                <PrivateRoute>
+                  <AppLayout>
+                    <CalendarPage />
                   </AppLayout>
                 </PrivateRoute>
               }
