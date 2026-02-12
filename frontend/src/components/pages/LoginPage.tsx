@@ -188,17 +188,20 @@ export function LoginPage() {
         )}
 
         {mode !== 'select' && (
-          <div className="rounded-2xl bg-slate-900/90 border border-slate-700/70 shadow-[0_22px_54px_-18px_rgba(15,23,42,0.97)] p-9 sm:p-12 max-w-[900px] mx-auto">
-            <div className="text-slate-50 text-xl font-semibold mb-3">
-              {mode === 'register' ? 'Новый аккаунт' : 'Вход в аккаунт'}
-            </div>
-            <p className="text-[17px] sm:text-lg text-slate-300 mb-8">
-              {mode === 'register'
-                ? 'Заполните поля ниже, чтобы создать учётную запись. Мы используем только необходимые данные.'
-                : 'Введите имя пользователя и пароль, чтобы продолжить работу с вашими квестами.'}
-            </p>
+          <div className="rounded-2xl bg-slate-900/90 border border-slate-700/70 shadow-[0_22px_54px_-18px_rgba(15,23,42,0.97)] px-10 py-9 sm:px-14 sm:py-12 max-w-[900px] mx-auto">
+            <div className="space-y-6 sm:space-y-7">
+              <div>
+                <div className="text-slate-50 text-xl sm:text-2xl font-semibold mb-2">
+                  {mode === 'register' ? 'Новый аккаунт' : 'Вход в аккаунт'}
+                </div>
+                <p className="text-[17px] sm:text-lg text-slate-300">
+                  {mode === 'register'
+                    ? 'Заполните поля ниже, чтобы создать учётную запись. Мы используем только необходимые данные.'
+                    : 'Введите имя пользователя и пароль, чтобы продолжить работу с вашими квестами.'}
+                </p>
+              </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7">
               <div>
                 <label htmlFor="username" className="block text-sm font-medium text-slate-200 mb-2">
                   Имя пользователя
@@ -274,29 +277,30 @@ export function LoginPage() {
                 )}
               </div>
 
-              {error && (
-                <div className="rounded-xl bg-rose-900/20 border border-rose-400/40 px-4 py-3">
-                  <p className="text-[15px] text-rose-200">{error}</p>
-                </div>
-              )}
+                {error && (
+                  <div className="rounded-xl bg-rose-900/20 border border-rose-400/40 px-4 py-3 mt-2">
+                    <p className="text-[15px] text-rose-200">{error}</p>
+                  </div>
+                )}
 
-              <div className="pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-start gap-4">
-                <Button
-                  type="submit"
-                  size="lg"
-                  disabled={loading}
-                  className="bg-gradient-to-r from-violet-500/95 to-indigo-500/95 text-white hover:from-violet-400 hover:to-indigo-400 border border-violet-300/40 px-8 py-4 text-[18px] sm:text-[19px] font-semibold shadow-[0_20px_44px_-18px_rgba(139,92,246,0.8)] transform-gpu transition-transform transition-shadow duration-200 active:scale-[0.97] active:shadow-[0_16px_36px_-18px_rgba(15,23,42,0.98)]"
-                >
-                  {mode === 'register'
-                    ? loading
-                      ? 'Регистрация...'
-                      : 'Зарегистрироваться'
-                    : loading
-                    ? 'Вход...'
-                    : 'Войти'}
-                </Button>
-              </div>
-            </form>
+                <div className="pt-4 sm:pt-5 flex flex-col sm:flex-row sm:items-center sm:justify-start gap-4">
+                  <Button
+                    type="submit"
+                    size="lg"
+                    disabled={loading}
+                    className="bg-gradient-to-r from-violet-500/95 to-indigo-500/95 text-white hover:from-violet-400 hover:to-indigo-400 border border-violet-300/40 px-8 py-4 text-[18px] sm:text-[19px] font-semibold shadow-[0_20px_44px_-18px_rgba(139,92,246,0.8)] transform-gpu transition-transform transition-shadow duration-200 active:scale-[0.97] active:shadow-[0_16px_36px_-18px_rgba(15,23,42,0.98)]"
+                  >
+                    {mode === 'register'
+                      ? loading
+                        ? 'Регистрация...'
+                        : 'Зарегистрироваться'
+                      : loading
+                      ? 'Вход...'
+                      : 'Войти'}
+                  </Button>
+                </div>
+              </form>
+            </div>
           </div>
         )}
       </div>
