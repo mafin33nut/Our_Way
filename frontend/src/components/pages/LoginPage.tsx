@@ -134,7 +134,7 @@ export function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center px-4 py-8 sm:px-8 sm:py-12 overflow-hidden bg-slate-950">
+    <div className="relative min-h-screen flex items-center justify-center px-5 py-10 sm:px-10 sm:py-16 overflow-hidden bg-slate-950">
       <HybridDynamicBackground
         opacity={0.72}
         speed={1}
@@ -144,16 +144,16 @@ export function LoginPage() {
         <Shield className="w-7 h-7 sm:w-8 sm:h-8 text-violet-300/90" />
       </div>
 
-      <div className="w-full max-w-[1100px] relative z-10">
-        <div className="flex items-center justify-center mb-8 sm:mb-10">
-          <h1 className="font-ow-brand text-4xl sm:text-5xl leading-tight text-slate-50">Our way</h1>
+      <div className="w-full max-w-[1150px] relative z-10">
+        <div className="flex items-center justify-center mb-8 sm:mb-11">
+          <h1 className="font-ow-brand text-5xl sm:text-6xl leading-tight text-slate-50">Our way</h1>
         </div>
 
         {mode === 'select' && (
           <div className="flex items-center justify-center">
-            <div className="grid grid-cols-1 gap-4 w-full max-w-[980px]">
-              <div className="group rounded-2xl p-[2px] bg-gradient-to-r from-teal-400/75 via-cyan-400/70 to-violet-500/75 transition-transform duration-300 hover:scale-[1.02] hover:translate-x-1">
-                <div className="rounded-2xl bg-slate-900/90 p-5 sm:p-6">
+            <div className="grid grid-cols-1 gap-5 w-full max-w-[1040px]">
+              <div className="group rounded-2xl p-[2px] bg-gradient-to-r from-teal-400/75 via-cyan-400/70 to-violet-500/75 transform-gpu transition-transform transition-shadow duration-300 hover:scale-[1.03] hover:translate-x-1 hover:shadow-[0_22px_60px_-20px_rgba(56,189,248,0.9)]">
+                <div className="rounded-2xl bg-slate-900/90 px-7 py-5 sm:px-9 sm:py-6">
                   <Button
                     type="button"
                     size="lg"
@@ -161,15 +161,15 @@ export function LoginPage() {
                       setMode('login');
                       setError(null);
                     }}
-                    className="w-full px-6 py-4 rounded-xl text-lg font-semibold bg-gradient-to-r from-teal-400/95 to-violet-500/95 text-white hover:from-teal-300 hover:to-violet-400 border border-violet-300/40 shadow-[0_14px_30px_-14px_rgba(45,212,191,0.55)]"
+                    className="w-full px-8 py-4 rounded-xl text-xl font-semibold bg-gradient-to-r from-teal-400/95 to-violet-500/95 text-white hover:from-teal-300 hover:to-violet-400 border border-violet-300/40 shadow-[0_18px_40px_-18px_rgba(45,212,191,0.7)] transform-gpu transition-transform transition-shadow duration-200 active:scale-[0.97] active:shadow-[0_14px_32px_-16px_rgba(15,23,42,0.95)]"
                   >
                     Войти
                   </Button>
                 </div>
               </div>
 
-              <div className="group rounded-2xl p-[2px] bg-gradient-to-r from-violet-500/75 via-fuchsia-500/70 to-teal-400/75 transition-transform duration-300 hover:scale-[1.02] hover:-translate-x-1">
-                <div className="rounded-2xl bg-slate-900/90 p-5 sm:p-6">
+              <div className="group rounded-2xl p-[2px] bg-gradient-to-r from-violet-500/75 via-fuchsia-500/70 to-teal-400/75 transform-gpu transition-transform transition-shadow duration-300 hover:scale-[1.03] hover:-translate-x-1 hover:shadow-[0_22px_60px_-20px_rgba(147,51,234,0.9)]">
+                <div className="rounded-2xl bg-slate-900/90 px-7 py-5 sm:px-9 sm:py-6">
                   <Button
                     type="button"
                     size="lg"
@@ -177,7 +177,7 @@ export function LoginPage() {
                       setMode('register');
                       setError(null);
                     }}
-                    className="w-full px-6 py-4 rounded-xl text-lg font-semibold bg-gradient-to-r from-violet-500/95 to-teal-400/95 text-white hover:from-violet-400 hover:to-teal-300 border border-teal-300/40 shadow-[0_14px_30px_-14px_rgba(139,92,246,0.6)]"
+                    className="w-full px-8 py-4 rounded-xl text-xl font-semibold bg-gradient-to-r from-violet-500/95 to-teal-400/95 text-white hover:from-violet-400 hover:to-teal-300 border border-teal-300/40 shadow-[0_18px_40px_-18px_rgba(139,92,246,0.7)] transform-gpu transition-transform transition-shadow duration-200 active:scale-[0.97] active:shadow-[0_14px_32px_-16px_rgba(15,23,42,0.95)]"
                   >
                     Зарегистрироваться
                   </Button>
@@ -188,19 +188,19 @@ export function LoginPage() {
         )}
 
         {mode !== 'select' && (
-          <div className="rounded-2xl bg-slate-900/90 border border-slate-700/70 shadow-[0_20px_46px_-16px_rgba(15,23,42,0.95)] p-8 sm:p-10 max-w-[860px] mx-auto">
-            <div className="text-slate-50 text-lg font-semibold mb-2">
+          <div className="rounded-2xl bg-slate-900/90 border border-slate-700/70 shadow-[0_22px_54px_-18px_rgba(15,23,42,0.97)] p-9 sm:p-12 max-w-[900px] mx-auto">
+            <div className="text-slate-50 text-xl font-semibold mb-3">
               {mode === 'register' ? 'Новый аккаунт' : 'Вход в аккаунт'}
             </div>
-            <p className="text-base text-slate-300 mb-7">
+            <p className="text-[17px] sm:text-lg text-slate-300 mb-8">
               {mode === 'register'
                 ? 'Заполните поля ниже, чтобы создать учётную запись. Мы используем только необходимые данные.'
                 : 'Введите имя пользователя и пароль, чтобы продолжить работу с вашими квестами.'}
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="username" className="block text-xs text-slate-300 mb-2">
+                <label htmlFor="username" className="block text-sm font-medium text-slate-200 mb-2">
                   Имя пользователя
                 </label>
                 <input
@@ -209,14 +209,14 @@ export function LoginPage() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Введите имя пользователя"
-                  className="w-full rounded-xl border border-slate-600/50 bg-slate-950/60 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-violet-300/60"
+                  className="w-full rounded-xl border border-slate-600/50 bg-slate-950/60 px-4 py-3.5 text-[15px] sm:text-base text-slate-100 placeholder-slate-500 focus:outline-none focus:border-violet-300/60 transition-colors"
                   required
                 />
               </div>
 
               {mode === 'register' && (
                 <div>
-                  <label htmlFor="email" className="block text-xs text-slate-300 mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium text-slate-200 mb-2">
                     Email
                   </label>
                   <input
@@ -225,15 +225,15 @@ export function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Введите email"
-                    className="w-full rounded-xl border border-slate-600/50 bg-slate-950/60 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-violet-300/60"
+                    className="w-full rounded-xl border border-slate-600/50 bg-slate-950/60 px-4 py-3.5 text-[15px] sm:text-base text-slate-100 placeholder-slate-500 focus:outline-none focus:border-violet-300/60 transition-colors"
                     required
                   />
                 </div>
               )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label htmlFor="password" className="block text-xs text-slate-300 mb-2">
+                  <label htmlFor="password" className="block text-sm font-medium text-slate-200 mb-2">
                     Пароль
                   </label>
                   <input
@@ -246,11 +246,11 @@ export function LoginPage() {
                     }}
                     onBlur={() => setPasswordTouched(true)}
                     placeholder="Введите пароль"
-                    className="w-full rounded-xl border border-slate-600/50 bg-slate-950/60 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-violet-300/60"
+                    className="w-full rounded-xl border border-slate-600/50 bg-slate-950/60 px-4 py-3.5 text-[15px] sm:text-base text-slate-100 placeholder-slate-500 focus:outline-none focus:border-violet-300/60 transition-colors"
                     required
                   />
                   {mode === 'register' && passwordTouched && password && validatePassword(password) && (
-                    <p className="mt-3 text-xs leading-relaxed text-rose-300">
+                    <p className="mt-3 text-sm leading-relaxed text-rose-300">
                       {validatePassword(password)}
                     </p>
                   )}
@@ -258,7 +258,7 @@ export function LoginPage() {
 
                 {mode === 'register' && (
                   <div>
-                    <label htmlFor="password2" className="block text-xs text-slate-300 mb-2">
+                    <label htmlFor="password2" className="block text-sm font-medium text-slate-200 mb-2">
                       Подтверждение
                     </label>
                     <input
@@ -267,7 +267,7 @@ export function LoginPage() {
                       value={password2}
                       onChange={(e) => setPassword2(e.target.value)}
                       placeholder="Повторите пароль"
-                      className="w-full rounded-xl border border-slate-600/50 bg-slate-950/60 px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-violet-300/60"
+                      className="w-full rounded-xl border border-slate-600/50 bg-slate-950/60 px-4 py-3.5 text-[15px] sm:text-base text-slate-100 placeholder-slate-500 focus:outline-none focus:border-violet-300/60 transition-colors"
                       required
                     />
                   </div>
@@ -276,12 +276,17 @@ export function LoginPage() {
 
               {error && (
                 <div className="rounded-xl bg-rose-900/20 border border-rose-400/40 px-4 py-3">
-                  <p className="text-sm text-rose-200">{error}</p>
+                  <p className="text-[15px] text-rose-200">{error}</p>
                 </div>
               )}
 
-              <div className="pt-3 flex flex-col sm:flex-row sm:items-center sm:justify-start gap-4">
-                <Button type="submit" size="lg" disabled={loading} className="bg-gradient-to-r from-violet-500/95 to-indigo-500/95 text-white hover:from-violet-400 hover:to-indigo-400 border border-violet-300/40 px-6 py-3.5 text-[17px] font-semibold shadow-[0_14px_30px_-14px_rgba(139,92,246,0.65)]">
+              <div className="pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-start gap-4">
+                <Button
+                  type="submit"
+                  size="lg"
+                  disabled={loading}
+                  className="bg-gradient-to-r from-violet-500/95 to-indigo-500/95 text-white hover:from-violet-400 hover:to-indigo-400 border border-violet-300/40 px-8 py-4 text-[18px] sm:text-[19px] font-semibold shadow-[0_20px_44px_-18px_rgba(139,92,246,0.8)] transform-gpu transition-transform transition-shadow duration-200 active:scale-[0.97] active:shadow-[0_16px_36px_-18px_rgba(15,23,42,0.98)]"
+                >
                   {mode === 'register'
                     ? loading
                       ? 'Регистрация...'
