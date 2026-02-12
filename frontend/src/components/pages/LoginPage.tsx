@@ -134,7 +134,7 @@ export function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-[100svh] flex items-center justify-center px-4 py-10 overflow-hidden bg-slate-950">
+    <div className="relative min-h-screen flex items-center justify-center px-4 py-8 sm:px-8 sm:py-12 overflow-hidden bg-slate-950">
       <HybridDynamicBackground
         opacity={0.72}
         speed={1}
@@ -145,8 +145,8 @@ export function LoginPage() {
       </div>
 
       <div className="w-full max-w-[1100px] relative z-10">
-        <div className="flex items-center justify-center mb-10">
-          <h1 className="text-2xl sm:text-3xl leading-tight text-slate-50">Our way</h1>
+        <div className="flex items-center justify-center mb-8 sm:mb-10">
+          <h1 className="font-ow-brand text-4xl sm:text-5xl leading-tight text-slate-50">Our way</h1>
         </div>
 
         {mode === 'select' && (
