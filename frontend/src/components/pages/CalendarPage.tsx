@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { CalendarDays, ChevronLeft, ChevronRight, Plus, Repeat, Sparkles } from 'lucide-react';
+import { CalendarDays, ChevronLeft, ChevronRight, Repeat, Sparkles, Trash2 } from 'lucide-react';
 import { Quest, UserFocus } from '../../types';
 import { questsAPI, focusesAPI } from '../../api/quests';
 import { useAuth } from '../../hooks/useAuth';
@@ -92,11 +92,14 @@ export function CalendarPage() {
   const [futureDifficulty, setFutureDifficulty] = useState<Difficulty>('easy');
   const [futureFocusId, setFutureFocusId] = useState<number | ''>('');
   const [futureDate, setFutureDate] = useState<string>(toDateKey(new Date()));
+  const [jumpDate, setJumpDate] = useState<string>(toDateKey(new Date()));
+  const [quickTitle, setQuickTitle] = useState('');
 
   const [dailyTitle, setDailyTitle] = useState('');
   const [dailyDescription, setDailyDescription] = useState('');
   const [dailyDifficulty, setDailyDifficulty] = useState<Difficulty>('easy');
   const [dailyFocusId, setDailyFocusId] = useState<number | ''>('');
+  const pressFx = 'active:scale-[0.97] active:shadow-[0_8px_16px_rgba(2,6,23,0.45)] transition-transform transition-shadow';
 
   const storageKeys = useMemo(() => {
     const id = user?.id ?? 'guest';
@@ -282,6 +285,81 @@ export function CalendarPage() {
     setStatus('Ежедневное задание добавлено в автоплан.');
   };
 
+  const jumpToDate = (dateKey: string) => {
+    const date = new Date(dateKey);
+    if (Number.isNaN(date.getTime())) return;
+    setAnchorDate(new Date(date.getFullYear(), date.getMonth(), 1));
+  };
+
+  const createQuickTaskForDate = () => {
+    if (!quickTitle.trim() || !jumpDate) return;
+    const id = `p_${Date.now()}`;
+    setPlannedTasks((prev) => [
+      {
+        id,
+        title: quickTitle.trim(),
+        description: '',
+        difficulty: 'easy',
+        scheduledDate: jumpDate,
+      },
+      ...prev,
+    ]);
+    jumpToDate(jumpDate);
+    setQuickTitle('');
+    setStatus(`Задание запланировано на ${jumpDate}.`);
+  };
+
+  const createQuestFromPlannedNow = async (taskId: string) => {
+    const task = plannedTasks.find((p) => p.id === taskId);
+    if (!task || task.createdQuestId) return;
+    try {
+      const created = await questsAPI.create({
+        title: task.title,
+        description: task.description,
+        difficulty: task.difficulty,
+        focus_ids: task.focusId ? [task.focusId] : [],
+      });
+      setQuests((prev) => [created, ...prev]);
+      setPlannedTasks((prev) =>
+        prev.map((p) => (p.id === taskId ? { ...p, createdQuestId: created.id } : p))
+      );
+      setStatus(`Задание "${task.title}" создано сейчас.`);
+    } catch {
+      setStatus('Не удалось создать запланированное задание.');
+    }
+  };
+
+  const removePlannedTask = (taskId: string) => {
+    setPlannedTasks((prev) => prev.filter((p) => p.id !== taskId));
+    setStatus('Запланированное задание удалено.');
+  };
+
+  const generateDailyNow = async (templateId: string) => {
+    const tpl = dailyTemplates.find((d) => d.id === templateId);
+    if (!tpl) return;
+    const today = toDateKey(new Date());
+    try {
+      const created = await questsAPI.create({
+        title: `${tpl.title} · ${today}`,
+        description: tpl.description || 'Ежедневное задание',
+        difficulty: tpl.difficulty,
+        focus_ids: tpl.focusId ? [tpl.focusId] : [],
+      });
+      setQuests((prev) => [created, ...prev]);
+      setDailyTemplates((prev) =>
+        prev.map((d) => (d.id === templateId ? { ...d, lastGeneratedDate: today } : d))
+      );
+      setStatus(`Ежедневное задание "${tpl.title}" создано.`);
+    } catch {
+      setStatus('Не удалось создать ежедневное задание.');
+    }
+  };
+
+  const removeDailyTemplate = (templateId: string) => {
+    setDailyTemplates((prev) => prev.filter((d) => d.id !== templateId));
+    setStatus('Шаблон ежедневного задания удален.');
+  };
+
   if (!user) return null;
 
   return (
@@ -293,7 +371,7 @@ export function CalendarPage() {
       />
 
       <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-8 sm:px-8 sm:py-12">
-        <div className="w-full max-w-[1600px] space-y-10">
+        <div className="w-full max-w-[1600px] space-y-12">
           <div className="panel-base panel-teal p-6">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-3">
@@ -301,21 +379,51 @@ export function CalendarPage() {
                 <h2 className="text-slate-100">Календарь</h2>
               </div>
               <div className="flex items-center gap-3">
-                <Button variant="ghost" size="sm" onClick={() => setAnchorDate((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1))}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={pressFx}
+                  onClick={() => setAnchorDate((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1))}
+                >
                   <ChevronLeft className="w-4 h-4" />
                 </Button>
                 <div className="px-3 py-2 rounded-lg bg-slate-950/35 text-slate-100">
                   {MONTH_NAMES[anchorDate.getMonth()]} {anchorDate.getFullYear()}
                 </div>
-                <Button variant="ghost" size="sm" onClick={() => setAnchorDate((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1))}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={pressFx}
+                  onClick={() => setAnchorDate((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1))}
+                >
                   <ChevronRight className="w-4 h-4" />
                 </Button>
               </div>
             </div>
+            <div className="mt-5 grid grid-cols-1 lg:grid-cols-[220px_minmax(0,1fr)_220px] gap-3">
+              <input
+                type="date"
+                value={jumpDate}
+                onChange={(e) => {
+                  setJumpDate(e.target.value);
+                  jumpToDate(e.target.value);
+                }}
+                className="rounded-xl border border-slate-600/30 bg-slate-950/40 text-slate-100 px-4 py-3"
+              />
+              <input
+                value={quickTitle}
+                onChange={(e) => setQuickTitle(e.target.value)}
+                placeholder="Название задания на выбранную дату"
+                className="rounded-xl border border-slate-600/30 bg-slate-950/40 text-slate-100 px-4 py-3"
+              />
+              <Button onClick={createQuickTaskForDate} className={`action-button bg-black text-white ${pressFx}`}>
+                Создать на дату
+              </Button>
+            </div>
             {status && <p className="mt-4 text-sm text-teal-100/90">{status}</p>}
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-10 lg:gap-12">
             <div className="panel-base panel-purple p-6 xl:col-span-2">
               <div className="panel-caption text-left">Подробный месяц</div>
               {loading ? (
@@ -336,7 +444,6 @@ export function CalendarPage() {
                         return <div key={`empty_${idx}`} className="rounded-xl min-h-[88px] bg-slate-950/20" />;
                       }
                       const key = toDateKey(cell);
-                      const count = eventsByDate.get(key)?.length || 0;
                       const isToday = key === toDateKey(new Date());
                       return (
                         <div
@@ -349,11 +456,6 @@ export function CalendarPage() {
                         >
                           <div className="flex items-center justify-between gap-2">
                             <span className="text-sm text-slate-100">{cell.getDate()}</span>
-                            {count > 0 && (
-                              <span className="text-[11px] px-2 py-0.5 rounded-full bg-violet-500/25 text-violet-100">
-                                {count}
-                              </span>
-                            )}
                           </div>
                         </div>
                       );
@@ -412,15 +514,48 @@ export function CalendarPage() {
                     </option>
                   ))}
                 </select>
-                <Button onClick={createPlannedTask} className="w-full action-button bg-black text-white">
-                  <Plus className="w-4 h-4 mr-2" />
+                <Button onClick={createPlannedTask} className={`w-full action-button bg-black text-white ${pressFx}`}>
                   Запланировать
                 </Button>
+
+                <div className="pt-3 border-t border-slate-600/30 space-y-2">
+                  {plannedTasks.length === 0 ? (
+                    <p className="text-xs text-slate-300/70">Запланированных задач пока нет.</p>
+                  ) : (
+                    plannedTasks.slice(0, 6).map((task) => (
+                      <div key={task.id} className="rounded-lg border border-slate-600/25 bg-slate-950/25 px-3 py-2">
+                        <p className="text-sm text-amber-100">{task.title}</p>
+                        <p className="text-xs text-slate-300/70 mb-2">
+                          Дата: {task.scheduledDate} {task.createdQuestId ? '• создано' : '• в ожидании'}
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            size="sm"
+                            className={pressFx}
+                            onClick={() => createQuestFromPlannedNow(task.id)}
+                            disabled={Boolean(task.createdQuestId)}
+                          >
+                            Создать сейчас
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className={pressFx}
+                            onClick={() => removePlannedTask(task.id)}
+                          >
+                            <Trash2 className="w-3.5 h-3.5 mr-1" />
+                            Удалить
+                          </Button>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-10 lg:gap-12">
             <div className="panel-base panel-sky p-6 xl:col-span-2">
               <div className="panel-caption text-left">Недели месяца</div>
               <div className="space-y-3">
@@ -431,6 +566,7 @@ export function CalendarPage() {
                       <Button
                         size="sm"
                         variant="ghost"
+                        className={pressFx}
                         onClick={() => setOpenWeekIdx((prev) => (prev === idx ? null : idx))}
                       >
                         {openWeekIdx === idx ? 'Скрыть' : 'Открыть'}
@@ -516,8 +652,7 @@ export function CalendarPage() {
                     ))}
                   </select>
                 </div>
-                <Button onClick={createDailyTemplate} className="w-full action-button bg-black text-white">
-                  <Repeat className="w-4 h-4 mr-2" />
+                <Button onClick={createDailyTemplate} className={`w-full action-button bg-black text-white ${pressFx}`}>
                   Добавить автозадачу
                 </Button>
 
@@ -528,9 +663,27 @@ export function CalendarPage() {
                     dailyTemplates.slice(0, 6).map((tpl) => (
                       <div key={tpl.id} className="rounded-lg border border-slate-600/25 bg-slate-950/25 px-3 py-2">
                         <p className="text-sm text-lime-100">{tpl.title}</p>
-                        <p className="text-xs text-slate-300/70">
+                        <p className="text-xs text-slate-300/70 mb-2">
                           Последняя генерация: {tpl.lastGeneratedDate || 'еще не создано'}
                         </p>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            size="sm"
+                            className={pressFx}
+                            onClick={() => generateDailyNow(tpl.id)}
+                          >
+                            Создать сегодня
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className={pressFx}
+                            onClick={() => removeDailyTemplate(tpl.id)}
+                          >
+                            <Trash2 className="w-3.5 h-3.5 mr-1" />
+                            Удалить
+                          </Button>
+                        </div>
                       </div>
                     ))
                   )}
