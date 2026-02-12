@@ -97,7 +97,7 @@ export function LeadersPanel({ className = '' }: LeadersPanelProps) {
                 </Button>
               </div>
 
-              <div className="h-[calc(100%-72px)] overflow-y-auto px-[19px] py-[19px] space-y-[19px]">
+              <div className="h-[calc(100%-72px)] overflow-y-auto px-[19px] py-[24px] space-y-8">
                 <div className="grid grid-cols-1 gap-6">
                   <div
                     className={
