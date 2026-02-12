@@ -263,19 +263,19 @@ export function HomePage() {
         speed={0.85}
         palette={{ a: '#2dd4bf', b: '#22d3ee', c: '#8b5cf6', d: '#d946ef' }}
       />
-      <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
+      <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-8 sm:px-10 sm:py-14">
         <div className="w-full max-w-[1800px] mx-auto">
-          <div className="flex items-center gap-2 text-slate-100 mb-6">
+          <div className="flex items-center gap-3 text-slate-100 mb-10">
             <Home className="w-5 h-5 text-teal-300" />
-            <h2 className="text-slate-100">Главная</h2>
+            <h2 className="text-violet-200">Главная</h2>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 place-items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12 place-items-stretch">
             <div className="panel-base panel-teal p-6 lg:min-h-[520px] flex flex-col">
-              <div className="panel-caption text-left">Панель героя</div>
+              <div className="panel-caption text-left text-cyan-200">Панель героя</div>
               <CharacterProfile user={user} questsCompletedToday={questsCompletedToday} />
-              <div className="mt-6">
-                <p className="text-xs text-slate-300/70 mb-3">Закрепленные достижения</p>
+              <div className="mt-8">
+                <p className="text-xs text-cyan-100/90 mb-3">Закрепленные достижения</p>
                 {pinnedAchievements.length === 0 ? (
                   <div className="text-sm text-slate-300/70">Пока нет достижений</div>
                 ) : (
@@ -295,16 +295,16 @@ export function HomePage() {
                     ))}
                   </div>
                 )}
-                <p className="text-xs text-slate-300/60 mt-2">
+                <p className="text-xs text-violet-200/75 mt-3">
                   Закрепление доступно на странице достижений.
                 </p>
               </div>
             </div>
 
             <div className="panel-base panel-orange p-6 lg:min-h-[520px] flex flex-col">
-              <div className="panel-caption text-left">Направления</div>
+              <div className="panel-caption text-left text-amber-200">Направления</div>
               <div className="space-y-3">
-                <p className="text-xs text-slate-300/70">
+                <p className="text-xs text-amber-100/90">
                   Управляйте направлениями и выбирайте направление для создания квеста.
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -372,8 +372,8 @@ export function HomePage() {
                 </div>
                 {focusError && <p className="text-sm text-rose-200">{focusError}</p>}
 
-                <div className="mt-4">
-                  <p className="text-xs text-slate-300/70 mb-2">Выбранное направление</p>
+                <div className="mt-5">
+                  <p className="text-xs text-amber-100/90 mb-2">Выбранное направление</p>
                   <div
                     className={`rounded-xl px-4 py-3 ${
                       isLight ? 'bg-white border border-slate-200 text-slate-900' : 'bg-slate-950/30 text-slate-100'
@@ -390,12 +390,12 @@ export function HomePage() {
             </div>
 
             <div className="panel-base panel-purple p-6 lg:min-h-[520px] flex flex-col">
-              <div className="panel-caption text-left">История</div>
+              <div className="panel-caption text-left text-violet-200">История</div>
               <TaskHistoryPanel quests={quests} />
             </div>
 
             <div className="panel-base panel-sky p-6 lg:col-span-3 lg:min-h-[430px]">
-              <div className="panel-caption text-left">Квесты по направлениям</div>
+              <div className="panel-caption text-left text-teal-200">Квесты по направлениям</div>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                 {focusCards.map((focus) => {
                   const focusQuests =
@@ -417,7 +417,7 @@ export function HomePage() {
                   >
                       <div className="flex items-center justify-between gap-3 mb-3">
                         <h3 className="truncate">{focus.name}</h3>
-                        <span className="text-xs text-slate-300/70 shrink-0">
+                        <span className="text-xs text-violet-200/75 shrink-0">
                           {active.length} активн.
                         </span>
                       </div>
@@ -436,7 +436,7 @@ export function HomePage() {
                           ))}
                           {completedToday.length > 0 && (
                             <div className="pt-3 border-t border-slate-600/25 space-y-3">
-                              <p className="text-xs text-slate-300/70">Выполнено сегодня</p>
+                              <p className="text-xs text-cyan-100/90">Выполнено сегодня</p>
                               {completedToday.map((quest) => (
                                 <QuestCard
                                   key={quest.id}
@@ -454,7 +454,7 @@ export function HomePage() {
                 })}
               </div>
 
-                <div className="mt-6 flex justify-center">
+                <div className="mt-8 flex justify-center">
                   <Button
                     onClick={() => setIsCreateOpen(true)}
                     size="lg"
@@ -466,8 +466,8 @@ export function HomePage() {
             </div>
 
             <div className="panel-base panel-orange p-6 lg:col-span-3">
-              <div className="panel-caption text-left">Вопросы и ответы</div>
-              <div className="space-y-3">
+              <div className="panel-caption text-left text-fuchsia-200">Вопросы и ответы</div>
+              <div className="space-y-4">
                 {FAQ_ITEMS.map((item) => {
                   const isOpen = openFaqId === item.id;
                   return (
