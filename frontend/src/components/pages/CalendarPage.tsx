@@ -370,9 +370,9 @@ export function CalendarPage() {
         palette={{ a: '#2dd4bf', b: '#22d3ee', c: '#8b5cf6', d: '#d946ef' }}
       />
 
-      <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-8 sm:px-8 sm:py-12">
-        <div className="w-full max-w-[1600px] space-y-12">
-          <div className="panel-base panel-teal p-6">
+      <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-10 sm:px-10 sm:py-16">
+        <div className="w-full max-w-[1400px] space-y-16">
+          <div className="panel-base panel-teal p-7">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <CalendarDays className="w-6 h-6 text-teal-200" />
@@ -423,8 +423,8 @@ export function CalendarPage() {
             {status && <p className="mt-4 text-sm text-teal-100/90">{status}</p>}
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-10 lg:gap-12">
-            <div className="panel-base panel-purple p-6 xl:col-span-2">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-12">
+            <div className="panel-base panel-purple p-7 xl:col-span-2">
               <div className="panel-caption text-left">Подробный месяц</div>
               {loading ? (
                 <p className="text-sm text-slate-300/70">Загрузка календаря...</p>
@@ -465,7 +465,7 @@ export function CalendarPage() {
               )}
             </div>
 
-            <div className="panel-base panel-orange p-6">
+            <div className="panel-base panel-orange p-7">
               <div className="panel-caption text-left flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-amber-200" />
                 Планирование
@@ -555,10 +555,10 @@ export function CalendarPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-10 lg:gap-12">
-            <div className="panel-base panel-sky p-6 xl:col-span-2">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-12">
+            <div className="panel-base panel-sky p-7 xl:col-span-2">
               <div className="panel-caption text-left">Недели месяца</div>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {weeks.map((week, idx) => (
                   <div key={`week_${idx}`} className="rounded-2xl border border-slate-600/30 bg-slate-950/25 p-4">
                     <div className="flex items-center justify-between gap-3">
@@ -609,7 +609,7 @@ export function CalendarPage() {
               </div>
             </div>
 
-            <div className="panel-base panel-lime p-6">
+            <div className="panel-base panel-lime p-7">
               <div className="panel-caption text-left flex items-center gap-2">
                 <Repeat className="w-5 h-5 text-lime-200" />
                 Ежедневные автозадачи
