@@ -188,9 +188,9 @@ export function LoginPage() {
         )}
 
         {mode !== 'select' && (
-          <div className="rounded-2xl bg-slate-900/90 border border-slate-700/70 shadow-[0_22px_54px_-18px_rgba(15,23,42,0.97)] px-10 py-9 sm:px-14 sm:py-12 max-w-[900px] mx-auto">
-            <div className="space-y-6 sm:space-y-7">
-              <div>
+          <div className="rounded-2xl bg-slate-900/90 border border-slate-700/70 shadow-[0_22px_54px_-18px_rgba(15,23,42,0.97)] px-6 py-8 sm:px-10 sm:py-10 max-w-[900px] mx-auto">
+            <div className="max-w-[520px] mx-auto space-y-6 sm:space-y-7">
+              <div className="text-center">
                 <div className="text-slate-50 text-xl sm:text-2xl font-semibold mb-2">
                   {mode === 'register' ? 'Новый аккаунт' : 'Вход в аккаунт'}
                 </div>
@@ -201,7 +201,7 @@ export function LoginPage() {
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7">
+              <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7 text-left">
               <div>
                 <label htmlFor="username" className="block text-sm font-medium text-slate-200 mb-2">
                   Имя пользователя
@@ -283,7 +283,7 @@ export function LoginPage() {
                   </div>
                 )}
 
-                <div className="pt-4 sm:pt-5 flex flex-col sm:flex-row sm:items-center sm:justify-start gap-4">
+                <div className="pt-4 sm:pt-5 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4">
                   <Button
                     type="submit"
                     size="lg"
