@@ -28,6 +28,13 @@ function validatePassword(password: string): string | null {
 }
 
 function humanizeAuthError(err: any, mode: AuthMode): string {
+  const isNetworkError =
+    !err?.response &&
+    (err?.message === 'Network Error' || err?.code === 'ERR_NETWORK' || err?.code === 'ECONNABORTED');
+  if (isNetworkError) {
+    return 'Не удалось подключиться к серверу. Убедитесь, что бэкенд запущен (по умолчанию порт 8000). Если сервер на другом адресе — задайте VITE_API_URL в .env.';
+  }
+
   const data = err?.response?.data;
   if (!data || typeof data !== 'object') {
     const msg = err?.message || (typeof data === 'string' ? data : null);
@@ -236,7 +243,7 @@ export function LoginPage() {
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                       placeholder="Введите имя пользователя"
-                      className="w-full rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
+                      className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
                       required
                     />
                   </div>
@@ -252,54 +259,52 @@ export function LoginPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Введите email"
-                        className="w-full rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
+                        className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
                         required
                       />
                     </div>
                   )}
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 w-full">
-                    <div className="space-y-2 flex flex-col items-center text-center">
-                      <label htmlFor="password" className="block text-slate-200 text-[15px] sm:text-base font-medium w-full">
-                        Пароль
-                      </label>
-                      <input
-                        id="password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => {
-                          setPassword(e.target.value);
-                          if (!passwordTouched) setPasswordTouched(true);
-                        }}
-                        onBlur={() => setPasswordTouched(true)}
-                        placeholder="Введите пароль"
-                        className="w-full rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
-                        required
-                      />
-                      {mode === 'register' && passwordTouched && password && validatePassword(password) && (
-                        <p className="mt-2 text-sm leading-relaxed text-rose-300/95 w-full text-center">
-                          {validatePassword(password)}
-                        </p>
-                      )}
-                    </div>
-
-                    {mode === 'register' && (
-                      <div className="space-y-2 flex flex-col items-center text-center">
-                        <label htmlFor="password2" className="block text-slate-200 text-[15px] sm:text-base font-medium w-full">
-                          Подтверждение
-                        </label>
-                        <input
-                          id="password2"
-                          type="password"
-                          value={password2}
-                          onChange={(e) => setPassword2(e.target.value)}
-                          placeholder="Повторите пароль"
-                          className="w-full rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
-                          required
-                        />
-                      </div>
+                  <div className="space-y-2 w-full flex flex-col items-center text-center">
+                    <label htmlFor="password" className="block text-slate-200 text-[15px] sm:text-base font-medium w-full">
+                      Пароль
+                    </label>
+                    <input
+                      id="password"
+                      type="password"
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        if (!passwordTouched) setPasswordTouched(true);
+                      }}
+                      onBlur={() => setPasswordTouched(true)}
+                      placeholder="Введите пароль"
+                      className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
+                      required
+                    />
+                    {mode === 'register' && passwordTouched && password && validatePassword(password) && (
+                      <p className="mt-2 text-sm leading-relaxed text-rose-300/95 w-full text-center">
+                        {validatePassword(password)}
+                      </p>
                     )}
                   </div>
+
+                  {mode === 'register' && (
+                    <div className="space-y-2 w-full flex flex-col items-center text-center">
+                      <label htmlFor="password2" className="block text-slate-200 text-[15px] sm:text-base font-medium w-full">
+                        Подтверждение
+                      </label>
+                      <input
+                        id="password2"
+                        type="password"
+                        value={password2}
+                        onChange={(e) => setPassword2(e.target.value)}
+                        placeholder="Повторите пароль"
+                        className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
+                        required
+                      />
+                    </div>
+                  )}
 
                   {error && (
                     <div className="rounded-2xl bg-rose-950/50 border border-rose-400/30 px-5 py-4 shadow-[0_4px_16px_-4px_rgba(244,63,94,0.25)] w-full text-center">
