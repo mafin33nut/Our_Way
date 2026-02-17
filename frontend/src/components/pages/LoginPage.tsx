@@ -122,9 +122,10 @@ export function LoginPage() {
     try {
       if (mode === 'register') {
         await register({ username: cleanUsername, email: email.trim(), password, password2 });
-        return;
+      } else {
+        await login({ username: cleanUsername, password });
       }
-      await login({ username: cleanUsername, password });
+      navigate('/', { replace: true });
     } catch (err: any) {
       console.error(mode === 'register' ? 'Register error:' : 'Login error:', err);
       setError(humanizeAuthError(err, mode));
@@ -144,14 +145,14 @@ export function LoginPage() {
         <Shield className="w-7 h-7 sm:w-8 sm:h-8 text-violet-300/90" />
       </div>
 
-      <div className="w-full max-w-[1150px] relative z-10">
+      <div className="w-full relative z-10 flex flex-col items-center justify-center">
         <div className="flex items-center justify-center mb-8 sm:mb-11">
-          <h1 className="font-ow-brand text-5xl sm:text-6xl leading-tight text-slate-50">Our way</h1>
+          <h1 className="font-ow-brand text-5xl sm:text-6xl leading-tight text-slate-50 text-center">Our way</h1>
         </div>
 
         {mode === 'select' && (
-          <div className="flex items-center justify-center">
-            <div className="grid grid-cols-1 gap-6 w-full max-w-[560px]">
+          <div className="flex items-center justify-center w-full">
+            <div className="grid grid-cols-1 gap-6 w-full max-w-[560px] mx-auto">
               <div className="group rounded-2xl p-[3px] bg-gradient-to-r from-teal-400/80 via-cyan-400/75 to-violet-500/80 transform-gpu transition-all duration-300 hover:scale-[1.02] hover:translate-y-[-2px] hover:shadow-[0_24px_48px_-16px_rgba(45,212,191,0.5),0_0_0_1px_rgba(45,212,191,0.2)] active:scale-[0.98] active:translate-y-0 active:shadow-[0_12px_28px_-14px_rgba(15,23,42,0.9)]">
                 <div className="rounded-[calc(1rem-2px)] bg-slate-900/95 backdrop-blur-sm px-8 py-6 sm:px-10 sm:py-7">
                   <Button
@@ -188,102 +189,104 @@ export function LoginPage() {
         )}
 
         {mode !== 'select' && (
-          <div className="rounded-2xl bg-slate-900/92 border border-slate-700/60 shadow-[0_28px_56px_-20px_rgba(15,23,42,0.95),0_0_0_1px_rgba(148,163,184,0.06)] backdrop-blur-sm px-8 py-9 sm:px-12 sm:py-11 max-w-[900px] mx-auto">
-            <div className="max-w-[480px] mx-auto space-y-7 sm:space-y-8">
-              <div className="text-center space-y-2">
+          <div className="rounded-2xl bg-slate-900/92 border border-slate-700/60 shadow-[0_28px_56px_-20px_rgba(15,23,42,0.95),0_0_0_1px_rgba(148,163,184,0.06)] backdrop-blur-sm px-8 py-9 sm:px-12 sm:py-11 w-full mx-auto flex flex-col items-center">
+            <div className="w-full flex flex-col items-center space-y-7 sm:space-y-8">
+              <div className="text-center space-y-2 w-full">
                 <h2 className="text-slate-50 text-2xl sm:text-3xl font-bold tracking-tight">
                   {mode === 'register' ? 'Новый аккаунт' : 'Вход в аккаунт'}
                 </h2>
-                <p className="text-slate-400 text-base sm:text-[17px] leading-relaxed max-w-[420px] mx-auto">
+                <p className="text-slate-400 text-base sm:text-[17px] leading-relaxed">
                   {mode === 'register'
                     ? 'Заполните поля ниже — только необходимые данные для учётной записи.'
                     : 'Имя пользователя и пароль для доступа к квестам и прогрессу.'}
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7 text-left">
-                <div className="space-y-2">
-                  <label htmlFor="username" className="block text-slate-200 text-[15px] sm:text-base font-medium">
-                    Имя пользователя
-                  </label>
-                  <input
-                    id="username"
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Введите имя пользователя"
-                    className="w-full rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
-                    required
-                  />
-                </div>
-
-                {mode === 'register' && (
-                  <div className="space-y-2">
-                    <label htmlFor="email" className="block text-slate-200 text-[15px] sm:text-base font-medium">
-                      Email
+              <form onSubmit={handleSubmit} className="w-full flex flex-col items-center space-y-6 sm:space-y-7">
+                <div className="w-full flex flex-col items-center space-y-6 sm:space-y-7 max-w-[440px]">
+                  <div className="space-y-2 w-full flex flex-col items-center text-center">
+                    <label htmlFor="username" className="block text-slate-200 text-[15px] sm:text-base font-medium w-full">
+                      Имя пользователя
                     </label>
                     <input
-                      id="email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Введите email"
+                      id="username"
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      placeholder="Введите имя пользователя"
                       className="w-full rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
                       required
                     />
-                  </div>
-                )}
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-                  <div className="space-y-2">
-                    <label htmlFor="password" className="block text-slate-200 text-[15px] sm:text-base font-medium">
-                      Пароль
-                    </label>
-                    <input
-                      id="password"
-                      type="password"
-                      value={password}
-                      onChange={(e) => {
-                        setPassword(e.target.value);
-                        if (!passwordTouched) setPasswordTouched(true);
-                      }}
-                      onBlur={() => setPasswordTouched(true)}
-                      placeholder="Введите пароль"
-                      className="w-full rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
-                      required
-                    />
-                    {mode === 'register' && passwordTouched && password && validatePassword(password) && (
-                      <p className="mt-2 text-sm leading-relaxed text-rose-300/95">
-                        {validatePassword(password)}
-                      </p>
-                    )}
                   </div>
 
                   {mode === 'register' && (
-                    <div className="space-y-2">
-                      <label htmlFor="password2" className="block text-slate-200 text-[15px] sm:text-base font-medium">
-                        Подтверждение
+                    <div className="space-y-2 w-full flex flex-col items-center text-center">
+                      <label htmlFor="email" className="block text-slate-200 text-[15px] sm:text-base font-medium w-full">
+                        Email
                       </label>
                       <input
-                        id="password2"
-                        type="password"
-                        value={password2}
-                        onChange={(e) => setPassword2(e.target.value)}
-                        placeholder="Повторите пароль"
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Введите email"
                         className="w-full rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
                         required
                       />
                     </div>
                   )}
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 w-full">
+                    <div className="space-y-2 flex flex-col items-center text-center">
+                      <label htmlFor="password" className="block text-slate-200 text-[15px] sm:text-base font-medium w-full">
+                        Пароль
+                      </label>
+                      <input
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => {
+                          setPassword(e.target.value);
+                          if (!passwordTouched) setPasswordTouched(true);
+                        }}
+                        onBlur={() => setPasswordTouched(true)}
+                        placeholder="Введите пароль"
+                        className="w-full rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
+                        required
+                      />
+                      {mode === 'register' && passwordTouched && password && validatePassword(password) && (
+                        <p className="mt-2 text-sm leading-relaxed text-rose-300/95 w-full text-center">
+                          {validatePassword(password)}
+                        </p>
+                      )}
+                    </div>
+
+                    {mode === 'register' && (
+                      <div className="space-y-2 flex flex-col items-center text-center">
+                        <label htmlFor="password2" className="block text-slate-200 text-[15px] sm:text-base font-medium w-full">
+                          Подтверждение
+                        </label>
+                        <input
+                          id="password2"
+                          type="password"
+                          value={password2}
+                          onChange={(e) => setPassword2(e.target.value)}
+                          placeholder="Повторите пароль"
+                          className="w-full rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
+                          required
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  {error && (
+                    <div className="rounded-2xl bg-rose-950/50 border border-rose-400/30 px-5 py-4 shadow-[0_4px_16px_-4px_rgba(244,63,94,0.25)] w-full text-center">
+                      <p className="text-rose-200 text-[15px] sm:text-base leading-relaxed">{error}</p>
+                    </div>
+                  )}
                 </div>
 
-                {error && (
-                  <div className="rounded-2xl bg-rose-950/50 border border-rose-400/30 px-5 py-4 shadow-[0_4px_16px_-4px_rgba(244,63,94,0.25)]">
-                    <p className="text-rose-200 text-[15px] sm:text-base leading-relaxed">{error}</p>
-                  </div>
-                )}
-
-                <div className="pt-2 flex justify-center">
+                <div className="pt-2 flex justify-center w-full">
                   <Button
                     type="submit"
                     size="lg"
