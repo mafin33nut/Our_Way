@@ -1,5 +1,5 @@
-import { FormEvent, useEffect, useMemo, useState } from 'react';
-import { Shield } from 'lucide-react';
+import { FormEvent, useEffect, useState } from 'react';
+import { Eye, EyeOff, Loader2, Lock, Mail, Shield, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../ui/Button';
@@ -104,6 +104,9 @@ export function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [passwordTouched, setPasswordTouched] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
+  const [capsLockOn, setCapsLockOn] = useState(false);
 
   const { user, login, register } = useAuth();
   const navigate = useNavigate();
@@ -113,12 +116,6 @@ export function LoginPage() {
       navigate('/', { replace: true });
     }
   }, [user, navigate]);
-
-  const title = useMemo(() => {
-    if (mode === 'register') return 'Регистрация';
-    if (mode === 'login') return 'Вход';
-    return 'Our Way';
-  }, [mode]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -166,8 +163,8 @@ export function LoginPage() {
   return (
     <div className="relative min-h-screen flex items-center justify-center px-5 py-10 sm:px-10 sm:py-16 overflow-hidden bg-slate-950">
       <HybridDynamicBackground
-        opacity={0.72}
-        speed={1}
+        opacity={0.58}
+        speed={0.85}
         palette={{ a: '#2dd4bf', b: '#22d3ee', c: '#8b5cf6', d: '#d946ef' }}
       />
       <div className="pointer-events-none absolute left-5 top-5 sm:left-7 sm:top-7">
@@ -218,70 +215,100 @@ export function LoginPage() {
         )}
 
         {mode !== 'select' && (
-          <div className="rounded-2xl bg-slate-900/92 border border-slate-700/60 shadow-[0_28px_56px_-20px_rgba(15,23,42,0.95),0_0_0_1px_rgba(148,163,184,0.06)] backdrop-blur-sm px-8 py-9 sm:px-12 sm:py-11 w-full mx-auto flex flex-col items-center">
+          <div className="rounded-2xl bg-slate-900/96 border border-slate-700/70 shadow-[0_28px_56px_-20px_rgba(15,23,42,0.95),0_0_0_1px_rgba(148,163,184,0.08)] backdrop-blur-sm px-8 py-9 sm:px-12 sm:py-11 w-full mx-auto flex flex-col items-center">
             <div className="w-full flex flex-col items-center space-y-7 sm:space-y-8">
               <div className="text-center space-y-2 w-full">
-                <h2 className="text-slate-50 text-2xl sm:text-3xl font-bold tracking-tight">
+                <h2 className="text-slate-50 text-3xl sm:text-4xl font-bold tracking-tight">
                   {mode === 'register' ? 'Новый аккаунт' : 'Вход в аккаунт'}
                 </h2>
-                <p className="text-slate-400 text-base sm:text-[17px] leading-relaxed">
+                <p className="text-slate-200 text-base sm:text-lg leading-relaxed">
                   {mode === 'register'
-                    ? 'Заполните поля ниже — только необходимые данные для учётной записи.'
-                    : 'Имя пользователя и пароль для доступа к квестам и прогрессу.'}
+                    ? 'Создайте аккаунт, чтобы сохранить прогресс и получить доступ ко всем возможностям.'
+                    : 'Введите имя пользователя и пароль, чтобы продолжить.'}
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className="w-full flex flex-col items-center space-y-6 sm:space-y-7">
-                <div className="w-full flex flex-col items-center space-y-6 sm:space-y-7 max-w-[440px]">
-                  <div className="space-y-2 w-full flex flex-col items-center text-center">
-                    <label htmlFor="username" className="block text-slate-200 text-[15px] sm:text-base font-medium w-full">
+                <div className="w-full flex flex-col items-center space-y-6 sm:space-y-7 max-w-[400px]">
+                  <div className="space-y-3 w-full flex flex-col items-center text-center">
+                    <label htmlFor="username" className="block text-slate-100 text-[15px] sm:text-base font-semibold w-full">
                       Имя пользователя
                     </label>
-                    <input
-                      id="username"
-                      type="text"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      placeholder="Введите имя пользователя"
-                      className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
-                      required
-                    />
-                  </div>
-
-                  {mode === 'register' && (
-                    <div className="space-y-2 w-full flex flex-col items-center text-center">
-                      <label htmlFor="email" className="block text-slate-200 text-[15px] sm:text-base font-medium w-full">
-                        Email
-                      </label>
+                    <div className="relative w-full">
+                      <User className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                       <input
-                        id="email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Введите email"
-                        className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
+                        id="username"
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Введите имя пользователя"
+                        className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-12 pr-4 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                        autoComplete="username"
+                        autoFocus
+                        aria-label="Имя пользователя"
                         required
                       />
                     </div>
+                  </div>
+
+                  {mode === 'register' && (
+                    <div className="space-y-3 w-full flex flex-col items-center text-center">
+                      <label htmlFor="email" className="block text-slate-100 text-[15px] sm:text-base font-semibold w-full">
+                        Email
+                      </label>
+                      <div className="relative w-full">
+                        <Mail className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                        <input
+                          id="email"
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="Введите email"
+                          className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-12 pr-4 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                          autoComplete="email"
+                          aria-label="Email"
+                          required
+                        />
+                      </div>
+                    </div>
                   )}
 
-                  <div className="space-y-2 w-full flex flex-col items-center text-center">
-                    <label htmlFor="password" className="block text-slate-200 text-[15px] sm:text-base font-medium w-full">
+                  <div className="space-y-3 w-full flex flex-col items-center text-center">
+                    <label htmlFor="password" className="block text-slate-100 text-[15px] sm:text-base font-semibold w-full">
                       Пароль
                     </label>
-                    <input
-                      id="password"
-                      type="password"
-                      value={password}
-                      onChange={(e) => {
-                        setPassword(e.target.value);
-                        if (!passwordTouched) setPasswordTouched(true);
-                      }}
-                      onBlur={() => setPasswordTouched(true)}
-                      placeholder="Введите пароль"
-                      className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
-                      required
-                    />
+                    <div className="relative w-full">
+                      <Lock className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                      <input
+                        id="password"
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={(e) => {
+                          setPassword(e.target.value);
+                          if (!passwordTouched) setPasswordTouched(true);
+                        }}
+                        onBlur={() => {
+                          setPasswordTouched(true);
+                          setCapsLockOn(false);
+                        }}
+                        onKeyUp={(e) => setCapsLockOn(e.getModifierState('CapsLock'))}
+                        onKeyDown={(e) => setCapsLockOn(e.getModifierState('CapsLock'))}
+                        placeholder="Введите пароль"
+                        className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-12 pr-12 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                        autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
+                        aria-label="Пароль"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((v) => !v)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-md text-slate-300 hover:text-white hover:bg-slate-800/70 transition-colors"
+                        aria-label={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
+                      >
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                    {capsLockOn && <p className="text-amber-300 text-sm w-full text-center">Caps Lock включен</p>}
                     {mode === 'register' && passwordTouched && password && validatePassword(password) && (
                       <p className="mt-2 text-sm leading-relaxed text-rose-300/95 w-full text-center">
                         {validatePassword(password)}
@@ -290,19 +317,35 @@ export function LoginPage() {
                   </div>
 
                   {mode === 'register' && (
-                    <div className="space-y-2 w-full flex flex-col items-center text-center">
-                      <label htmlFor="password2" className="block text-slate-200 text-[15px] sm:text-base font-medium w-full">
+                    <div className="space-y-3 w-full flex flex-col items-center text-center">
+                      <label htmlFor="password2" className="block text-slate-100 text-[15px] sm:text-base font-semibold w-full">
                         Подтверждение
                       </label>
-                      <input
-                        id="password2"
-                        type="password"
-                        value={password2}
-                        onChange={(e) => setPassword2(e.target.value)}
-                        placeholder="Повторите пароль"
-                        className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
-                        required
-                      />
+                      <div className="relative w-full">
+                        <Lock className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                        <input
+                          id="password2"
+                          type={showPassword2 ? 'text' : 'password'}
+                          value={password2}
+                          onChange={(e) => setPassword2(e.target.value)}
+                          onBlur={() => setCapsLockOn(false)}
+                          onKeyUp={(e) => setCapsLockOn(e.getModifierState('CapsLock'))}
+                          onKeyDown={(e) => setCapsLockOn(e.getModifierState('CapsLock'))}
+                          placeholder="Повторите пароль"
+                          className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-12 pr-12 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                          autoComplete="new-password"
+                          aria-label="Подтверждение пароля"
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword2((v) => !v)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-md text-slate-300 hover:text-white hover:bg-slate-800/70 transition-colors"
+                          aria-label={showPassword2 ? 'Скрыть пароль' : 'Показать пароль'}
+                        >
+                          {showPassword2 ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
                     </div>
                   )}
 
@@ -313,21 +356,41 @@ export function LoginPage() {
                   )}
                 </div>
 
-                <div className="pt-2 flex justify-center w-full">
+                <div className="pt-2 flex justify-center w-full max-w-[400px]">
                   <Button
                     type="submit"
                     size="lg"
                     disabled={loading}
-                    className="w-full sm:w-auto min-w-[220px] px-10 py-4.5 rounded-2xl text-lg sm:text-xl font-semibold tracking-wide text-white bg-gradient-to-r from-violet-500 to-indigo-500 shadow-[0_14px_36px_-12px_rgba(139,92,246,0.65)] hover:from-violet-400 hover:to-indigo-400 hover:shadow-[0_18px_44px_-12px_rgba(139,92,246,0.75)] hover:translate-y-[-1px] transform-gpu transition-all duration-200 active:scale-[0.98] active:translate-y-0 active:shadow-[0_10px_28px_-12px_rgba(15,23,42,0.9)] disabled:opacity-60 disabled:hover:translate-y-0"
+                    className="w-full px-10 py-4.5 rounded-2xl text-lg sm:text-xl font-semibold tracking-wide text-white bg-gradient-to-r from-teal-500 to-cyan-500 shadow-[0_14px_36px_-12px_rgba(45,212,191,0.7)] hover:from-teal-400 hover:to-cyan-400 hover:shadow-[0_18px_44px_-12px_rgba(45,212,191,0.85)] hover:translate-y-[-1px] transform-gpu transition-all duration-200 active:scale-[0.98] active:translate-y-0 active:shadow-[0_10px_28px_-12px_rgba(15,23,42,0.9)] disabled:opacity-60 disabled:hover:translate-y-0"
                   >
-                    {mode === 'register'
-                      ? loading
-                        ? 'Регистрация...'
-                        : 'Зарегистрироваться'
-                      : loading
-                        ? 'Вход...'
-                        : 'Войти'}
+                    {loading && <Loader2 className="w-5 h-5 mr-2 animate-spin" />}
+                    {mode === 'register' ? (loading ? 'Регистрация...' : 'Зарегистрироваться') : loading ? 'Вход...' : 'Войти'}
                   </Button>
+                </div>
+                <div className="w-full max-w-[400px] text-center">
+                  {mode === 'login' ? (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMode('register');
+                        setError(null);
+                      }}
+                      className="text-teal-300 hover:text-teal-200 text-base sm:text-[17px] font-medium transition-colors"
+                    >
+                      Нет аккаунта? Создать
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMode('login');
+                        setError(null);
+                      }}
+                      className="text-teal-300 hover:text-teal-200 text-base sm:text-[17px] font-medium transition-colors"
+                    >
+                      Уже есть аккаунт? Войти
+                    </button>
+                  )}
                 </div>
               </form>
             </div>
