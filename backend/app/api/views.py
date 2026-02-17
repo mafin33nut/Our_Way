@@ -1,4 +1,5 @@
 import re
+import random
 
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
@@ -7,12 +8,29 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.core.cache import cache
 from app.user.serializers import UserSerializer
 from django.utils import timezone
 from threading import Thread
 from app.notifications.services import send_notification_to_user
 
 User = get_user_model()
+
+
+def _validate_password_rules(password: str):
+    if not password:
+        return 'Password is required'
+    if len(password) < 8:
+        return 'Password must be at least 8 characters long.'
+    if not re.fullmatch(r'[A-Za-z0-9]+', password):
+        return 'Password must contain only English letters and digits.'
+    if not re.search(r'[a-z]', password):
+        return 'Password must contain at least one lowercase letter.'
+    if not re.search(r'[A-Z]', password):
+        return 'Password must contain at least one uppercase letter.'
+    if not re.search(r'[0-9]', password):
+        return 'Password must contain at least one digit.'
+    return None
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = UserSerializer
@@ -113,3 +131,72 @@ class LogoutView(APIView):
         except Exception:
             pass
         return Response(status=status.HTTP_200_OK)
+
+
+class PasswordResetRequestView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        email = (request.data.get('email') or '').strip().lower()
+        if not email:
+            return Response({'email': ['Email is required']}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = User.objects.filter(email__iexact=email).first()
+        if user and user.email:
+            code = f'{random.randint(100000, 999999)}'
+            cache.set(
+                f'pwd_reset:{email}',
+                {'code': code, 'user_id': user.id},
+                timeout=15 * 60,
+            )
+            try:
+                send_notification_to_user(
+                    user,
+                    subject='Восстановление пароля Our_Way',
+                    body=(
+                        'Вы запросили восстановление пароля.\n'
+                        f'Код подтверждения: {code}\n'
+                        'Код действует 15 минут.'
+                    ),
+                )
+            except Exception:
+                pass
+
+        return Response(
+            {'detail': 'Если аккаунт с таким email существует, код отправлен на почту.'},
+            status=status.HTTP_200_OK,
+        )
+
+
+class PasswordResetConfirmView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        email = (request.data.get('email') or '').strip().lower()
+        code = (request.data.get('code') or '').strip()
+        password = request.data.get('password') or ''
+        password2 = request.data.get('password2') or ''
+
+        if not email:
+            return Response({'email': ['Email is required']}, status=status.HTTP_400_BAD_REQUEST)
+        if not code:
+            return Response({'code': ['Code is required']}, status=status.HTTP_400_BAD_REQUEST)
+        if password != password2:
+            return Response({'detail': 'Passwords do not match'}, status=status.HTTP_400_BAD_REQUEST)
+
+        password_error = _validate_password_rules(password)
+        if password_error:
+            return Response({'password': [password_error]}, status=status.HTTP_400_BAD_REQUEST)
+
+        cached = cache.get(f'pwd_reset:{email}')
+        if not cached or cached.get('code') != code:
+            return Response({'code': ['Invalid or expired confirmation code']}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = User.objects.filter(id=cached.get('user_id'), email__iexact=email).first()
+        if not user:
+            return Response({'detail': 'Invalid reset request'}, status=status.HTTP_400_BAD_REQUEST)
+
+        user.set_password(password)
+        user.save(update_fields=['password'])
+        cache.delete(f'pwd_reset:{email}')
+        return Response({'detail': 'Пароль успешно обновлен.'}, status=status.HTTP_200_OK)

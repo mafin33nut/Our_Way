@@ -55,6 +55,28 @@ export const authAPI = {
     }
   },
 
+  requestPasswordReset: async (email: string): Promise<{ detail: string }> => {
+    const response = await apiClient.post<{ detail: string }>('/api/auth/password-reset/request/', {
+      email: email.trim(),
+    });
+    return response.data;
+  },
+
+  confirmPasswordReset: async (payload: {
+    email: string;
+    code: string;
+    password: string;
+    password2: string;
+  }): Promise<{ detail: string }> => {
+    const response = await apiClient.post<{ detail: string }>('/api/auth/password-reset/confirm/', {
+      email: payload.email.trim(),
+      code: payload.code.trim(),
+      password: payload.password,
+      password2: payload.password2,
+    });
+    return response.data;
+  },
+
   getCurrentUser: async (): Promise<User> => {
     const response = await apiClient.get<User>('/api/auth/user/', { timeout: 20000 });
     return response.data;

@@ -1,7 +1,8 @@
 import { FormEvent, useEffect, useState } from 'react';
-import { Eye, EyeOff, Loader2, Lock, Mail, Shield, User } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Mail, Shield, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { authAPI } from '../../api/auth';
 import { Button } from '../ui/Button';
 import { HybridDynamicBackground } from '../background/HybridDynamicBackground';
 
@@ -107,6 +108,14 @@ export function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const [capsLockOn, setCapsLockOn] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetCode, setResetCode] = useState('');
+  const [resetPassword, setResetPassword] = useState('');
+  const [resetPassword2, setResetPassword2] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetMessage, setResetMessage] = useState<string | null>(null);
 
   const { user, login, register } = useAuth();
   const navigate = useNavigate();
@@ -157,6 +166,61 @@ export function LoginPage() {
       setError(humanizeAuthError(err, mode));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRequestReset = async () => {
+    if (!resetEmail.trim()) {
+      setResetMessage('Введите email для восстановления.');
+      return;
+    }
+    setResetLoading(true);
+    setResetMessage(null);
+    try {
+      const resp = await authAPI.requestPasswordReset(resetEmail);
+      setResetSent(true);
+      setResetMessage(resp.detail || 'Код отправлен на почту.');
+    } catch (err: any) {
+      setResetMessage(humanizeAuthError(err, 'login'));
+    } finally {
+      setResetLoading(false);
+    }
+  };
+
+  const handleConfirmReset = async () => {
+    if (!resetEmail.trim() || !resetCode.trim()) {
+      setResetMessage('Введите email и код из письма.');
+      return;
+    }
+    if (resetPassword !== resetPassword2) {
+      setResetMessage('Пароли не совпадают.');
+      return;
+    }
+    const policy = validatePassword(resetPassword);
+    if (policy) {
+      setResetMessage(policy);
+      return;
+    }
+    setResetLoading(true);
+    setResetMessage(null);
+    try {
+      const resp = await authAPI.confirmPasswordReset({
+        email: resetEmail,
+        code: resetCode,
+        password: resetPassword,
+        password2: resetPassword2,
+      });
+      setResetMessage(resp.detail || 'Пароль обновлен.');
+      setResetOpen(false);
+      setResetSent(false);
+      setResetCode('');
+      setResetPassword('');
+      setResetPassword2('');
+      setMode('login');
+    } catch (err: any) {
+      setResetMessage(humanizeAuthError(err, 'login'));
+    } finally {
+      setResetLoading(false);
     }
   };
 
@@ -216,8 +280,8 @@ export function LoginPage() {
 
         {mode !== 'select' && (
           <div className="rounded-2xl bg-slate-900/96 border border-slate-700/70 shadow-[0_28px_56px_-20px_rgba(15,23,42,0.95),0_0_0_1px_rgba(148,163,184,0.08)] backdrop-blur-sm px-8 py-9 sm:px-12 sm:py-11 w-full mx-auto flex flex-col items-center">
-            <div className="w-full flex flex-col items-center space-y-7 sm:space-y-8">
-              <div className="text-center space-y-2 w-full">
+            <div className="w-full flex flex-col items-center space-y-[0.3cm]">
+              <div className="text-center space-y-[0.3cm] w-full">
                 <h2 className="text-slate-50 text-3xl sm:text-4xl font-bold tracking-tight">
                   {mode === 'register' ? 'Новый аккаунт' : 'Вход в аккаунт'}
                 </h2>
@@ -228,9 +292,9 @@ export function LoginPage() {
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="w-full flex flex-col items-center space-y-6 sm:space-y-7">
-                <div className="w-full flex flex-col items-center space-y-6 sm:space-y-7 max-w-[400px]">
-                  <div className="space-y-3 w-full flex flex-col items-center text-center">
+              <form onSubmit={handleSubmit} className="w-full flex flex-col items-center space-y-[0.3cm]">
+                <div className="w-full flex flex-col items-center space-y-[0.3cm] max-w-[400px]">
+                  <div className="space-y-[0.3cm] w-full flex flex-col items-center text-center">
                     <label htmlFor="username" className="block text-slate-100 text-[15px] sm:text-base font-semibold w-full">
                       Имя пользователя
                     </label>
@@ -252,7 +316,7 @@ export function LoginPage() {
                   </div>
 
                   {mode === 'register' && (
-                    <div className="space-y-3 w-full flex flex-col items-center text-center">
+                    <div className="space-y-[0.3cm] w-full flex flex-col items-center text-center">
                       <label htmlFor="email" className="block text-slate-100 text-[15px] sm:text-base font-semibold w-full">
                         Email
                       </label>
@@ -273,12 +337,11 @@ export function LoginPage() {
                     </div>
                   )}
 
-                  <div className="space-y-3 w-full flex flex-col items-center text-center">
+                  <div className="space-y-[0.3cm] w-full flex flex-col items-center text-center">
                     <label htmlFor="password" className="block text-slate-100 text-[15px] sm:text-base font-semibold w-full">
                       Пароль
                     </label>
                     <div className="relative w-full">
-                      <Lock className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                       <input
                         id="password"
                         type={showPassword ? 'text' : 'password'}
@@ -294,7 +357,7 @@ export function LoginPage() {
                         onKeyUp={(e) => setCapsLockOn(e.getModifierState('CapsLock'))}
                         onKeyDown={(e) => setCapsLockOn(e.getModifierState('CapsLock'))}
                         placeholder="Введите пароль"
-                        className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-12 pr-12 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                        className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-12 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
                         autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
                         aria-label="Пароль"
                         required
@@ -317,12 +380,11 @@ export function LoginPage() {
                   </div>
 
                   {mode === 'register' && (
-                    <div className="space-y-3 w-full flex flex-col items-center text-center">
+                    <div className="space-y-[0.3cm] w-full flex flex-col items-center text-center">
                       <label htmlFor="password2" className="block text-slate-100 text-[15px] sm:text-base font-semibold w-full">
                         Подтверждение
                       </label>
                       <div className="relative w-full">
-                        <Lock className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                         <input
                           id="password2"
                           type={showPassword2 ? 'text' : 'password'}
@@ -332,7 +394,7 @@ export function LoginPage() {
                           onKeyUp={(e) => setCapsLockOn(e.getModifierState('CapsLock'))}
                           onKeyDown={(e) => setCapsLockOn(e.getModifierState('CapsLock'))}
                           placeholder="Повторите пароль"
-                          className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-12 pr-12 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                          className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-12 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
                           autoComplete="new-password"
                           aria-label="Подтверждение пароля"
                           required
@@ -356,7 +418,7 @@ export function LoginPage() {
                   )}
                 </div>
 
-                <div className="pt-2 flex justify-center w-full max-w-[400px]">
+                <div className="flex justify-center w-full max-w-[400px]">
                   <Button
                     type="submit"
                     size="lg"
@@ -367,6 +429,94 @@ export function LoginPage() {
                     {mode === 'register' ? (loading ? 'Регистрация...' : 'Зарегистрироваться') : loading ? 'Вход...' : 'Войти'}
                   </Button>
                 </div>
+                {mode === 'login' && (
+                  <div className="w-full max-w-[400px] space-y-[0.3cm] text-center">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setResetOpen((v) => !v);
+                        setResetMessage(null);
+                      }}
+                      className="text-teal-300 hover:text-teal-200 text-base sm:text-[17px] font-medium transition-colors"
+                    >
+                      {resetOpen ? 'Скрыть восстановление пароля' : 'Восстановить пароль'}
+                    </button>
+                    {resetOpen && (
+                      <div className="rounded-2xl border border-slate-700/60 bg-slate-950/55 p-4 space-y-[0.3cm]">
+                        <div className="space-y-[0.3cm] text-left">
+                          <label htmlFor="reset-email" className="block text-slate-100 text-sm font-semibold">
+                            Email для подтверждения
+                          </label>
+                          <input
+                            id="reset-email"
+                            type="email"
+                            value={resetEmail}
+                            onChange={(e) => setResetEmail(e.target.value)}
+                            placeholder="Введите email"
+                            className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-4 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                            autoComplete="email"
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          size="lg"
+                          disabled={resetLoading}
+                          onClick={handleRequestReset}
+                          className="w-full px-8 py-4 rounded-2xl text-base font-semibold tracking-wide text-white bg-gradient-to-r from-teal-500 to-cyan-500 shadow-[0_12px_30px_-12px_rgba(45,212,191,0.7)] hover:from-teal-400 hover:to-cyan-400 transition-all duration-200"
+                        >
+                          {resetLoading ? 'Отправка кода...' : 'Отправить код на почту'}
+                        </Button>
+                        {resetSent && (
+                          <div className="space-y-[0.3cm] text-left">
+                            <label htmlFor="reset-code" className="block text-slate-100 text-sm font-semibold">
+                              Код из письма
+                            </label>
+                            <input
+                              id="reset-code"
+                              type="text"
+                              value={resetCode}
+                              onChange={(e) => setResetCode(e.target.value)}
+                              placeholder="Введите код подтверждения"
+                              className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-4 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                            />
+                            <label htmlFor="reset-password" className="block text-slate-100 text-sm font-semibold">
+                              Новый пароль
+                            </label>
+                            <input
+                              id="reset-password"
+                              type="password"
+                              value={resetPassword}
+                              onChange={(e) => setResetPassword(e.target.value)}
+                              placeholder="Введите новый пароль"
+                              className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-4 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                            />
+                            <label htmlFor="reset-password2" className="block text-slate-100 text-sm font-semibold">
+                              Подтвердите новый пароль
+                            </label>
+                            <input
+                              id="reset-password2"
+                              type="password"
+                              value={resetPassword2}
+                              onChange={(e) => setResetPassword2(e.target.value)}
+                              placeholder="Повторите новый пароль"
+                              className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-4 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                            />
+                            <Button
+                              type="button"
+                              size="lg"
+                              disabled={resetLoading}
+                              onClick={handleConfirmReset}
+                              className="w-full px-8 py-4 rounded-2xl text-base font-semibold tracking-wide text-white bg-gradient-to-r from-cyan-500 to-teal-500 shadow-[0_12px_30px_-12px_rgba(34,211,238,0.7)] hover:from-cyan-400 hover:to-teal-400 transition-all duration-200"
+                            >
+                              {resetLoading ? 'Подтверждение...' : 'Подтвердить восстановление'}
+                            </Button>
+                          </div>
+                        )}
+                        {resetMessage && <p className="text-sm text-slate-200 text-center">{resetMessage}</p>}
+                      </div>
+                    )}
+                  </div>
+                )}
                 <div className="w-full max-w-[400px] text-center">
                   {mode === 'login' ? (
                     <button
