@@ -151,9 +151,9 @@ export function LoginPage() {
 
         {mode === 'select' && (
           <div className="flex items-center justify-center">
-            <div className="grid grid-cols-1 gap-5 w-full max-w-[1040px]">
-              <div className="group rounded-2xl p-[2px] bg-gradient-to-r from-teal-400/75 via-cyan-400/70 to-violet-500/75 transform-gpu transition-transform transition-shadow duration-300 hover:scale-[1.03] hover:translate-x-1 hover:shadow-[0_22px_60px_-20px_rgba(56,189,248,0.9)]">
-                <div className="rounded-2xl bg-slate-900/90 px-7 py-5 sm:px-9 sm:py-6">
+            <div className="grid grid-cols-1 gap-6 w-full max-w-[560px]">
+              <div className="group rounded-2xl p-[3px] bg-gradient-to-r from-teal-400/80 via-cyan-400/75 to-violet-500/80 transform-gpu transition-all duration-300 hover:scale-[1.02] hover:translate-y-[-2px] hover:shadow-[0_24px_48px_-16px_rgba(45,212,191,0.5),0_0_0_1px_rgba(45,212,191,0.2)] active:scale-[0.98] active:translate-y-0 active:shadow-[0_12px_28px_-14px_rgba(15,23,42,0.9)]">
+                <div className="rounded-[calc(1rem-2px)] bg-slate-900/95 backdrop-blur-sm px-8 py-6 sm:px-10 sm:py-7">
                   <Button
                     type="button"
                     size="lg"
@@ -161,15 +161,15 @@ export function LoginPage() {
                       setMode('login');
                       setError(null);
                     }}
-                    className="w-full px-8 py-4 rounded-xl text-xl font-semibold bg-gradient-to-r from-teal-400/95 to-violet-500/95 text-white hover:from-teal-300 hover:to-violet-400 border border-violet-300/40 shadow-[0_18px_40px_-18px_rgba(45,212,191,0.7)] transform-gpu transition-transform transition-shadow duration-200 active:scale-[0.97] active:shadow-[0_14px_32px_-16px_rgba(15,23,42,0.95)]"
+                    className="w-full px-10 py-4.5 rounded-2xl text-xl font-semibold tracking-wide text-white bg-gradient-to-r from-teal-400 to-cyan-500 shadow-[0_12px_32px_-12px_rgba(45,212,191,0.6)] hover:from-teal-300 hover:to-cyan-400 hover:shadow-[0_16px_40px_-12px_rgba(45,212,191,0.7)] transform-gpu transition-all duration-200 active:scale-[0.98] active:shadow-[0_8px_24px_-12px_rgba(15,23,42,0.85)]"
                   >
                     Войти
                   </Button>
                 </div>
               </div>
 
-              <div className="group rounded-2xl p-[2px] bg-gradient-to-r from-violet-500/75 via-fuchsia-500/70 to-teal-400/75 transform-gpu transition-transform transition-shadow duration-300 hover:scale-[1.03] hover:-translate-x-1 hover:shadow-[0_22px_60px_-20px_rgba(147,51,234,0.9)]">
-                <div className="rounded-2xl bg-slate-900/90 px-7 py-5 sm:px-9 sm:py-6">
+              <div className="group rounded-2xl p-[3px] bg-gradient-to-r from-violet-500/80 via-fuchsia-500/75 to-teal-400/80 transform-gpu transition-all duration-300 hover:scale-[1.02] hover:translate-y-[-2px] hover:shadow-[0_24px_48px_-16px_rgba(139,92,246,0.5),0_0_0_1px_rgba(139,92,246,0.2)] active:scale-[0.98] active:translate-y-0 active:shadow-[0_12px_28px_-14px_rgba(15,23,42,0.9)]">
+                <div className="rounded-[calc(1rem-2px)] bg-slate-900/95 backdrop-blur-sm px-8 py-6 sm:px-10 sm:py-7">
                   <Button
                     type="button"
                     size="lg"
@@ -177,7 +177,7 @@ export function LoginPage() {
                       setMode('register');
                       setError(null);
                     }}
-                    className="w-full px-8 py-4 rounded-xl text-xl font-semibold bg-gradient-to-r from-violet-500/95 to-teal-400/95 text-white hover:from-violet-400 hover:to-teal-300 border border-teal-300/40 shadow-[0_18px_40px_-18px_rgba(139,92,246,0.7)] transform-gpu transition-transform transition-shadow duration-200 active:scale-[0.97] active:shadow-[0_14px_32px_-16px_rgba(15,23,42,0.95)]"
+                    className="w-full px-10 py-4.5 rounded-2xl text-xl font-semibold tracking-wide text-white bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_12px_32px_-12px_rgba(139,92,246,0.6)] hover:from-violet-400 hover:to-fuchsia-400 hover:shadow-[0_16px_40px_-12px_rgba(139,92,246,0.7)] transform-gpu transition-all duration-200 active:scale-[0.98] active:shadow-[0_8px_24px_-12px_rgba(15,23,42,0.85)]"
                   >
                     Зарегистрироваться
                   </Button>
@@ -188,115 +188,115 @@ export function LoginPage() {
         )}
 
         {mode !== 'select' && (
-          <div className="rounded-2xl bg-slate-900/90 border border-slate-700/70 shadow-[0_22px_54px_-18px_rgba(15,23,42,0.97)] px-6 py-8 sm:px-10 sm:py-10 max-w-[900px] mx-auto">
-            <div className="max-w-[520px] mx-auto space-y-6 sm:space-y-7">
-              <div className="text-center">
-                <div className="text-slate-50 text-xl sm:text-2xl font-semibold mb-2">
+          <div className="rounded-2xl bg-slate-900/92 border border-slate-700/60 shadow-[0_28px_56px_-20px_rgba(15,23,42,0.95),0_0_0_1px_rgba(148,163,184,0.06)] backdrop-blur-sm px-8 py-9 sm:px-12 sm:py-11 max-w-[900px] mx-auto">
+            <div className="max-w-[480px] mx-auto space-y-7 sm:space-y-8">
+              <div className="text-center space-y-2">
+                <h2 className="text-slate-50 text-2xl sm:text-3xl font-bold tracking-tight">
                   {mode === 'register' ? 'Новый аккаунт' : 'Вход в аккаунт'}
-                </div>
-                <p className="text-[17px] sm:text-lg text-slate-300">
+                </h2>
+                <p className="text-slate-400 text-base sm:text-[17px] leading-relaxed max-w-[420px] mx-auto">
                   {mode === 'register'
-                    ? 'Заполните поля ниже, чтобы создать учётную запись. Мы используем только необходимые данные.'
-                    : 'Введите имя пользователя и пароль, чтобы продолжить работу с вашими квестами.'}
+                    ? 'Заполните поля ниже — только необходимые данные для учётной записи.'
+                    : 'Имя пользователя и пароль для доступа к квестам и прогрессу.'}
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7 text-left">
-              <div>
-                <label htmlFor="username" className="block text-sm font-medium text-slate-200 mb-2">
-                  Имя пользователя
-                </label>
-                <input
-                  id="username"
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Введите имя пользователя"
-                  className="w-full rounded-xl border border-slate-600/50 bg-slate-950/60 px-4 py-3.5 text-[15px] sm:text-base text-slate-100 placeholder-slate-500 focus:outline-none focus:border-violet-300/60 transition-colors"
-                  required
-                />
-              </div>
-
-              {mode === 'register' && (
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-slate-200 mb-2">
-                    Email
+                <div className="space-y-2">
+                  <label htmlFor="username" className="block text-slate-200 text-[15px] sm:text-base font-medium">
+                    Имя пользователя
                   </label>
                   <input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Введите email"
-                    className="w-full rounded-xl border border-slate-600/50 bg-slate-950/60 px-4 py-3.5 text-[15px] sm:text-base text-slate-100 placeholder-slate-500 focus:outline-none focus:border-violet-300/60 transition-colors"
+                    id="username"
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Введите имя пользователя"
+                    className="w-full rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
                     required
                   />
-                </div>
-              )}
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-slate-200 mb-2">
-                    Пароль
-                  </label>
-                  <input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                      if (!passwordTouched) setPasswordTouched(true);
-                    }}
-                    onBlur={() => setPasswordTouched(true)}
-                    placeholder="Введите пароль"
-                    className="w-full rounded-xl border border-slate-600/50 bg-slate-950/60 px-4 py-3.5 text-[15px] sm:text-base text-slate-100 placeholder-slate-500 focus:outline-none focus:border-violet-300/60 transition-colors"
-                    required
-                  />
-                  {mode === 'register' && passwordTouched && password && validatePassword(password) && (
-                    <p className="mt-3 text-sm leading-relaxed text-rose-300">
-                      {validatePassword(password)}
-                    </p>
-                  )}
                 </div>
 
                 {mode === 'register' && (
-                  <div>
-                    <label htmlFor="password2" className="block text-sm font-medium text-slate-200 mb-2">
-                      Подтверждение
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="block text-slate-200 text-[15px] sm:text-base font-medium">
+                      Email
                     </label>
                     <input
-                      id="password2"
-                      type="password"
-                      value={password2}
-                      onChange={(e) => setPassword2(e.target.value)}
-                      placeholder="Повторите пароль"
-                      className="w-full rounded-xl border border-slate-600/50 bg-slate-950/60 px-4 py-3.5 text-[15px] sm:text-base text-slate-100 placeholder-slate-500 focus:outline-none focus:border-violet-300/60 transition-colors"
+                      id="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Введите email"
+                      className="w-full rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
                       required
                     />
                   </div>
                 )}
-              </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+                  <div className="space-y-2">
+                    <label htmlFor="password" className="block text-slate-200 text-[15px] sm:text-base font-medium">
+                      Пароль
+                    </label>
+                    <input
+                      id="password"
+                      type="password"
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        if (!passwordTouched) setPasswordTouched(true);
+                      }}
+                      onBlur={() => setPasswordTouched(true)}
+                      placeholder="Введите пароль"
+                      className="w-full rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
+                      required
+                    />
+                    {mode === 'register' && passwordTouched && password && validatePassword(password) && (
+                      <p className="mt-2 text-sm leading-relaxed text-rose-300/95">
+                        {validatePassword(password)}
+                      </p>
+                    )}
+                  </div>
+
+                  {mode === 'register' && (
+                    <div className="space-y-2">
+                      <label htmlFor="password2" className="block text-slate-200 text-[15px] sm:text-base font-medium">
+                        Подтверждение
+                      </label>
+                      <input
+                        id="password2"
+                        type="password"
+                        value={password2}
+                        onChange={(e) => setPassword2(e.target.value)}
+                        placeholder="Повторите пароль"
+                        className="w-full rounded-2xl border border-slate-600/40 bg-slate-950/70 px-5 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/30 transition-all duration-200"
+                        required
+                      />
+                    </div>
+                  )}
+                </div>
 
                 {error && (
-                  <div className="rounded-xl bg-rose-900/20 border border-rose-400/40 px-4 py-3 mt-2">
-                    <p className="text-[15px] text-rose-200">{error}</p>
+                  <div className="rounded-2xl bg-rose-950/50 border border-rose-400/30 px-5 py-4 shadow-[0_4px_16px_-4px_rgba(244,63,94,0.25)]">
+                    <p className="text-rose-200 text-[15px] sm:text-base leading-relaxed">{error}</p>
                   </div>
                 )}
 
-                <div className="pt-4 sm:pt-5 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4">
+                <div className="pt-2 flex justify-center">
                   <Button
                     type="submit"
                     size="lg"
                     disabled={loading}
-                    className="bg-gradient-to-r from-violet-500/95 to-indigo-500/95 text-white hover:from-violet-400 hover:to-indigo-400 border border-violet-300/40 px-8 py-4 text-[18px] sm:text-[19px] font-semibold shadow-[0_20px_44px_-18px_rgba(139,92,246,0.8)] transform-gpu transition-transform transition-shadow duration-200 active:scale-[0.97] active:shadow-[0_16px_36px_-18px_rgba(15,23,42,0.98)]"
+                    className="w-full sm:w-auto min-w-[220px] px-10 py-4.5 rounded-2xl text-lg sm:text-xl font-semibold tracking-wide text-white bg-gradient-to-r from-violet-500 to-indigo-500 shadow-[0_14px_36px_-12px_rgba(139,92,246,0.65)] hover:from-violet-400 hover:to-indigo-400 hover:shadow-[0_18px_44px_-12px_rgba(139,92,246,0.75)] hover:translate-y-[-1px] transform-gpu transition-all duration-200 active:scale-[0.98] active:translate-y-0 active:shadow-[0_10px_28px_-12px_rgba(15,23,42,0.9)] disabled:opacity-60 disabled:hover:translate-y-0"
                   >
                     {mode === 'register'
                       ? loading
                         ? 'Регистрация...'
                         : 'Зарегистрироваться'
                       : loading
-                      ? 'Вход...'
-                      : 'Войти'}
+                        ? 'Вход...'
+                        : 'Войти'}
                   </Button>
                 </div>
               </form>
