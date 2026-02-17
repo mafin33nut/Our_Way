@@ -29,10 +29,15 @@ function validatePassword(password: string): string | null {
 
 function humanizeAuthError(err: any, mode: AuthMode): string {
   const data = err?.response?.data;
-  const detail = data?.detail;
+  if (!data || typeof data !== 'object') {
+    const msg = err?.message || (typeof data === 'string' ? data : null);
+    if (msg) return String(msg);
+    return mode === 'register' ? 'Ошибка регистрации. Проверьте данные.' : 'Ошибка входа. Проверьте данные.';
+  }
 
+  const detail = data.detail;
   if (typeof detail === 'string') {
-    if (detail.includes('No active account found')) {
+    if (detail.includes('No active account found') || detail.toLowerCase().includes('invalid') || detail.toLowerCase().includes('invalid credentials')) {
       return 'Неверное имя пользователя или пароль.';
     }
     if (detail.toLowerCase().includes('passwords do not match')) {
@@ -40,17 +45,21 @@ function humanizeAuthError(err: any, mode: AuthMode): string {
     }
     return detail;
   }
+  if (Array.isArray(detail)) {
+    const text = detail.map((d: any) => (typeof d === 'string' ? d : String(d))).join('. ');
+    if (text) return text;
+  }
 
-  const field = (name: string) => {
-    const raw = data?.[name];
-    if (!raw) return null;
-    if (Array.isArray(raw)) return raw.join(', ');
+  const field = (name: string): string | null => {
+    const raw = data[name];
+    if (raw == null) return null;
+    if (Array.isArray(raw)) return raw.map((x: any) => String(x)).join('. ');
     return String(raw);
   };
 
   const usernameError = field('username');
   if (usernameError) {
-    if (usernameError.includes('already exists')) {
+    if (usernameError.toLowerCase().includes('already exists') || usernameError.toLowerCase().includes('exists')) {
       return 'Это имя пользователя уже занято.';
     }
     return `Имя пользователя: ${usernameError}`;
@@ -60,10 +69,23 @@ function humanizeAuthError(err: any, mode: AuthMode): string {
   const passwordError = field('password');
   if (passwordError) return `Пароль: ${passwordError}`;
 
-  if (mode === 'register') {
-    return 'Ошибка регистрации. Проверьте данные.';
+  const nonField = field('non_field_errors');
+  if (nonField) return nonField;
+
+  const message = data.message ?? data.error ?? data.msg;
+  if (typeof message === 'string') return message;
+  if (Array.isArray(message)) return message.map((m: any) => String(m)).join('. ');
+
+  const parts: string[] = [];
+  for (const key of Object.keys(data)) {
+    if (key === 'detail' || key === 'message' || key === 'error' || key === 'msg') continue;
+    const val = data[key];
+    const text = Array.isArray(val) ? val.map((x: any) => String(x)).join('. ') : String(val);
+    if (text) parts.push(`${key}: ${text}`);
   }
-  return 'Ошибка входа. Проверьте данные.';
+  if (parts.length) return parts.join('; ');
+
+  return mode === 'register' ? 'Ошибка регистрации. Проверьте данные.' : 'Ошибка входа. Проверьте данные.';
 }
 
 export function LoginPage() {
