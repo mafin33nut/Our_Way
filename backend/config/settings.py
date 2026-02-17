@@ -20,7 +20,9 @@ load_dotenv(BASE_DIR.parent / ".env")
 # SECURITY
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY") or "django-insecure-dev-placeholder"
 DEBUG = env_bool("DEBUG", "True")
-ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", "localhost,127.0.0.1")
+# По умолчанию разрешаем localhost + адрес WSL/сервера.
+# При необходимости можно переопределить через переменную окружения ALLOWED_HOSTS.
+ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", "localhost,127.0.0.1,172.25.159.191")
 
 # Database
 USE_SQLITE = env_bool("USE_SQLITE", "False")
