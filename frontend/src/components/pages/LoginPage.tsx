@@ -225,7 +225,7 @@ export function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center px-5 py-10 sm:px-10 sm:py-16 overflow-hidden bg-slate-950">
+    <div className="relative min-h-screen flex items-center justify-center px-4 py-8 sm:px-8 sm:py-12 md:px-10 md:py-16 overflow-hidden bg-slate-950">
       <HybridDynamicBackground
         opacity={0.58}
         speed={0.85}
@@ -235,9 +235,9 @@ export function LoginPage() {
         <Shield className="w-7 h-7 sm:w-8 sm:h-8 text-violet-300/90" />
       </div>
 
-      <div className="w-full relative z-10 flex flex-col items-center justify-center">
+      <div className="w-full relative z-10 flex flex-col items-center justify-center max-w-[1200px]">
         <div className="flex items-center justify-center mb-8 sm:mb-11">
-          <h1 className="font-ow-brand text-5xl sm:text-6xl leading-tight text-slate-50 text-center">Our way</h1>
+          <h1 className="font-ow-brand text-4xl sm:text-6xl lg:text-7xl leading-tight text-slate-50 text-center break-words px-2">Our way</h1>
         </div>
 
         {mode === 'select' && (
@@ -252,7 +252,7 @@ export function LoginPage() {
                       setMode('login');
                       setError(null);
                     }}
-                    className="w-full px-10 py-4.5 rounded-2xl text-xl font-semibold tracking-wide text-white bg-gradient-to-r from-teal-400 to-cyan-500 shadow-[0_12px_32px_-12px_rgba(45,212,191,0.6)] hover:from-teal-300 hover:to-cyan-400 hover:shadow-[0_16px_40px_-12px_rgba(45,212,191,0.7)] transform-gpu transition-all duration-200 active:scale-[0.98] active:shadow-[0_8px_24px_-12px_rgba(15,23,42,0.85)]"
+                    className="w-full px-8 sm:px-10 py-4.5 rounded-2xl text-lg sm:text-xl lg:text-2xl font-semibold tracking-wide text-white bg-gradient-to-r from-teal-400 to-cyan-500 shadow-[0_12px_32px_-12px_rgba(45,212,191,0.6)] hover:from-teal-300 hover:to-cyan-400 hover:shadow-[0_16px_40px_-12px_rgba(45,212,191,0.7)] transform-gpu transition-all duration-200 active:scale-[0.98] active:shadow-[0_8px_24px_-12px_rgba(15,23,42,0.85)]"
                   >
                     Войти
                   </Button>
@@ -268,7 +268,7 @@ export function LoginPage() {
                       setMode('register');
                       setError(null);
                     }}
-                    className="w-full px-10 py-4.5 rounded-2xl text-xl font-semibold tracking-wide text-white bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_12px_32px_-12px_rgba(139,92,246,0.6)] hover:from-violet-400 hover:to-fuchsia-400 hover:shadow-[0_16px_40px_-12px_rgba(139,92,246,0.7)] transform-gpu transition-all duration-200 active:scale-[0.98] active:shadow-[0_8px_24px_-12px_rgba(15,23,42,0.85)]"
+                    className="w-full px-8 sm:px-10 py-4.5 rounded-2xl text-lg sm:text-xl lg:text-2xl font-semibold tracking-wide text-white bg-gradient-to-r from-violet-500 to-fuchsia-500 shadow-[0_12px_32px_-12px_rgba(139,92,246,0.6)] hover:from-violet-400 hover:to-fuchsia-400 hover:shadow-[0_16px_40px_-12px_rgba(139,92,246,0.7)] transform-gpu transition-all duration-200 active:scale-[0.98] active:shadow-[0_8px_24px_-12px_rgba(15,23,42,0.85)]"
                   >
                     Зарегистрироваться
                   </Button>
@@ -279,13 +279,13 @@ export function LoginPage() {
         )}
 
         {mode !== 'select' && (
-          <div className="rounded-2xl bg-slate-900/96 border border-slate-700/70 shadow-[0_28px_56px_-20px_rgba(15,23,42,0.95),0_0_0_1px_rgba(148,163,184,0.08)] backdrop-blur-sm px-8 py-9 sm:px-12 sm:py-11 w-full mx-auto flex flex-col items-center">
+          <div className="rounded-2xl bg-slate-900/96 border border-slate-700/70 shadow-[0_28px_56px_-20px_rgba(15,23,42,0.95),0_0_0_1px_rgba(148,163,184,0.08)] backdrop-blur-sm px-4 py-7 sm:px-8 sm:py-9 md:px-12 md:py-11 w-full mx-auto flex flex-col items-center">
             <div className="w-full flex flex-col items-center space-y-[0.3cm]">
               <div className="text-center space-y-[0.3cm] w-full">
-                <h2 className="text-slate-50 text-3xl sm:text-4xl font-bold tracking-tight">
+                <h2 className="text-slate-50 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight break-words px-2">
                   {mode === 'register' ? 'Новый аккаунт' : 'Вход в аккаунт'}
                 </h2>
-                <p className="text-slate-200 text-base sm:text-lg leading-relaxed">
+                <p className="text-slate-200 text-lg sm:text-xl lg:text-2xl leading-relaxed break-words px-3">
                   {mode === 'register'
                     ? 'Создайте аккаунт, чтобы сохранить прогресс и получить доступ ко всем возможностям.'
                     : 'Введите имя пользователя и пароль, чтобы продолжить.'}
@@ -293,9 +293,9 @@ export function LoginPage() {
               </div>
 
               <form onSubmit={handleSubmit} className="w-full flex flex-col items-center space-y-[0.3cm]">
-                <div className="w-full flex flex-col items-center space-y-[0.3cm] max-w-[400px]">
+                <div className="w-full flex flex-col items-center space-y-[0.3cm] max-w-[520px] [&_label]:px-3 [&_p]:px-3">
                   <div className="space-y-[0.3cm] w-full flex flex-col items-center text-center">
-                    <label htmlFor="username" className="block text-slate-100 text-[15px] sm:text-base font-semibold w-full">
+                    <label htmlFor="username" className="block text-slate-100 text-lg sm:text-xl font-semibold w-full">
                       Имя пользователя
                     </label>
                     <div className="relative w-full">
@@ -306,7 +306,7 @@ export function LoginPage() {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         placeholder="Введите имя пользователя"
-                        className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-12 pr-4 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                        className="w-full min-h-[58px] sm:min-h-[62px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-12 pr-4 py-4 text-lg sm:text-xl text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
                         autoComplete="username"
                         autoFocus
                         aria-label="Имя пользователя"
@@ -317,7 +317,7 @@ export function LoginPage() {
 
                   {mode === 'register' && (
                     <div className="space-y-[0.3cm] w-full flex flex-col items-center text-center">
-                      <label htmlFor="email" className="block text-slate-100 text-[15px] sm:text-base font-semibold w-full">
+                      <label htmlFor="email" className="block text-slate-100 text-lg sm:text-xl font-semibold w-full">
                         Email
                       </label>
                       <div className="relative w-full">
@@ -328,7 +328,7 @@ export function LoginPage() {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="Введите email"
-                          className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-12 pr-4 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                          className="w-full min-h-[58px] sm:min-h-[62px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-12 pr-4 py-4 text-lg sm:text-xl text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
                           autoComplete="email"
                           aria-label="Email"
                           required
@@ -338,7 +338,7 @@ export function LoginPage() {
                   )}
 
                   <div className="space-y-[0.3cm] w-full flex flex-col items-center text-center">
-                    <label htmlFor="password" className="block text-slate-100 text-[15px] sm:text-base font-semibold w-full">
+                    <label htmlFor="password" className="block text-slate-100 text-lg sm:text-xl font-semibold w-full">
                       Пароль
                     </label>
                     <div className="relative w-full">
@@ -357,7 +357,7 @@ export function LoginPage() {
                         onKeyUp={(e) => setCapsLockOn(e.getModifierState('CapsLock'))}
                         onKeyDown={(e) => setCapsLockOn(e.getModifierState('CapsLock'))}
                         placeholder="Введите пароль"
-                        className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-12 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                        className="w-full min-h-[58px] sm:min-h-[62px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-12 py-4 text-lg sm:text-xl text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
                         autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
                         aria-label="Пароль"
                         required
@@ -371,9 +371,9 @@ export function LoginPage() {
                         {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
                     </div>
-                    {capsLockOn && <p className="text-amber-300 text-sm w-full text-center">Caps Lock включен</p>}
+                    {capsLockOn && <p className="text-amber-300 text-base sm:text-lg w-full text-center">Caps Lock включен</p>}
                     {mode === 'register' && passwordTouched && password && validatePassword(password) && (
-                      <p className="mt-2 text-sm leading-relaxed text-rose-300/95 w-full text-center">
+                      <p className="mt-2 text-base sm:text-lg leading-relaxed text-rose-300/95 w-full text-center">
                         {validatePassword(password)}
                       </p>
                     )}
@@ -381,7 +381,7 @@ export function LoginPage() {
 
                   {mode === 'register' && (
                     <div className="space-y-[0.3cm] w-full flex flex-col items-center text-center">
-                      <label htmlFor="password2" className="block text-slate-100 text-[15px] sm:text-base font-semibold w-full">
+                      <label htmlFor="password2" className="block text-slate-100 text-lg sm:text-xl font-semibold w-full">
                         Подтверждение
                       </label>
                       <div className="relative w-full">
@@ -394,7 +394,7 @@ export function LoginPage() {
                           onKeyUp={(e) => setCapsLockOn(e.getModifierState('CapsLock'))}
                           onKeyDown={(e) => setCapsLockOn(e.getModifierState('CapsLock'))}
                           placeholder="Повторите пароль"
-                          className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-12 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                          className="w-full min-h-[58px] sm:min-h-[62px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-12 py-4 text-lg sm:text-xl text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
                           autoComplete="new-password"
                           aria-label="Подтверждение пароля"
                           required
@@ -413,38 +413,38 @@ export function LoginPage() {
 
                   {error && (
                     <div className="rounded-2xl bg-rose-950/50 border border-rose-400/30 px-5 py-4 shadow-[0_4px_16px_-4px_rgba(244,63,94,0.25)] w-full text-center">
-                      <p className="text-rose-200 text-[15px] sm:text-base leading-relaxed">{error}</p>
+                      <p className="text-rose-200 text-lg sm:text-xl leading-relaxed break-words">{error}</p>
                     </div>
                   )}
                 </div>
 
-                <div className="flex justify-center w-full max-w-[400px]">
+                <div className="flex justify-center w-full max-w-[520px]">
                   <Button
                     type="submit"
                     size="lg"
                     disabled={loading}
-                    className="w-full px-10 py-4.5 rounded-2xl text-lg sm:text-xl font-semibold tracking-wide text-white bg-gradient-to-r from-teal-500 to-cyan-500 shadow-[0_14px_36px_-12px_rgba(45,212,191,0.7)] hover:from-teal-400 hover:to-cyan-400 hover:shadow-[0_18px_44px_-12px_rgba(45,212,191,0.85)] hover:translate-y-[-1px] transform-gpu transition-all duration-200 active:scale-[0.98] active:translate-y-0 active:shadow-[0_10px_28px_-12px_rgba(15,23,42,0.9)] disabled:opacity-60 disabled:hover:translate-y-0"
+                    className="w-full px-8 sm:px-10 py-4.5 rounded-2xl text-xl sm:text-2xl font-semibold tracking-wide text-white bg-gradient-to-r from-teal-500 to-cyan-500 shadow-[0_14px_36px_-12px_rgba(45,212,191,0.7)] hover:from-teal-400 hover:to-cyan-400 hover:shadow-[0_18px_44px_-12px_rgba(45,212,191,0.85)] hover:translate-y-[-1px] transform-gpu transition-all duration-200 active:scale-[0.98] active:translate-y-0 active:shadow-[0_10px_28px_-12px_rgba(15,23,42,0.9)] disabled:opacity-60 disabled:hover:translate-y-0"
                   >
                     {loading && <Loader2 className="w-5 h-5 mr-2 animate-spin" />}
                     {mode === 'register' ? (loading ? 'Регистрация...' : 'Зарегистрироваться') : loading ? 'Вход...' : 'Войти'}
                   </Button>
                 </div>
                 {mode === 'login' && (
-                  <div className="w-full max-w-[400px] space-y-[0.3cm] text-center">
+                  <div className="w-full max-w-[520px] space-y-[0.3cm] text-center">
                     <button
                       type="button"
                       onClick={() => {
                         setResetOpen((v) => !v);
                         setResetMessage(null);
                       }}
-                      className="text-teal-300 hover:text-teal-200 text-base sm:text-[17px] font-medium transition-colors"
+                      className="text-teal-300 hover:text-teal-200 text-lg sm:text-xl font-medium transition-colors break-words px-2"
                     >
                       {resetOpen ? 'Скрыть восстановление пароля' : 'Восстановить пароль'}
                     </button>
                     {resetOpen && (
-                      <div className="rounded-2xl border border-slate-700/60 bg-slate-950/55 p-4 space-y-[0.3cm]">
+                      <div className="rounded-2xl border border-slate-700/60 bg-slate-950/55 p-4 sm:p-6 space-y-[0.3cm]">
                         <div className="space-y-[0.3cm] text-left">
-                          <label htmlFor="reset-email" className="block text-slate-100 text-sm font-semibold">
+                          <label htmlFor="reset-email" className="block text-slate-100 text-lg sm:text-xl font-semibold">
                             Email для подтверждения
                           </label>
                           <input
@@ -453,7 +453,7 @@ export function LoginPage() {
                             value={resetEmail}
                             onChange={(e) => setResetEmail(e.target.value)}
                             placeholder="Введите email"
-                            className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-4 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                            className="w-full min-h-[58px] sm:min-h-[62px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-4 py-4 text-lg sm:text-xl text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
                             autoComplete="email"
                           />
                         </div>
@@ -462,13 +462,13 @@ export function LoginPage() {
                           size="lg"
                           disabled={resetLoading}
                           onClick={handleRequestReset}
-                          className="w-full px-8 py-4 rounded-2xl text-base font-semibold tracking-wide text-white bg-gradient-to-r from-teal-500 to-cyan-500 shadow-[0_12px_30px_-12px_rgba(45,212,191,0.7)] hover:from-teal-400 hover:to-cyan-400 transition-all duration-200"
+                          className="w-full px-8 py-4 rounded-2xl text-xl sm:text-2xl font-semibold tracking-wide text-white bg-gradient-to-r from-teal-500 to-cyan-500 shadow-[0_12px_30px_-12px_rgba(45,212,191,0.7)] hover:from-teal-400 hover:to-cyan-400 transition-all duration-200"
                         >
                           {resetLoading ? 'Отправка кода...' : 'Отправить код на почту'}
                         </Button>
                         {resetSent && (
                           <div className="space-y-[0.3cm] text-left">
-                            <label htmlFor="reset-code" className="block text-slate-100 text-sm font-semibold">
+                            <label htmlFor="reset-code" className="block text-slate-100 text-lg sm:text-xl font-semibold">
                               Код из письма
                             </label>
                             <input
@@ -477,9 +477,9 @@ export function LoginPage() {
                               value={resetCode}
                               onChange={(e) => setResetCode(e.target.value)}
                               placeholder="Введите код подтверждения"
-                              className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-4 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                              className="w-full min-h-[58px] sm:min-h-[62px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-4 py-4 text-lg sm:text-xl text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
                             />
-                            <label htmlFor="reset-password" className="block text-slate-100 text-sm font-semibold">
+                            <label htmlFor="reset-password" className="block text-slate-100 text-lg sm:text-xl font-semibold">
                               Новый пароль
                             </label>
                             <input
@@ -488,9 +488,9 @@ export function LoginPage() {
                               value={resetPassword}
                               onChange={(e) => setResetPassword(e.target.value)}
                               placeholder="Введите новый пароль"
-                              className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-4 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                              className="w-full min-h-[58px] sm:min-h-[62px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-4 py-4 text-lg sm:text-xl text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
                             />
-                            <label htmlFor="reset-password2" className="block text-slate-100 text-sm font-semibold">
+                            <label htmlFor="reset-password2" className="block text-slate-100 text-lg sm:text-xl font-semibold">
                               Подтвердите новый пароль
                             </label>
                             <input
@@ -499,20 +499,20 @@ export function LoginPage() {
                               value={resetPassword2}
                               onChange={(e) => setResetPassword2(e.target.value)}
                               placeholder="Повторите новый пароль"
-                              className="w-full min-h-[52px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-4 py-4 text-base text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
+                              className="w-full min-h-[58px] sm:min-h-[62px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-4 py-4 text-lg sm:text-xl text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
                             />
                             <Button
                               type="button"
                               size="lg"
                               disabled={resetLoading}
                               onClick={handleConfirmReset}
-                              className="w-full px-8 py-4 rounded-2xl text-base font-semibold tracking-wide text-white bg-gradient-to-r from-cyan-500 to-teal-500 shadow-[0_12px_30px_-12px_rgba(34,211,238,0.7)] hover:from-cyan-400 hover:to-teal-400 transition-all duration-200"
+                              className="w-full px-8 py-4 rounded-2xl text-xl sm:text-2xl font-semibold tracking-wide text-white bg-gradient-to-r from-cyan-500 to-teal-500 shadow-[0_12px_30px_-12px_rgba(34,211,238,0.7)] hover:from-cyan-400 hover:to-teal-400 transition-all duration-200"
                             >
                               {resetLoading ? 'Подтверждение...' : 'Подтвердить восстановление'}
                             </Button>
                           </div>
                         )}
-                        {resetMessage && <p className="text-sm text-slate-200 text-center">{resetMessage}</p>}
+                        {resetMessage && <p className="text-lg sm:text-xl text-slate-200 text-center break-words px-2">{resetMessage}</p>}
                       </div>
                     )}
                   </div>
