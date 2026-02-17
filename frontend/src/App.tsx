@@ -10,16 +10,11 @@ import { LoginPage } from './components/pages/LoginPage';
 import { HomePage } from './components/pages/HomePage';
 import { SettingsPage } from './components/pages/SettingsPage';
 import { AchievementsPage } from './components/pages/AchievementsPage';
-import { WelcomePage } from './components/pages/WelcomePage';
 import { CalendarPage } from './components/pages/CalendarPage';
 import { useAuth } from './hooks/useAuth';
 import { useCustomization } from './hooks/useCustomization';
 
 function HomeRoute() {
-  const { user } = useAuth();
-  if (user && user.has_seen_welcome === false) {
-    return <Navigate to="/welcome" replace />;
-  }
   return <HomePage />;
 }
 
@@ -73,16 +68,6 @@ function App() {
                 <PrivateRoute>
                   <AppLayout>
                     <HomeRoute />
-                  </AppLayout>
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/welcome"
-              element={
-                <PrivateRoute>
-                  <AppLayout>
-                    <WelcomePage />
                   </AppLayout>
                 </PrivateRoute>
               }

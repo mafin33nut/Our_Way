@@ -136,7 +136,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                 </Button>
               </div>
 
-              <div className="h-[calc(100%-72px)] overflow-y-auto px-[19px] py-[24px] space-y-8">
+              <div className="h-[calc(100%-72px)] overflow-y-auto px-[19px] py-[24px] space-y-[0.5cm]">
                 {!user && (
                   <div className="text-sm text-slate-600">Войдите, чтобы управлять друзьями.</div>
                 )}

@@ -228,15 +228,15 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                 </Button>
               </div>
 
-              <div className="h-[calc(100%-72px)] overflow-y-auto px-[28px] py-[28px] space-y-8">
+              <div className="h-[calc(100%-72px)] overflow-y-auto px-[28px] py-[28px] space-y-[0.5cm]">
                 {!user ? (
                   <div className="text-sm text-slate-600">
                     Войдите, чтобы управлять кланами.
                   </div>
                 ) : (
-                  <div className="space-y-8">
+                  <div className="space-y-[0.5cm]">
                     {/* Панель: Ваши кланы */}
-                    <div className={`rounded-2xl border ${isLight ? 'bg-white border-slate-200 shadow-xl p-7 mb-[38px] last:mb-0' : 'panel-base panel-teal'}`}>
+                    <div className={`rounded-2xl ${isLight ? 'bg-white border border-slate-200 p-7' : 'panel-teal p-7'}`}>
                       <div className="flex items-center gap-2 mb-4">
                         <Crown className={`w-5 h-5 ${isLight ? 'text-slate-800' : 'text-teal-300'}`} />
                       <h3 className={isLight ? 'text-slate-900 text-lg font-semibold' : 'text-slate-100'}>Ваши кланы</h3>

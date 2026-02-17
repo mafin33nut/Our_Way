@@ -4,12 +4,24 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
-// Берём базовый URL из Vite-окружения. Если не задан, используем текущий hostname и порт 8000.
-// Это соответствует схеме деплоя: фронт на :443, бек на :8000.
-const RUNTIME_DEFAULT_BASE_URL =
-  typeof window !== 'undefined'
-    ? `${window.location.protocol}//${window.location.hostname}:8000`
-    : 'http://127.0.0.1:8000';
+// Базовый URL API.
+// Локальная разработка: фронт на :5173 → бек на :8000.
+// Прод: по умолчанию используем тот же origin, что и фронтенд (Nginx проксирует /api на бекенд).
+let RUNTIME_DEFAULT_BASE_URL = 'http://127.0.0.1:8000';
+
+if (typeof window !== 'undefined') {
+  const { protocol, hostname, port } = window.location;
+  const isLocalHost = hostname === 'localhost' || hostname === '127.0.0.1';
+  const isViteDevPort = port === '5173' || port === '4173';
+
+  if (isLocalHost || isViteDevPort) {
+    // Дев-режим: фронт на 5173 → ходим на 8000.
+    RUNTIME_DEFAULT_BASE_URL = `${protocol}//${hostname}:8000`;
+  } else {
+    // Прод: тот же origin, без явного порта (https://our-way.jkproduction.pro).
+    RUNTIME_DEFAULT_BASE_URL = `${protocol}//${hostname}`;
+  }
+}
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? RUNTIME_DEFAULT_BASE_URL;
 
