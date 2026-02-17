@@ -517,31 +517,6 @@ export function LoginPage() {
                     )}
                   </div>
                 )}
-                <div className="w-full max-w-[400px] text-center">
-                  {mode === 'login' ? (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setMode('register');
-                        setError(null);
-                      }}
-                      className="text-teal-300 hover:text-teal-200 text-base sm:text-[17px] font-medium transition-colors"
-                    >
-                      Нет аккаунта? Создать
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setMode('login');
-                        setError(null);
-                      }}
-                      className="text-teal-300 hover:text-teal-200 text-base sm:text-[17px] font-medium transition-colors"
-                    >
-                      Уже есть аккаунт? Войти
-                    </button>
-                  )}
-                </div>
               </form>
             </div>
           </div>
