@@ -160,6 +160,25 @@ export interface CustomizationSettings {
   theme: 'light' | 'dark';
   soundEnabled: boolean;
   showHelp: boolean;
+  /**
+   * Стиль фоновой анимации:
+   * - dynamic — более яркий и заметный фон;
+   * - calm — более спокойный, приглушенный фон.
+   */
+  background: 'dynamic' | 'calm';
+  /**
+   * Режим фокуса:
+   * - balanced — обычный режим;
+   * - deep — меньше движения, спокойнее фон;
+   * - relaxed — более живой, динамичный фон.
+   */
+  focusMode: 'balanced' | 'deep' | 'relaxed';
+  /**
+   * Режим доступности:
+   * - normal — обычный;
+   * - high-contrast — усиленный контраст и акценты.
+   */
+  accessibilityMode: 'normal' | 'high-contrast';
 }
 
 export interface ActivityTimer {

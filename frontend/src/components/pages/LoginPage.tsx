@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import { Eye, EyeOff, Loader2, Mail, Shield, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { useCustomization } from '../../hooks/useCustomization';
 import { authAPI } from '../../api/auth';
 import { Button } from '../ui/Button';
 import { HybridDynamicBackground } from '../background/HybridDynamicBackground';
@@ -118,6 +119,7 @@ export function LoginPage() {
   const [resetMessage, setResetMessage] = useState<string | null>(null);
 
   const { user, login, register } = useAuth();
+  const { settings } = useCustomization();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -226,11 +228,19 @@ export function LoginPage() {
     }
   };
 
+  const baseBgSpeed = 0.85;
+  const speedFactor =
+    settings.focusMode === 'deep' ? 0.7 : settings.focusMode === 'relaxed' ? 1.25 : 1;
+  const bgSpeed = baseBgSpeed * speedFactor;
+  const baseOpacity = 0.58;
+  const opacityFactor = settings.background === 'calm' ? 0.75 : 1;
+  const bgOpacity = baseOpacity * opacityFactor;
+
   return (
     <div className="relative min-h-screen flex items-center justify-center px-4 py-8 sm:px-8 sm:py-12 md:px-10 md:py-16 overflow-hidden bg-slate-950">
       <HybridDynamicBackground
-        opacity={0.58}
-        speed={0.85}
+        opacity={bgOpacity}
+        speed={bgSpeed}
         palette={{ a: '#2dd4bf', b: '#22d3ee', c: '#8b5cf6', d: '#d946ef' }}
       />
       <div className="pointer-events-none absolute left-5 top-5 sm:left-7 sm:top-7">

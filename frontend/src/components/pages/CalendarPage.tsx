@@ -3,6 +3,7 @@ import { CalendarDays, ChevronLeft, ChevronRight, Repeat, Sparkles, Trash2 } fro
 import { Quest, UserFocus } from '../../types';
 import { questsAPI, focusesAPI } from '../../api/quests';
 import { useAuth } from '../../hooks/useAuth';
+import { useCustomization } from '../../hooks/useCustomization';
 import { Button } from '../ui/Button';
 import { HybridDynamicBackground } from '../background/HybridDynamicBackground';
 
@@ -74,6 +75,7 @@ const monthGrid = (anchor: Date) => {
 
 export function CalendarPage() {
   const { user } = useAuth();
+  const { settings } = useCustomization();
   const [anchorDate, setAnchorDate] = useState(() => {
     const now = new Date();
     return new Date(now.getFullYear(), now.getMonth(), 1);
@@ -365,8 +367,8 @@ export function CalendarPage() {
   return (
     <div className="relative min-h-screen overflow-hidden">
       <HybridDynamicBackground
-        opacity={0.44}
-        speed={0.95}
+        opacity={settings.background === 'calm' ? 0.36 : 0.44}
+        speed={settings.focusMode === 'deep' ? 0.75 : settings.focusMode === 'relaxed' ? 1.15 : 0.95}
         palette={{ a: '#2dd4bf', b: '#22d3ee', c: '#8b5cf6', d: '#d946ef' }}
       />
 

@@ -1,12 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { Shield } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { useCustomization } from '../../hooks/useCustomization';
 import { authAPI } from '../../api/auth';
 import { Button } from '../ui/Button';
 import { HybridDynamicBackground } from '../background/HybridDynamicBackground';
 
 export function WelcomePage() {
   const { user, refreshUser } = useAuth();
+  const { settings } = useCustomization();
   const navigate = useNavigate();
 
   if (!user) {
@@ -28,8 +30,8 @@ export function WelcomePage() {
   return (
     <div className="min-h-screen bg-slate-950">
       <HybridDynamicBackground
-        opacity={0.68}
-        speed={0.9}
+        opacity={settings.background === 'calm' ? 0.5 : 0.68}
+        speed={settings.focusMode === 'deep' ? 0.7 : settings.focusMode === 'relaxed' ? 1.2 : 0.9}
         palette={{ a: '#2dd4bf', b: '#22d3ee', c: '#8b5cf6', d: '#d946ef' }}
       />
       <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ArrowLeft, Moon, Settings, User as UserIcon, Volume2, VolumeX } from 'lucide-react';
+import { ArrowLeft, Moon, Settings, User as UserIcon, Volume2, VolumeX, Focus, Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCustomization } from '../../hooks/useCustomization';
 import { useAuth } from '../../hooks/useAuth';
@@ -140,6 +140,88 @@ export function SettingsPage() {
                   </div>
 
                   <div>
+                    <p className="text-sm text-slate-200/80 mb-3">Фон</p>
+                    <div className="grid grid-cols-1 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => updateSettings({ background: 'dynamic' })}
+                        className={`w-full rounded-2xl px-4 py-3 text-left transition-all border ${
+                          settings.background === 'dynamic'
+                            ? 'border-teal-400/60 bg-slate-950/35 ring-2 ring-teal-400/60'
+                            : 'border-slate-600/40 bg-slate-950/25 hover:border-slate-400/50'
+                        }`}
+                      >
+                        <p className="text-sm text-slate-100">Динамический фон</p>
+                        <p className="text-xs text-slate-300/70">
+                          Объёмный живой фон с частицами и светящимися пятнами.
+                        </p>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => updateSettings({ background: 'calm' })}
+                        className={`w-full rounded-2xl px-4 py-3 text-left transition-all border ${
+                          settings.background === 'calm'
+                            ? 'border-teal-200/60 bg-slate-950/20 ring-2 ring-teal-200/60'
+                            : 'border-slate-600/40 bg-slate-950/25 hover:border-slate-400/50'
+                        }`}
+                      >
+                        <p className="text-sm text-slate-100">Спокойный фон</p>
+                        <p className="text-xs text-slate-300/70">
+                          Менее заметное движение и более мягкие акценты.
+                        </p>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="text-sm text-slate-200/80 mb-3">Режим фокуса</p>
+                    <div className="grid grid-cols-1 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => updateSettings({ focusMode: 'balanced' })}
+                        className={`w-full rounded-2xl px-4 py-3 text-left transition-all border ${
+                          settings.focusMode === 'balanced'
+                            ? 'border-teal-400/60 bg-slate-950/35 ring-2 ring-teal-400/60'
+                            : 'border-slate-600/40 bg-slate-950/25 hover:border-slate-400/50'
+                        }`}
+                      >
+                        <p className="text-sm text-slate-100">Сбалансированный</p>
+                        <p className="text-xs text-slate-300/70">
+                          Обычный режим: умеренное движение и яркость.
+                        </p>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => updateSettings({ focusMode: 'deep' })}
+                        className={`w-full rounded-2xl px-4 py-3 text-left transition-all border ${
+                          settings.focusMode === 'deep'
+                            ? 'border-emerald-300/70 bg-slate-950/35 ring-2 ring-emerald-300/70'
+                            : 'border-slate-600/40 bg-slate-950/25 hover:border-slate-400/50'
+                        }`}
+                      >
+                        <p className="text-sm text-slate-100">Глубокий фокус</p>
+                        <p className="text-xs text-slate-300/70">
+                          Более медленное движение фона, мягче отвлекающие эффекты.
+                        </p>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => updateSettings({ focusMode: 'relaxed' })}
+                        className={`w-full rounded-2xl px-4 py-3 text-left transition-all border ${
+                          settings.focusMode === 'relaxed'
+                            ? 'border-sky-300/70 bg-slate-950/35 ring-2 ring-sky-300/70'
+                            : 'border-slate-600/40 bg-slate-950/25 hover:border-slate-400/50'
+                        }`}
+                      >
+                        <p className="text-sm text-slate-100">Расслабленный режим</p>
+                        <p className="text-xs text-slate-300/70">
+                          Чуть более живой фон, больше движения и яркости.
+                        </p>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
                     <p className="text-sm text-slate-200/80 mb-3">Звуки</p>
                     <button
                       type="button"
@@ -170,7 +252,37 @@ export function SettingsPage() {
                     </button>
                   </div>
 
-                  <div />
+                  <div>
+                    <p className="text-sm text-slate-200/80 mb-3">Доступность</p>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        updateSettings({
+                          accessibilityMode:
+                            settings.accessibilityMode === 'high-contrast' ? 'normal' : 'high-contrast',
+                        })
+                      }
+                      className={`w-full rounded-xl px-4 py-3 transition-all flex items-center justify-between border ${
+                        settings.accessibilityMode === 'high-contrast'
+                          ? 'border-amber-300/70 bg-slate-950/40 ring-2 ring-amber-300/70'
+                          : 'border-slate-600/40 bg-slate-950/25 hover:border-slate-400/50'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Eye className="w-4 h-4 text-amber-200" />
+                        <span className="text-sm text-slate-100">
+                          {settings.accessibilityMode === 'high-contrast'
+                            ? 'Высокий контраст включен'
+                            : 'Высокий контраст выключен'}
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-slate-300/80">
+                        {settings.accessibilityMode === 'high-contrast'
+                          ? 'Подходит для слабовидящих и работы при ярком свете.'
+                          : 'Усилить контраст панелей и контуров.'}
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

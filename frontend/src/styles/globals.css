@@ -259,6 +259,24 @@ h3 {
     color: #ffffff !important;
   }
 
+  /* Режим высокой контрастности */
+  :root[data-accessibility='high-contrast'] body {
+    text-shadow: none;
+  }
+
+  :root[data-accessibility='high-contrast'] .panel-base {
+    box-shadow: 0 26px 60px -24px rgba(0, 0, 0, 0.95), 0 0 32px rgba(251, 191, 36, 0.4);
+    border-color: rgba(250, 204, 21, 0.8) !important;
+  }
+
+  :root[data-accessibility='high-contrast'] .ow-button {
+    box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.8);
+  }
+
+  :root[data-accessibility='high-contrast'] .ow-button:focus-visible {
+    box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.95);
+  }
+
   /* Конкретно кнопка "Добавить" на панели направлений — всегда белый текст */
   #add-focus-button,
   #add-focus-button * {

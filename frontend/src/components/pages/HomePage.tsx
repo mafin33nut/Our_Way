@@ -255,12 +255,16 @@ export function HomePage() {
     return <Loader />;
   }
 
+  const homeBgSpeed =
+    settings.focusMode === 'deep' ? 0.7 : settings.focusMode === 'relaxed' ? 1.25 : 0.85;
+  const homeBgOpacity = settings.background === 'calm' ? 0.48 : 0.58;
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       <HybridDynamicBackground
         className="fixed inset-0"
-        opacity={0.58}
-        speed={0.85}
+        opacity={homeBgOpacity}
+        speed={homeBgSpeed}
         palette={{ a: '#2dd4bf', b: '#22d3ee', c: '#8b5cf6', d: '#d946ef' }}
       />
       <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-8 sm:px-10 sm:py-14">

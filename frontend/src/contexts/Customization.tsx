@@ -7,10 +7,11 @@ interface CustomizationContextType {
 }
 const defaultSettings: CustomizationSettings = {
   theme: 'dark',
-  background: 'dynamic',
-  customBackgroundUrl: '',
   soundEnabled: true,
   showHelp: true,
+  background: 'dynamic',
+  focusMode: 'balanced',
+  accessibilityMode: 'normal',
 };
 const LIGHT_THEME_ARCHIVED = true;
 export const CustomizationContext = createContext<CustomizationContextType | undefined>(undefined);
@@ -22,7 +23,14 @@ export function CustomizationProvider({ children }: CustomizationProviderProps) 
     const saved = localStorage.getItem('customization_settings');
     try {
       const parsed = saved ? (JSON.parse(saved) as Partial<CustomizationSettings>) : {};
-      const merged = { ...defaultSettings, ...parsed };
+      const merged: CustomizationSettings = {
+        ...defaultSettings,
+        ...parsed,
+        // Гарантируем значения по умолчанию для новых полей.
+        background: parsed.background ?? defaultSettings.background,
+        focusMode: parsed.focusMode ?? defaultSettings.focusMode,
+        accessibilityMode: parsed.accessibilityMode ?? defaultSettings.accessibilityMode,
+      };
       if (LIGHT_THEME_ARCHIVED && merged.theme !== 'dark') {
         return { ...merged, theme: 'dark' };
       }
@@ -40,6 +48,12 @@ export function CustomizationProvider({ children }: CustomizationProviderProps) 
       document.documentElement.dataset.theme = settings.theme;
     }
   }, [settings.theme]);
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.dataset.accessibility = settings.accessibilityMode;
+    }
+  }, [settings.accessibilityMode]);
 
   const updateSettings = (newSettings: Partial<CustomizationSettings>) => {
     if (LIGHT_THEME_ARCHIVED && newSettings.theme === 'light') {

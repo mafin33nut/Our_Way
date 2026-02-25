@@ -65,11 +65,15 @@ export function AchievementsPage() {
     return null;
   }
 
+  const bgSpeed =
+    settings.focusMode === 'deep' ? 0.6 : settings.focusMode === 'relaxed' ? 1.15 : 0.75;
+  const bgOpacity = settings.background === 'calm' ? 0.3 : 0.36;
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       <HybridDynamicBackground
-        opacity={0.36}
-        speed={0.75}
+        opacity={bgOpacity}
+        speed={bgSpeed}
         palette={{ a: '#2dd4bf', b: '#22d3ee', c: '#8b5cf6', d: '#d946ef' }}
       />
       <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
