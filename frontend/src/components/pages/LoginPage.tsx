@@ -170,16 +170,17 @@ export function LoginPage() {
   };
 
   const handleRequestReset = async () => {
-    if (!resetEmail.trim()) {
-      setResetMessage('Введите email для восстановления.');
+    const cleanUsername = username.trim();
+    if (!cleanUsername) {
+      setResetMessage('Введите имя пользователя, для которого нужно восстановить пароль.');
       return;
     }
     setResetLoading(true);
     setResetMessage(null);
     try {
-      const resp = await authAPI.requestPasswordReset(resetEmail);
+      const resp = await authAPI.requestPasswordReset(cleanUsername);
       setResetSent(true);
-      setResetMessage(resp.detail || 'Код отправлен на почту.');
+      setResetMessage(resp.detail || 'Код отправлен на почту, привязанную к аккаунту.');
     } catch (err: any) {
       setResetMessage(humanizeAuthError(err, 'login'));
     } finally {
@@ -188,8 +189,9 @@ export function LoginPage() {
   };
 
   const handleConfirmReset = async () => {
-    if (!resetEmail.trim() || !resetCode.trim()) {
-      setResetMessage('Введите email и код из письма.');
+    const cleanUsername = username.trim();
+    if (!cleanUsername || !resetCode.trim()) {
+      setResetMessage('Введите имя пользователя и код из письма.');
       return;
     }
     if (resetPassword !== resetPassword2) {
@@ -205,7 +207,7 @@ export function LoginPage() {
     setResetMessage(null);
     try {
       const resp = await authAPI.confirmPasswordReset({
-        email: resetEmail,
+        username: cleanUsername,
         code: resetCode,
         password: resetPassword,
         password2: resetPassword2,
@@ -444,18 +446,10 @@ export function LoginPage() {
                     {resetOpen && (
                       <div className="rounded-2xl border border-slate-700/60 bg-slate-950/55 p-4 sm:p-6 space-y-[0.3cm]">
                         <div className="space-y-[0.3cm] text-left">
-                          <label htmlFor="reset-email" className="block text-slate-100 text-lg sm:text-xl font-semibold">
-                            Email для подтверждения
-                          </label>
-                          <input
-                            id="reset-email"
-                            type="email"
-                            value={resetEmail}
-                            onChange={(e) => setResetEmail(e.target.value)}
-                            placeholder="Введите email"
-                            className="w-full min-h-[58px] sm:min-h-[62px] rounded-2xl border border-slate-600/40 bg-slate-950/70 pl-4 pr-4 py-4 text-lg sm:text-xl text-slate-100 placeholder-slate-500 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)] focus:outline-none focus:border-teal-400/70 focus:ring-2 focus:ring-teal-400/35 transition-all duration-200"
-                            autoComplete="email"
-                          />
+                          <p className="text-slate-200 text-base sm:text-lg">
+                            Мы отправим код восстановления на email, привязанный к аккаунту с указанным выше именем пользователя.
+                            Убедитесь, что поле «Имя пользователя» заполнено нужным логином.
+                          </p>
                         </div>
                         <Button
                           type="button"

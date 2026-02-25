@@ -50,7 +50,7 @@ export function WelcomePage() {
                     <Button
                       onClick={() => navigate('/settings')}
                       size="lg"
-                      className="w-full px-7 py-4 rounded-xl text-lg font-semibold bg-gradient-to-r from-slate-900 to-slate-800 text-slate-100 border border-slate-600 hover:from-slate-800 hover:to-slate-700"
+                      className="w-full px-9 py-4 rounded-xl text-lg font-semibold bg-gradient-to-r from-slate-900 to-slate-800 text-slate-100 border border-slate-600 hover:from-slate-800 hover:to-slate-700"
                     >
                       Настройки
                     </Button>
@@ -62,7 +62,7 @@ export function WelcomePage() {
                     <Button
                       onClick={handleContinue}
                       size="lg"
-                      className="w-full px-7 py-4 rounded-xl text-lg font-semibold bg-gradient-to-r from-teal-400/95 to-violet-500/95 text-white hover:from-teal-300 hover:to-violet-400 border border-violet-300/40 shadow-[0_18px_40px_-18px_rgba(45,212,191,0.7)]"
+                      className="w-full px-9 py-4 rounded-xl text-lg font-semibold bg-gradient-to-r from-teal-400/95 to-violet-500/95 text-white hover:from-teal-300 hover:to-violet-400 border border-violet-300/40 shadow-[0_18px_40px_-18px_rgba(45,212,191,0.7)]"
                     >
                       Перейти к приложению
                     </Button>

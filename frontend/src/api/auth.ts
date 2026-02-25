@@ -55,21 +55,23 @@ export const authAPI = {
     }
   },
 
-  requestPasswordReset: async (email: string): Promise<{ detail: string }> => {
+  requestPasswordReset: async (username: string): Promise<{ detail: string }> => {
     const response = await apiClient.post<{ detail: string }>('/api/auth/password-reset/request/', {
-      email: email.trim(),
+      username: username.trim(),
     });
     return response.data;
   },
 
   confirmPasswordReset: async (payload: {
-    email: string;
+    username?: string;
+    email?: string;
     code: string;
     password: string;
     password2: string;
   }): Promise<{ detail: string }> => {
     const response = await apiClient.post<{ detail: string }>('/api/auth/password-reset/confirm/', {
-      email: payload.email.trim(),
+      ...(payload.username ? { username: payload.username.trim() } : {}),
+      ...(payload.email ? { email: payload.email.trim() } : {}),
       code: payload.code.trim(),
       password: payload.password,
       password2: payload.password2,
