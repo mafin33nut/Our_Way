@@ -371,7 +371,7 @@ export function CalendarPage() {
       />
 
       <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-10 sm:px-10 sm:py-16">
-        <div className="w-full max-w-[1400px] space-y-16">
+        <div className="w-full max-w-[1400px] space-y-20">
           <div className="panel-base panel-teal p-7">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-3">
@@ -423,7 +423,7 @@ export function CalendarPage() {
             {status && <p className="mt-4 text-sm text-teal-100/90">{status}</p>}
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-14">
             <div className="panel-base panel-purple p-7 xl:col-span-2">
               <div className="panel-caption text-left">Подробный месяц</div>
               {loading ? (
@@ -555,7 +555,7 @@ export function CalendarPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-14">
             <div className="panel-base panel-sky p-7 xl:col-span-2">
               <div className="panel-caption text-left">Недели месяца</div>
               <div className="space-y-4">

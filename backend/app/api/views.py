@@ -137,18 +137,41 @@ class PasswordResetRequestView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-        email = (request.data.get('email') or '').strip().lower()
-        if not email:
-            return Response({'email': ['Email is required']}, status=status.HTTP_400_BAD_REQUEST)
+        # Восстановление пароля всегда отправляется на email,
+        # привязанный к аккаунту. Во фронтенде мы используем имя пользователя,
+        # чтобы не давать вводить произвольную почту.
+        username = (request.data.get('username') or '').strip()
+        raw_email = (request.data.get('email') or '').strip().lower()
 
-        user = User.objects.filter(email__iexact=email).first()
+        if not username and not raw_email:
+            return Response(
+                {'detail': 'Username or email is required'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        user = None
+        if username:
+            user = User.objects.filter(username__iexact=username).first()
+        elif raw_email:
+            user = User.objects.filter(email__iexact=raw_email).first()
+
         if user and user.email:
+            email = user.email.strip().lower()
             code = f'{random.randint(100000, 999999)}'
+
+            # Новый ключ, привязанный к user_id (используется новым фронтендом).
+            cache.set(
+                f'pwd_reset_uid:{user.id}',
+                {'code': code, 'user_id': user.id},
+                timeout=15 * 60,
+            )
+            # Для обратной совместимости сохраняем и старый ключ по email.
             cache.set(
                 f'pwd_reset:{email}',
                 {'code': code, 'user_id': user.id},
                 timeout=15 * 60,
             )
+
             try:
                 send_notification_to_user(
                     user,
@@ -160,6 +183,7 @@ class PasswordResetRequestView(APIView):
                     ),
                 )
             except Exception:
+                # Не раскрываем детали на клиенте, даже если почта недоступна.
                 pass
 
         return Response(
@@ -172,13 +196,12 @@ class PasswordResetConfirmView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
+        username = (request.data.get('username') or '').strip()
         email = (request.data.get('email') or '').strip().lower()
         code = (request.data.get('code') or '').strip()
         password = request.data.get('password') or ''
         password2 = request.data.get('password2') or ''
 
-        if not email:
-            return Response({'email': ['Email is required']}, status=status.HTTP_400_BAD_REQUEST)
         if not code:
             return Response({'code': ['Code is required']}, status=status.HTTP_400_BAD_REQUEST)
         if password != password2:
@@ -188,15 +211,34 @@ class PasswordResetConfirmView(APIView):
         if password_error:
             return Response({'password': [password_error]}, status=status.HTTP_400_BAD_REQUEST)
 
-        cached = cache.get(f'pwd_reset:{email}')
+        cached = None
+        cache_key = None
+        user = None
+
+        # Новый поток: идентификация по username, без ввода произвольного email.
+        if username:
+            user = User.objects.filter(username__iexact=username).first()
+            if not user:
+                return Response({'detail': 'Invalid reset request'}, status=status.HTTP_400_BAD_REQUEST)
+            cache_key = f'pwd_reset_uid:{user.id}'
+            cached = cache.get(cache_key)
+        # Обратная совместимость: старые клиенты могут по‑прежнему присылать email.
+        elif email:
+            cache_key = f'pwd_reset:{email}'
+            cached = cache.get(cache_key)
+        else:
+            return Response({'detail': 'Invalid reset request'}, status=status.HTTP_400_BAD_REQUEST)
+
         if not cached or cached.get('code') != code:
             return Response({'code': ['Invalid or expired confirmation code']}, status=status.HTTP_400_BAD_REQUEST)
 
-        user = User.objects.filter(id=cached.get('user_id'), email__iexact=email).first()
+        if not user:
+            user = User.objects.filter(id=cached.get('user_id')).first()
         if not user:
             return Response({'detail': 'Invalid reset request'}, status=status.HTTP_400_BAD_REQUEST)
 
         user.set_password(password)
         user.save(update_fields=['password'])
-        cache.delete(f'pwd_reset:{email}')
+        if cache_key:
+            cache.delete(cache_key)
         return Response({'detail': 'Пароль успешно обновлен.'}, status=status.HTTP_200_OK)
