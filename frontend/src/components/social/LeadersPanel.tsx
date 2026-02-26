@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Trophy, Users, X } from 'lucide-react';
+import { Medal, Trophy, Users, X } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useCustomization } from '../../hooks/useCustomization';
 import { socialAPI } from '../../api/social';
@@ -39,6 +39,16 @@ export function LeadersPanel({ className = '' }: LeadersPanelProps) {
   }, [isOpen, loadData]);
 
   const topPlayers = useMemo(() => leaders.slice(0, 10), [leaders]);
+  const topClans = useMemo(() => clans.slice(0, 10), [clans]);
+
+  const getRankIcon = (index: number) => {
+    if (index === 0) return <Trophy className="w-5 h-5 text-amber-400" aria-hidden />;
+    if (index === 1) return <Medal className="w-5 h-5 text-slate-300" aria-hidden />;
+    if (index === 2) return <Medal className="w-5 h-5 text-amber-700" aria-hidden />;
+    return null;
+  };
+
+  const isTopThree = (index: number) => index < 3;
 
   return (
     <>
@@ -144,19 +154,26 @@ export function LeadersPanel({ className = '' }: LeadersPanelProps) {
                               topPlayers.map((player, index) => (
                                 <tr
                                   key={player.id}
-                                  className={`border-t ${
-                                    isLight
-                                      ? 'border-slate-200 hover:bg-white transition-colors'
-                                      : 'border-slate-600/25'
+                                  className={`border-t transition-colors ${
+                                    isTopThree(index)
+                                      ? isLight
+                                        ? 'border-amber-200/80 bg-amber-50/90'
+                                        : 'border-amber-500/40 bg-amber-950/30'
+                                      : isLight
+                                        ? 'border-slate-200 hover:bg-white'
+                                        : 'border-slate-600/25'
                                   }`}
                                 >
-                                  <td className={`px-4 py-3 ${isLight ? 'text-slate-500' : 'text-slate-300/70'}`}>
-                                    {index + 1}
+                                  <td className={`px-4 py-3 ${isLight ? 'text-slate-600' : 'text-slate-300/80'}`}>
+                                    <span className="inline-flex items-center gap-2">
+                                      {getRankIcon(index)}
+                                      <span className="font-semibold">{index + 1}</span>
+                                    </span>
                                   </td>
-                                  <td className={`px-4 py-3 ${isLight ? 'text-slate-900 font-medium' : 'text-slate-100'}`}>
+                                  <td className={`px-4 py-3 ${isLight ? 'text-slate-900 font-medium' : 'text-slate-100'} ${isTopThree(index) ? 'font-semibold' : ''}`}>
                                     {player.username}
                                   </td>
-                                  <td className={`px-4 py-3 text-right ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                                  <td className={`px-4 py-3 text-right ${isLight ? 'text-slate-900' : 'text-slate-100'} ${isTopThree(index) ? 'font-semibold' : ''}`}>
                                     {player.level ?? 1}
                                   </td>
                                 </tr>
@@ -220,32 +237,39 @@ export function LeadersPanel({ className = '' }: LeadersPanelProps) {
                               </tr>
                             )}
                             {!loading &&
-                              clans.map((clan) => {
+                              topClans.map((clan, index) => {
                                 const leader =
                                   clan.members?.find((member) => member.role === 'leader') ??
                                   clan.members?.[0];
                                 return (
                                   <tr
                                     key={clan.id}
-                                    className={`border-t ${
-                                      isLight
-                                        ? 'border-slate-200 hover:bg-white transition-colors'
-                                        : 'border-slate-600/25'
+                                    className={`border-t transition-colors ${
+                                      isTopThree(index)
+                                        ? isLight
+                                          ? 'border-amber-200/80 bg-amber-50/90'
+                                          : 'border-amber-500/40 bg-amber-950/30'
+                                        : isLight
+                                          ? 'border-slate-200 hover:bg-white'
+                                          : 'border-slate-600/25'
                                     }`}
                                   >
-                                    <td className={`px-4 py-3 ${isLight ? 'text-slate-900 font-medium' : 'text-slate-100'}`}>
-                                      {clan.name}
+                                    <td className={`px-4 py-3 ${isLight ? 'text-slate-900 font-medium' : 'text-slate-100'} ${isTopThree(index) ? 'font-semibold' : ''}`}>
+                                      <span className="inline-flex items-center gap-2">
+                                        {getRankIcon(index)}
+                                        {clan.name}
+                                      </span>
                                     </td>
                                     <td className={`px-4 py-3 ${isLight ? 'text-slate-700' : 'text-slate-100'}`}>
                                       {leader?.username || '—'}
                                     </td>
-                                    <td className={`px-4 py-3 text-right ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                                    <td className={`px-4 py-3 text-right ${isLight ? 'text-slate-900' : 'text-slate-100'} ${isTopThree(index) ? 'font-semibold' : ''}`}>
                                       {(clan.total_xp || 0).toLocaleString()}
                                     </td>
                                   </tr>
                                 );
                               })}
-                            {!loading && clans.length === 0 && (
+                            {!loading && topClans.length === 0 && (
                               <tr>
                                 <td
                                   colSpan={3}

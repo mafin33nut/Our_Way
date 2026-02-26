@@ -136,16 +136,26 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                 </Button>
               </div>
 
-              <div className="h-[calc(100%-72px)] overflow-y-auto px-[19px] py-[24px] space-y-[0.5cm]">
+              <div className="h-[calc(100%-72px)] overflow-y-auto px-5 py-6 space-y-8">
                 {!user && (
                   <div className="text-sm text-slate-600">Войдите, чтобы управлять друзьями.</div>
                 )}
                 {user && (
                   <>
-                    <div className={`rounded-2xl border ${isLight ? 'bg-white border-slate-200 shadow-xl p-7 mb-[38px] last:mb-0' : 'panel-base panel-purple'}`}>
-                      <div className={isLight ? 'text-slate-900 text-lg font-semibold mb-4' : 'panel-caption text-left'}>
+                    {/* Блок 1: Заявки в друзья */}
+                    <section
+                      className={`rounded-2xl border-2 p-6 ${
+                        isLight
+                          ? 'bg-white border-slate-200 shadow-lg'
+                          : 'bg-slate-900/60 border-purple-500/50 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
+                      }`}
+                    >
+                      <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${
+                        isLight ? 'text-slate-900' : 'text-purple-200'
+                      }`}>
+                        <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-purple-500/20 text-purple-300 text-sm font-bold">1</span>
                         Заявки в друзья
-                      </div>
+                      </h3>
                       {loadingRequests ? (
                         <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>Загрузка заявок...</div>
                       ) : requests.length === 0 ? (
@@ -156,11 +166,11 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                             <div
                               key={req.id}
                               className={`flex items-center justify-between gap-3 rounded-xl px-4 py-3 ${
-                                isLight ? 'bg-white border border-slate-200' : 'bg-slate-950/40 border border-slate-700/40'
+                                isLight ? 'bg-slate-50 border border-slate-200' : 'bg-slate-950/40 border border-slate-700/40'
                               }`}
                             >
                               <div className="min-w-0">
-                                <p className={isLight ? 'text-slate-900 truncate' : 'text-slate-100 truncate'}>{req.from_user_username}</p>
+                                <p className={isLight ? 'text-slate-900 truncate font-medium' : 'text-slate-100 truncate'}>{req.from_user_username}</p>
                                 <p className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>Хочет добавить вас в друзья</p>
                               </div>
                               <div className="flex items-center gap-2 shrink-0">
@@ -194,28 +204,52 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                           ))}
                         </div>
                       )}
-                    </div>
-                    <FriendSearchPanel
-                      onFriendAdded={async () => {
-                        await loadFriends();
-                        await loadRequests();
-                      }}
-                      friendIds={friends.map((friend) => friend.id)}
-                      currentUserId={user.id}
-                    />
-                    <div className={isLight ? 'text-base font-semibold text-slate-800' : 'panel-comment'}>
-                      Поиск друзей
-                    </div>
-                    {loading ? (
-                      <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>Загрузка списка друзей...</div>
-                    ) : (
-                      <>
-                        <div className={isLight ? 'text-base font-semibold text-slate-800' : 'panel-comment'}>
-                          Ваши друзья
-                        </div>
+                    </section>
+
+                    {/* Блок 2: Поиск друзей */}
+                    <section
+                      className={`rounded-2xl border-2 p-6 ${
+                        isLight
+                          ? 'bg-white border-slate-200 shadow-lg'
+                          : 'bg-slate-900/60 border-teal-500/50 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
+                      }`}
+                    >
+                      <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${
+                        isLight ? 'text-slate-900' : 'text-teal-200'
+                      }`}>
+                        <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-teal-500/20 text-teal-300 text-sm font-bold">2</span>
+                        Поиск друзей
+                      </h3>
+                      <FriendSearchPanel
+                        onFriendAdded={async () => {
+                          await loadFriends();
+                          await loadRequests();
+                        }}
+                        friendIds={friends.map((friend) => friend.id)}
+                        currentUserId={user.id}
+                      />
+                    </section>
+
+                    {/* Блок 3: Ваши друзья */}
+                    <section
+                      className={`rounded-2xl border-2 p-6 ${
+                        isLight
+                          ? 'bg-white border-slate-200 shadow-lg'
+                          : 'bg-slate-900/60 border-amber-400/50 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
+                      }`}
+                    >
+                      <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${
+                        isLight ? 'text-slate-900' : 'text-amber-200'
+                      }`}>
+                        <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-500/20 text-amber-300 text-sm font-bold">3</span>
+                        Ваши друзья
+                      </h3>
+                      {loading ? (
+                        <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>Загрузка списка друзей...</div>
+                      ) : (
                         <AllFriendsPanel friends={friends} />
-                      </>
-                    )}
+                      )}
+                    </section>
                   </>
                 )}
               </div>
