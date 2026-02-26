@@ -228,7 +228,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                 </Button>
               </div>
 
-              <div className="h-[calc(100%-72px)] overflow-y-auto px-6 py-6 space-y-8">
+              <div className="h-[calc(100%-72px)] overflow-y-auto px-7 py-7 space-y-8">
                 {!user ? (
                   <div className="text-sm text-slate-600">
                     Войдите, чтобы управлять кланами.
@@ -237,7 +237,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                   <div className="space-y-8">
                     {/* Блок 1: Мои кланы */}
                     <section
-                      className={`rounded-2xl border-2 p-6 ${
+                      className={`rounded-2xl border-2 px-8 py-7 ${
                         isLight
                           ? 'bg-white border-slate-200 shadow-lg'
                           : 'bg-slate-900/60 border-teal-500/50 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
@@ -307,7 +307,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
 
                     {/* Блок 2: Вступление по ссылке */}
                     <section
-                      className={`rounded-2xl border-2 p-6 ${
+                      className={`rounded-2xl border-2 px-8 py-7 ${
                         isLight
                           ? 'bg-white border-slate-200 shadow-lg'
                           : 'bg-slate-900/60 border-cyan-500/50 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
@@ -377,7 +377,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
 
                     {/* Создать новый клан (доп. карточка) */}
                     <section
-                      className={`rounded-2xl border-2 p-6 ${
+                      className={`rounded-2xl border-2 px-8 py-7 ${
                         isLight
                           ? 'bg-white border-slate-200 shadow-lg'
                           : 'bg-slate-900/60 border-slate-500/40 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
@@ -391,7 +391,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                     {selectedClan && (
                       <>
                         <section
-                          className={`rounded-2xl border-2 p-6 ${
+                          className={`rounded-2xl border-2 px-8 py-7 ${
                             isLight
                               ? 'bg-white border-slate-200 shadow-lg'
                               : 'bg-slate-900/60 border-amber-500/50 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'

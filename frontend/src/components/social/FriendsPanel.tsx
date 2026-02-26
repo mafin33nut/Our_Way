@@ -136,7 +136,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                 </Button>
               </div>
 
-              <div className="h-[calc(100%-72px)] overflow-y-auto px-5 py-6 space-y-8">
+              <div className="h-[calc(100%-72px)] overflow-y-auto px-6 py-7 space-y-8">
                 {!user && (
                   <div className="text-sm text-slate-600">Войдите, чтобы управлять друзьями.</div>
                 )}
@@ -144,7 +144,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                   <>
                     {/* Блок 1: Заявки в друзья */}
                     <section
-                      className={`rounded-2xl border-2 p-6 ${
+                      className={`rounded-2xl border-2 px-8 py-7 ${
                         isLight
                           ? 'bg-white border-slate-200 shadow-lg'
                           : 'bg-slate-900/60 border-purple-500/50 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
@@ -208,7 +208,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
 
                     {/* Блок 2: Поиск друзей */}
                     <section
-                      className={`rounded-2xl border-2 p-6 ${
+                      className={`rounded-2xl border-2 px-8 py-7 ${
                         isLight
                           ? 'bg-white border-slate-200 shadow-lg'
                           : 'bg-slate-900/60 border-teal-500/50 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
@@ -220,6 +220,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                         <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-teal-500/20 text-teal-300 text-sm font-bold">2</span>
                         Поиск друзей
                       </h3>
+                      <div className="min-w-0">
                       <FriendSearchPanel
                         onFriendAdded={async () => {
                           await loadFriends();
@@ -228,11 +229,12 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                         friendIds={friends.map((friend) => friend.id)}
                         currentUserId={user.id}
                       />
+                      </div>
                     </section>
 
                     {/* Блок 3: Ваши друзья */}
                     <section
-                      className={`rounded-2xl border-2 p-6 ${
+                      className={`rounded-2xl border-2 px-8 py-7 ${
                         isLight
                           ? 'bg-white border-slate-200 shadow-lg'
                           : 'bg-slate-900/60 border-amber-400/50 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
@@ -247,7 +249,9 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                       {loading ? (
                         <div className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>Загрузка списка друзей...</div>
                       ) : (
-                        <AllFriendsPanel friends={friends} />
+                        <div className="min-w-0">
+                          <AllFriendsPanel friends={friends} />
+                        </div>
                       )}
                     </section>
                   </>
