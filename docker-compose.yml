@@ -17,6 +17,9 @@ services:
       dockerfile: frontend/Dockerfile.prod
       args:
         FRONTEND_BASE: ${FRONTEND_BASE_IMAGE:-docker.io/library/python:3.11-slim}
+    environment:
+      BACKEND_HOST: ${FRONTEND_BACKEND_HOST:-backend}
+      BACKEND_PORT: ${FRONTEND_BACKEND_PORT:-8000}
     ports:
       - "21771:80"
     depends_on:
