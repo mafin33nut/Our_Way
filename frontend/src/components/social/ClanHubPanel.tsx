@@ -234,7 +234,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                     Войдите, чтобы управлять кланами.
                   </div>
                 ) : (
-                  <div>
+                  <div className="space-y-8">
                     {/* Мои кланы */}
                     <section
                       className={
