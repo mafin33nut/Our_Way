@@ -539,7 +539,9 @@ export function ChatHubPanel({ className = '' }: ChatHubPanelProps) {
                                               : 'bg-slate-950/20 text-purple-100'
                                         }`}
                                       >
-                                        <p className="text-sm leading-snug whitespace-pre-wrap">{message.text}</p>
+                                        <p className="text-base leading-relaxed whitespace-pre-wrap">
+                                          {message.text}
+                                        </p>
                                       </div>
                                     </div>
                                   ))

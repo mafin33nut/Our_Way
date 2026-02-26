@@ -6,6 +6,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { authAPI } from '../../api/auth';
 import { Button } from '../ui/Button';
 import { resolveMediaUrl } from '../../utils/media';
+import { HybridDynamicBackground } from '../background/HybridDynamicBackground';
 
 export function SettingsPage() {
   const { user, refreshUser } = useAuth();
@@ -15,6 +16,10 @@ export function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const isLight = settings.theme === 'light';
+
+  const settingsBgSpeed =
+    settings.focusMode === 'deep' ? 0.7 : settings.focusMode === 'relaxed' ? 1.15 : 0.85;
+  const settingsBgOpacity = settings.background === 'calm' ? 0.4 : 0.52;
 
   if (!user) {
     return null;
@@ -38,8 +43,13 @@ export function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
+    <div className="relative min-h-screen overflow-hidden">
+      <HybridDynamicBackground
+        opacity={settingsBgOpacity}
+        speed={settingsBgSpeed}
+        palette={{ a: '#2dd4bf', b: '#22d3ee', c: '#8b5cf6', d: '#d946ef' }}
+      />
+      <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1200px]">
           <div className="panel-base panel-purple p-6">
             <div className="flex items-center justify-between gap-4 mb-6">
