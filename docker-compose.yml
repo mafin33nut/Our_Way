@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: frontend/Dockerfile.prod
       args:
-        NGINX_BASE: ${NGINX_BASE_IMAGE:-docker.io/library/nginx:alpine}
+        FRONTEND_BASE: ${FRONTEND_BASE_IMAGE:-docker.io/library/python:3.11-slim}
     ports:
       - "21771:80"
     depends_on:
