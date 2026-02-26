@@ -235,18 +235,15 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                   </div>
                 ) : (
                   <div className="space-y-8">
-                    {/* Блок 1: Мои кланы */}
-                    <section
-                      className={`rounded-2xl border-2 px-8 py-7 ${
+                    {/* Мои кланы */}
+                    <div
+                      className={`rounded-2xl border px-6 py-5 ${
                         isLight
-                          ? 'bg-white border-slate-200 shadow-lg'
-                          : 'bg-slate-900/60 border-teal-500/50 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
+                          ? 'bg-white border-slate-200'
+                          : 'bg-slate-900/50 border-slate-700/50'
                       }`}
                     >
-                      <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${
-                        isLight ? 'text-slate-900' : 'text-teal-200'
-                      }`}>
-                        <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-teal-500/20 text-teal-300 text-sm font-bold">1</span>
+                      <h3 className={`text-lg font-semibold mb-4 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
                         Мои кланы
                       </h3>
                       {loading ? (
@@ -303,20 +300,17 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                           )}
                         </>
                       )}
-                    </section>
+                    </div>
 
-                    {/* Блок 2: Вступление по ссылке */}
-                    <section
-                      className={`rounded-2xl border-2 px-8 py-7 ${
+                    {/* Вступление по ссылке */}
+                    <div
+                      className={`rounded-2xl border px-6 py-5 ${
                         isLight
-                          ? 'bg-white border-slate-200 shadow-lg'
-                          : 'bg-slate-900/60 border-cyan-500/50 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
+                          ? 'bg-white border-slate-200'
+                          : 'bg-slate-900/50 border-slate-700/50'
                       }`}
                     >
-                      <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${
-                        isLight ? 'text-slate-900' : 'text-cyan-200'
-                      }`}>
-                        <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-300 text-sm font-bold">2</span>
+                      <h3 className={`text-lg font-semibold mb-4 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
                         Вступление по ссылке
                       </h3>
                       <p className={`text-sm mb-3 ${isLight ? 'text-slate-600' : 'text-slate-300/80'}`}>
@@ -373,34 +367,31 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                       >
                         {joinLinkLoading ? 'Отправка...' : 'Отправить запрос'}
                       </Button>
-                    </section>
+                    </div>
 
-                    {/* Создать новый клан (доп. карточка) */}
-                    <section
-                      className={`rounded-2xl border-2 px-8 py-7 ${
+                    {/* Создать новый клан */}
+                    <div
+                      className={`rounded-2xl border px-6 py-5 ${
                         isLight
-                          ? 'bg-white border-slate-200 shadow-lg'
-                          : 'bg-slate-900/60 border-slate-500/40 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
+                          ? 'bg-white border-slate-200'
+                          : 'bg-slate-900/50 border-slate-700/50'
                       }`}
                     >
-                      <h3 className={`text-lg font-semibold mb-4 ${isLight ? 'text-slate-900' : 'text-slate-200'}`}>Создать новый клан</h3>
+                      <h3 className={`text-lg font-semibold mb-4 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>Создать новый клан</h3>
                       <ClanCreationPanel onClanCreated={loadClans} />
-                    </section>
+                    </div>
 
-                    {/* Блок 3: Клановые квесты (только при выбранном клане) */}
+                    {/* Клановые квесты (только при выбранном клане) */}
                     {selectedClan && (
                       <>
-                        <section
-                          className={`rounded-2xl border-2 px-8 py-7 ${
+                        <div
+                          className={`rounded-2xl border px-6 py-5 ${
                             isLight
-                              ? 'bg-white border-slate-200 shadow-lg'
-                              : 'bg-slate-900/60 border-amber-500/50 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
+                              ? 'bg-white border-slate-200'
+                              : 'bg-slate-900/50 border-slate-700/50'
                           }`}
                         >
-                          <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${
-                            isLight ? 'text-slate-900' : 'text-amber-200'
-                          }`}>
-                            <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-500/20 text-amber-300 text-sm font-bold">3</span>
+                          <h3 className={`text-lg font-semibold mb-4 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
                             Клановые квесты
                           </h3>
                           {loadingClanQuests ? (
@@ -500,7 +491,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                             </Button>
                           </div>
                           </div>
-                        </section>
+                        </div>
                       </>
                     )}
                   </div>
