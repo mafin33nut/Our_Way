@@ -136,43 +136,43 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                 </Button>
               </div>
 
-              <div className="h-[calc(100%-72px)] overflow-y-auto px-6 py-7 space-y-8">
+              <div className="h-[calc(100%-72px)] overflow-y-auto p-6">
                 {!user && (
                   <p className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
                     Войдите, чтобы управлять друзьями.
                   </p>
                 )}
                 {user && (
-                  <div className="space-y-8">
+                  <div>
                     {/* Заявки в друзья */}
                     <div
-                      className={`rounded-2xl border px-6 py-5 ${
+                      className={
                         isLight
-                          ? 'bg-white border-slate-200'
-                          : 'bg-slate-900/50 border-slate-700/50'
-                      }`}
+                          ? 'rounded-2xl border border-slate-200 bg-white shadow-lg p-7'
+                          : 'panel-base panel-purple p-6'
+                      }
                     >
-                      <h3 className={`text-lg font-semibold mb-4 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                      <div className={isLight ? 'text-slate-900 text-lg font-semibold mb-4' : 'panel-caption text-left'}>
                         Заявки в друзья
-                      </h3>
+                      </div>
                       {loadingRequests ? (
-                        <p className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>Загрузка заявок...</p>
+                        <p className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>Загрузка заявок...</p>
                       ) : requests.length === 0 ? (
-                        <p className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>Нет входящих заявок.</p>
+                        <p className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>Нет входящих заявок.</p>
                       ) : (
                         <ul className="space-y-3">
                           {requests.map((req) => (
                             <li
                               key={req.id}
-                              className={`flex items-center justify-between gap-3 rounded-xl px-4 py-3 ${
-                                isLight ? 'bg-slate-50 border border-slate-200' : 'bg-slate-800/40 border border-slate-600/40'
+                              className={`flex items-center justify-between gap-3 rounded-xl border px-4 py-3 ${
+                                isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/25 border-slate-600/30'
                               }`}
                             >
                               <div className="min-w-0">
                                 <p className={`truncate font-medium ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
                                   {req.from_user_username}
                                 </p>
-                                <p className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+                                <p className={`text-sm ${isLight ? 'text-slate-500' : 'text-slate-300/70'}`}>
                                   Хочет добавить вас в друзья
                                 </p>
                               </div>
@@ -181,11 +181,7 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                                   size="md"
                                   onClick={() => handleApprove(req.id)}
                                   disabled={actioningRequestId === req.id}
-                                  className={
-                                    isLight
-                                      ? 'px-4 py-2.5 rounded-lg text-sm font-medium bg-slate-900 text-white hover:bg-slate-800'
-                                      : 'px-4 py-2.5 rounded-lg text-sm action-button'
-                                  }
+                                  className={isLight ? '' : 'action-button'}
                                 >
                                   Принять
                                 </Button>
@@ -196,8 +192,8 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
                                   disabled={actioningRequestId === req.id}
                                   className={
                                     isLight
-                                      ? 'px-4 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 border border-slate-200'
-                                      : 'px-4 py-2.5 rounded-lg text-sm border border-slate-600/50 text-slate-300 hover:bg-slate-700/50'
+                                      ? 'border border-slate-200 text-slate-700 hover:bg-slate-100'
+                                      : 'border border-slate-600/50 text-slate-300 hover:bg-slate-700/50'
                                   }
                                 >
                                   Отклонить
@@ -211,15 +207,15 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
 
                     {/* Поиск друзей */}
                     <div
-                      className={`rounded-2xl border px-6 py-5 ${
+                      className={
                         isLight
-                          ? 'bg-white border-slate-200'
-                          : 'bg-slate-900/50 border-slate-700/50'
-                      }`}
+                          ? 'rounded-2xl border border-slate-200 bg-white shadow-lg p-7'
+                          : 'panel-base panel-teal p-6'
+                      }
                     >
-                      <h3 className={`text-lg font-semibold mb-4 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                      <div className={isLight ? 'text-slate-900 text-lg font-semibold mb-4' : 'panel-caption text-left'}>
                         Поиск друзей
-                      </h3>
+                      </div>
                       <div className="min-w-0">
                         <FriendSearchPanel
                           onFriendAdded={async () => {
@@ -234,17 +230,17 @@ export function FriendsPanel({ className = '' }: FriendsPanelProps) {
 
                     {/* Ваши друзья */}
                     <div
-                      className={`rounded-2xl border px-6 py-5 ${
+                      className={
                         isLight
-                          ? 'bg-white border-slate-200'
-                          : 'bg-slate-900/50 border-slate-700/50'
-                      }`}
+                          ? 'rounded-2xl border border-slate-200 bg-white shadow-lg p-7'
+                          : 'panel-base panel-orange p-6'
+                      }
                     >
-                      <h3 className={`text-lg font-semibold mb-4 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                      <div className={isLight ? 'text-slate-900 text-lg font-semibold mb-4' : 'panel-caption text-left'}>
                         Ваши друзья
-                      </h3>
+                      </div>
                       {loading ? (
-                        <p className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>Загрузка списка друзей...</p>
+                        <p className={`text-sm ${isLight ? 'text-slate-600' : 'text-slate-300/70'}`}>Загрузка списка друзей...</p>
                       ) : (
                         <div className="min-w-0">
                           <AllFriendsPanel friends={friends} />
