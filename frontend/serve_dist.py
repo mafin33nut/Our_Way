@@ -49,14 +49,25 @@ class SPAHandler(SimpleHTTPRequestHandler):
         if content_length is not None:
             body = self.rfile.read(int(content_length))
 
+        original_host = self.headers.get("Host")
+        original_proto = self.headers.get("X-Forwarded-Proto", "http")
+        client_ip = self.client_address[0]
+        prior_xff = self.headers.get("X-Forwarded-For")
+
         request_headers = {}
         for key, value in self.headers.items():
             if key.lower() in HOP_BY_HOP_HEADERS:
                 continue
-            if key.lower() == "host":
-                continue
             request_headers[key] = value
-        request_headers["Host"] = f"{BACKEND_HOST}:{BACKEND_PORT}"
+
+        if original_host:
+            request_headers["Host"] = original_host
+            request_headers["X-Forwarded-Host"] = original_host
+        request_headers["X-Forwarded-Proto"] = original_proto
+        request_headers["X-Forwarded-Port"] = "443" if original_proto == "https" else "80"
+        request_headers["X-Forwarded-For"] = (
+            f"{prior_xff}, {client_ip}" if prior_xff else client_ip
+        )
 
         connection = None
         try:
