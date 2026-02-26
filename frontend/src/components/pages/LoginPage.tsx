@@ -239,6 +239,7 @@ export function LoginPage() {
   return (
     <div className="relative min-h-screen flex items-center justify-center px-4 py-8 sm:px-8 sm:py-12 md:px-10 md:py-16 overflow-hidden bg-slate-950">
       <HybridDynamicBackground
+        className="fixed inset-0"
         opacity={bgOpacity}
         speed={bgSpeed}
         palette={{ a: '#2dd4bf', b: '#22d3ee', c: '#8b5cf6', d: '#d946ef' }}

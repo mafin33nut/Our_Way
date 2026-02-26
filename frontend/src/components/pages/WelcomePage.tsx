@@ -28,13 +28,14 @@ export function WelcomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="relative min-h-screen overflow-hidden bg-slate-950">
       <HybridDynamicBackground
+        className="fixed inset-0"
         opacity={settings.background === 'calm' ? 0.5 : 0.68}
         speed={settings.focusMode === 'deep' ? 0.7 : settings.focusMode === 'relaxed' ? 1.2 : 0.9}
         palette={{ a: '#2dd4bf', b: '#22d3ee', c: '#8b5cf6', d: '#d946ef' }}
       />
-      <div className="min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
+      <div className="relative z-10 min-h-screen flex items-start justify-center px-4 py-6 sm:px-8 sm:py-12">
         <div className="w-full max-w-[1600px]">
           <div className="relative rounded-2xl bg-slate-900/90 border border-slate-700/70 shadow-[0_20px_46px_-16px_rgba(15,23,42,0.95)] p-8 sm:p-10 min-h-[58vh]">
             <div className="pointer-events-none absolute left-5 top-5 sm:left-7 sm:top-7">

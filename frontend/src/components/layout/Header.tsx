@@ -1,4 +1,4 @@
-import { LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { LogOut, PanelLeftClose, PanelLeftOpen, Settings as SettingsIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useCustomization } from '../../hooks/useCustomization';
@@ -54,11 +54,13 @@ export function Header({ isSidebarOpen, onToggleSidebar }: HeaderProps) {
                 variant="ghost"
                 size="md"
                 onClick={() => navigate('/settings')}
-                className={`inline-flex items-center gap-2 px-1 py-0 text-xs sm:text-sm bg-transparent border-0 shadow-none hover:bg-transparent whitespace-nowrap ${
+                className={`inline-flex items-center gap-1 sm:gap-2 px-1 py-0 text-xs sm:text-sm bg-transparent border-0 shadow-none hover:bg-transparent whitespace-nowrap ${
                   isLight ? 'text-slate-900' : 'text-white'
                 }`}
+                aria-label="Настройки"
               >
-                <span>Настройки</span>
+                <SettingsIcon className="w-5 h-5" />
+                <span className="hidden sm:inline">Настройки</span>
               </Button>
               <FriendsPanel
                 className={`inline-flex items-center gap-2 px-1 py-0 text-xs sm:text-sm bg-transparent border-0 shadow-none hover:bg-transparent whitespace-nowrap ${

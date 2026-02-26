@@ -78,6 +78,16 @@ const FAQ_ITEMS: FaqItem[] = [
   },
 ];
 
+const HERO_TIPS: string[] = [
+  'Начните с одного небольшого квеста и доведите его до конца — это лучший способ «почувствовать» ритм Our Way.',
+  'Старайтесь каждый день закрывать хотя бы один квест — даже маленький шаг вперёд даёт ощущение движения.',
+  'Разбейте большую цель на 3–5 небольших квестов — так проще не потеряться и видеть прогресс.',
+  'Используйте направления, чтобы разделить работу, обучение и личные задачи — так на главной всегда виден фокус.',
+  'Закрепляйте важные достижения — они будут напоминать, что у вас уже многое получилось.',
+  'Если сложно начать, заведите квест на 5–10 минут действия — главное запустить движение, а не сделать идеально.',
+  'Периодически просматривайте историю квестов — это помогает увидеть, как вы реально продвигаетесь вперёд.',
+];
+
 export function HomePage() {
   const { user, refreshUser } = useAuth();
   const { playVictorySound, settings } = useCustomization();
@@ -247,6 +257,11 @@ export function HomePage() {
   const [openFaqId, setOpenFaqId] = useState<string | null>(null);
   const isLight = settings.theme === 'light';
 
+  const [heroTip] = useState<string>(() => {
+    const index = Math.floor(Math.random() * HERO_TIPS.length);
+    return HERO_TIPS[index] ?? HERO_TIPS[0];
+  });
+
   if (!user) {
     return <Loader />;
   }
@@ -276,8 +291,7 @@ export function HomePage() {
               </div>
               <div className="max-w-[860px] rounded-2xl border border-slate-600/30 bg-slate-950/30 px-5 py-4">
                 <p className="text-sm sm:text-base text-slate-200/90 leading-relaxed">
-                  Пространство для роста, где вы превращаете цели в понятные шаги, отслеживаете прогресс и
-                  двигаетесь вперед каждый день.
+                  {heroTip}
                 </p>
               </div>
             </div>
