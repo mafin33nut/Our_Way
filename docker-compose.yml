@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
+      args:
+        PYTHON_BASE: ${PYTHON_BASE_IMAGE:-docker.io/library/python:3.11-slim}
     env_file:
       - .env
     ports:
@@ -13,6 +15,8 @@ services:
     build:
       context: .
       dockerfile: frontend/Dockerfile.prod
+      args:
+        NGINX_BASE: ${NGINX_BASE_IMAGE:-docker.io/library/nginx:alpine}
     ports:
       - "21771:80"
     depends_on:

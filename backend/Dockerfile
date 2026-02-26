@@ -1,4 +1,4 @@
-ARG PYTHON_BASE=public.ecr.aws/docker/library/python:3.11-slim
+ARG PYTHON_BASE=docker.io/library/python:3.11-slim
 FROM ${PYTHON_BASE}
 
 ENV PYTHONDONTWRITEBYTECODE=1
