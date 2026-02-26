@@ -236,14 +236,14 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                 ) : (
                   <div className="space-y-8">
                     {/* Мои кланы */}
-                    <div
-                      className={`rounded-2xl border px-6 py-5 ${
+                    <section
+                      className={`rounded-2xl border-2 px-8 py-7 ${
                         isLight
-                          ? 'bg-white border-slate-200'
-                          : 'bg-slate-900/50 border-slate-700/50'
+                          ? 'bg-white border-slate-200 shadow-lg'
+                          : 'bg-slate-900/60 border-teal-500/50 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
                       }`}
                     >
-                      <h3 className={`text-lg font-semibold mb-4 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                      <h3 className={`text-lg font-semibold mb-4 ${isLight ? 'text-slate-900' : 'text-teal-200'}`}>
                         Мои кланы
                       </h3>
                       {loading ? (
@@ -300,17 +300,17 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                           )}
                         </>
                       )}
-                    </div>
+                    </section>
 
                     {/* Вступление по ссылке */}
-                    <div
-                      className={`rounded-2xl border px-6 py-5 ${
+                    <section
+                      className={`rounded-2xl border-2 px-8 py-7 ${
                         isLight
-                          ? 'bg-white border-slate-200'
-                          : 'bg-slate-900/50 border-slate-700/50'
+                          ? 'bg-white border-slate-200 shadow-lg'
+                          : 'bg-slate-900/60 border-cyan-500/50 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
                       }`}
                     >
-                      <h3 className={`text-lg font-semibold mb-4 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                      <h3 className={`text-lg font-semibold mb-4 ${isLight ? 'text-slate-900' : 'text-cyan-200'}`}>
                         Вступление по ссылке
                       </h3>
                       <p className={`text-sm mb-3 ${isLight ? 'text-slate-600' : 'text-slate-300/80'}`}>
@@ -367,31 +367,31 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                       >
                         {joinLinkLoading ? 'Отправка...' : 'Отправить запрос'}
                       </Button>
-                    </div>
+                    </section>
 
                     {/* Создать новый клан */}
-                    <div
-                      className={`rounded-2xl border px-6 py-5 ${
+                    <section
+                      className={`rounded-2xl border-2 px-8 py-7 ${
                         isLight
-                          ? 'bg-white border-slate-200'
-                          : 'bg-slate-900/50 border-slate-700/50'
+                          ? 'bg-white border-slate-200 shadow-lg'
+                          : 'bg-slate-900/60 border-slate-500/40 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
                       }`}
                     >
-                      <h3 className={`text-lg font-semibold mb-4 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>Создать новый клан</h3>
+                      <h3 className={`text-lg font-semibold mb-4 ${isLight ? 'text-slate-900' : 'text-slate-200'}`}>Создать новый клан</h3>
                       <ClanCreationPanel onClanCreated={loadClans} />
-                    </div>
+                    </section>
 
                     {/* Клановые квесты (только при выбранном клане) */}
                     {selectedClan && (
                       <>
-                        <div
-                          className={`rounded-2xl border px-6 py-5 ${
+                        <section
+                          className={`rounded-2xl border-2 px-8 py-7 ${
                             isLight
-                              ? 'bg-white border-slate-200'
-                              : 'bg-slate-900/50 border-slate-700/50'
+                              ? 'bg-white border-slate-200 shadow-lg'
+                              : 'bg-slate-900/60 border-amber-500/50 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]'
                           }`}
                         >
-                          <h3 className={`text-lg font-semibold mb-4 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                          <h3 className={`text-lg font-semibold mb-4 ${isLight ? 'text-slate-900' : 'text-amber-200'}`}>
                             Клановые квесты
                           </h3>
                           {loadingClanQuests ? (
@@ -491,7 +491,7 @@ export function ClanHubPanel({ className = '' }: ClanHubPanelProps) {
                             </Button>
                           </div>
                           </div>
-                        </div>
+                        </section>
                       </>
                     )}
                   </div>
