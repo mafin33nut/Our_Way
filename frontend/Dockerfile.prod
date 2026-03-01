@@ -1,4 +1,4 @@
-ARG FRONTEND_BASE=docker.io/library/python:3.11-slim
+ARG FRONTEND_BASE=public.ecr.aws/docker/library/python:3.11-slim
 FROM ${FRONTEND_BASE}
 
 WORKDIR /srv/www

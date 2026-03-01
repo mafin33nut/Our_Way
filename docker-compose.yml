@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: backend/Dockerfile
       args:
-        PYTHON_BASE: ${PYTHON_BASE_IMAGE:-docker.io/library/python:3.11-slim}
+        PYTHON_BASE: ${PYTHON_BASE_IMAGE:-public.ecr.aws/docker/library/python:3.11-slim}
     env_file:
       - .env
     ports:
@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: frontend/Dockerfile.prod
       args:
-        FRONTEND_BASE: ${FRONTEND_BASE_IMAGE:-docker.io/library/python:3.11-slim}
+        FRONTEND_BASE: ${FRONTEND_BASE_IMAGE:-public.ecr.aws/docker/library/python:3.11-slim}
     environment:
       BACKEND_HOST: ${FRONTEND_BACKEND_HOST:-backend}
       BACKEND_PORT: ${FRONTEND_BACKEND_PORT:-8000}
