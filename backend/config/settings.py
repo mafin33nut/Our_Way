@@ -23,6 +23,11 @@ DEBUG = env_bool("DEBUG", "True")
 # По умолчанию разрешаем localhost + адрес WSL/сервера.
 # При необходимости можно переопределить через переменную окружения ALLOWED_HOSTS.
 ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", "localhost,127.0.0.1,172.25.159.191")
+internal_backend_host = os.getenv("FRONTEND_BACKEND_HOST", "backend").strip()
+if internal_backend_host:
+    internal_backend_host = internal_backend_host.split("://", 1)[-1].split("/", 1)[0].split(":", 1)[0]
+    if internal_backend_host and internal_backend_host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(internal_backend_host)
 
 # Database
 USE_SQLITE = env_bool("USE_SQLITE", "False")
